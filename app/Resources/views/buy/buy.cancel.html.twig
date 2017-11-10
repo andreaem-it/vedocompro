@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="wrapper">
+        <div class="container-fluid scrollbar"">
+        <div class="row">
+            <div class="col-sm-12 register-form text-center" style="max-width:500px">
+                <br>
+
+                <h1 style="font-size:4em">Ops!</h1>
+                <br><br><br>
+                <h6>Il tuo acquisto non è andato a buon fine.</h6>
+                <p><small>Tu o PayPal avete annullato l'operazione, nessun importo è stato addebitato sul tuo conto.<br>
+                    Se pensi che sia stato un'errore puoi riprovare.
+                    </small></p>
+                <br><br>
+                <a class="btn btn-success" href="{{ url('upgrade') }}">Torna Indietro</a>
+            </div>
+        </div>
+    </div>
+    </div>
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

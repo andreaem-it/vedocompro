@@ -1,0 +1,217 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{% include 'template/header.html.twig' %}
+    <div class="wrapper" style="margin-bottom:-50px">
+        <div class="container-fluid scrollbar" id="home-container">
+            <div class="container">
+                <div class="row d-flex align-items-center" >
+                    <div class="col-lg-6 ">
+                        <br>
+                        <div class="align-items-center">
+                            <div id="video"></div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col-sm-8">
+                                {% embed 'default/Italia.html.twig' %}
+                                {% endembed %}
+                            </div>
+                            <div class="col-sm-4 padding-right-20 text-right txt-regioni hidden-xs-down">
+                                Cerca per Regione
+                                <br><br>
+                                <p><a href="/cerca/valle-d-aosta/tutto" data-rel="vao">Valle d'Aosta</a></p>
+                                <p><a href="/cerca/piemonte/tutto" data-rel="pie">Piemonte</a></p>
+                                <p><a href="/cerca/liguria/tutto" data-rel="lig">Liguria</a></p>
+                                <p><a href="/cerca/lombardia/tutto" data-rel="lom">Lombardia</a></p>
+                                <p><a href="/cerca/trentino-alto-adige/tutto" data-rel="tre">Trentino-Alto Adige</a></p>
+                                <p><a href="/cerca/veneto/tutto" data-rel="ven">Veneto</a></p>
+                                <p><a href="/cerca/friuli-venezia-giulia/tutto" data-rel="fri">Friuli-Venezia Giulia</a></p>
+                                <p><a href="/cerca/emilia-romagna/tutto" data-rel="emi">Emilia-Romagna</a></p>
+                                <p><a href="/cerca/toscana/tutto" data-rel="tos">Toscana</a></p>
+                                <p><a href="/cerca/umbria/tutto" data-rel="umb">Umbria</a></p>
+                                <p><a href="/cerca/lazio/tutto" data-rel="laz">Lazio</a></p>
+                                <p><a href="/cerca/marche/tutto" data-rel="mar">Marche</a></p>
+                                <p><a href="/cerca/abruzzo/tutto" data-rel="abr">Abruzzo</a></p>
+                                <p><a href="/cerca/molise/tutto" data-rel="mol">Molise</a></p>
+                                <p><a href="/cerca/campania/tutto" data-rel="cam">Campania</a></p>
+                                <p><a href="/cerca/puglia/tutto" data-rel="pug">Puglia</a></p>
+                                <p><a href="/cerca/basilicata/tutto" data-rel="bas">Basilicata</a></p>
+                                <p><a href="/cerca/calabria/tutto" data-rel="cal">Calabria</a></p>
+                                <p><a href="/cerca/sardegna/tutto" data-rel="sar">Sardegna</a></p>
+                                <p><a href="/cerca/sicilia/tutto" data-rel="sic">Sicilia</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <section class="call-to-action" style="padding:40px 0;background:#5cb85c;margin-right: -15px; margin-left: -15px;">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 text-center m-text-center text-white">
+                        <h1>Dai più trasparenza al tuo annuncio con vedocompro.it</h1>
+                    </div>
+                </div>
+                <br>
+                <div class="row text-center">
+                    <div class="col-md-12 col-sm-12 m-text-center">
+                        <a href="{{ url('nuovo') }}" class="btn btn-primary btn-lg" style="font-size: 2rem">Inizia a vendere, è gratis!</a>
+                    </div>
+                </div>
+            </section>
+            <div class="row">
+                <div class="col-sm-12 row-most-clicked">
+                    <h3 class="text-center">I più cliccati</h3>
+                    <div class="row text-center">
+                        <div class="col-sm-12">
+                            <a class="btn btn-secondary btn-most-clicked" href="cerca/smartphone">
+                                <img src="{{ asset('img/icons/icon_smartphone.png') }}">
+                                <p>Smartphone</p>
+                            </a>
+                            <a class="btn btn-secondary btn-most-clicked" href="cerca/computer">
+                                <img src="{{ asset('img/icons/icon_computer.png') }}">
+                                <p>Computer</p>
+                            </a>
+                            <a class="btn btn-secondary btn-most-clicked" href="cerca/accessori_pc">
+                                <img src="{{ asset('img/icons/icon_mouse.png') }}">
+                                <p>Accessori PC</p>
+                            </a>
+                            <a class="btn btn-secondary btn-most-clicked" href="cerca/games">
+                                <img src="{{ asset('img/icons/icon_gamepad.png') }}">
+                                <p>Games</p>
+                            </a>
+                            <a class="btn btn-secondary btn-most-clicked" href="cerca/elettrodomestici">
+                                <img src="{{ asset('img/icons/icon_washmaschine.png') }}">
+                                <p>Elettrodomestici</p>
+                            </a>
+                            <a class="btn btn-secondary btn-most-clicked" href="cerca/fotografia">
+                                <img src="{{ asset('img/icons/icon_camera.png') }}">
+                                <p>Fotografia</p>
+                            </a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <section class="container">
+                <div class="row">
+                    <br><br><h3 class="text-center" style="margin: 0 auto;padding: 30px;">Come Funziona</h3><br><br>
+                </div>
+                <div class="row d-flex align-items-center">
+                    <div class="col-md-6">
+                        <img class="img-fluid" src="{{ asset('img/img-home-1.png') }}">
+                    </div>
+                    <div class="col-md-6">
+                        <p class="align-middle ">
+                            <br>
+                            Ti è mai capitato di vedere un prodotto fantastico in un sito di annunci, fare chilometri per vederlo di persona per poi renderti conto che non era come nelle foto?<br><br>
+                            Succede anche a noi e può essere davvero scocciante! Per questo abbiamo creato <i>VedoCompro.it</i>! <br><br>
+                            Inserisci il tuo annuncio e carica un video, oppure cerca l'oggetto dei tuoi desideri e controllane il perfetto funzionamento grazie ad un video caricato dagli utenti in cui si espongono pregi e difetti, proprio come se fossi lì!<br><br>
+                        </p>
+                    </div>
+                </div>
+                <div class="row flex-column-reverse flex-md-row d-flex align-items-center">
+                    <div class="col-md-6">
+                        <br>
+                        Il video non ti ha convinto? Contatta il venditore telefonicamente o utilizza la messaggistica interna per richiedere informazioni accessorie, prenotare una visita o semplicemente contrattare sul prezzo.<br><br>
+                        Se non sei convinto dell'affidabilità del venditore controlla il suo punteggio, un punteggio alto è simbolo di serietà ed ogni acquirente commenta la sua esperienza rilasciando un feedback.<br><br>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="img-fluid" src="{{ asset('img/img-home-2.png') }}">
+                    </div>
+                </div>
+                <idv class="row d-flex align-items-center">
+                    <div class="col-md-6">
+                        <img class="img-fluid" src="{{ asset('img/img-home-3.png') }}">
+                    </div>
+                    <div class="col-md-6 ">
+                        <br>
+                        Se l'oggetto ti piace e ti ha convinto completa l'acquisto! <br><br>
+                        Contatta il venditore tramite telefono o messaggio e prenota il ritiro! Per piccoli oggetti puoi anche scegliere la spedizione da poter tracciare sul sito!<br><br>
+                        Una volta divenuto in possesso dell'oggetto, rilascia un feedback e facci sapere com'è andata! Se l'affare non è andato come pensavi, il venditore non ti ha rivelato alcuni difetti ed è stato scorretto segnalalo con un feedback negativo. Servirà da monito per gli altri acquirenti.<br><br>
+                        Per qualsiasi altro problema puoi rivolgerti al nostro <a href="http://helpdesk.vedocompro.it">HelpDesk</a>! Cercheremo insieme di risolvere la situazione.
+                    </div>
+                </idv>
+            </section>
+            <br><br>
+        </div>
+    </div>
+    {% include 'template/footer.html.twig' %}
+    <script>
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+        } else {
+            $('.home-search-box').show();
+            $('#nav-search-id').css('pointer-events', 'none');
+            $('#home-container').addClass('margin-top-200');
+        }
+        $(function() {
+            $('.txt-regioni').find('a').hover(function() {
+                $('#' + $(this).data('rel')).toggleClass('hover');
+            });
+        });
+
+        var playerInstance = jwplayer("video");
+        playerInstance.setup({
+            file: "https://s3.eu-west-2.amazonaws.com/vedocompro-assets/video+spotttt2.mp4",
+            type: "m4v",
+            image: "img/video_bg.png",
+            autostart: "false"
+        }).stop();
+
+        jwplayer().onTime(function(object) {
+            if (object.position > object.duration - 1) {
+                jwplayer().pause();
+                jwplayer().stop();
+            }
+        });
+    </script>
+    <script type="text/JavaScript">
+
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .header {
+        padding: 20px;
+    }
+    .link-disabled{
+        pointer-events: none;
+    }
+    .call-to-action {
+        background:#0086d2;
+        padding:40px 0;
+    }
+
+    .call-to-action h1{
+        text-transform:uppercase;
+        color:#fff;
+        font-family:Arial;
+        font-size:40px;
+    }
+
+    .btn {
+        border-radius: 5px;
+        margin: 21px 0 0 0;
+        font-weight:700;
+    }
+
+    .btn.btn-white {
+        background: #fff;
+        color: #666;
+        border-bottom: 4px solid #ddd;
+    }
+
+    @media (max-width: 768px) {
+        .m-text-center {text-align:center;}
+        .call-to-action h1{font-size:20px;}
+    }
+    @media (max-width: 1024px) {
+        .m-text-center {text-align:center;}
+        .call-to-action h1{font-size:25px;}
+    }
+</style>
+{% endblock %}

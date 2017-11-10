@@ -1,0 +1,128 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}VedoCompro.it - ADMIN - Inserzioni{% endblock %}
+
+{% block body %}
+    <!-- Content Wrapper. Contains page content -->
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Inserzioni
+            <small>Vedi</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li class="active"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="#">Inserzioni</a></li>
+            <li><a href="#">Vedi</a></li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h3><strong>Titolo:</strong> {{ ad.0.name }}</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div id="video"></div>
+                                        {% if ad.0.published == 0 %}
+                                            <br>
+                                            <a href="" class="btn btn-block btn-success">Approva Video</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-9">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><strong>Descrizione:</strong>&nbsp;{{ ad.0.description }}</li>
+                                    <li class="list-group-item"><strong>Utente:</strong>&nbsp;{{ tools.convertUser(ad.0.uname) }}</li>
+                                    <li class="list-group-item"><strong>Categoria:</strong>&nbsp;{{ tools.convertCategory(ad.0.category) }}</li>
+                                    <li class="list-group-item"><strong>Prezzo:</strong>&nbsp;{{ ad.0.price }}&nbsp;€</li>
+                                    <li class="list-group-item"><strong>Condizione:</strong>&nbsp;{{ ad.0.objCondition }}</li>
+                                    <li class="list-group-item"><strong>Livello:</strong>&nbsp;{{ tools.convertLevel(ad.0.objLevel) }}</li>
+                                    <li class="list-group-item"><strong>Creato il:</strong>&nbsp;{{ ad.0.creationtime|date ('d-m-Y H:m') }}</li>
+                                    <li class="list-group-item"><strong>Ultimo aggiornamento:</strong>&nbsp;{{ ad.0.updatetime|date ('d-m-Y H:m') }}</li>
+                                    <li class="list-group-item"><strong>Stato:</strong>&nbsp;{% if ad.0.published == 0 %}<img src="{{ asset('img/circle-red.png') }}">&nbsp;<a href="{{ url("admin_video_activate",{'id':ad.0.id}) }}" class="float-right btn btn-success">Approva</a>{% else %}<img src="{{ asset('img/circle-green.png') }}"> <a href="{{ url("admin_video_deactivate",{'id':ad.0.id}) }}" class="float-right btn btn-warning">Boccia</a>{% endif %}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <div class="box-body table-responsive no-padding">
+                                            <table class="table table-hover">
+                                                <tbody>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Nome File</th>
+                                                    <th>Tipo</th>
+                                                    <th>Stato</th>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+    <!-- /.content-wrapper -->
+    <script src="https://content.jwplatform.com/libraries/7P3qGamK.js"></script>
+    <script>jwplayer.key="ABCdeFG123456SeVenABCdeFG123456SeVen=="</script>
+    {% if ad.0.published == 0 %}
+        <script type="text/JavaScript">
+            var playerInstance = jwplayer("video");
+            playerInstance.setup({
+                file: "../../../webtemp/{{ ad.0.video }}.mp4",
+                type: "m4v",
+            });
+            setTimeout(function() {
+                jwplayer().pause();
+                jwplayer().setMute(true);
+                jwplayer().setControls(true);
+            },3000);
+
+            jwplayer().onTime(function(object) {
+                if (object.position > object.duration - 1) {
+                    jwplayer().pause();
+                }
+            });
+        </script>
+    {% else %}
+        <script type="text/JavaScript">
+            var playerInstance = jwplayer("video");
+            playerInstance.setup({
+                file: "https://s3.eu-west-2.amazonaws.com/vedocompro-video/{{ ad.0.id }}.m4v",
+                type: "m4v",
+            });
+            setTimeout(function() {
+                jwplayer().pause();
+                jwplayer().setMute(true);
+                jwplayer().setControls(true);
+            },3000);
+
+            jwplayer().onTime(function(object) {
+                if (object.position > object.duration - 1) {
+                    jwplayer().pause();
+                }
+            });
+        </script>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,188 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}VedoCompro.it - ADMIN - Utenti{% endblock %}
+
+{% block body %}
+
+    <section class="content-header">
+        <h1>
+            Utenti
+            <small>Vedi</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li class="active"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="">Utenti</a></li>
+            <li>Vedi</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h3><strong>Utente:</strong> {{ user.0.name }}</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <img class="img-responsive" src="../../../uploads/profile/{{ user.0.id }}.jpg">
+                            </div>
+                            <div class="col-sm-9">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <strong class="pull-left">Nome Reale:</strong>&nbsp;
+                                        <a href="" id="name_change_activate">
+                                            {{ user.0.realname }}
+                                        </a>
+                                        <input id="name_change_input" class="form-control pull-left" style="width:30%; margin-left: 5px; margin-top:-6px"/>
+                                        <a href="" class="pull-left" id="name_change_save" style="margin-left: 5px">Salva</a>
+                                        <a href="" class="pull-left" id="name_change_cancel" style="margin-left: 5px">Annulla</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong class="pull-left">Username:</strong>&nbsp;
+                                        <a href="" id="username_change_activate">
+                                            {{ user.0.name }}
+                                        </a>
+                                        <input id="username_change_input" class="form-control pull-left" style="width:30%; margin-left: 5px; margin-top:-6px"/>
+                                        <a href="" class="pull-left" id="username_change_save" style="margin-left: 5px">Salva</a>
+                                        <a href="" class="pull-left" id="username_change_cancel" style="margin-left: 5px">Annulla</a>
+                                    </li>
+                                    <li class="list-group-item"><strong>Email:</strong>&nbsp;{{ user.0.email }}</li>
+                                    <li class="list-group-item"><strong>Data registrazione:</strong>&nbsp;{{ user.0.datejoin|date('d-m-Y') }}</li>
+                                    <li class="list-group-item"><strong>Indirizzo:</strong>&nbsp;{{ user.0.address }}</li>
+                                    <li class="list-group-item"><strong>Città:</strong>&nbsp;{{ user.0.city }}</li>
+                                    <li class="list-group-item"><strong>Recapito Telefonico:</strong>&nbsp;{{ user.0.phone }}</li>
+                                    <li class="list-group-item"><strong>Punti:</strong>&nbsp;{{ user.0.points }}</li>
+                                    <li class="list-group-item">
+                                        <strong class="pull-left">Ruolo:</strong>&nbsp;
+                                        <a href="" id="role_change_activate">
+                                            {{ user.0.roles }}
+                                        </a>
+                                        <select id="role_change_select" class="form-control pull-left" style="width: 30%; margin-left: 5px; margin-top:-6px">
+                                            {% if user.0.roles %}
+                                                {% if user.0.roles == "ROLE_USER" %}
+                                                    <option value="ROLE_USER" selected>Utente</option>
+                                                    <option value="ROLE_MODERATOR">Moderatore</option>
+                                                    <option value="ROLE_ADMIN">Amministratore</option>
+                                                    <option value="ROLE_SUPER_ADMIN">Super Amministratore</option>
+                                                {% elseif user.0.roles == "ROLE_MODERATOR" %}
+                                                    <option value="ROLE_USER">Utente</option>
+                                                    <option value="ROLE_MODERATOR" selected>Moderatore</option>
+                                                    <option value="ROLE_ADMIN">Amministratore</option>
+                                                    <option value="ROLE_SUPER_ADMIN">Super Amministratore</option>
+                                                {% elseif user.0.roles == "ROLE_ADMIN" %}
+                                                    <option value="ROLE_USER">Utente</option>
+                                                    <option value="ROLE_MODERATOR">Moderatore</option>
+                                                    <option value="ROLE_ADMIN" selected>Amministratore</option>
+                                                    <option value="ROLE_SUPER_ADMIN">Super Amministratore</option>
+                                                {% elseif user.0.roles == "ROLE_SUPER_ADMIN" %}
+                                                    <option value="ROLE_USER">Utente</option>
+                                                    <option value="ROLE_MODERATOR">Moderatore</option>
+                                                    <option value="ROLE_ADMIN">Amministratore</option>
+                                                    <option value="ROLE_SUPER_ADMIN" selected>Super Amministratore</option>
+                                                {% else %}
+                                                    <option value="ROLE_USER">Utente</option>
+                                                    <option value="ROLE_MODERATOR">Moderatore</option>
+                                                    <option value="ROLE_ADMIN">Amministratore</option>
+                                                    <option value="ROLE_SUPER_ADMIN">Super Amministratore</option>
+                                                {% endif %}
+                                            {% endif %}
+                                        </select>
+                                        <a href="" class="pull-left" id="role_change_save" style="margin-left: 5px">Salva</a>
+                                        <a href="" class="pull-left" id="role_change_cancel" style="margin-left: 5px">Annulla</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Stato:</strong>&nbsp;
+                                        {% if user.0.isActive == 0 %}
+                                            Non Attivo &nbsp; <a href="{{ url('admin_utenti_activate',{'id':user.0.id}) }}"><img src="{{ asset('img/circle-red.png') }}"></a>
+                                        {% elseif user.0.isActive == 1 %}
+                                            Attivo &nbsp; <a href="{{ url('admin_utenti_deactivate',{'id':user.0.id}) }}"><img src="{{ asset('img/circle-green.png') }}"></a>
+                                        {% endif %}
+                                    </li>
+                                    <br>
+                                    <li class="list-group-item"><strong>Crediti Oro:</strong>&nbsp;{{ user.0.credits_gold }}</li>
+                                    <li class="list-group-item"><strong>Crediti Argento:</strong>&nbsp;{{ user.0.credits_silver }}</li>
+                                    <li class="list-group-item"><strong>Crediti Bronzo:</strong>&nbsp;{{ user.0.credits_bronze }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- TODO: INSERT AJAX ACTIONS -->
+    <script>
+        $(document).ready(function(){
+            $('#role_change_select').hide();
+            $('#role_change_save').hide();
+            $('#role_change_cancel').hide();
+            $('#name_change_input').hide();
+            $('#name_change_save').hide();
+            $('#name_change_cancel').hide();
+            $('#username_change_input').hide();
+            $('#username_change_save').hide();
+            $('#username_change_cancel').hide();
+        });
+        $('#role_change_activate').click(function(e) {
+            e.preventDefault();
+            $('#role_change_select').show();
+            $('#role_change_save').show();
+            $('#role_change_cancel').show();
+            $('#role_change_activate').hide();
+        });
+        $('#role_change_cancel').click(function(e) {
+            e.preventDefault();
+            $('#role_change_select').hide();
+            $('#role_change_save').hide();
+            $('#role_change_cancel').hide();
+            $('#role_change_activate').show();
+        });
+        $('#role_change_save').click(function(e) {
+            e.preventDefault();
+            alert('TODO: AJAX CALL');
+            //AJAX CALL
+        });
+        $('#name_change_activate').click(function(e) {
+            e.preventDefault();
+            $('#name_change_input').show().val($('#name_change_activate').text().replace(/  /g,''));
+            $('#name_change_save').show();
+            $('#name_change_cancel').show();
+            $('#name_change_activate').hide();
+        });
+        $('#name_change_cancel').click(function(e) {
+            e.preventDefault();
+            $('#name_change_input').hide();
+            $('#name_change_save').hide();
+            $('#name_change_cancel').hide();
+            $('#name_change_activate').show();
+        });
+        $('#name_change_save').click(function(e) {
+            e.preventDefault();
+            alert('TODO: AJAX CALL');
+            // AJAX CALL
+        })
+        $('#username_change_activate').click(function(e) {
+            e.preventDefault();
+            $('#username_change_input').show().val($('#username_change_activate').text().replace(/  /g,''));
+            $('#username_change_save').show();
+            $('#username_change_cancel').show();
+            $('#username_change_activate').hide();
+        });
+        $('#username_change_cancel').click(function(e) {
+            e.preventDefault();
+            $('#username_change_input').hide();
+            $('#username_change_save').hide();
+            $('#username_change_cancel').hide();
+            $('#username_change_activate').show();
+        });
+        $('#username_change_save').click(function (e) {
+            e.preventDefault();
+            alert('TODO: AJAX CALL');
+            // AJAX CALL
+        })
+    </script>
+{% endblock %}

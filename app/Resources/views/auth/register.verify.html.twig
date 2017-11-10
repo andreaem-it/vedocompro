@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+
+    <div class="wrapper">
+        <div class="container-fluid scrollbar"">
+
+            <div class="row">
+                <div class="col-sm-12 register-form text-center" style="max-width:500px">
+                    <br>
+                    {% if error is defined %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% else %}
+                        <div class="stoppable mx-auto d-block">
+                            <canvas style="display: none" width="400" height="300"></canvas>
+                            <img style="display: block" src="{{ asset('img/animated-check.gif') }}"/>
+                        </div>
+                        <br>
+                        <h1 style="font-size:4em">Grazie!</h1>
+                        <br><br><br>
+                        <h6>Il tuo account è verificato.</h6>
+                        <p>Ora puoi effettuare l'accesso.</p>
+                        <br><br>
+                        <a class="btn btn-success" href="{{ url('login') }}">Vai al Login</a>
+                    {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .stoppable {
+            width: 100px;
+            height: 100px;
+        }
+        .stoppable canvas, .stoppable img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script>
+        var c = $(".stoppable canvas")[0];
+        var w = c.width;
+        var h = c.height;
+        var img = $(".stoppable img")[0];
+        setTimeout(function () {
+            c.getContext('2d').drawImage(img, 0, 0, w, h);
+            $(img).hide();
+            $(c).show();
+        },1000);
+    </script>
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

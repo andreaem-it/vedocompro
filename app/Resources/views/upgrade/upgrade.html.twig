@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="contailer-fluid" style="margin-top:200px">
+        <div class="row">
+            <div class="col-sm-3 hidden-md"></div>
+            <div class="col-xl-2">
+                <div class="card text-center price-card">
+                    <div class="card-header">
+                        <h4>Bronzo</h4>
+                    </div>
+                    <div class="card-block">
+                        <img class="card-img-top" src="{{ asset('img/icons/icon_bronze.png') }}">
+                        <h4 class="card-title"><h1>3,99<small>&nbsp;€</small></h1></h4>
+                        <p class="card-text"></p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                            <li class="list-group-item">5 Crediti BRONZO</li>
+                            <li class="list-group-item">5 Inserzioni Bronzo 24 Ore</li>
+                            <!--<li class="list-group-item">Video max 3 minuti</li>-->
+                        </ul>
+                    <div class="card-footer text-muted">
+
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="hosted_button_id" value="7PUP7VGRWDY94">
+                            <input type="submit" class="btn btn-outline-primary btn-lg btn-block" value="Seleziona" />
+                            <img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2">
+                <div class="card text-center price-card">
+                    <div class="card-header">
+                        <h4>Argento</h4>
+                    </div>
+                    <div class="card-block">
+                        <img class="card-img-top" src="{{ asset('img/icons/icon_silver.png') }}">
+                        <h4 class="card-title"><h1>6,99<small>&nbsp;€</small></h1></h4>
+                        <p class="card-text"></p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-center">5 Crediti ARGENTO</li>
+                            <li class="list-group-item text-center">5 Inserzioni Argento 3 Giorni</li>
+                            <!--<li class="list-group-item text-center">Video max 5 minuti</li>-->
+                        </ul>
+                    <div class="card-footer text-muted">
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="hosted_button_id" value="CPE4QWVS853CS">
+                            <input type="submit" class="btn btn-outline-primary btn-lg btn-block" value="Seleziona"/>
+                            <img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2">
+                <div class="card text-center price-card">
+                    <div class="card-header">
+                        <h4>Oro</h4>
+                    </div>
+                    <div class="card-block">
+                        <img class="card-img-top" src="{{ asset('img/icons/icon_gold.png') }}">
+                        <h4 class="card-title"><h1>9,99<small>&nbsp;€</small></h1></h4>
+                        <p class="card-text"></p>
+                    </div>
+                        <ul class="list-group list-group-flush text-center">
+                            <li class="list-group-item text-center">5 Crediti ORO</li>
+                            <li class="list-group-item text-center">5 Inserzione Oro 7 Giorni</li>
+                            <!--<li class="list-group-item text-center">Video max 5 minuti</li>-->
+                        </ul>
+                    <div class="card-footer text-muted">
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                            <input type="hidden" name="cmd" value="_s-xclick">
+                            <input type="hidden" name="hosted_button_id" value="CPE4QWVS853CS">
+                            <input type="submit" class="btn btn-outline-primary btn-lg btn-block" value="Seleziona"/>
+                            <img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 hidden-md"></div>
+        </div>
+        <br><br><br>
+        <div class="row align-items-center">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-6">
+                <div>
+                    <form class="form-inline"><p>Hai un Coupon? <input id="code" type="text" class="form-control" style="border-bottom-right-radius: 0px;border-top-right-radius: 0px"/><a href="" id="checkCode" class="btn btn-outline-success" style="border-top-left-radius: 0px;border-bottom-left-radius: 0px">Riscatta</a></p></form>
+                    <div id="redeemResponse"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<br><br><br><br>
+    <script>
+        $('#checkCode').click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "GET",
+                url: '{{ asset('ajax/coupon.redeem.php') }}',
+                dataType: 'html',
+                data: {'uid': '{{ app.user.username }}','code': $('#code').val()},
+                beforeSend: function() {$("#redeemResponse").text('Convalida...');},
+                success: function (data) {$("#redeemResponse").html(data);}
+            });
+        });
+    </script>
+    {% include 'template/footer.html.twig' %}
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}

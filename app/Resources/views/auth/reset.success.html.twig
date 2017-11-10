@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="wrapper">
+        <div class="container-fluid scrollbar"">
+
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+               <div class="card">
+                   <div class="card-block">
+                       <h3 class="card-title">Completato!</h3>
+                       <p class="card-text">La tua password è stata ripristinata correttamente.</p>
+                       <a href="{{ url('login') }}" class="btn btn-primary btn-lg btn-block">Vai al Login</a>
+                   </div>
+               </div>
+                <br><br><br><br>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

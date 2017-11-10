@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="container-fluid scrollbar"">
+        <div class="container">
+            <div class="row">
+                <div class="col-md">
+                    <div class="card" style="width:100%">
+                        <div class="card-block">
+                            <h3>Ti sei impegnato ad acquistare l'oggetto!</h3>
+                            <br>
+                            <p>Invieremo una notifica al venditore che provvederà a contattarti nel caso te non l'abbia già fatto.</p>
+                            <p>Insieme potrete accordarvi nella vendita.</p>
+                            <p>Nel frattempo abbiamo aggiunto l'oggetto alla tua <a href="">bacheca</a>, da cui potrai seguirne la vendita.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{% include 'template/header.html.twig' %}
+<div class="wrapper">
+    <div class="container-fluid scrollbar"">
+        
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <form class="form-signin" action="{{ path('login') }}" method="post">       
+                  <h2 class="form-signin-heading">Accedi</h2>
+                  {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                  {% endif %}
+                  <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" placeholder="Username" required="" autofocus="" />
+                  <input type="password" class="form-control" id="password" name="_password" placeholder="Password" required=""/>
+                  <div class="btn-group btn-block" data-toggle="buttons" style="margin-bottom:-8px">
+                    <label class="btn btn-outline-primary btn-block">
+                        <input type="checkbox" value="remember-me" id="remember_me" name="_remember_me" autocomplete="off"> Ricordami in questo PC
+                    </label>
+                  </div>
+                  <button class="btn btn-lg btn-primary btn-block" type="submit">Accedi</button>
+                  <a href="#" class="btn btn-outline-primary btn-block btn-facebook"><i class="fa fa-facebook"></i> Accedi con Facebook</a>
+                  <a href="#" class="btn btn-outline-danger btn-block btn-google"><i class="fa fa-google"></i> Accedi con Google</a>
+                  <a href="{{ url('registrati') }}" class="btn btn-outline-success btn-block">Non sei registrato?</a>
+                  <a href="{{ url('reset-password') }}" class="btn btn-outline-success btn-block">Hai dimenticato la password?</a>
+                </form>
+                <br><br><br><br>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .btn-facebook {
+        color: #3b5998!important;
+        border-color: #3b5998!important;
+    }
+    .btn-facebook:hover {
+        background-color: #3b5998!important;
+        color: #FFFFFF!important;
+    }
+    .btn-google {
+        color: #D34836!important;
+        border-color: #D34836!important;
+    }
+    .btn-google:hover {
+        background-color: #D34836!important;
+        color: #FFFFFF!important;
+    }
+
+</style>
+{% endblock %}

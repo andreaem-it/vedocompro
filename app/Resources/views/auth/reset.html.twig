@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="wrapper">
+        <div class="container-fluid scrollbar"">
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <!--<form class="form-signin" action="{{ path('reset-password') }}" method="post">-->
+                <div class="form-signin">
+                    <h2 class="form-signin-heading">Ripristino Password</h2>
+                    <small>Inserisci l'indirizzo e-mail con cui ti sei registrato, se corrisponde, riceverai un'e-mail con un link per reimpostare la password</small>
+                    <br><br>
+                    {% if error %}
+                        <div class="alert alert-danger">C'è stato un'errore nell'elaborazione della richiesta. Controlla l'esattezza dei dati inseriti.</div>
+                    {% endif %}
+                    {{ form_start(form_reset) }}
+                    {{ form_widget(form_reset.email) }}
+                    <br>
+                    <div class="g-recaptcha" data-sitekey="6Ldp8i4UAAAAAJLdCJR_zqUA9uUug_6P03qb6W-6"></div>
+                    <br>
+                    {{ form_widget(form_reset.submit) }}
+
+                    {{ form_end(form_reset) }}
+                </div>
+                <!--</form>-->
+                <br><br><br><br>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

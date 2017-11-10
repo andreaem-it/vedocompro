@@ -1,0 +1,75 @@
+<html><script type="text/javascript">window["_gaUserPrefs"] = { ioo : function() { return true; } }</script><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>VedoCompro.it - Admin - Lock</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="{{ asset('theme/bootstrap/css/bootstrap.min.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('theme/dist/css/AdminLTE.min.css') }}">
+    <!-- AdminLTE Skins -->
+    <link rel="stylesheet" href="{{ asset('theme/dist/css/skins/skin-red.css') }}">
+    <!-- jQuery 3.1.1 -->
+    <script src="{{ asset('theme/plugins/jQuery/jquery-3.1.1.min.js') }}"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition lockscreen">
+<!-- Automatic element centering -->
+<div class="lockscreen-wrapper">
+    <div class="lockscreen-logo">
+        <a href="../../index2.html"><b>Vedo</b>Compro</a>
+    </div>
+    <!-- User name -->
+    <div class="lockscreen-name">{{ tools.convertUser(currentUser) }}</div>
+
+    <!-- START LOCK SCREEN ITEM -->
+    <div class="lockscreen-item">
+        <!-- lockscreen image -->
+        <div class="lockscreen-image">
+            <img src="/uploads/profile/{{ currentUser }}.jpg" alt="User Image">
+        </div>
+        <!-- /.lockscreen-image -->
+
+        <!-- lockscreen credentials (contains the form) -->
+        <form class="lockscreen-credentials">
+            <div class="input-group">
+                <input type="password" class="form-control" placeholder="password">
+
+                <div class="input-group-btn">
+                    <button type="button" class="btn"><i class="fa fa-arrow-right text-muted"></i></button>
+                </div>
+            </div>
+        </form>
+        <!-- /.lockscreen credentials -->
+
+    </div>
+    <!-- /.lockscreen-item -->
+    <div class="help-block text-center">
+        Inserisci la tua Password per recuperare la sessione
+    </div>
+    <div class="text-center">
+        <a href="{{ url('login') }}">Non sei {{ tools.convertUser(currentUser) }}? Entra con un'altro utente</a>
+    </div>
+    <div class="lockscreen-footer text-center">
+        Copyright © 2017 <b><a href="http://andreaem.com" class="text-black">AndreaEM</a></b><br>
+        All rights reserved
+    </div>
+</div>
+<!-- /.center -->
+
+<!-- Bootstrap 3.3.6 -->
+<script src="{{  asset('theme/bootstrap/js/bootstrap.min.js') }}"></script>
+
+
+</body></html>

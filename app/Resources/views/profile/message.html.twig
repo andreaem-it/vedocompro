@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="modal fade" id="deleteMessage">
+        <div class="modal-dialog" role="document" >
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Eliminare Messaggio?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger">Elimina</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Annulla</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="container-fluid scrollbar"">
+            <div class="container">
+                <br>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a href="{{ app.request.headers.get('referer') }}">< Torna a Messaggi</a>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="card" style="width:100%">
+                        <div class="card-block">
+                            <h4 class="card-title">Messaggio da {{ user.convertUser(message.0.fromUID) }}</h4>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ user.convertAds(message.0.object) }}</h6>
+                            <small class="card-subtitle">{{ message.0.datetime|date('d-m-Y H:i:s') }}</small>
+                            <br><br>
+                            <p class="card-text">{{ message.0.message }}</p>
+                            - {{ user.convertUser(message.0.fromUID) }}
+                            <br>
+                            <hr>
+                            <form action="{{ url('sendmessage', {'mid': message.0.id}) }}" method="GET">
+                                <input type="hidden" name="fromUID" value="{{ app.user.id }}"/>
+                                <input type="hidden" name="toUID" value="{{ message.0.fromUID }}"/>
+                                <input type="hidden" name="datetime" value="{{ "now"|date("Y-m-d H:i:s") }}"/>
+                                <input type="hidden" name="objectID" value="{{ message.0.object }}"/>
+                                <textarea class="form-control" name="message" placeholder="Inserisci messaggio..."></textarea>
+                                <br>
+                                <input type="submit" class="card-link btn btn-outline-success" value="Rispondi"/>
+                                <a href="#" class="card-link btn btn-outline-danger" data-toggle="modal" data-target="#deleteMessage">Elimina</a>
+                            </form>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% include 'template/footer.html.twig' %}
+{% endblock %}
