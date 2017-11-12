@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Category;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -242,6 +243,9 @@ class AdsController extends Controller
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
+                /** @var Category $category */
+                $category = $form->getData()->getCategory();
+                $newAd->setCategory($category->getId());
                 $em->persist($newAd);
                 $em->flush();
                 return $this->redirectToRoute('profilo', array('query' => $usrName));
