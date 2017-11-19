@@ -43,6 +43,18 @@ security:
                 lifetime: 31536000
                 path:     /
                 domain:   ~
+            oauth:
+                # Declare the OAuth Callback URLs for every resource owner
+                # They will be added in the routing.yml file too later
+                resource_owners:
+                    google: "/connect/check-google"
+                ## Provide the original login path of your application (fosuserroute)
+                ## and the failure route when the authentication fails.
+                login_path:     /login
+                failure_path:   /login
+                # Inject a service that will be created in the step #6
+                oauth_user_provider:
+                    service: app.fos_user.oauth_provider
 
         admin:
             pattern:    ^/admin

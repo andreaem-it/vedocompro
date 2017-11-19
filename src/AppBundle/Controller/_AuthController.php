@@ -68,7 +68,7 @@ class AuthController extends Controller
 
             $user->setDatejoin($now);
 
-            $user->setIsActive('0');
+            $user->setEnabled(false);
 
             $address = $form->get('address')->getData() . ' - ' . $form->get('cap')->getData() . ' - ' . $form->get('city')->getData() ;
 
@@ -156,7 +156,7 @@ class AuthController extends Controller
                 $id = $result[0]['id'];
                 $em = $this->getDoctrine()->getManager();
                 $user = $em->getRepository('AppBundle:User')->find($id);
-                $user->setIsActive(1);
+                $user->setEnabled(true);
                 $em->flush();
                 return $this->render('auth/register.verify.html.twig');
             } else {

@@ -54,7 +54,7 @@ class AdminController extends Controller
             ->getRepository('AppBundle:User')
             ->createQueryBuilder('e')
             ->select('count(e)')
-            ->where('e.isActive = 1')
+            ->where('e.enabled = 1')
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -130,7 +130,7 @@ class AdminController extends Controller
             ->getRepository('AppBundle:User')
             ->createQueryBuilder('e')
             ->select('count(e)')
-            ->where('e.isActive = 1')
+            ->where('e.enabled = 1')
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -228,7 +228,7 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->find($id);
 
-        $user->setIsActive(1);
+        $user->setEnabled(true);
         $em->flush();
 
         $now = $time = new \DateTime();
@@ -309,7 +309,7 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->find($id);
 
-        $user->setIsActive(0);
+        $user->setEnabled(false);
         $em->flush();
 
         $now = $time = new \DateTime();

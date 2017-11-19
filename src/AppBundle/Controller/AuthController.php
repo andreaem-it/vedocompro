@@ -74,7 +74,7 @@ class AuthController extends Controller
 
             $user->setDatejoin($now);
 
-            $user->setIsActive('0');
+            $user->setEnabled(false);
 
             $address = $form->get('address')->getData() . ' - ' . $form->get('cap')->getData() . ' - ' . $form->get('city')->getData() ;
 
@@ -86,7 +86,7 @@ class AuthController extends Controller
             $user->setCreditsSilver(0);
             $user->setCreditsBronze(0);
 
-            $user->setRoles("ROLE_USER");
+            $user->setRoles(["ROLE_USER"]);
 
             $user->setUsername($form->get('name')->getData());
 
@@ -105,19 +105,19 @@ class AuthController extends Controller
             
             $userEmail = $form->get('email')->getData();
 
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Benvenuto in VedoCompro.it')
-                ->setFrom('noreply@vedocompro.it')
-                ->setTo($userEmail)
-                ->setBody(
-                    $this->renderView(
-                        'Emails/registration.html.twig',
-                        array('name' => $form->get('name')->getData(),'code' =>$code)
-                    ),
-                    'text/html'
-                )
-            ;
-            $this->get('mailer')->send($message);
+//            $message = \Swift_Message::newInstance()
+//                ->setSubject('Benvenuto in VedoCompro.it')
+//                ->setFrom('noreply@vedocompro.it')
+//                ->setTo($userEmail)
+//                ->setBody(
+//                    $this->renderView(
+//                        'Emails/registration.html.twig',
+//                        array('name' => $form->get('name')->getData(),'code' =>$code)
+//                    ),
+//                    'text/html'
+//                )
+//            ;
+//            $this->get('mailer')->send($message);
 
             return $this->redirectToRoute('registrato');
         }
@@ -149,7 +149,7 @@ class AuthController extends Controller
      */
     public function verifyAccountAction($code)
     {
-        $user = new User;
+        $user = new User();
         $result = $this->getDoctrine()
             ->getRepository('AppBundle:User')
             ->createQueryBuilder('p')
@@ -158,13 +158,12 @@ class AuthController extends Controller
             ->setParameter('code', $code)
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-        var_dump($result);
         if ($result != '') {
             if ($result[0]['code'] == $code) {
                 $id = $result[0]['id'];
                 $em = $this->getDoctrine()->getManager();
                 $user = $em->getRepository('AppBundle:User')->find($id);
-                $user->setIsActive(1);
+                $user->setEnabled(true);
                 $em->flush();
                 return $this->render('auth/register.verify.html.twig');
             } else {

@@ -154,3 +154,18 @@ fos_user:
     from_email:
         address: "%mailer_user%"
         sender_name: "%mailer_user%"
+
+hwi_oauth:
+    firewall_names: [main]
+
+    fosub:
+        username_iterations: 30
+        properties:
+            google: google_id
+
+    resource_owners:
+        google:
+            type:                google
+            client_id:           "%google_client_id%"
+            client_secret:       "%google_secret%"
+            scope:               "email profile"

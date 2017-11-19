@@ -16,7 +16,7 @@
                     </div>
                     <ul class="list-group list-group-flush user-details-list">
                         <li class="list-group-item">Punti: {{ user_info.0.points }} &nbsp;<img src="{{ asset('/img/icons/icon_info.png') }}" style="width:16px;" data-toggle="tooltip" data-placement="right" title="Ogni utente guadagna 1 Punto ad ogni feedback positivo ricevuto."/></li>
-                        <li class="list-group-item">Vive a: {{ (user_info.0.address| split('-', 3))[2]  }}</li>
+                        <li class="list-group-item">Vive a: {{ user_info.0.address ? (user_info.0.address| split('-', 3))[2] : ""  }}</li>
                         <li class="list-group-item">Registrato dal: {{ user_info.0.datejoin|date('d-m-Y') }}</li>
                         <li class="list-group-item">Annunci: {{ ad_count }}</li>
                         {% if app.user.username is defined %}
@@ -43,7 +43,7 @@
             </div>
 
             <div class="col-lg-8">
-                {% if user_info.0.isActive == 0 %}
+                {% if user_info.0.isEnabled == 0 %}
                     <div class="alert alert-danger"><strong>Attenzione:</strong> Questo utente è stato bannato dalla piattaforma, se stai concludendo qualsiasi affare con lui, assicurati di contattarlo telefonicamente. Se hai problemi legali con questo utente, <a href="mailto:">contattaci</a> spiegando il problema, cercheremo di fornirti i dati per una denuncia alle autorità.</div>
                 {% endif %}
 

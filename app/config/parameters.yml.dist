@@ -16,3 +16,5 @@ parameters:
     amazon.secret: example
     amazon.bucket: vedocompro-assets
     amazon_s3_base_url: 'http://s3.amazonaws.com/vedocompro-assets/'
+    google_client_id: ~
+    google_secret: ~

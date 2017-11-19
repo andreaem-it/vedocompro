@@ -96,9 +96,9 @@
                                     </li>
                                     <li class="list-group-item">
                                         <strong>Stato:</strong>&nbsp;
-                                        {% if user.0.isActive == 0 %}
+                                        {% if user.0.enabled == 0 %}
                                             Non Attivo &nbsp; <a href="{{ url('admin_utenti_activate',{'id':user.0.id}) }}"><img src="{{ asset('img/circle-red.png') }}"></a>
-                                        {% elseif user.0.isActive == 1 %}
+                                        {% elseif user.0.enabled == 1 %}
                                             Attivo &nbsp; <a href="{{ url('admin_utenti_deactivate',{'id':user.0.id}) }}"><img src="{{ asset('img/circle-green.png') }}"></a>
                                         {% endif %}
                                     </li>

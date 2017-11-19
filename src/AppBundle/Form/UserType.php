@@ -26,7 +26,7 @@ class UserType extends AbstractType
             ->add('address',TextType::class, array('label' => 'Indirizzo'))
             ->add('city',TextType::class, array('label' => 'Città'))
             ->add('cap',IntegerType::class,array('label'=>'CAP'))
-            ->add('phone',IntegerType::class,array('label'=>'Telefono'));
+            ->add('phone',TextType::class,array('label'=>'Telefono'));
     }
 
     public function configureOptions(OptionsResolver $resolver)

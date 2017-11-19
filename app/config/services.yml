@@ -5,12 +5,23 @@ parameters:
     core_storage.video_uploader.class: LM\Bundle\CoreBundle\Service\PhotoUploader
 
 services:
-   app.twig_extension:
-      class: AppBundle\Twig\Category
-      public: false
-      tags:
-        - { name: twig.extension }
-   amazon_s3:
-      class: AmazonS3
-      arguments:
-         options: { key: %amazon.key%, secret: %amazon.secret%, certificate_authority: false, default_cache_config: true }
+    app.twig_extension:
+        class: AppBundle\Twig\Category
+        public: false
+        tags:
+            - { name: twig.extension }
+    amazon_s3:
+        class: AmazonS3
+        arguments:
+            options: { key: %amazon.key%, secret: %amazon.secret%, certificate_authority: false, default_cache_config: true }
+
+    app.fos_user.oauth_provider:
+        # Change the class according to the location of the FOSUBUserProvider class
+        class: AppBundle\Security\Core\User\FOSUBUserProvider
+        arguments:
+            # Inject as first argument the user_manager of FOSUserBundle
+            user_manager: "@fos_user.user_manager"
+            # An object/array with the registered Social Media from config.yml
+            user_response:
+                facebook: facebook_id
+                google: google_id

@@ -43,7 +43,7 @@
                                     <td>{{ user.address }}</td>
                                     <td><a href="tel:{{ user.phone }}">{{ user.phone }}</a></td>
                                     <td>{{ user.points }}</td>
-                                    <td>{% if user.isActive == 1 %}<a href="{{ url('admin_utenti_deactivate',{'id':user.id}) }}"><img src="{{ asset('img/circle-green.png') }}"></a>{% else %}<a href="{{ url('admin_utenti_activate',{'id':user.id}) }}"><img src="{{ asset('img/circle-red.png') }}"></a>{% endif %}</td>
+                                    <td>{% if user.enabled == 1 %}<a href="{{ url('admin_utenti_deactivate',{'id':user.id}) }}"><img src="{{ asset('img/circle-green.png') }}"></a>{% else %}<a href="{{ url('admin_utenti_activate',{'id':user.id}) }}"><img src="{{ asset('img/circle-red.png') }}"></a>{% endif %}</td>
                                     <td>{{ user.roles }}</td>
                                     <td><a href="{{ url('admin_utenti_delete', {'id': user.id}) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a></td>
                                 </tr>
