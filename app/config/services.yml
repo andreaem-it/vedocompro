@@ -5,12 +5,18 @@ parameters:
     core_storage.video_uploader.class: LM\Bundle\CoreBundle\Service\PhotoUploader
 
 services:
-   app.twig_extension:
-      class: AppBundle\Twig\Category
-      public: false
-      tags:
-        - { name: twig.extension }
-   amazon_s3:
-      class: AmazonS3
-      arguments:
-         options: { key: %amazon.key%, secret: %amazon.secret%, certificate_authority: false, default_cache_config: true }
+    app.twig_extension:
+        class: AppBundle\Twig\Category
+        public: false
+        tags:
+            - { name: twig.extension }
+    app.aws_s3.client:
+        class: Aws\S3\S3Client
+        factory: [Aws\S3\S3Client, 'factory']
+        arguments:
+            -
+                version: latest
+                region: %amazon.region%
+                credentials:
+                    key: %amazon.key%
+                    secret: %amazon.secret%
