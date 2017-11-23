@@ -201,8 +201,8 @@ class AdsController extends Controller
 
             $newAd = new Ads();
             $newAd->setUname($usr);
-            $newAd->setCreationtime(new \DateTime('today'));
-            $newAd->setUpdatetime(new \DateTime('today'));
+            $newAd->setCreationtime(new \DateTime());
+            $newAd->setUpdatetime(new \DateTime());
             $newAd->setViews(0);
             $newAd->setPublished(0);
             $newAd->setOption1('');
