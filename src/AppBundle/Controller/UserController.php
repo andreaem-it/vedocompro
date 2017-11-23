@@ -51,7 +51,7 @@ class UserController extends Controller
             ->createQueryBuilder('e')
             ->select('e')
             ->where('e.fuid = :uname')
-            ->setParameter('uname', $usr)
+            ->setParameter('uname', $usr->getId())
             ->getQuery()
             ->getResult(Query::HYDRATE_ARRAY);
 
@@ -500,37 +500,28 @@ class UserController extends Controller
 
     public function convertUser($userID)
     {
-        $this->get('logger')->critical('USER' . $userID);
-        $uname = $this->getDoctrine()
+        /** @var User $uname */
+        $user = $this->getDoctrine()
                ->getRepository('AppBundle:User')
-               ->createQueryBuilder('e')
-               ->select('e.name')
-               ->where('e.id = :id')
-               ->setParameter('id', $userID)
-               ->getQuery()
-               ->getResult(Query::HYDRATE_ARRAY);
-        return $uname[0]["name"];
+               ->find($userID);
+        return $user ? $user->getName() : null;
     }
 
     public function convertUID($userID)
     {
-        $uname = $this->getDoctrine()
+        $user = $this->getDoctrine()
                 ->getRepository('AppBundle:User')
-                ->createQueryBuilder('e')
-                ->select('e.id')
-                ->where('e.name = :name')
-                ->setParameter('name', $userID)
-                ->getQuery()
-                ->getResult(Query::HYDRATE_ARRAY);
-        return $uname[0]["id"];
+                ->findOneBy(['name' => $userID]);
+        return $user ? $user->getId() : null;
     }
     public function convertAds($adID)
     {
-        /** @var Ads $ads */
-        $ads = $this->getDoctrine()
+        /** @var Ads $ad */
+        $ad = $this->getDoctrine()
                ->getRepository('AppBundle:Ads')
                ->find($adID);
-        return $ads->getName() ?? '';
+
+        return $ad ? $ad->getName() : null;
     }
     public function convertCategory($catID)
     {
