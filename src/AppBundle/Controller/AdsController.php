@@ -256,7 +256,7 @@ class AdsController extends Controller
                 $video->setAid($newAd->getId());
                 $video->setAccepted(false);
                 $video->setUid($newAd->getUname());
-                $video->setDir($newAd->getVideo());
+                $video->setDir($newAd->getVideo() ?? '');
                 $em->persist($video);
                 $em->flush();
                 return $this->redirectToRoute('profilo', array('query' => $usrName));
