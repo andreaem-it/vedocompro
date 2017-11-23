@@ -37,35 +37,35 @@ class UploadVideoController extends Controller
 
         try {
 
+
             // Undefined | Multiple Files | $_FILES Corruption Attack
             // If this request falls under any of them, treat it invalid.
             if (
                 !isset($_FILES['file']['error']) ||
                 is_array($_FILES['file']['error'])
             ) {
-                throw new RuntimeException('Invalid parameters.');
+                throw new \RuntimeException('Invalid parameters.');
             }
-
             // Check $_FILES['file']['error'] value.
             switch ($_FILES['file']['error']) {
                 case UPLOAD_ERR_OK:
                     break;
                 case UPLOAD_ERR_NO_FILE:
-                    throw new RuntimeException('No file sent.');
+                    throw new \RuntimeException('No file sent.');
                     break;
                 case UPLOAD_ERR_INI_SIZE:
                     break;
                 case UPLOAD_ERR_FORM_SIZE:
-                    throw new RuntimeException('Exceeded filesize limit.');
+                    throw new \RuntimeException('Exceeded filesize limit.');
                     break;
                 default:
-                    throw new RuntimeException('Unknown errors.');
+                    throw new \RuntimeException('Unknown errors.');
                     break;
             }
 
             // You should also check filesize here.
             if ($_FILES['file']['size'] > 209715200) {
-                throw new RuntimeException('Exceeded filesize limit.');
+                throw new \RuntimeException('Exceeded filesize limit.');
             }
 
             // DO NOT TRUST $_FILES['file']['mime'] VALUE !!
@@ -78,21 +78,21 @@ class UploadVideoController extends Controller
                         'mov' => 'video/mov',
                         'avi' => 'video/avi',
                         'mov' => 'video/mov',
+                        'quicktime' => 'video/quicktime'
                     ),
                     true
                 )) {
-                throw new RuntimeException('Invalid file format.');
+                throw new \RuntimeException('Invalid file format.');
             }
-
             // You should name it uniquely.
             // DO NOT USE $_FILES['file']['name'] WITHOUT ANY VALIDATION !!
             // On this example, obtain safe unique name from its binary data.
             $fileName = sha1_file($_FILES['file']['tmp_name']);
             if (!move_uploaded_file($_FILES['file']['tmp_name'], sprintf('%s%s.%s', $target_dir, $fileName, $ext ))) {
-                throw new RuntimeException('Failed to move uploaded file.');
+                throw new \RuntimeException('Failed to move uploaded file.');
             }
             return new Response(sprintf("%s.%s",$fileName,$ext), 200, ['Content-Type', 'text/plain; charset=utf-8']);
-        } catch (RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             throw new \Exception($e->getMessage());
         }
     }
