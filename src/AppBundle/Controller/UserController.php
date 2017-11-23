@@ -506,6 +506,7 @@ class UserController extends Controller
                ->find($userID);
         return $user ? $user->getName() : null;
     }
+
     public function convertUID($userID)
     {
         $user = $this->getDoctrine()

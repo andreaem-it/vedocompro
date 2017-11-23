@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\AdminActions;
+use AppBundle\Entity\Videos;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -50,6 +51,14 @@ class AdminController extends Controller
             ->getQuery()
             ->getSingleScalarResult();
 
+        $videosToModerateCount = $this->getDoctrine()
+            ->getRepository('AppBundle:Videos')
+            ->createQueryBuilder('v')
+            ->select('count(v)')
+            ->andWhere('v.accepted = 0')
+            ->getQuery()
+            ->getSingleScalarResult();
+
         $activeUsersCount = $this->getDoctrine()
             ->getRepository('AppBundle:User')
             ->createQueryBuilder('e')
@@ -78,6 +87,7 @@ class AdminController extends Controller
             'adminActions' => $actions,
             'adminActionsPages' => $pages,
             'adsCount' => $adsCount,
+            'videosToModerateCount' => $videosToModerateCount ?? 0,
             'activeUsersCount' => $activeUsersCount,
             'tools' => $this
     ));
@@ -192,10 +202,15 @@ class AdminController extends Controller
             ->setParameter('id',$id)
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        $video = $this->getDoctrine()
+            ->getRepository('AppBundle:Videos')
+            ->findOneBy(['aid' => $id]);
 
         return $this->render('admin/views/ads.view.html.twig',array(
             'admin_info' => $this->getAdminInfos(),
             'ad' => $ad,
+            'video' => $video,
+            'adPath' => "/webtemp/" . $ad[0]['video'],
             'tools' => $this
         ));
     }
@@ -246,43 +261,99 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admin/video/deactivate/{id}", name="admin_video_deactivate")
+     * @Route("/admin/video/unaccept/{adID}", name="admin_video_unaccept")
      */
-    public function usersDectivateAction($id)
+    public function unacceptVideoAction($adID)
     {
         $this->denyAccessUnlessGranted('ROLE_SUPPORT', null, 'Unable to access this page!');
 
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('AppBundle:Ads')->find($id);
+        /** @var Videos $video */
+        $video = $em->getRepository('AppBundle:Videos')->findOneBy(['aid' => $adID]);
 
-        $user->setPublished(0);
+        $video->setAccepted(false);
         $em->flush();
 
         $now = $time = new \DateTime();
 
         $action = new AdminActions();
         $action->setLinedate($now);
-        $action->setType(5);
+        $action->setType(10);
         $action->setUid($this->get('security.token_storage')->getToken()->getUser()->getID());
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($action);
         $em->flush();
 
-        return $this->redirectToRoute('admin_video');
+        return $this->redirectToRoute('admin_vedi_inserzioni', ['id' => $adID]);
     }
 
     /**
-     * @Route("/admin/video/activate/{id}", name="admin_video_activate")
+     * @Route("/admin/video/accept/{adID}", name="admin_video_accept")
      */
-    public function videoActivateAction($id)
+    public function videoAcceptAction($adID)
     {
         $this->denyAccessUnlessGranted('ROLE_SUPPORT', null, 'Unable to access this page!');
 
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('AppBundle:Ads')->find($id);
+        /** @var Videos $video */
+        $video = $em->getRepository('AppBundle:Videos')->findOneBy(['aid' => $adID]);
 
-        $user->setPublished(1);
+        $video->setAccepted(true);
+        $em->flush();
+
+        $now = $time = new \DateTime();
+
+        $action = new AdminActions();
+        $action->setLinedate($now);
+        $action->setType(9);
+        $action->setUid($this->get('security.token_storage')->getToken()->getUser()->getID());
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($action);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_vedi_inserzioni', ['id' => $adID]);
+    }
+
+    /**
+     * @Route("/admin/ad/deactivate/{adID}", name="admin_ad_deactivate")
+     */
+    public function adDeactivateAction($adID)
+    {
+        $this->denyAccessUnlessGranted('ROLE_SUPPORT', null, 'Unable to access this page!');
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:Ads')->find($adID);
+
+        $user->setPublished(false);
+        $em->flush();
+
+        $now = $time = new \DateTime();
+
+        $action = new AdminActions();
+        $action->setLinedate($now);
+        $action->setType(7);
+        $action->setUid($this->get('security.token_storage')->getToken()->getUser()->getID());
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($action);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_vedi_inserzioni', ['id' => $adID]);
+    }
+
+    /**
+     * @Route("/admin/ad/activate/{adID}", name="admin_ad_activate")
+     */
+    public function adActivateAction($adID)
+    {
+        $this->denyAccessUnlessGranted('ROLE_SUPPORT', null, 'Unable to access this page!');
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:Ads')->find($adID);
+
+        $user->setPublished(true);
         $em->flush();
 
         $now = $time = new \DateTime();
@@ -296,7 +367,7 @@ class AdminController extends Controller
         $em->persist($action);
         $em->flush();
 
-        return $this->redirectToRoute('admin_video');
+        return $this->redirectToRoute('admin_vedi_inserzioni', ['id' => $adID]);
     }
 
     /**
@@ -377,14 +448,21 @@ class AdminController extends Controller
      */
     public function videoAction()
     {
-        //$videos = $this->getDirContents($_SERVER['SERVER_ADDR'] . '/webtemp');
-
-        $videos = array_diff(scandir('/var/www/html/beta.vedocompro.it/web/webtemp'),array('..','.'));
+        $videos = $this->getDoctrine()->getRepository('AppBundle:Videos')->findBy(['accepted' => 0]);
 
         return $this->render(':admin/views:video.mod.html.twig',array(
             'admin_info' => $this->getAdminInfos(),
             'videos' => $videos,
             'functions' => $this));
+    }
+
+    public function getAd($adID)
+    {
+        /** @var Ads $ads */
+        $ad = $this->getDoctrine()
+            ->getRepository('AppBundle:Ads')
+            ->find($adID);
+        return $ad ?? null;
     }
 
     /**
@@ -585,15 +663,11 @@ class AdminController extends Controller
     }
     public function convertUser($userID)
     {
-        $uname = $this->getDoctrine()
+        /** @var User $user */
+        $user = $this->getDoctrine()
             ->getRepository('AppBundle:User')
-            ->createQueryBuilder('e')
-            ->select('e.name')
-            ->where('e.id = :id')
-            ->setParameter('id', $userID)
-            ->getQuery()
-            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-        return $uname[0]["name"];
+            ->find($userID);
+        return $user;
     }
     public function convertUID($userID)
     {
