@@ -43,9 +43,9 @@ class Videos
     private $uid;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="dir", type="integer")
+     * @ORM\Column(name="dir", type="string")
      */
     private $dir;
 
