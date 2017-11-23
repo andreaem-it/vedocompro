@@ -25,16 +25,13 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nome</th>
-                                <th>Utente</th>
-                                <th>Categoria</th>
-                                <th>Data</th>
-                                <th>Stato</th>
                             </tr>
-                            {% for key,video in videos %}
-                                {% if functions.checkExt(video) == 1 %}
+                            {% for video in videos %}
+                                {% set ad = functions.getAd(video.aid) %}
+                                {% if functions.checkExt(ad.video) == 1 %}
                                 <tr>
-                                    <td>{{ key }}</td>
-                                    <td>{{ functions.getBasename(video)  }}</td>
+                                    <td>{{ video.id }}</td>
+                                    <td><a href="{{ url("admin_vedi_inserzioni",{'id':ad.id}) }}">{{ ad.name }}</a></td>
                                 </tr>
                                 {% endif %}
                             {% endfor %}

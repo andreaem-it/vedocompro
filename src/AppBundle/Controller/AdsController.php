@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Videos;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -35,6 +36,10 @@ class AdsController extends Controller
         $ad = $this->getDoctrine()
         ->getRepository('AppBundle:Ads')
         ->findBy(array('id' => $item));
+
+        $video = $this->getDoctrine()
+            ->getRepository('AppBundle:Videos')
+            ->findBy(array('aid' => $item));
 
         $id = $item;
 
@@ -166,10 +171,9 @@ class AdsController extends Controller
                 ->getQuery()
                 ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-            $conn = $em->getConnection();
-
             return $this->render('ads/view.html.twig', [
                 'ad_info' => $ad,
+                'video' => $video,
                 'photos' => $photos,
                 'ad_category' => $category,
                 'user_info' => $seller,
@@ -247,6 +251,13 @@ class AdsController extends Controller
                 $category = $form->getData()->getCategory();
                 $newAd->setCategory($category->getId());
                 $em->persist($newAd);
+                $em->flush();
+                $video = new Videos();
+                $video->setAid($newAd->getId());
+                $video->setAccepted(false);
+                $video->setUid($newAd->getUname());
+                $video->setDir($newAd->getVideo());
+                $em->persist($video);
                 $em->flush();
                 return $this->redirectToRoute('profilo', array('query' => $usrName));
             }

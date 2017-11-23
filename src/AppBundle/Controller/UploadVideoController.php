@@ -91,20 +91,7 @@ class UploadVideoController extends Controller
             if (!move_uploaded_file($_FILES['file']['tmp_name'], sprintf('%s%s.%s', $target_dir, $fileName, $ext ))) {
                 throw new RuntimeException('Failed to move uploaded file.');
             }
-            try {
-                $em = $this->get('doctrine.orm.entity_manager');
-                $video = new Videos();
-                $video->setAid(0);
-                $video->setAccepted(0);
-                $video->setUid(0);
-                $video->setDir($fileName);
-                $em->persist($video);
-                $em->flush();
-                return new Response($fileName, 200, ['Content-Type', 'text/plain; charset=utf-8']);
-            } catch(PDOException $exception) {
-                throw new \Exception($exception->getMessage());
-            }
-
+            return new Response(sprintf("%s.%s",$fileName,$ext), 200, ['Content-Type', 'text/plain; charset=utf-8']);
         } catch (RuntimeException $e) {
             throw new \Exception($e->getMessage());
         }

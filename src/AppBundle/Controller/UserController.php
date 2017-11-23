@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\AppBundle;
+use AppBundle\Entity\Ads;
 use AppBundle\Entity\Messages;
 use AppBundle\Entity\Sells;
 use AppBundle\Entity\User;
@@ -499,6 +500,7 @@ class UserController extends Controller
 
     public function convertUser($userID)
     {
+        $this->get('logger')->critical('USER' . $userID);
         $uname = $this->getDoctrine()
                ->getRepository('AppBundle:User')
                ->createQueryBuilder('e')
@@ -507,8 +509,9 @@ class UserController extends Controller
                ->setParameter('id', $userID)
                ->getQuery()
                ->getResult(Query::HYDRATE_ARRAY);
-        return $uname[0]["name"];       
+        return $uname[0]["name"];
     }
+
     public function convertUID($userID)
     {
         $uname = $this->getDoctrine()
@@ -523,15 +526,11 @@ class UserController extends Controller
     }
     public function convertAds($adID)
     {
-        $uname = $this->getDoctrine()
+        /** @var Ads $ads */
+        $ads = $this->getDoctrine()
                ->getRepository('AppBundle:Ads')
-               ->createQueryBuilder('e')
-               ->select('e.name')
-               ->where('e.id = :id')
-               ->setParameter('id', $adID)
-               ->getQuery()
-               ->getResult(Query::HYDRATE_ARRAY);
-        return $uname[0]["name"];    
+               ->find($adID);
+        return $ads->getName() ?? '';
     }
     public function convertCategory($catID)
     {
