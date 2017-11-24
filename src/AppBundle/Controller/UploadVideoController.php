@@ -26,7 +26,7 @@ class UploadVideoController extends Controller
      */
     public function uploadVideoAction()
     {
-        $target_dir = __DIR__ . "/../../../web/webtemp/";
+        $target_dir = __DIR__ . "/../../../web/webtemp/rawvideos/";
 
         set_time_limit(0);
         ini_set('upload_max_filesize', '200M');
