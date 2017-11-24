@@ -27,6 +27,7 @@ class UploadVideoController extends Controller
     public function uploadVideoAction()
     {
         $target_dir = __DIR__ . "/../../../web/webtemp/rawvideos/";
+        $logger = $this->get('logger');
 
         set_time_limit(0);
         ini_set('upload_max_filesize', '200M');
@@ -93,6 +94,7 @@ class UploadVideoController extends Controller
             }
             return new Response(sprintf("%s.%s",$fileName,$ext), 200, ['Content-Type', 'text/plain; charset=utf-8']);
         } catch (\RuntimeException $e) {
+            $logger->critical($e->getMessage());
             throw new \Exception($e->getMessage());
         }
     }
