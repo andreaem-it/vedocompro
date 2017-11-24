@@ -6,6 +6,7 @@ use AppBundle\Entity\Ads;
 use AppBundle\Entity\Videos;
 use Gaufrette\Adapter\AwsS3;
 use Gaufrette\Filesystem;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,6 +15,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ProcessVideoCommandCommand extends ContainerAwareCommand
 {
+    /** @var Logger $logger */
+    private $logger;
+
     protected function configure()
     {
         $this
@@ -21,10 +25,21 @@ class ProcessVideoCommandCommand extends ContainerAwareCommand
             ->setDescription('...');
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->logger = $this->getContainer()->get('logger');
+
+        $lockHandler = new LockHandler('app-process-videos.lock');
+        if (!$lockHandler->lock()) {
+            $this->logger->info('Process video command already running, so exiting');
+
+            exit(0);
+        }
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $logger = $this->getContainer()->get('logger');
         $videos = $em->getRepository('AppBundle:Videos')->findBy(['uploaded' => false]);
         $raw_dir = __DIR__ . "/../../../web/webtemp/rawvideos/";
         $newvideo_dir = __DIR__ . "/../../../web/webtemp/encvideos/";
@@ -70,7 +85,7 @@ class ProcessVideoCommandCommand extends ContainerAwareCommand
                     $em->persist($video);
                     $em->flush();
                 } catch (\Exception $e) {
-                    $logger->error(
+                    $this->logger->error(
                         sprintf("Failed to process video for ad ID %d: %s\n",
                             $video->getAid(),
                             $e->getMessage()
