@@ -60,6 +60,8 @@ class ProcessVideoCommandCommand extends ContainerAwareCommand
                 $fs_video->write($new_video_name, file_get_contents($new_video_path));
                 $fs_photo->write($new_image_name, file_get_contents($new_image_path));
 
+                // TODO Delete old file
+
                 $s3_video_link = "https://s3.eu-west-2.amazonaws.com/vedocompro/video/" . $fs_video->get($new_video_name)->getName();
                 $video->setFilename($s3_video_link);
                 $video->setUploaded(true);
