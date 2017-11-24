@@ -83,7 +83,7 @@ class UploadVideoController extends Controller
                     ),
                     true
                 )) {
-                throw new \RuntimeException('Invalid file format.');
+                throw new \RuntimeException('Invalid file format: ' . $finfo->file($_FILES['file']['tmp_name']));
             }
             // You should name it uniquely.
             // DO NOT USE $_FILES['file']['name'] WITHOUT ANY VALIDATION !!
