@@ -13,8 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\EntityRepository;
 use AppBundle\Entity\User;
 
 class AdminController extends Controller
@@ -90,8 +88,9 @@ class AdminController extends Controller
             'videosToModerateCount' => $videosToModerateCount ?? 0,
             'activeUsersCount' => $activeUsersCount,
             'tools' => $this
-    ));
+        ));
     }
+
     /**
      * @Route("/admin/actions/{page}", name="admin_act",  defaults={"page" = 1})
      */
@@ -168,6 +167,7 @@ class AdminController extends Controller
             'tools' => $this
         ));
     }
+
     /**
      * @Route("/admin/inserzioni", name="admin_inserzioni")
      */
@@ -210,7 +210,6 @@ class AdminController extends Controller
             'admin_info' => $this->getAdminInfos(),
             'ad' => $ad,
             'video' => $video,
-            'adPath' => "/webtemp/" . $ad[0]['video'],
             'tools' => $this
         ));
     }

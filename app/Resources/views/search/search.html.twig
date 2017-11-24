@@ -71,7 +71,7 @@
                             {% set catName = search.slugify(search.convertCategory(result.category)) %}
                             {% set itemName = search.slugify(result.name) %}
                             <a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': slug}) }}">
-                                <img class="card-img-top img-fluid" id="imgPreview-{{ result.id }}" src="/uploads/photos/{{ result.id }}-1.jpg" alt="Card image cap">
+                                <img class="card-img-top img-fluid" id="imgPreview-{{ result.id }}" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ result.id }}.jpg" alt="Card image cap">
                             </a>
                             <div class="card-block">
                                 <h6 class="card-title" style="font-size:14px"><a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': itemName}) }}">{{ result.name }}</a></h6>

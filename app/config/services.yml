@@ -16,7 +16,7 @@ services:
         arguments:
             -
                 version: latest
-                region: %amazon.region%
+                region: "%amazon.region%"
                 credentials:
-                    key: %amazon.key%
-                    secret: %amazon.secret%
+                    key: "%amazon.key%"
+                    secret: "%amazon.secret%"

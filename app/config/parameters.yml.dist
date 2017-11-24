@@ -14,6 +14,5 @@ parameters:
     secret:
     amazon.key: example
     amazon.secret: example
-    amazon.bucket: vedocompro-assets
     amazon_s3_base_url: 'http://s3.amazonaws.com/vedocompro/'
-    amazon.region: eu-west-1
+    amazon.region: eu-west-2

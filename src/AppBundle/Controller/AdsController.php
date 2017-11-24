@@ -39,7 +39,7 @@ class AdsController extends Controller
 
         $video = $this->getDoctrine()
             ->getRepository('AppBundle:Videos')
-            ->findBy(array('aid' => $item));
+            ->findOneBy(array('aid' => $item));
 
         $id = $item;
 
