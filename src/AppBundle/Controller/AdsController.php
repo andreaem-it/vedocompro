@@ -178,7 +178,7 @@ class AdsController extends Controller
                 'photos' => $photos,
                 'ad_category' => $category,
                 'user_info' => $seller,
-                'feed_percent' => $feedPercent,
+                'feed_percent' => $feedPercent ?? 0,
                 'is_wish' => $isWhish,
                 'similar' => $similar,
                 'ads' => $this

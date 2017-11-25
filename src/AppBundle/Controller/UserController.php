@@ -158,12 +158,12 @@ class UserController extends Controller
             ->getRepository('AppBundle:Product')
             ->findOneBy(['name' => 'Oro']);
 
-        /** @var User $usr */
-        $usr = $this->get('security.token_storage')->getToken()->getUser();
+        /** @var User $user */
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         return $this->render('upgrade/upgrade.html.twig',
             [
-                'user_id' => $usr->getId(),
+                'user_id' => $user->getId(),
                 'bronze' => $bronze,
                 'silver' => $silver,
                 'gold'   => $gold
