@@ -111,13 +111,16 @@
                             <div class="card-block">
                                 Vetrina<br>
                                 {% for item in showcase %}
+                                    {% set catName = search.slugify(search.convertCategory(item.category)) %}
+                                    {% set itemName = search.slugify(item.name) %}
+                                    {% set slug = search.slugify(item.name) %}
                                     <div class="card" style=" margin-bottom:10px">
                                         <div class="card-block" style="padding: 0">
                                             <div>
                                                 <img src="/uploads/photos/{{ item.id }}-1.jpg" style="float:left; width: 100px; margin-right: 10px">
                                             </div>
                                             <div style="margin-top: 5px">
-                                                <h6 class="card-title">{{ item.name }}</h6>
+                                                <h6 class="card-title"><a href="{{ url('vedi_oggetto',  {'category': catName,'item': item.id,'title': slug}) }}">{{ item.name }}</a></h6>
                                                 <p>{{ item.price }} €</p>
                                             </div>
                                         </div>
