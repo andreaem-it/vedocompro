@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\AppBundle;
 use AppBundle\Entity\Ads;
 use AppBundle\Entity\Messages;
+use AppBundle\Entity\Product;
 use AppBundle\Entity\Sells;
 use AppBundle\Entity\User;
 use Doctrine\ORM\Query;
@@ -144,7 +145,30 @@ class UserController extends Controller
      */
     public function upgradeAction()
     {
-        return $this->render('upgrade/upgrade.html.twig');
+        /** @var Product $bronze */
+        $bronze = $this->getDoctrine()
+            ->getRepository('AppBundle:Product')
+            ->findOneBy(['name' => 'Bronzo']);
+        /** @var Product $silver */
+        $silver = $this->getDoctrine()
+            ->getRepository('AppBundle:Product')
+            ->findOneBy(['name' => 'Argento']);
+        /** @var Product $gold */
+        $gold = $this->getDoctrine()
+            ->getRepository('AppBundle:Product')
+            ->findOneBy(['name' => 'Oro']);
+
+        /** @var User $usr */
+        $usr = $this->get('security.token_storage')->getToken()->getUser();
+
+        return $this->render('upgrade/upgrade.html.twig',
+            [
+                'user_id' => $usr->getId(),
+                'bronze' => $bronze,
+                'silver' => $silver,
+                'gold'   => $gold
+            ]
+        );
     }
 
     /**
@@ -496,7 +520,6 @@ class UserController extends Controller
     public function referAction() {
         return $this->render('bring-a-friend/bring-a-friend.html.twig');
     }
-
 
     public function convertUser($userID)
     {
