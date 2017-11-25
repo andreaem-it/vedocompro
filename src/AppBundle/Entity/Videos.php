@@ -43,16 +43,25 @@ class Videos
     private $uid;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="dir", type="integer")
+     * @ORM\Column(name="filename", type="string")
      */
-    private $dir;
+    private $filename;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="uploaded", type="boolean")
+     */
+    private $uploaded;
+
+
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -76,7 +85,7 @@ class Videos
     /**
      * Get aid
      *
-     * @return int
+     * @return integer
      */
     public function getAid()
     {
@@ -100,7 +109,7 @@ class Videos
     /**
      * Get accepted
      *
-     * @return int
+     * @return integer
      */
     public function getAccepted()
     {
@@ -132,26 +141,50 @@ class Videos
     }
 
     /**
-     * Set dir
+     * Set filename
      *
-     * @param integer $dir
+     * @param string $filename
      *
      * @return Videos
      */
-    public function setDir($dir)
+    public function setFilename($filename)
     {
-        $this->dir = $dir;
+        $this->filename = $filename;
 
         return $this;
     }
 
     /**
-     * Get dir
+     * Get filename
      *
-     * @return integer
+     * @return string
      */
-    public function getDir()
+    public function getFilename()
     {
-        return $this->dir;
+        return $this->filename;
+    }
+
+    /**
+     * Set uploaded
+     *
+     * @param boolean $uploaded
+     *
+     * @return Videos
+     */
+    public function setUploaded($uploaded)
+    {
+        $this->uploaded = $uploaded;
+
+        return $this;
+    }
+
+    /**
+     * Get uploaded
+     *
+     * @return boolean
+     */
+    public function getUploaded()
+    {
+        return $this->uploaded;
     }
 }

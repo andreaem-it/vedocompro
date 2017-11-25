@@ -91,7 +91,7 @@
                       <source src="/uploads/videos/{{ ad_info.0.id }}.mp4" type='video/mp4' />
                       <source src="/uploads/videos/{{ ad_info.0.id }}.webm" type="video/webm" />
                     </video>-->
-                    <div id="video"></div>
+                    {% if video.accepted == 1 %}<div id="video"></div>{% endif %}
                     <br class="hidden-md-up">
                     <div class="row no-gutters">
                         {% for photo in photos %}
@@ -283,8 +283,8 @@
     <script type="text/JavaScript">
         var playerInstance = jwplayer("video");
         playerInstance.setup({
-            file: "https://s3.eu-west-2.amazonaws.com/vedocompro-video/{{ ad_info.0.id }}.m4v",
-            type: "m4v",
+            file: "{{ video.filename }}",
+            type: "mp4",
         });
         setTimeout(function() {
             jwplayer().pause();

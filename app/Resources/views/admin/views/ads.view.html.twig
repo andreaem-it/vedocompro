@@ -35,10 +35,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <div id="video"></div>
-                                        {% if ad.0.published == 0 %}
-                                            <br>
-                                            <a href="" class="btn btn-block btn-success">Approva Video</a>
-                                        {% endif %}
+                                        {% if video and video.accepted == 0 %}<img src="{{ asset('img/circle-red.png') }}">&nbsp;<a href="{{ url("admin_video_accept",{'adID':ad.0.id}) }}" class="float-right btn btn-success">Approva</a>{% else %}<img src="{{ asset('img/circle-green.png') }}"> <a href="{{ url("admin_video_unaccept",{'adID':ad.0.id}) }}" class="float-right btn btn-warning">Boccia</a>{% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -52,7 +49,7 @@
                                     <li class="list-group-item"><strong>Livello:</strong>&nbsp;{{ tools.convertLevel(ad.0.objLevel) }}</li>
                                     <li class="list-group-item"><strong>Creato il:</strong>&nbsp;{{ ad.0.creationtime|date ('d-m-Y H:m') }}</li>
                                     <li class="list-group-item"><strong>Ultimo aggiornamento:</strong>&nbsp;{{ ad.0.updatetime|date ('d-m-Y H:m') }}</li>
-                                    <li class="list-group-item"><strong>Stato:</strong>&nbsp;{% if ad.0.published == 0 %}<img src="{{ asset('img/circle-red.png') }}">&nbsp;<a href="{{ url("admin_video_activate",{'id':ad.0.id}) }}" class="float-right btn btn-success">Approva</a>{% else %}<img src="{{ asset('img/circle-green.png') }}"> <a href="{{ url("admin_video_deactivate",{'id':ad.0.id}) }}" class="float-right btn btn-warning">Boccia</a>{% endif %}</li>
+                                    <li class="list-group-item"><strong>Stato:</strong>&nbsp;{% if ad.0.published == 0 %}<img src="{{ asset('img/circle-red.png') }}">&nbsp;<a href="{{ url("admin_ad_activate",{'adID':ad.0.id}) }}" class="float-right btn btn-success">Approva</a>{% else %}<img src="{{ asset('img/circle-green.png') }}"> <a href="{{ url("admin_ad_deactivate",{'adID':ad.0.id}) }}" class="float-right btn btn-warning">Boccia</a>{% endif %}</li>
                                 </ul>
                             </div>
                         </div>
@@ -86,31 +83,12 @@
     <!-- /.content-wrapper -->
     <script src="https://content.jwplatform.com/libraries/7P3qGamK.js"></script>
     <script>jwplayer.key="ABCdeFG123456SeVenABCdeFG123456SeVen=="</script>
-    {% if ad.0.published == 0 %}
+    {% if video and video.uploaded == 1 %}
         <script type="text/JavaScript">
             var playerInstance = jwplayer("video");
             playerInstance.setup({
-                file: "../../../webtemp/{{ ad.0.video }}.mp4",
-                type: "m4v",
-            });
-            setTimeout(function() {
-                jwplayer().pause();
-                jwplayer().setMute(true);
-                jwplayer().setControls(true);
-            },3000);
-
-            jwplayer().onTime(function(object) {
-                if (object.position > object.duration - 1) {
-                    jwplayer().pause();
-                }
-            });
-        </script>
-    {% else %}
-        <script type="text/JavaScript">
-            var playerInstance = jwplayer("video");
-            playerInstance.setup({
-                file: "https://s3.eu-west-2.amazonaws.com/vedocompro-video/{{ ad.0.id }}.m4v",
-                type: "m4v",
+                file: "{{ video.filename }}",
+                type: "mp4",
             });
             setTimeout(function() {
                 jwplayer().pause();
