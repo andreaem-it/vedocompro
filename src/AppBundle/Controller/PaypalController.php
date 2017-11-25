@@ -85,6 +85,20 @@ class PaypalController extends Controller
                 $payment->setPaymentStatus($payment_status);
                 $payment->setPaymentEmail($payer_email);
                 $em->persist($payment);
+
+                $userRepo = $em->getRepository('AppBundle:User');
+                $user = $userRepo->find($user_id);
+                $user->setCreditsBronze(
+                    $user->getCreditsBronze() + $product->getCreditsBronze()
+                );
+                $user->setCreditsSilver(
+                    $user->getCreditsSilver() + $product->getCreditsSilver()
+                );
+                $user->setCreditsGold(
+                    $user->getCreditsGold() + $product->getCreditsGold()
+                );
+                $em->persist($user);
+
                 $em->flush();
             } else {
                 if (strcmp($res, "INVALID") == 0) {
