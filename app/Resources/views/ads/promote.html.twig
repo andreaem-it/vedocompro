@@ -14,8 +14,8 @@
                             <form>
                                 <select class="form-control">
                                     {%  for ad in ads %}
-                                        <option val="{{ ad.id }}"{% if ad.level != 0 %} disabled {% endif %}>
-                                            {{ ad.name }} {% if ad.level == 1 %} - Inserzione Oro {% elseif ad.level == 2 %} - Inserzione Argento {% elseif ad.level == 3 %} - Inserzione Bronzo {% endif %}
+                                        <option val="{{ ad.id }}"{% if ad.objLevel != 0 %} disabled {% endif %}>
+                                            {{ ad.name }} {% if ad.objLevel == 1 %} - Inserzione Oro {% elseif ad.objLevel == 2 %} - Inserzione Argento {% elseif ad.objLevel == 3 %} - Inserzione Bronzo {% endif %}
                                         </option>
                                     {% endfor %}
                                 </select>
@@ -25,15 +25,15 @@
                             <div class="row">
                                 <div class="col coin-col" id="coin-gold" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<strong>Oro</strong> La tua inserzione apparirà tra i primi risultati di ricerca.">
                                     <img src="{{ asset('img/coins/coin_gold.png') }}" class="coins-animated">
-                                    {{ creditsGold.0.credits_gold }}
+                                    {{ creditsGold }}
                                 </div>
                                 <div class="col coin-col" id="coin-silver" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<strong>Argento</strong> La tua inserzione apparirà tra i primi risultati di ricerca, dopo le inserzioni Oro.">
                                     <img src="{{ asset('img/coins/coin_silver.png') }}" class="coins-animated">
-                                    {{ creditsSilver.0.credits_silver }}
+                                    {{ creditsSilver }}
                                 </div>
                                 <div class="col coin-col" id="coin-bronze"  data-toggle="tooltip" data-placement="bottom" data-html="true" title="<strong>Bronzo</strong> La tua inserzione apparirà tra i primi risultati di ricerca, dopo le inserzioni Oro e Argento.">
                                     <img src="{{ asset('img/coins/coin_bronze.png') }}" class="coins-animated">
-                                    {{ creditsBronze.0.credits_bronze }}
+                                    {{ creditsBronze }}
                                 </div>
                             </div>
                         </p>
@@ -43,7 +43,7 @@
                                     <div id="promoteGold" style="display:none">
                                         <p><strong>ORO:</strong> la tua inserzione verrà sponsorizzata per 7 giorni e tornerà in cima ai risultati di ricerca ogni 24 ore.</p>
                                         <p>Sponsorizzare questa inserzione ti costa 1 credito ORO.</p>
-                                        {% if creditsGold.0.credits_gold == 0 %}
+                                        {% if creditsGold == 0 %}
                                         <p class="float-left text-danger">Non hai abbastanza crediti ORO.&nbsp;</p><a href="{{ url('upgrade') }}">Acquista</a>
                                         {% else %}
                                         <a href="" id="confirmGold" class="btn btn-outline-success">Conferma</a>
@@ -52,7 +52,7 @@
                                     <div id="promoteSilver" style="display:none">
                                         <p><strong>ARGENTO:</strong> la tua inserzione verrà sponsorizzata per 3 giorni e tornerà in cima ai risultati di ricerca ogni 24 ore.</p>
                                         <p>Sponsorizzare questa inserzione ti costa 1 credito ARGENTO.</p>
-                                        {% if creditsSilver.0.credits_silver == 0 %}
+                                        {% if creditsSilver == 0 %}
                                         <p class="float-left text-danger">Non hai abbastanza crediti ARGENTO.&nbsp;</p><a href="{{ url('upgrade') }}">Acquista</a>
                                         {% else %}
                                         <a href="" id="confirmSilver" class="btn btn-outline-success">Conferma</a>
@@ -61,7 +61,7 @@
                                     <div id="promoteBronze" style="display:none">
                                         <p><strong>BRONZO:</strong> la tua inserzione verrà sponsorizzata per 24 Ore.</p>
                                         <p>Sponsorizzare questa inserzione ti costa 1 credito BRONZO.</p>
-                                        {% if creditsBronze.0.credits_bronze == 0 %}
+                                        {% if creditsBronze == 0 %}
                                         <p class="float-left text-danger">Non hai abbastanza crediti BRONZO.&nbsp;</p><a href="{{ url('upgrade') }}">Acquista</a>
                                         {% else %}
                                         <a href="" id="confirmSilver" class="btn btn-outline-success">Conferma</a>

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
+use AppBundle\Entity\User;
 use AppBundle\Entity\Videos;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
@@ -279,52 +280,26 @@ class AdsController extends Controller
     public function promoteAction(Request $request)
     {
 
-        $usr = $this->get('security.token_storage')->getToken()->getUser();
-
-        $creditsGold = $this->getDoctrine()
-            ->getRepository('AppBundle:User')
-            ->createQueryBuilder('e')
-            ->select('e.credits_gold')
-            ->where('e.id = :usr')
-            ->setParameter('usr', $usr)
-            ->getQuery()
-            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-
-        $creditsSilver = $this->getDoctrine()
-            ->getRepository('AppBundle:User')
-            ->createQueryBuilder('e')
-            ->select('e.credits_silver')
-            ->where('e.id = :usr')
-            ->setParameter('usr', $usr)
-            ->getQuery()
-            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-
-        $creditsBronze = $this->getDoctrine()
-            ->getRepository('AppBundle:User')
-            ->createQueryBuilder('e')
-            ->select('e.credits_bronze')
-            ->where('e.id = :usr')
-            ->setParameter('usr', $usr)
-            ->getQuery()
-            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        /** @var User $user */
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         $ads = $this->getDoctrine()
             ->getRepository('AppBundle:Ads')
             ->createQueryBuilder('e')
             ->select('e')
             ->where('e.uname = :usr')
-            ->setParameter('usr', $usr)
+            ->setParameter('usr', $user->getId())
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-        $credits = (int)$creditsGold + (int)$creditsSilver + (int)$creditsBronze;
+        $credits = (int)$user->getCreditsGold() + (int)$user->getCreditsSilver() + (int)$user->getCreditsBronze();
 
         return $this->render(':ads:promote.html.twig', array(
             'ads' => $ads,
             'credits' => $credits,
-            'creditsGold' => $creditsGold,
-            'creditsSilver' => $creditsSilver,
-            'creditsBronze' => $creditsBronze,
+            'creditsGold' => $user->getCreditsGold(),
+            'creditsSilver' => $user->getCreditsSilver(),
+            'creditsBronze' => $user->getCreditsBronze(),
         ));
     }
 
