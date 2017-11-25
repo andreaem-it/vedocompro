@@ -18,3 +18,5 @@ parameters:
     amazon.region: eu-west-2
     google_client_id: example
     google_secret: example
+    facebook_client_id: example
+    facebook_secret: example
