@@ -109,6 +109,21 @@ class Ads
     private $showcase;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $goldPromotionEndDate;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $silverPromotionEndDate;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $bronzePromotionEndDate;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $sold;
@@ -664,5 +679,77 @@ class Ads
     public function getObjLevel()
     {
         return $this->objLevel;
+    }
+
+    /**
+     * Set goldPromotionEndDate
+     *
+     * @param \DateTime $goldPromotionEndDate
+     *
+     * @return Ads
+     */
+    public function setGoldPromotionEndDate($goldPromotionEndDate)
+    {
+        $this->goldPromotionEndDate = $goldPromotionEndDate;
+
+        return $this;
+    }
+
+    /**
+     * Get goldPromotionEndDate
+     *
+     * @return \DateTime
+     */
+    public function getGoldPromotionEndDate()
+    {
+        return $this->goldPromotionEndDate;
+    }
+
+    /**
+     * Set silverPromotionEndDate
+     *
+     * @param \DateTime $silverPromotionEndDate
+     *
+     * @return Ads
+     */
+    public function setSilverPromotionEndDate($silverPromotionEndDate)
+    {
+        $this->silverPromotionEndDate = $silverPromotionEndDate;
+
+        return $this;
+    }
+
+    /**
+     * Get silverPromotionEndDate
+     *
+     * @return \DateTime
+     */
+    public function getSilverPromotionEndDate()
+    {
+        return $this->silverPromotionEndDate;
+    }
+
+    /**
+     * Set bronzePromotionEndDate
+     *
+     * @param \DateTime $bronzePromotionEndDate
+     *
+     * @return Ads
+     */
+    public function setBronzePromotionEndDate($bronzePromotionEndDate)
+    {
+        $this->bronzePromotionEndDate = $bronzePromotionEndDate;
+
+        return $this;
+    }
+
+    /**
+     * Get bronzePromotionEndDate
+     *
+     * @return \DateTime
+     */
+    public function getBronzePromotionEndDate()
+    {
+        return $this->bronzePromotionEndDate;
     }
 }

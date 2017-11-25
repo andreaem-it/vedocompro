@@ -24,24 +24,29 @@ class SearchController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $showcase = $this->getDoctrine()
-            ->getRepository('AppBundle:Ads')
-            ->createQueryBuilder('p')
-            ->where("p.showcase = 1")
-            ->andWhere("p.published = 1")
-            ->orderBy("p.creationtime", 'DESC')
-            ->getQuery()
-            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-
-        /** @var QueryBuilder $results */
-        $results = $this->getDoctrine()
+        /** @var QueryBuilder $searchQuery */
+        $searchQuery = $this->getDoctrine()
             ->getRepository('AppBundle:Ads')
             ->createQueryBuilder('p')
             ->andWhere("p.published = 1")
+            ->andWhere("p.showcase = 0")
             ->orderBy("p.creationtime", 'DESC');
 
+        /** @var QueryBuilder $showcaseQuery */
+        $showcaseQuery = $this->getDoctrine()
+            ->getRepository('AppBundle:Ads')
+            ->createQueryBuilder('p')
+            ->andWhere("p.published = 1")
+            ->andWhere("p.showcase = 1")
+            ->orderBy("p.goldPromotionEndDate", 'DESC')
+            ->orderBy("p.silverPromotionEndDate", 'DESC')
+            ->orderBy("p.bronzePromotionEndDate", 'DESC');
+
         if ($request->query->get('categoria') && $request->query->get('categoria') != 0) {
-            $results
+            $searchQuery
+                ->andWhere("p.category = :category")
+                ->setParameter('category', $request->query->get('categoria'));
+            $showcaseQuery
                 ->andWhere("p.category = :category")
                 ->setParameter('category', $request->query->get('categoria'));
 
@@ -52,7 +57,10 @@ class SearchController extends Controller
         }
 
         if ($request->query->get('regione') && $request->query->get('regione') != "Tutta Italia") {
-            $results
+            $searchQuery
+                ->andWhere("p.region = :region")
+                ->setParameter('region', $request->query->get('regione'));
+            $showcaseQuery
                 ->andWhere("p.region = :region")
                 ->setParameter('region', $request->query->get('regione'));
 
@@ -63,7 +71,10 @@ class SearchController extends Controller
         }
 
         if ($request->query->get('q') && $request->query->get('q') != "") {
-            $results
+            $searchQuery
+                ->andWhere("p.name LIKE :q")
+                ->setParameter('q', '%' . $request->query->get('q') . '%');
+            $showcaseQuery
                 ->andWhere("p.name LIKE :q")
                 ->setParameter('q', '%' . $request->query->get('q') . '%');
             $q = $request->query->get('q');
@@ -71,15 +82,20 @@ class SearchController extends Controller
             $q = 'Tutto';
         }
 
-        $results = $results->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        $searchResults = $searchQuery
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        $showcaseResults = $showcaseQuery
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
         return $this->render('search/search.html.twig', [
             'region' => $region,
             'category' => $category,
             'query' => $q,
-            'results' => $results,
+            'results' => $searchResults,
             'search' => $this,
-            'showcase' => $showcase
+            'showcase' => $showcaseResults
         ]);
     }
 
