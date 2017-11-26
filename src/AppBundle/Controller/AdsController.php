@@ -7,6 +7,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\Videos;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -269,33 +270,49 @@ class AdsController extends Controller
             ));
         }  else {
             return $this->redirectToRoute('login');
+        }
     }
-}
+
     /**
-     * @Route("/promuovi", name="promote")
+     * @Route("/promuovi/{id}", name="promote")
      * @Secure(roles="IS_AUTHENTICATED_FULLY")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function promoteAction(Request $request)
+    public function promoteAction(Request $request, $id)
     {
-
         /** @var User $user */
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        $ads = $this->getDoctrine()
-            ->getRepository('AppBundle:Ads')
-            ->createQueryBuilder('e')
-            ->select('e')
-            ->where('e.uname = :usr')
-            ->setParameter('usr', $user->getId())
-            ->getQuery()
-            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        if ($request->getMethod() == 'POST') {
+            $cointype = $request->request->get('cointype');
+            $em = $this->get('doctrine.orm.entity_manager');
+            /** @var Ads $ad */
+            $ad = $em->getRepository('AppBundle:Ads')->find($id);
+            if ($cointype == 'gold') {
+                $date = clone $ad->getGoldPromotionEndDate() ?? new \DateTime();
+                $ad->setGoldPromotionEndDate($date->modify('+3 day'));
+                $user->setCreditsGold($user->getCreditsGold() - 1);
+            } elseif ($cointype == 'silver') {
+                $date = clone $ad->getSilverPromotionEndDate() ?? new \DateTime();
+                $ad->setSilverPromotionEndDate($date->modify('+3 day'));
+                $user->setCreditsSilver($user->getCreditsSilver() - 1);
+            } else {
+                $date = clone $ad->getBronzePromotionEndDate() ?? new \DateTime();
+                $ad->setBronzePromotionEndDate($date->modify('+3 day'));
+                $user->setCreditsBronze($user->getCreditsBronze() - 1);
+            }
+            $ad->setShowcase(1);
+            $em->persist($ad);
+            $em->persist($user);
+            $em->flush();
+            return $this->redirectToRoute('profilo', ['query' => $user->getName()]);
+        }
 
         $credits = (int)$user->getCreditsGold() + (int)$user->getCreditsSilver() + (int)$user->getCreditsBronze();
 
         return $this->render(':ads:promote.html.twig', array(
-            'ads' => $ads,
+            'id' => $id,
             'credits' => $credits,
             'creditsGold' => $user->getCreditsGold(),
             'creditsSilver' => $user->getCreditsSilver(),

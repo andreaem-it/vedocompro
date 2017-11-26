@@ -324,12 +324,12 @@
                                                                 {{ ads[loop.index0].name }}
                                                             </a>
 
-                                                            {% if ad.objLevel == 1 %}
-                                                                <img src="{{ asset('img/coins/coin_gold.png') }}" class="profile_coin" data-toggle="tooltip" data-html="true" data-placement="right" title="<strong>Inserzione Oro </strong><br> Tempo Rimanente: 7 giorni">
-                                                            {% elseif ad.objLevel == 2 %}
-                                                                <img src="{{ asset('img/coins/coin_silver.png') }}" class="profile_coin" data-toggle="tooltip" data-html="true" data-placement="right" title="<strong>Inserzione Argento </strong><br> Tempo Rimanente: 3 Giorni">
-                                                            {% elseif ad.objLevel == 3 %}
-                                                                <img src="{{ asset('img/coins/coin_bronze.png') }}" class="profile_coin" data-toggle="tooltip" data-html="true" data-placement="right" title="<strong>Inserzione Bronzo </strong><br> Tempo Rimanente: 24 Ore">
+                                                            {% if ad.goldPromotionEndDate != null %}
+                                                                <img src="{{ asset('img/coins/coin_gold.png') }}" class="profile_coin" data-toggle="tooltip" data-html="true" data-placement="right" title="<strong>Inserzione Oro </strong><br> Tempo Finale: {{ ad.goldPromotionEndDate|date("d/m/Y H:i:s") }}">
+                                                            {% elseif ad.silverPromotionEndDate != null %}
+                                                                <img src="{{ asset('img/coins/coin_silver.png') }}" class="profile_coin" data-toggle="tooltip" data-html="true" data-placement="right" title="<strong>Inserzione Argento </strong><br> Tempo Finale: {{ ad.silverPromotionEndDate|date("d/m/Y H:i:s") }}">
+                                                            {% elseif ad.bronzePromotionEndDate != null %}
+                                                                <img src="{{ asset('img/coins/coin_bronze.png') }}" class="profile_coin" data-toggle="tooltip" data-html="true" data-placement="right" title="<strong>Inserzione Bronzo </strong><br> Tempo Finale: {{ ad.goldPromotionEndDate|date("d/m/Y H:i:s") }}">
                                                             {% endif %}
                                                         </div>
                                                         <div class="col-2 d-block no-padding ml-auto align-middle d-flex align-items-center" >
@@ -349,7 +349,7 @@
                                                                         Opzioni
                                                                     </button>
                                                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                                        <a class="dropdown-item" href="{{ url('promote') }}"><img class="profile-btn-icon" src="{{ asset('img/icons/icon_promove.png') }}">&nbsp;Promuovi</a>
+                                                                        <a class="dropdown-item" href="{{ url('promote', {'id': ad.id})}}"><img class="profile-btn-icon" src="{{ asset('img/icons/icon_promove.png') }}">&nbsp;Promuovi</a>
                                                                         <div class="dropdown-divider"></div>
                                                                         <a class="dropdown-item" href="{{ url('sold_id', {'uid':user_info.0.name,'aid':ads[loop.index0].id}) }}"><img class="profile-btn-icon" src="{{ asset('img/icons/icon_check.png') }}">&nbsp;Venduto</a>
                                                                         <a class="dropdown-item" id="edit" href="#"><img class="profile-btn-icon" src="{{ asset('img/icons/icon_edit.png') }}">&nbsp;Modifica</a>

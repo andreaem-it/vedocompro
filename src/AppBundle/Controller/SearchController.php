@@ -32,12 +32,25 @@ class SearchController extends Controller
             ->andWhere("p.showcase = 0")
             ->orderBy("p.creationtime", 'DESC');
 
+        /** @var QueryBuilder $qb */
+        $qb = $this->getDoctrine()
+            ->getRepository('AppBundle:Ads')
+            ->createQueryBuilder('p');
+
         /** @var QueryBuilder $showcaseQuery */
         $showcaseQuery = $this->getDoctrine()
             ->getRepository('AppBundle:Ads')
             ->createQueryBuilder('p')
             ->andWhere("p.published = 1")
             ->andWhere("p.showcase = 1")
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->gt('p.goldPromotionEndDate', ':currentdate'),
+                    $qb->expr()->gt('p.silverPromotionEndDate', ':currentdate'),
+                    $qb->expr()->gt('p.bronzePromotionEndDate', ':currentdate')
+                )
+            )
+            ->setParameter('currentdate', new \DateTime())
             ->orderBy("p.goldPromotionEndDate", 'DESC')
             ->orderBy("p.silverPromotionEndDate", 'DESC')
             ->orderBy("p.bronzePromotionEndDate", 'DESC');

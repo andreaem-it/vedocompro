@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\LockHandler;
 
-class ProcessVideoCommandCommand extends ContainerAwareCommand
+class ProcessVideoCommand extends ContainerAwareCommand
 {
     /** @var Logger $logger */
     private $logger;
