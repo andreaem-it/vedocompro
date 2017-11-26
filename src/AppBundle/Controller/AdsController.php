@@ -291,7 +291,7 @@ class AdsController extends Controller
             $ad = $em->getRepository('AppBundle:Ads')->find($id);
             if ($cointype == 'gold') {
                 $date = clone $ad->getGoldPromotionEndDate() ?? new \DateTime();
-                $ad->setGoldPromotionEndDate($date->modify('+3 day'));
+                $ad->setGoldPromotionEndDate($date->modify('+7 day'));
                 $user->setCreditsGold($user->getCreditsGold() - 1);
             } elseif ($cointype == 'silver') {
                 $date = clone $ad->getSilverPromotionEndDate() ?? new \DateTime();
@@ -299,7 +299,7 @@ class AdsController extends Controller
                 $user->setCreditsSilver($user->getCreditsSilver() - 1);
             } else {
                 $date = clone $ad->getBronzePromotionEndDate() ?? new \DateTime();
-                $ad->setBronzePromotionEndDate($date->modify('+3 day'));
+                $ad->setBronzePromotionEndDate($date->modify('+1 day'));
                 $user->setCreditsBronze($user->getCreditsBronze() - 1);
             }
             $ad->setShowcase(1);
