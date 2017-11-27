@@ -5,11 +5,12 @@
     <meta property="og:type" content="product" />
     <meta property="og:title" content="{{ ad_info.0.name }}" />
     <meta property="og:description" content="{{ ad_info.0.description }}" />
-    <meta property="og:image" content="http://www.vedocompro.it/uploads/photos/{{ ad_info.0.id }}-1.jpg" />
+    <meta property="og:image" content="http://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}.jpg" />
+    <meta property="og:image:secure_url" content="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}.jpg" />
     <meta property="og:video:width" content="450"> <!-- player width -->
     <meta property="og:video:height" content="250"> <!-- player height -->
-    <meta property="og:video" content="https://s3.eu-west-2.amazonaws.com/vedocompro-video/{{ ad_info.0.id }}.m4v"> <!-- You will need to echo/print the video source (*.mp4) with server-side code -->
-    <meta property="og:video:secure_url" content="https://s3.eu-west-2.amazonaws.com/vedocompro-video/{{ ad_info.0.id }}.m4v"> <!-- required for users whom use SSL (actually Facebook forces everyone to use SSL so you're required to use og:video:secure_url) so get a one -->
+    <meta property="og:video" content="https://s3.eu-west-2.amazonaws.com/vedocompro/video/{{ ad_info.0.id }}.mp4">
+    <meta property="og:video:secure_url" content="https://s3.eu-west-2.amazonaws.com/vedocompro/video/{{ ad_info.0.id }}.mp4"> <!-- required for users whom use SSL (actually Facebook forces everyone to use SSL so you're required to use og:video:secure_url) so get a one -->
 {% endblock %}
 {% block body %}
 
