@@ -37,8 +37,6 @@ class UploadVideoController extends Controller
         ini_set('memory_limit', '256M');
 
         try {
-
-
             // Undefined | Multiple Files | $_FILES Corruption Attack
             // If this request falls under any of them, treat it invalid.
             if (
@@ -55,6 +53,7 @@ class UploadVideoController extends Controller
                     throw new \RuntimeException('No file sent.');
                     break;
                 case UPLOAD_ERR_INI_SIZE:
+                    throw new \RuntimeException('Exceeded ini file size limit.');
                     break;
                 case UPLOAD_ERR_FORM_SIZE:
                     throw new \RuntimeException('Exceeded filesize limit.');
