@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use Symfony\Component\Filesystem\LockHandler;
 use AppBundle\Entity\Ads;
 use AppBundle\Entity\Videos;
 use Gaufrette\Adapter\AwsS3;
@@ -12,7 +13,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\LockHandler;
 
 class ProcessVideoCommand extends ContainerAwareCommand
 {
@@ -29,17 +29,17 @@ class ProcessVideoCommand extends ContainerAwareCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->logger = $this->getContainer()->get('logger');
+    }
 
-        $lockHandler = new LockHandler('app-process-videos.lock');
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $lockHandler = new LockHandler('app-process-videos.lock', '/tmp/');
         if (!$lockHandler->lock()) {
             $this->logger->info('Process video command already running, so exiting');
 
             exit(0);
         }
-    }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $videos = $em->getRepository('AppBundle:Videos')->findBy(['uploaded' => false]);
         $raw_dir = __DIR__ . "/../../../web/webtemp/rawvideos/";
