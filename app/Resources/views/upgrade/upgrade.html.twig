@@ -24,13 +24,13 @@
 
                         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                             <input type="hidden" name="cmd" value="_s-xclick">
-                            <input type="hidden" name="hosted_button_id" value="7PUP7VGRWDY94">
+                            <input type="hidden" name="business" value="pagamenti@vedocompro.it">
                             <input type="submit" class="btn btn-outline-primary btn-lg btn-block" value="Seleziona" />
                             <img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
                             <input type="hidden" name="noshipping" value="1">
                             <input type="hidden" name="item_name" value="{{bronze.name}}">
                             <input type="hidden" name="item_number" value="{{bronze.id}}:{{ user_id}}">
-                            <input type="hidden" name="amount" value="<?php echo $amount ?>">
+                            <input type="hidden" name="amount" value="3.99">
                             <input type="hidden" name="currency_code" value="EUR">
                             <input type="hidden" name="no_shipping" value="1">
                             <input type="hidden" name="notify_url" value="{{ path("paypalnotify") }}">
@@ -56,13 +56,13 @@
                     <div class="card-footer text-muted">
                         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                             <input type="hidden" name="cmd" value="_s-xclick">
-                            <input type="hidden" name="hosted_button_id" value="CPE4QWVS853CS">
+                            <input type="hidden" name="business" value="pagamenti@vedocompro.it">
                             <input type="submit" class="btn btn-outline-primary btn-lg btn-block" value="Seleziona"/>
                             <img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
                             <input type="hidden" name="noshipping" value="1">
                             <input type="hidden" name="item_name" value="{{silver.name}}">
                             <input type="hidden" name="item_number" value="{{silver.id}}:{{ user_id}}">
-                            <input type="hidden" name="amount" value="<?php echo $amount ?>">
+                            <input type="hidden" name="amount" value="6.99">
                             <input type="hidden" name="currency_code" value="EUR">
                             <input type="hidden" name="no_shipping" value="1">
                             <input type="hidden" name="notify_url" value="{{ path("paypalnotify") }}">
@@ -89,13 +89,13 @@
                     <div class="card-footer text-muted">
                         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                             <input type="hidden" name="cmd" value="_s-xclick">
-                            <input type="hidden" name="hosted_button_id" value="CPE4QWVS853CS">
+                            <input type="hidden" name="business" value="pagamenti@vedocompro.it">
                             <input type="submit" class="btn btn-outline-primary btn-lg btn-block" value="Seleziona"/>
                             <img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
                             <input type="hidden" name="noshipping" value="1">
                             <input type="hidden" name="item_name" value="{{gold.name}}">
                             <input type="hidden" name="item_number" value="{{gold.id}}:{{ user_id}}">
-                            <input type="hidden" name="amount" value="<?php echo $amount ?>">
+                            <input type="hidden" name="amount" value="9.99">
                             <input type="hidden" name="currency_code" value="EUR">
                             <input type="hidden" name="no_shipping" value="1">
                             <input type="hidden" name="notify_url" value="{{ path("paypalnotify") }}">
