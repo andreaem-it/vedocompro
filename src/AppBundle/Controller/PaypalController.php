@@ -53,8 +53,8 @@ class PaypalController extends Controller
             // assegna variabili inviate a variabili locali
             $item_name = $_POST['item_name'];
             if (preg_match('/(\d+)(?::|%3A)(\d+)/', $_POST['item_number'], $matches)) {
-                $item_number = $matches[0];
-                $user_id = $matches[1];
+                $item_number = $matches[1];
+                $user_id = $matches[2];
             } else {
                 $logger->critical('Failed to parse item number and user ID: ' . $_POST['item_number']);
                 return new Response('', 500);
