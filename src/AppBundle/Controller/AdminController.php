@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\AdminActions;
+use AppBundle\Entity\Product;
 use AppBundle\Entity\Videos;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -184,6 +185,31 @@ class AdminController extends Controller
         return $this->render('admin/views/ads.html.twig',array(
             'admin_info' => $this->getAdminInfos(),
             'ads' => $ads,
+            'tools' => $this
+        ));
+    }
+
+    /**
+     * @Route("/admin/payments", name="admin_payments")
+     */
+    public function paymentsAction()
+    {
+        $this->denyAccessUnlessGranted('ROLE_SUPPORT', null, 'Unable to access this page!');
+        $payments = $this->getDoctrine()
+            ->getRepository('AppBundle:Payment')
+            ->createQueryBuilder('p')
+            ->select('p')
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+        foreach($payments as $idx => $payment) {
+            $payments[$idx]['username'] = $this->convertUser($payment['userId'])->getName();
+            $payments[$idx]['productName'] = $this->convertProduct($payment['productId'])->getName();
+        }
+
+        return $this->render('admin/views/payments.html.twig',array(
+            'admin_info' => $this->getAdminInfos(),
+            'payments' => $payments,
             'tools' => $this
         ));
     }
@@ -660,6 +686,7 @@ class AdminController extends Controller
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         return $admin;
     }
+
     public function convertUser($userID)
     {
         /** @var User $user */
@@ -668,6 +695,16 @@ class AdminController extends Controller
             ->find($userID);
         return $user;
     }
+
+    public function convertProduct($productId)
+    {
+        /** @var Product $product */
+        $product = $this->getDoctrine()
+            ->getRepository('AppBundle:Product')
+            ->find($productId);
+        return $product;
+    }
+
     public function convertUID($userID)
     {
         $uname = $this->getDoctrine()

@@ -33,6 +33,7 @@
             <li class="{% if app.request.attributes.get('_route') == 'admin' %}active{% endif %}"><a href="{{ url('admin') }}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
             {% if is_granted('ROLE_MODERATOR') %}
                 <li class="{% if app.request.attributes.get('_route') == 'admin_inserzioni' %}active{% endif %}"><a href="{{ url('admin_inserzioni') }}"><i class="fa fa-shopping-cart"></i> <span>Inserzioni</span></a></li>
+                <li class="{% if app.request.attributes.get('_route') == 'admin_payments' %}active{% endif %}"><a href="{{ url('admin_payments') }}"><i class="fa fa-credit-card"></i> <span>Pagamenti</span></a></li>
                 <li class="{% if app.request.attributes.get('_route') == 'admin_utenti' %}active{% endif %}"><a href="{{ url('admin_utenti') }}"><i class="fa fa-users"></i> <span>Utenti</span></a></li>
                 <li class="{% if app.request.attributes.get('_route') == 'admin_video' %}active{% endif %}"><a href="{{ url('admin_video') }}"><i class="fa fa-video-camera"></i> <span>Video</span></a></li>
                 <li class="{% if app.request.attributes.get('_route') == 'admin_mail' %}active{% endif %}"><a href="{{ url('admin_mail') }}"><i class="fa fa-envelope"></i> <span>Mail</span></a></li>
