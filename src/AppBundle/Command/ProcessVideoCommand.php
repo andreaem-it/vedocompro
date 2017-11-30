@@ -89,6 +89,9 @@ class ProcessVideoCommand extends ContainerAwareCommand
                         $new_image_name = sprintf("%s-%d.jpg", $video->getAid(), $i);
                         $new_image_path = $newphoto_dir . $new_image_name;
                         $seconds = ($size * $i) / 5;
+
+                        if ($seconds == $size) --$seconds;
+
                         if ($seconds > $size) {
                             break;
                         }
