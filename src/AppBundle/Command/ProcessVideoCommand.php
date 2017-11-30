@@ -77,8 +77,12 @@ class ProcessVideoCommand extends ContainerAwareCommand
                     exec($cmd, $output);
                     if (!empty($output[0])) {
                         $size = $output[0];
+                        $this->logger(
+                            sprintf("Duration of video is %d seconds", $size)
+                        );
                     } else {
-                        return false;
+                        $this->logger->critical("Failed to get duration of video");
+                        continue;
                     }
 
                     for ($i = 1; $i <= 5; $i++) {
@@ -105,6 +109,9 @@ class ProcessVideoCommand extends ContainerAwareCommand
                     $video->setUploaded(true);
                     $em->persist($video);
                     $em->flush();
+
+                    unset($size);
+                    unset($output);
                 } catch (\Exception $e) {
                     $this->logger->error(
                         sprintf("Failed to process video for ad ID %d: %s\n",
