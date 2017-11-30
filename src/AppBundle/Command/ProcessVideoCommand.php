@@ -55,10 +55,9 @@ class ProcessVideoCommand extends ContainerAwareCommand
         foreach ($videos as $video) {
             if ($video->getFilename() != "") {
                 try {
+                    // Process videos
                     $new_video_name = $video->getAid() . ".mp4";
                     $new_video_path = $newvideo_dir . $new_video_name;
-                    $new_image_name = $video->getAid() . ".jpg";
-                    $new_image_path = $newphoto_dir . $new_image_name;
                     $cmd = sprintf(
                         'ffmpeg -y -i %s -vf "scale=-2:720:flags=lanczos" -vcodec libx264 -profile:v main -level 3.1 -preset medium -crf 23 -x264-params ref=4 -acodec copy -movflags +faststart %s > /dev/null 2>&1',
                         $raw_dir . $video->getFilename(),
@@ -66,21 +65,41 @@ class ProcessVideoCommand extends ContainerAwareCommand
                     );
                     exec($cmd);
 
-                    // TODO - don't hardcode 4 seconds as if the video is shorter, this won't work
-                    $cmd = sprintf(
-                        'ffmpeg -i %s -an -ss 00:00:04 -r 1 -vframes 1 -f mjpeg -y %s > /dev/null 2>&1',
-                        $raw_dir . $video->getFilename(),
-                        $new_image_path
-                    );
-                    exec($cmd);
-
-                    // Upload to S3
+                    // Upload video to S3
                     $fs_video->write($new_video_name, file_get_contents($new_video_path));
-                    $fs_photo->write($new_image_name, file_get_contents($new_image_path));
+
+                    // Process images
+                    $cmd = sprintf(
+                        "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 %s",
+                        $new_video_path
+                    );
+                    exec($cmd, $output);
+                    if (!empty($output[0])) {
+                        $size = $output[0];
+                    } else {
+                        return false;
+                    }
+
+                    for ($i = 1; $i <= 5; $i++) {
+                        $new_image_name = sprintf("%s-%d.jpg", $video->getAid(), $i);
+                        $new_image_path = $newphoto_dir . $new_image_name;
+                        $seconds = ($size * $i) / 5;
+                        if ($seconds > $size) {
+                            break;
+                        }
+                        $this->logger->debug(sprintf("Getting frame %d from video at %d seconds", $i, $seconds));
+                        $cmd = sprintf(
+                            'ffmpeg -i %s -an -ss %s -r 1 -vframes 1 -f mjpeg -y %s > /dev/null 2>&1',
+                            $raw_dir . $video->getFilename(),
+                            gmdate("H:i:s", $seconds),
+                            $new_image_path
+                        );
+                        exec($cmd);
+                        $fs_photo->write($new_image_name, file_get_contents($new_image_path));
+                    }
 
                     // TODO Delete old file
-
-                    $s3_video_link = "https://s3.eu-west-2.amazonaws.com/vedocompro/video/" . $fs_video->get($new_video_name)->getName();
+                    $s3_video_link = "https://s3.eu-west-2.amazonaws.com/vedocompro/video_test/" . $new_video_name;
                     $video->setFilename($s3_video_link);
                     $video->setUploaded(true);
                     $em->persist($video);

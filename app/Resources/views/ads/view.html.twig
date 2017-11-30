@@ -5,8 +5,8 @@
     <meta property="og:type" content="product" />
     <meta property="og:title" content="{{ ad_info.0.name }}" />
     <meta property="og:description" content="{{ ad_info.0.description }}" />
-    <meta property="og:image" content="http://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}.jpg" />
-    <meta property="og:image:secure_url" content="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}.jpg" />
+    <meta property="og:image" content="http://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}-1.jpg" />
+    <meta property="og:image:secure_url" content="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}-1.jpg" />
     <meta property="og:video:width" content="450"> <!-- player width -->
     <meta property="og:video:height" content="250"> <!-- player height -->
     <meta property="og:video" content="https://s3.eu-west-2.amazonaws.com/vedocompro/video/{{ ad_info.0.id }}.mp4">
@@ -43,7 +43,7 @@
       <div class="modal-body modal-video">
           <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
               <ol class="carousel-indicators">
-                  {% for photo in photos %}
+                  {% for i in range(1,5) %}
                       {% if loop.first %}
                           <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}" class="active"></li>
                       {% else %}
@@ -51,14 +51,14 @@
                       {% endif %}
                   {% endfor %}
               </ol>
-                {% for photo in photos %}
+              {% for i in range(1,5) %}
                     {% if loop.first %}
                         <div class="carousel-item active">
-                            <img class="img-fluid" style="max-height:400px" src="/uploads/photos/{{ photo }}">
+                            <img class="img-fluid" style="max-height:400px" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}-{{ i }}.jpg">
                         </div>
                     {% else %}
                         <div class="carousel-item">
-                            <img class="img-fluid" style="max-height:400px" src="/uploads/photos/{{ photo }}">
+                            <img class="img-fluid" style="max-height:400px" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}-{{ i }}.jpg">
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -78,7 +78,7 @@
 </div>
 {% include 'template/header.html.twig' %}
 <div class="wrapper">
-    <div class="container-fluid scrollbar"">
+    <div class="container-fluid scrollbar">
 
         <div class="row">
             <div class="col-sm-12">
@@ -95,14 +95,14 @@
                     {% if video.accepted == 1 %}<div id="video"></div>{% endif %}
                     <br class="hidden-md-up">
                     <div class="row no-gutters">
-                        {% for photo in photos %}
+                        {% for i in range(1,5) %}
                             {% if loop.length == 1 %}
                                 <div class="col">
-                                    <a href="" data-toggle="modal" data-target="#video-modal"><img style="max-width:120px" class="img-responsive img-thumbnail" src="/uploads/photos/{{ photo }}"/></a>
+                                    <a href="" data-toggle="modal" data-target="#video-modal"><img style="max-width:120px" class="img-responsive img-thumbnail" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}-{{ i }}.jpg"/></a>
                                 </div>
                             {% else %}
                                 <div class="col" style="margin-top:5px;{% if loop.last %}{% else %}margin-right:5px{% endif %}">
-                                    <a href="" data-toggle="modal" data-target="#video-modal"><img class="img-responsive img-thumbnail" src="/uploads/photos/{{ photo }}"/></a>
+                                    <a href="" data-toggle="modal" data-target="#video-modal"><img class="img-responsive img-thumbnail" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}-{{ i }}.jpg"/></a>
                                 </div>
                             {% endif %}
                         {% endfor %}

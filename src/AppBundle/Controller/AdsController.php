@@ -151,17 +151,6 @@ class AdsController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-
-            $finder = new Finder();
-            $finder->files()
-                ->name($item . '-*.jpg')
-                ->in(__DIR__ . '/../../../web/uploads/photos/');
-
-            $photos = array();
-            foreach ($finder as $file) {
-                $photos[] = $file->getRelativePathname();
-            }
-
             $similar = $this->getDoctrine()
                 ->getRepository('AppBundle:Ads')
                 ->createQueryBuilder('e')
@@ -176,7 +165,6 @@ class AdsController extends Controller
             return $this->render('ads/view.html.twig', [
                 'ad_info' => $ad,
                 'video' => $video,
-                'photos' => $photos,
                 'ad_category' => $category,
                 'user_info' => $seller,
                 'feed_percent' => $feedPercent ?? 0,
