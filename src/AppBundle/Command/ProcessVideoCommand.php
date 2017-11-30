@@ -100,7 +100,7 @@ class ProcessVideoCommand extends ContainerAwareCommand
                     }
 
                     // TODO Delete old file
-                    $s3_video_link = "https://s3.eu-west-2.amazonaws.com/vedocompro/video_test/" . $new_video_name;
+                    $s3_video_link = "https://s3.eu-west-2.amazonaws.com/vedocompro/video/" . $new_video_name;
                     $video->setFilename($s3_video_link);
                     $video->setUploaded(true);
                     $em->persist($video);
