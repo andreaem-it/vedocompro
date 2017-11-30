@@ -84,6 +84,7 @@ class PaypalController extends Controller
                 $payment->setPaymentConcurrency($payment_currency);
                 $payment->setPaymentStatus($payment_status);
                 $payment->setPaymentEmail($payer_email);
+                $payment->setTimestamp(new \DateTime());
                 $em->persist($payment);
 
                 $userRepo = $em->getRepository('AppBundle:User');

@@ -33,6 +33,7 @@
                                 <th>Payment Concurrency</th>
                                 <th>Payment Status</th>
                                 <th>Payment Email</th>
+                                <th>Payment Time</th>
                             </tr>
                             {% for payment in payments %}
                                 <tr>
@@ -44,6 +45,7 @@
                                     <td>{{ payment.paymentConcurrency }}</td>
                                     <td>{{ payment.paymentStatus }}</td>
                                     <td>{{ payment.paymentEmail }}</td>
+                                    <td>{{ payment.timestamp|date('Y-m-d H:i:s') }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>

@@ -63,6 +63,11 @@ class Payment
     private $paymentEmail;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $timestamp;
+
+    /**
      * Get id
      *
      * @return integer
@@ -238,5 +243,29 @@ class Payment
     public function getPaymentEmail()
     {
         return $this->paymentEmail;
+    }
+
+    /**
+     * Set timestamp
+     *
+     * @param \DateTime $timestamp
+     *
+     * @return Payment
+     */
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get timestamp
+     *
+     * @return \DateTime
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
     }
 }
