@@ -77,7 +77,7 @@ class ProcessVideoCommand extends ContainerAwareCommand
                     exec($cmd, $output);
                     if (!empty($output[0])) {
                         $size = $output[0];
-                        $this->logger(
+                        $this->logger->info(
                             sprintf("Duration of video is %d seconds", $size)
                         );
                     } else {
