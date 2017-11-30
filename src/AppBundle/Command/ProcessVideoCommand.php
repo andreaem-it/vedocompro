@@ -54,6 +54,7 @@ class ProcessVideoCommand extends ContainerAwareCommand
         /** @var Videos $video */
         foreach ($videos as $video) {
             if ($video->getFilename() != "") {
+                $this->logger->info("Processing video ID: " . $video->getId());
                 try {
                     // Process videos
                     $new_video_name = $video->getAid() . ".mp4";
