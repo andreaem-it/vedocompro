@@ -50,6 +50,7 @@
                                     <li class="list-group-item"><strong>Creato il:</strong>&nbsp;{{ ad.0.creationtime|date ('d-m-Y H:m') }}</li>
                                     <li class="list-group-item"><strong>Ultimo aggiornamento:</strong>&nbsp;{{ ad.0.updatetime|date ('d-m-Y H:m') }}</li>
                                     <li class="list-group-item"><strong>Stato:</strong>&nbsp;{% if ad.0.published == 0 %}<img src="{{ asset('img/circle-red.png') }}">&nbsp;<a href="{{ url("admin_ad_activate",{'adID':ad.0.id}) }}" class="float-right btn btn-success">Approva</a>{% else %}<img src="{{ asset('img/circle-green.png') }}"> <a href="{{ url("admin_ad_deactivate",{'adID':ad.0.id}) }}" class="float-right btn btn-warning">Boccia</a>{% endif %}</li>
+                                    <li class="list-group-item"><strong>Elimina:</strong>&nbsp;<a href="{{ url("admin_ad_delete",{'id':ad.0.id}) }}" class="float-right btn btn-success">Elimina</a></li>
                                 </ul>
                             </div>
                         </div>

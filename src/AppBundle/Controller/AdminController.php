@@ -369,6 +369,34 @@ class AdminController extends Controller
     }
 
     /**
+     * @Route("/admin/ad/delete/{id}", name="admin_ad_delete")
+     */
+    public function adDeleteAction($id)
+    {
+        $this->denyAccessUnlessGranted('ROLE_SUPPORT', null, 'Unable to access this page!');
+
+        $em = $this->getDoctrine()->getManager();
+        $ad = $em->getRepository('AppBundle:Ads')->find($id);
+        if ($ad) $em->remove($ad);
+        $video = $em->getRepository('AppBundle:Videos')->findOneBy(['aid' => $id]);
+        if ($video) $em->remove($video);
+        $em->flush();
+
+        $now = $time = new \DateTime();
+
+        $action = new AdminActions();
+        $action->setLinedate($now);
+        $action->setType(11);
+        $action->setUid($this->get('security.token_storage')->getToken()->getUser()->getID());
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($action);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_inserzioni');
+    }
+
+    /**
      * @Route("/admin/ad/activate/{adID}", name="admin_ad_activate")
      */
     public function adActivateAction($adID)

@@ -353,7 +353,7 @@
                                                                         <div class="dropdown-divider"></div>
                                                                         <a class="dropdown-item" href="{{ url('sold_id', {'uid':user_info.0.name,'aid':ads[loop.index0].id}) }}"><img class="profile-btn-icon" src="{{ asset('img/icons/icon_check.png') }}">&nbsp;Venduto</a>
                                                                         <a class="dropdown-item" id="edit" href="#"><img class="profile-btn-icon" src="{{ asset('img/icons/icon_edit.png') }}">&nbsp;Modifica</a>
-                                                                        <a class="dropdown-item" id="delete-{{ ad.id }}"><img class="profile-btn-icon" src="{{ asset('img/icons/icon_delete.png') }}">&nbsp;Elimina</a>
+                                                                        <a class="dropdown-item" id="delete-{{ ad.id }}" href="{{ url("user_delete_ad", {'id': ad.id}) }}"><img class="profile-btn-icon" src="{{ asset('img/icons/icon_delete.png') }}">&nbsp;Elimina</a>
                                                                     </div>
                                                                 </div>
                                                             </div>

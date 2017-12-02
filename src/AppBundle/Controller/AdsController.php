@@ -309,6 +309,31 @@ class AdsController extends Controller
     }
 
     /**
+     * @Route("/delete/{id}", name="user_delete_ad")
+     * @Secure(roles="IS_AUTHENTICATED_FULLY")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function userDeleteAdAction(Request $request, $id)
+    {
+        /** @var User $user */
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var Ads $ad */
+        $ad = $em->getRepository('AppBundle:Ads')->find($id);
+
+        if ($user->getId() == $ad->getUname()) {
+            $ad = $em->getRepository('AppBundle:Ads')->find($id);
+            if ($ad) $em->remove($ad);
+            $video = $em->getRepository('AppBundle:Videos')->findOneBy(['aid' => $id]);
+            if ($video) $em->remove($video);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('profilo', ['query' => $user->getName()]);
+    }
+
+    /**
      * @Route("/acquisto/{package}", name="buy_now")
      * @Secure(roles="IS_AUTHENTICATED_FULLY")
      * @return \Symfony\Component\HttpFoundation\Response
