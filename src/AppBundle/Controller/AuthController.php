@@ -90,7 +90,7 @@ class AuthController extends Controller
 
             $user->setUsername($form->get('name')->getData());
 
-            $user->setConfirmationToken('');
+            $user->setConfirmationToken(null);
             $user->setPasswordRequestedAt($now);
             $user->setPlainPassword('');
 
