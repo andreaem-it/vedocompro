@@ -2,14 +2,29 @@
 namespace AppBundle\Security\Core\User;
 
 use AppBundle\Entity\User;
+use FOS\UserBundle\Model\UserManagerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
+use HWI\Bundle\OAuthBundle\Security\Core\Exception\AccountNotLinkedException;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 
 
 // Source: https://gist.github.com/danvbe/4476697
 
 class FOSUBUserProvider extends BaseClass {
+
+    private $session;
+
+    public function __construct(Session $session, UserManagerInterface $userManager, array $properties)
+    {
+        $this->session = $session;
+        parent::__construct($userManager, $properties);
+    }
 
     public function connect(UserInterface $user, UserResponseInterface $response) {
         $property = $this->getProperty($response);
@@ -51,29 +66,10 @@ class FOSUBUserProvider extends BaseClass {
 
         // If the user is new
         if (null === $user) {
-
-            // create new user here
-            $user = $this->userManager->createUser();
-            $user->$setter_id($username);
-            $user->$setter_token($response->getAccessToken());
-
-            //I have set all requested data with the user's username
-            //modify here with relevant data
-            $user->setUsername($email);
-            $user->setEmail($email);
-            $user->setRealname($realname);
-            $user->setName($user->getUsername());
-            $user->setPassword($username);
-            $user->setEnabled(true);
-            $user->setDatejoin(new \DateTime());
-            $user->setAddress("");
-            $user->setCap("");
-            $user->setCity("");
-            $code = uniqid('AUTH-',TRUE);
-            $user->setCode($code);
-            $user->setPlainPassword('');
-            $this->userManager->updateUser($user);
-            return $user;
+            $this->session->set( 'oauth.resource', $response->getResourceOwner()->getName() );
+            $this->session->set( 'oauth.email', $email );
+            $this->session->set( 'oauth.realname', $realname );
+            throw new AccountNotLinkedException();
         }
 
         $user->$setter_id($username);
@@ -97,4 +93,18 @@ class FOSUBUserProvider extends BaseClass {
 
         return $username. "_" . $serviceName;
     }
+}
+
+class OAuthFailureHandler implements AuthenticationFailureHandlerInterface {
+
+    public function onAuthenticationFailure( Request $request, AuthenticationException $exception) {
+
+        if ( !$exception instanceof AccountNotLinkedException ) {
+            throw $exception;
+        }
+
+        return new RedirectResponse( '/registrati' );
+
+    }
+
 }

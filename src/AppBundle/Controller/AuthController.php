@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\OAuthUserType;
 use AppBundle\Form\UserType;
 use AppBundle\Form\PasswordResetType;
 use AppBundle\Entity\User;
@@ -28,98 +29,133 @@ class AuthController extends Controller
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-    
+
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        
+
         return $this->render('auth/login.html.twig', array(
             'last_username' => $lastUsername,
-            'error'         => $error,
+            'error' => $error,
         ));
     }
-    
+
     /**
      * @Route("logout/", name="logout")
      */
     public function logoutAction(Request $request)
     {
         $session = $request->getSession();
-    
+
         // get the login error if there is one
         $error = $session->get(SecurityContextInterface::AUTHENTICATION_ERROR);
         $session->remove(SecurityContextInterface::AUTHENTICATION_ERROR);
-    
+
         return array(
             // last username entered by the user
             'last_username' => $session->get(SecurityContextInterface::LAST_USERNAME),
-            'error'         => $error,
+            'error' => $error,
         );
     }
+
     /**
      * @Route("registrati/", name="registrati")
      */
     public function registerAction(Request $request)
     {
+        $session = $request->getSession();
+
+        $resource = $session->get('oauth.resource');
+        $realname = $session->get('oauth.realname');
+        $email = $session->get('oauth.email');
+
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $user->setUsername($email);
+        $user->setEmail($email);
+        $user->setRealname($realname);
+        $user->setName($email);
+        if (in_array($resource, ['google', 'facebook'])) {
+            $form = $this->createForm(OAuthUserType::class, $user);
+            $user->setEnabled(true);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $session->remove('oauth.resource');
+                $session->remove('oauth.realname');
+                $session->remove('oauth.email');
+                $user->setPassword("");
+                $now = new \DateTime();
+                $user->setDatejoin($now);
+                $address = $form->get('address')->getData() . ' - ' . $form->get('cap')->getData() . ' - ' . $form->get('city')->getData();
+                $user->setAddress($address);
+                $user->setPoints('0');
+                $user->setCreditsGold(0);
+                $user->setCreditsSilver(0);
+                $user->setCreditsBronze(0);
+                $user->setRoles(["ROLE_USER"]);
+                $user->setConfirmationToken(null);
+                $user->setPasswordRequestedAt($now);
+                $user->setPlainPassword('');
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+                $code = uniqid('AUTH-', TRUE);
+                $user->setCode($code);
 
-            $password = $this->get('security.password_encoder')
-                ->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
 
-            $now = new \DateTime();
+                $this->createDummyProfileImage($user->getId());
 
-            $user->setDatejoin($now);
-
+                return $this->render('auth/register.success.html.twig', ['oauth' => true]);
+            }
+        } else {
+            $form = $this->createForm(UserType::class, $user);
             $user->setEnabled(false);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            $address = $form->get('address')->getData() . ' - ' . $form->get('cap')->getData() . ' - ' . $form->get('city')->getData() ;
+                $password = $this->get('security.password_encoder')
+                    ->encodePassword($user, $user->getPassword());
+                $user->setPassword($password);
 
-            $user->setAddress($address);
+                $now = new \DateTime();
+                $user->setDatejoin($now);
+                $address = $form->get('address')->getData() . ' - ' . $form->get('cap')->getData() . ' - ' . $form->get('city')->getData();
+                $user->setAddress($address);
+                $user->setPoints('0');
+                $user->setCreditsGold(0);
+                $user->setCreditsSilver(0);
+                $user->setCreditsBronze(0);
+                $user->setRoles(["ROLE_USER"]);
+                $user->setUsername($form->get('name')->getData());
+                $user->setConfirmationToken(null);
+                $user->setPasswordRequestedAt($now);
+                $user->setPlainPassword('');
 
-            $user->setPoints('0');
+                $code = uniqid('AUTH-', TRUE);
+                $user->setCode($code);
 
-            $user->setCreditsGold(0);
-            $user->setCreditsSilver(0);
-            $user->setCreditsBronze(0);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
 
-            $user->setRoles(["ROLE_USER"]);
+                $this->createDummyProfileImage($user->getId());
 
-            $user->setUsername($form->get('name')->getData());
+                $userEmail = $form->get('email')->getData();
 
-            $user->setConfirmationToken(null);
-            $user->setPasswordRequestedAt($now);
-            $user->setPlainPassword('');
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('Benvenuto in VedoCompro.it')
+                    ->setFrom('noreply@vedocompro.it')
+                    ->setTo($userEmail)
+                    ->setBody(
+                        $this->renderView(
+                            'Emails/registration.html.twig',
+                            array('name' => $form->get('name')->getData(), 'code' => $code)
+                        ),
+                        'text/html'
+                    );
+                $this->get('mailer')->send($message);
 
-            $code = uniqid('AUTH-',TRUE);
-            $user->setCode($code);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
-            $this->createDummyProfileImage($user->getId());
-            
-            $userEmail = $form->get('email')->getData();
-
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Benvenuto in VedoCompro.it')
-                ->setFrom('noreply@vedocompro.it')
-                ->setTo($userEmail)
-                ->setBody(
-                    $this->renderView(
-                        'Emails/registration.html.twig',
-                        array('name' => $form->get('name')->getData(),'code' =>$code)
-                    ),
-                    'text/html'
-                )
-            ;
-            $this->get('mailer')->send($message);
-
-            return $this->redirectToRoute('registrato');
+                return $this->redirectToRoute('registrato');
+            }
         }
 
         return $this->render(
@@ -128,8 +164,9 @@ class AuthController extends Controller
         );
     }
 
-    public function CreateDummyProfileImage($uid) {
-        $res = copy($_SERVER['DOCUMENT_ROOT'] ."/uploads/default_upic.jpg", $_SERVER['DOCUMENT_ROOT'] ."/uploads/profile/".$uid.".jpg");
+    public function CreateDummyProfileImage($uid)
+    {
+        $res = copy($_SERVER['DOCUMENT_ROOT'] . "/uploads/default_upic.jpg", $_SERVER['DOCUMENT_ROOT'] . "/uploads/profile/" . $uid . ".jpg");
         return $res;
     }
 
@@ -184,33 +221,36 @@ class AuthController extends Controller
      * @Route("reset-password/", name="reset-password")
      * @return Response
      */
-    public function resetPasswordAction(Request $request) {
+    public function resetPasswordAction(Request $request)
+    {
 
         $user = new User();
 
         $resetForm = $this->createFormBuilder($user)
-                     ->add('email',EmailType::class, [
-                         'label' => 'E-Mail'
-                     ])
-                     ->add('submit',SubmitType::class,[
-                         'label' => 'Ripristina',
-                         'attr' => [
-                             'class' => 'btn btn-primary btn-block btn-lg'
-                         ]
-                     ])
-                     ->getForm();
+            ->add('email', EmailType::class, [
+                'label' => 'E-Mail'
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Ripristina',
+                'attr' => [
+                    'class' => 'btn btn-primary btn-block btn-lg'
+                ]
+            ])
+            ->getForm();
 
         $resetForm->submit($request->request->all(), false);
 
-        if($_POST) { $mail = $_POST['form']['email']; }
+        if ($_POST) {
+            $mail = $_POST['form']['email'];
+        }
 
-        if($resetForm->isSubmitted() && $_POST) {
+        if ($resetForm->isSubmitted() && $_POST) {
 
             // && $this->captchaverify($request->get('g-recaptcha-response'))
 
-            $check = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(['email' =>$mail]);
+            $check = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(['email' => $mail]);
 
-            if($check) {
+            if ($check) {
                 $token = uniqid('RESET-', true);
 
                 $em = $this->getDoctrine()->getManager();
@@ -227,21 +267,20 @@ class AuthController extends Controller
                     ->setBody(
                         $this->renderView(
                             'Emails/pass.reset.html.twig',
-                            array('name' => $mail,'code' =>$token)
+                            array('name' => $mail, 'code' => $token)
                         ),
                         'text/html'
-                    )
-                ;
+                    );
                 $this->get('mailer')->send($message);
 
-                return $this->render('auth/reset.sended.html.twig',[
+                return $this->render('auth/reset.sended.html.twig', [
                     'mail' => $mail,
                     'token' => $token
                 ]);
             }
         }
 
-        return $this->render('auth/reset.html.twig',[
+        return $this->render('auth/reset.html.twig', [
             'error' => '',
             'form_reset' => $resetForm->createView()
         ]);
@@ -250,20 +289,21 @@ class AuthController extends Controller
     /**
      * @Route("reset-password/{token}", name="reset-password-new")
      */
-    public function resetPasswordNewAction(Request $request,$token) {
+    public function resetPasswordNewAction(Request $request, $token)
+    {
 
         $user = new User();
         $check = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findOneBy(['confirmation_token' => $token]);
 
-        if($token == $check->getConfirmationToken()) {
+        if ($token == $check->getConfirmationToken()) {
             $form = $this->createFormBuilder($user)
-                ->add('plainPassword',PasswordType::class,[
+                ->add('plainPassword', PasswordType::class, [
                     'label' => 'Nuova Password'
                 ])
                 ->add('rePassword', PasswordType::class, [
                     'label' => 'Reinserisci Password'
                 ])
-                ->add('submit',SubmitType::class, [
+                ->add('submit', SubmitType::class, [
                     'label' => 'Ripristina',
                     'attr' => [
                         'class' => 'btn btn-primary btn-block btn-lg'
@@ -274,26 +314,26 @@ class AuthController extends Controller
             $form->submit($request->request->all(), false);
 
             //if ($form->isValid()) {
-                if ($_POST) {
-                    $user->setConfirmationToken(null);
-                    $user->setPasswordRequestedAt(null);
-                    $plainPassword = $_POST['form']['plainPassword'];
-                    $encoder = $this->get('security.encoder_factory')->getEncoder($user);
-                    $encodedPassword = $encoder->encodePassword($user,$plainPassword);
-                    $user->setPassword($encodedPassword);
-                    $em = $this->getDoctrine()->getManager();
-                    $em->flush();
+            if ($_POST) {
+                $user->setConfirmationToken(null);
+                $user->setPasswordRequestedAt(null);
+                $plainPassword = $_POST['form']['plainPassword'];
+                $encoder = $this->get('security.encoder_factory')->getEncoder($user);
+                $encodedPassword = $encoder->encodePassword($user, $plainPassword);
+                $user->setPassword($encodedPassword);
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
 
-                    return $this->render('auth/reset.success.html.twig');
-                }
+                return $this->render('auth/reset.success.html.twig');
+            }
             //}
 
-            return $this->render('auth/reset.new.html.twig',[
+            return $this->render('auth/reset.new.html.twig', [
                 'error' => '',
                 'form' => $form->createView()
             ]);
         } else {
-            $this->addFlash('string','Il token non è corretto, si prega di seguire il link nella mail');
+            $this->addFlash('string', 'Il token non è corretto, si prega di seguire il link nella mail');
             return $this->render('default/error.html.twig', [
                 'error_title' => 'Token non corretto',
                 'error_body' => 'Il token non è corretto, si prega di seguire il link nella mail'
@@ -301,18 +341,18 @@ class AuthController extends Controller
         }
 
 
-
-
     }
 
     /**
      * @Route("reset-password/conferma", name="reset-password-confirm")
      */
-    public function resetPasswordConfirmAction() {
+    public function resetPasswordConfirmAction()
+    {
         return $this->render('auth/reset.success.html.twig');
     }
 
-    function captchaverify($recaptcha){
+    function captchaverify($recaptcha)
+    {
         $url = "https://www.google.com/recaptcha/api/siteverify";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -320,7 +360,7 @@ class AuthController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, array(
-            "secret"=>"6LeTXQgUAAAAALExcpzgCxWdnWjJcPDoMfK3oKGi","response"=>$recaptcha));
+            "secret" => "6LeTXQgUAAAAALExcpzgCxWdnWjJcPDoMfK3oKGi", "response" => $recaptcha));
         $response = curl_exec($ch);
         curl_close($ch);
         $data = json_decode($response);

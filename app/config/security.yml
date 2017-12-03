@@ -56,7 +56,7 @@ security:
                 # Inject a service that will be created in the step #6
                 oauth_user_provider:
                     service: app.fos_user.oauth_provider
-
+                failure_handler:     app.oauthfailurehandler
         admin:
             pattern:    ^/admin
             http_basic: ~

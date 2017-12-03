@@ -24,9 +24,13 @@ services:
         # Change the class according to the location of the FOSUBUserProvider class
         class: AppBundle\Security\Core\User\FOSUBUserProvider
         arguments:
+            session: "@session"
             # Inject as first argument the user_manager of FOSUserBundle
             user_manager: "@fos_user.user_manager"
             # An object/array with the registered Social Media from config.yml
             user_response:
                 facebook: facebook_id
                 google: google_id
+    app.oauthfailurehandler:
+        class: AppBundle\Security\Core\User\OAuthFailureHandler
+        arguments: ["@security.http_utils", {}, "@service_container"]

@@ -12,6 +12,7 @@
                       <h2>Registrati</h2>
                       <br>
                         <div class="row">
+                            {% if form.name is defined %}
                             <div class="col-sm-6">
                                 <h5>Dati Utente</h5>
                                 {{ form_row(form.name) }}
@@ -20,6 +21,7 @@
                                 {{ form_row(form.password.first) }}
                                 {{ form_row(form.password.second) }}
                             </div>
+                            {% endif %}
                             <div class="col-sm-6">
                                 <h5>Dati Personali</h5>
                                 {{ form_row(form.realname) }}
