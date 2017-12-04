@@ -57,7 +57,7 @@ class FOSUBUserProvider extends BaseClass {
         $email = $response->getEmail() ? $response->getEmail() : $username;
         $realname = $response->getRealName();
         /** @var User $user */
-        $user = $this->userManager->findUserByUsername($email);
+        $user = $this->userManager->findUserByUsernameOrEmail($email);
 
         $service = $response->getResourceOwner()->getName();
         $setter = 'set' . ucfirst($service);
