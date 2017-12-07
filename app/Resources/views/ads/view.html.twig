@@ -206,7 +206,7 @@
                                                     <div class="card result-card">
                                                         {% endif %}
                                                         {% set category = (ads.slugify(ads.convertCategory(similars.category))) %}
-                                                        <a href="{{ url('vedi_oggetto', {'category': category, 'item': similars.id, 'title': ads.slugify(similars.name) }) }}"><img class="card-img-top img-fluid" src="/uploads/photos/{{ similars.id }}-1.jpg"></a>
+                                                        <a href="{{ url('vedi_oggetto', {'category': category, 'item': similars.id, 'title': ads.slugify(similars.name) }) }}"><img class="card-img-top img-fluid" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ similars.id }}-1.jpg"></a>
                                                         <div class="card-block">
                                                             <h6 class="card-title" style="font-size:14px"><a href="">{{ similars.name }}</a></h6>
                                                             <p class="card-text"><strong>{{ similars.price }}&nbsp;€</strong></p>
