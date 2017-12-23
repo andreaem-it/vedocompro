@@ -99,7 +99,7 @@ class User extends BaseUser
     private $credits_bronze = 0;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $plainPassword;
 
