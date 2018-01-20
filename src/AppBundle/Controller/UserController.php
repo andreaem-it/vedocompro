@@ -19,6 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use JMS\SecurityExtraBundle\Annotation\Secure;
+
 
 class UserController extends Controller
 {
@@ -33,19 +35,19 @@ class UserController extends Controller
 
         $usr = $this->get('security.token_storage')->getToken()->getUser();
 
-        $uid = $this->getDoctrine()
-            ->getRepository('AppBundle:Ads')
-            ->createQueryBuilder('e')
-            ->select('e')
-            ->getQuery()
-            ->getResult(Query::HYDRATE_ARRAY);
-
-        $categories = $this->getDoctrine()
-            ->getRepository('AppBundle:Category')
-            ->createQueryBuilder('e')
-            ->select('e')
-            ->getQuery()
-            ->getResult(Query::HYDRATE_ARRAY);
+//        $uid = $this->getDoctrine()
+//            ->getRepository('AppBundle:Ads')
+//            ->createQueryBuilder('e')
+//            ->select('e')
+//            ->getQuery()
+//            ->getResult(Query::HYDRATE_ARRAY);
+//
+//        $categories = $this->getDoctrine()
+//            ->getRepository('AppBundle:Category')
+//            ->createQueryBuilder('e')
+//            ->select('e')
+//            ->getQuery()
+//            ->getResult(Query::HYDRATE_ARRAY);
 
         $sells = $this->getDoctrine()
             ->getRepository('AppBundle:Sells')
@@ -188,11 +190,9 @@ class UserController extends Controller
         $usr= $this->get('security.token_storage')->getToken()->getUser();
         $usr->getId();
 
-        $messages = new Messages();
-
-        if ($message[0]['toUID'] == $usr->getId()) {
+        if (isset($message[0]) && $message[0]['toUID'] == $usr->getId()) {
             if ($message[0]['isRead'] == '0') {
-                $em = $this->getDoctrine()->getEntityManager();
+                $em = $this->getDoctrine()->getManager();
                 $conn = $em->getConnection();
                 $query=("UPDATE `messages` SET `is_read` = '1' WHERE `messages`.`id` = :mid;");
                 $stmt = $conn->prepare($query);
@@ -202,7 +202,7 @@ class UserController extends Controller
             return $this->render('profile/message.html.twig',
                 array('message' => $message,
                       'user' => $this));
-        } elseif ($message[0]['fromUID'] == $usr->getId()) {
+        } elseif (isset($message[0]) && $message[0]['fromUID'] == $usr->getId()) {
             return $this->render('profile/message.html.twig',
                 array('message' => $message,
                     'user' => $this));
@@ -210,40 +210,108 @@ class UserController extends Controller
     }
 
     /**
+     * @Route("messagi/nuovo", name="nuovo_message")
+     * @Secure(roles="IS_AUTHENTICATED_FULLY")
      */
-    public function sendMessageForm(Request $request)
+    public function NuovoMessageAction(Request $request)
     {
-        $entity = new Messages();
-
-        $form = $this->createFormBuilder($entity)
-            ->add('message', TextareaType::class, array('label'=> 'Messaggio', 'attr' => array('class' => 'form-control','width' => '100%', 'rows' => '15')))
-            ->add('fromUID', HiddenType::class, '')
-            ->add('toUID', HiddenType::class,'')
-            ->add('object', HiddenType::class, '')
-            ->add('submit',SubmitType::class, array('label' => 'Search','attr' => array('class' => 'btn-success')))
-            ->getForm();
-
-        if($form->isSubmitted && $form->isValid)
-        {
-            $now = date("d-m-Y h:m:s");
-            $usr= $this->get('security.token_storage')->getToken()->getUser();
-
-            $entity->setDatetime($now);
-            $entity->setFromUID($usr);
-            $entity->setIsRead('0');
-            $entity->setObject('');
-            $entity->setToUID('');
-            $entity->setMessage($request['message']);
-
-
+        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            $em = $this->getDoctrine()->getManager();
+            $message = new Messages();
+            $message->setFromUID($this->getUser()->getID());
+            $toUser = $em->getRepository('AppBundle:User')->findOneBy(['id' => $request->get('to')]);
+            $message->setMessage($request->request->get('message'));
+            $message->setToUID($toUser->getId());
+            $message->setObject(-1);
+            $message->setDatetime(new \DateTime());
+            $message->setIsRead(0);
+            $em->persist($message);
+            $em->flush();
+            return $this->redirectToRoute('profilo', ['query' => $toUser->getUsername()]);
+        }  else {
+            return $this->redirectToRoute('login');
         }
-
-        return $this->render(
-            ':profile:form.message.html.twig',
-            array(
-                'form' => $form->createView()
-            ));
     }
+
+    /**
+     * @Route("messagi/set_read", name="message_set_read")
+     * @Secure(roles="IS_AUTHENTICATED_FULLY")
+     */
+    public function SetMessagesRead(Request $request)
+    {
+        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            $this->setMessagesReadStatus($request->get('ids'), 1);
+            return new Response("OK");
+        }  else {
+            return $this->redirectToRoute('login');
+        }
+    }
+
+    /**
+     * @Route("messagi/set_non_read", name="message_set_non_read")
+     * @Secure(roles="IS_AUTHENTICATED_FULLY")
+     */
+    public function SetMessagesUnRead(Request $request)
+    {
+        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            $this->setMessagesReadStatus($request->get('ids'), 0);
+            return new Response("OK");
+        }  else {
+            return $this->redirectToRoute('login');
+        }
+    }
+
+    private function setMessagesReadStatus($ids, $status)
+    {
+        $ids = explode(',', $ids);
+        $em = $this->getDoctrine()->getManager();
+        $messageRepo = $em->getRepository('AppBundle:Messages');
+        foreach($ids as $id) {
+            $message = $messageRepo->find($id);
+            if ($message) {
+                $message->setIsRead($status);
+                $em->persist($message);
+            }
+        }
+        $em->flush();
+    }
+
+//    /**
+//     * @Route("profilo/messaggi/nuovo", name="nuovo_message")
+//     */
+//    public function sendMessageForm(Request $request)
+//    {
+//        $entity = new Messages();
+//
+//        $form = $this->createFormBuilder($entity)
+//            ->add('message', TextareaType::class, array('label'=> 'Messaggio', 'attr' => array('class' => 'form-control','width' => '100%', 'rows' => '15')))
+//            ->add('fromUID', HiddenType::class, '')
+//            ->add('toUID', HiddenType::class,'')
+//            ->add('object', HiddenType::class, '')
+//            ->add('submit',SubmitType::class, array('label' => 'Search','attr' => array('class' => 'btn-success')))
+//            ->getForm();
+//
+//        if($form->isSubmitted && $form->isValid)
+//        {
+//            $now = date("d-m-Y h:m:s");
+//            $usr= $this->get('security.token_storage')->getToken()->getUser();
+//
+//            $entity->setDatetime($now);
+//            $entity->setFromUID($usr);
+//            $entity->setIsRead('0');
+//            $entity->setObject('');
+//            $entity->setToUID('');
+//            $entity->setMessage($request['message']);
+//
+//            die;
+//        }
+//
+//        return $this->render(
+//            ':profile:form.message.html.twig',
+//            array(
+//                'form' => $form->createView()
+//            ));
+//    }
 
     /**
      * @Route("profilo/{uid}/venduto/{aid}", name="sold_id")
