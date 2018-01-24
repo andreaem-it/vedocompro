@@ -37,6 +37,13 @@ class Notifications
     private $type;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="object", type="integer", nullable=true)
+     */
+    private $object;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="readed", type="boolean")
@@ -156,5 +163,28 @@ class Notifications
     {
         return $this->date;
     }
-}
 
+    /**
+     * Set object
+     *
+     * @param integer $object
+     *
+     * @return Notifications
+     */
+    public function setObject($object)
+    {
+        $this->object = $object;
+
+        return $this;
+    }
+
+    /**
+     * Get object
+     *
+     * @return integer
+     */
+    public function getObject()
+    {
+        return $this->object;
+    }
+}

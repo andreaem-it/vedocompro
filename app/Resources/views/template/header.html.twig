@@ -33,7 +33,7 @@
             <li class="nav-item">
                 <a href="{{  url('nuovo') }}" class="float-right head-txt-bold">Inserisci Annuncio</a>
             </li>
-            {{ render(controller('AppBundle:Notifications:Notification')) }}
+            {{ render(controller('AppBundle:Notifications:Notifications')) }}
             <li class="nav-item">
                 <a href="{{ url('profilo' , {'query': app.user.username }) }}" class="float-right head-txt-bold">Profilo</a>
             </li>

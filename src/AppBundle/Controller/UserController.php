@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\AppBundle;
 use AppBundle\Entity\Ads;
 use AppBundle\Entity\Messages;
+use AppBundle\Entity\Notifications;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Sells;
 use AppBundle\Entity\User;
@@ -227,6 +228,14 @@ class UserController extends Controller
             $message->setIsRead(0);
             $em->persist($message);
             $em->flush();
+            $notification = new Notifications();
+            $notification->setReaded(false);
+            $notification->setObject($message->getId());
+            $notification->setType(6);
+            $notification->setUid($toUser->getId());
+            $notification->setDate(new \DateTime());
+            $em->persist($notification);
+            $em->flush();
             return $this->redirectToRoute('profilo', ['query' => $toUser->getUsername()]);
         }  else {
             return $this->redirectToRoute('login');
@@ -275,43 +284,6 @@ class UserController extends Controller
         }
         $em->flush();
     }
-
-//    /**
-//     * @Route("profilo/messaggi/nuovo", name="nuovo_message")
-//     */
-//    public function sendMessageForm(Request $request)
-//    {
-//        $entity = new Messages();
-//
-//        $form = $this->createFormBuilder($entity)
-//            ->add('message', TextareaType::class, array('label'=> 'Messaggio', 'attr' => array('class' => 'form-control','width' => '100%', 'rows' => '15')))
-//            ->add('fromUID', HiddenType::class, '')
-//            ->add('toUID', HiddenType::class,'')
-//            ->add('object', HiddenType::class, '')
-//            ->add('submit',SubmitType::class, array('label' => 'Search','attr' => array('class' => 'btn-success')))
-//            ->getForm();
-//
-//        if($form->isSubmitted && $form->isValid)
-//        {
-//            $now = date("d-m-Y h:m:s");
-//            $usr= $this->get('security.token_storage')->getToken()->getUser();
-//
-//            $entity->setDatetime($now);
-//            $entity->setFromUID($usr);
-//            $entity->setIsRead('0');
-//            $entity->setObject('');
-//            $entity->setToUID('');
-//            $entity->setMessage($request['message']);
-//
-//            die;
-//        }
-//
-//        return $this->render(
-//            ':profile:form.message.html.twig',
-//            array(
-//                'form' => $form->createView()
-//            ));
-//    }
 
     /**
      * @Route("profilo/{uid}/venduto/{aid}", name="sold_id")

@@ -46,49 +46,4 @@ class DefaultController extends Controller
     {
         return $this->render('default/guidelines.html.twig');
     }
-
-    /**
-     * @param $type
-     * @return string
-     */
-    public function convertNotifications($type) {
-        switch ($type) {
-            case 1:
-                return 'Il tuo annuncio è stato approvato';
-                break;
-            case 2:
-                return 'Il tuo annuncio è stato rifiutato';
-                break;
-            case 3:
-                return 'Il tuo annuncio non è stato approvato';
-                break;
-            case 4:
-                return '';
-                break;
-            case 5:
-                return '';
-                break;
-            case 6:
-                return 'Hai un nuovo messaggio';
-                break;
-            case 7:
-                return 'Hai ricevuto un feedback';
-                break;
-            case 8:
-                return 'Devi lasciare un feedback';
-                break;
-            case 9:
-                return '';
-                break;
-            case 10:
-                return 'Il tuo annuncio Oro sta scadendo';
-                break;
-            case 11:
-                return 'Il tuo annuncio Argento sta scadendo';
-                break;
-            case 12:
-                return 'Il tuo anuncio Bronzo sta scadendo';
-
-        }
-    }
 }

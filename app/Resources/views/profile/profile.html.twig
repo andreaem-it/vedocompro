@@ -318,7 +318,8 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="messaggi-ricevuti" role="tabpanel">
-                                    <form id="form-received-message" action="{{ url("message_set_read") }}" method="post">
+                                    <form id="form-received-message" action="{{ url("message_set_read") }}"
+                                          method="post">
                                         <div style="border:1px solid rgba(0,0,0,.125);padding:10px;border-radius:4px;background-color: #FFF">
                                             <div class="btn-group" data-toggle="buttons">
                                                 <label class="btn btn-outline-primary" style="margin-bottom:0px"
@@ -332,8 +333,10 @@
                                                         Marca come...
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a id="come_letti" class="dropdown-item" href="#">Marca come letti</a>
-                                                        <a id="come_non_letti" class="dropdown-item" href="#">Marca come non letti</a>
+                                                        <a id="come_letti" class="dropdown-item" href="#">Marca come
+                                                            letti</a>
+                                                        <a id="come_non_letti" class="dropdown-item" href="#">Marca come
+                                                            non letti</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -343,7 +346,8 @@
                                                 {% for message in messages %}
                                                     <li class="list-group-item list-group-item-action">
                                                         {% if message.isRead == 0 %}
-                                                            <input id="{{ message.id }}" type="checkbox" class="msg-rec-checkbox"
+                                                            <input id="{{ message.id }}" type="checkbox"
+                                                                   class="msg-rec-checkbox"
                                                                    style="margin-right:10px">
                                                             {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;
                                                             {% if message.object == -1 %}
@@ -365,7 +369,8 @@
                                                                 </strong>
                                                             {% endif %}
                                                         {% else %}
-                                                            <input id="{{ message.id }}" type="checkbox" class="msg-rec-checkbox"
+                                                            <input id="{{ message.id }}" type="checkbox"
+                                                                   class="msg-rec-checkbox"
                                                                    style="margin-right:10px">
                                                             {% if message.object == -1 %}
                                                                 {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a
@@ -423,8 +428,10 @@
                                         checkBoxes.prop('checked', !checkBoxes.prop("checked"));
                                     });
 
-                                    $("#come_letti").click(function() {
-                                        var idSelector = function() { return this.id; };
+                                    $("#come_letti").click(function () {
+                                        var idSelector = function () {
+                                            return this.id;
+                                        };
                                         var url = "{{ url('message_set_read') }}";
                                         var selected = $('#form-received-message').find('.msg-rec-checkbox:checked').map(idSelector).get();
                                         var formData = selected.toString();
@@ -433,8 +440,10 @@
                                         });
                                     });
 
-                                    $("#come_non_letti").click(function() {
-                                        var idSelector = function() { return this.id; };
+                                    $("#come_non_letti").click(function () {
+                                        var idSelector = function () {
+                                            return this.id;
+                                        };
                                         var url = "{{ url('message_set_non_read') }}";
                                         var selected = $('#form-received-message').find('.msg-rec-checkbox:checked').map(idSelector).get();
                                         var formData = selected.toString();
@@ -646,22 +655,21 @@
         {% include 'template/footer.html.twig' %}
     </div>
     <script>
-        var url = window.location.href;
-        if (url.substring(url.indexOf("#"))) {
-            var activeTab = 'bacheca';
-        } else {
-            var activeTab = url.substring(url.indexOf("#") + 1);
-        }
-        if (activeTab == null) {
-            activeTab = 'bacheca';
-        }
-        $("#" + activeTab).addClass("active in");
-        $(".link-" + activeTab).addClass("active");
-        $('#messaggi-tab a').click(function (e) {
-            e.preventDefault()
-            $(this).tab('show')
-        });
         $(document).ready(function () {
+            var url = window.location.href;
+            if (url.indexOf("#") === -1) {
+                var activeTab = 'bacheca';
+            } else {
+                var activeTab = url.substring(url.indexOf("#") + 1);
+            }
+
+            if (activeTab == null) {
+                activeTab = 'bacheca';
+            }
+
+            var tab = 'a.link-' + activeTab;
+            $(tab).tab('show');
+
             $("#delete-" + n).click(function () {
                 $.ajax({
                     url: "demo_test.txt", success: function (result) {
