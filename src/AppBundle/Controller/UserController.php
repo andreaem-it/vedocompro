@@ -223,7 +223,7 @@ class UserController extends Controller
             $toUser = $em->getRepository('AppBundle:User')->findOneBy(['id' => $request->get('to')]);
             $message->setMessage($request->request->get('message'));
             $message->setToUID($toUser->getId());
-            $message->setObject(-1);
+            $message->setObject($request->request->get('object') ?? -1);
             $message->setDatetime(new \DateTime());
             $message->setIsRead(0);
             $em->persist($message);
