@@ -34,12 +34,8 @@
                         - {{ user.convertUser(message.0.fromUID) }}
                         <br>
                         <hr>
-                        <form action="{{ url('sendmessage', {'mid': message.0.id}) }}" method="GET">
-                            <input type="hidden" name="fromUID" value="{{ app.user.id }}"/>
-                            <input type="hidden" name="toUID" value="{{ message.0.fromUID }}"/>
-                            <input type="hidden" name="datetime" value="{{ "now"|date("Y-m-d H:i:s") }}"/>
-                            <input type="hidden" name="objectID" value="{{ message.0.object }}"/>
-                            <textarea class="form-control" name="message"
+                        <form action="{{ url('nuovo_message', {to: message.0.fromUID}) }}" method="post">
+                            <textarea class="form-control" id="message" name="message"
                                       placeholder="Inserisci messaggio..."></textarea>
                             <br>
                             <input type="submit" class="card-link btn btn-outline-success" value="Rispondi"/>
