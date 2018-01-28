@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="modal fade" id="deleteMessage">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Eliminare Messaggio?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger">Elimina</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Annulla</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid scrollbar">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="{{ app.request.headers.get('referer') }}">< Torna a Messaggi</a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="card" style="width:100%">
+                    <div class="card-block">
+                        <h4 class="card-title">Messaggio da </h4>
+                        <h6 class="card-subtitle mb-2 text-muted">asd</h6>
+                        <small class="card-subtitle">asd</small>
+                        <br><br>
+                        <p class="card-text">asd</p>
+                        <br>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'template/footer.html.twig' %}
+{% endblock %}
