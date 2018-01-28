@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="container-fluid scrollbar"">
+    <div class="container">
+        <div class="row">
+            <div class="float-left col-md-10">
+                <h3>Help Desk</h3>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="card" style="width:100%">
+                <div class="card-block">
+                    <h5>Apri un Ticket</h5>
+                    <small>Segnalaci qualsiasi problema con il sito, utenti o prodotti</small>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

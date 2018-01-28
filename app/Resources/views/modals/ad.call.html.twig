@@ -1,0 +1,20 @@
+<div class="modal fade" id="call">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Chiama il venditore</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <small>Un contatto diretto ti permette di avere un riscontro immediato, chiama il venditore per informarti sullo stato dell'oggetto e qualsiasi informazione omessa nella descrizione, infine, completa l'acquisto telefonicamente.</small>
+        <br><br>
+        <h3 class="text-center"><img style="width:60px" src="{{ asset('/img/icons/icon_phone.png') }}"/><code><a href="tel:{{ user_info.0.phone }}">{{ user_info.0.phone }}</a></code></h3>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>

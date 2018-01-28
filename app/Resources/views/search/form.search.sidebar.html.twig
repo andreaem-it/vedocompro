@@ -1,0 +1,16 @@
+{% form_theme form 'forms/bootstrap_3_horizontal_layout_new.html.twig' %}
+{{ form_start(form) }}
+    <label for="form_name">{% trans %} What are you looking for? {% endtrans %}</label>
+    {{ form_widget(form.name) }}
+    <br>
+    <label for="form_category">{% trans %}Category{% endtrans %}</label>
+    {{ form_widget(form.category) }}
+    <br>
+    <label for="form_region">{% trans %}Region{% endtrans %}</label>
+    {{ form_widget(form.region) }}
+    <br>
+    <label for="form_obj_level">{% trans %}Filter{% endtrans %}</label>
+    {{ form_widget(form.obj_level) }}
+    <br>
+    {{ form_widget(form.submit) }}
+{{ form_end(form) }}

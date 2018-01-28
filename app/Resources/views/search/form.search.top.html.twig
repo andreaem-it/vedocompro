@@ -1,0 +1,41 @@
+
+{{ form_start(form, {'attr':{'class': 'form-inline', 'id': 'search-bar', novalidate: 'novalidate' }})  }}
+<form style="margin-bottom:-7px">
+    <div class="row" style="width:110%">
+        <div class="col-md-3">
+            <div class="form-group">
+                {{ form_widget(form.name) }}
+              </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group ">
+                {{ form_widget(form.region) }}
+              </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group ">
+                {{ form_widget(form.category) }}
+              </div>
+        </div>
+        <div class="col-md-3">
+           <!--<button type="submit" class="btn btn-primary btn-block btn-lg color-light-blue btn-find">
+                <img src="{{ asset('img/home/search.svg') }}" style="width:20px"/> Cerca
+            </button>-->
+            {{ form_widget(form.submit) }}
+            <!--<a href="{{ url('search') }}" id="btn-allAds" style="margin-top: 0px" class="btn btn-success btn-block btn-lg ">Tutti gli Annunci</a>-->
+        </div>
+    </div>
+</form>
+{{ form_end(form) }}
+<style>
+    .form-control-plaintext:focus{
+        border-color: inherit;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-top: none;
+        border-bottom: 2px solid #46a3d9!important;
+    }
+    *:focus {
+        outline: none;
+    }
+</style>

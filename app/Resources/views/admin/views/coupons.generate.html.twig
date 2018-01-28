@@ -1,0 +1,61 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}VedoCompro.it - ADMIN - Coupons{% endblock %}
+
+{% block body %}
+
+    <section class="content-header">
+        <h1>
+            Coupons
+            <small>Genera</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li class="active"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li>Coupons</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Genera Coupon</h3>
+                    </div>
+                    <div class="box-body text-center">
+                        <label for="value">Valore Coupon</label>
+                        <select class="form-control" id="value" required>
+                            <option>Seleziona</option>
+                            <option value="5">5 €</option>
+                            <option value="10">10 €</option>
+                            <option value="15">15 €</option>
+                            <option value="20">20 €</option>
+                        </select>
+                        <h1><code id="generated-coupon" style="display: none;"></code></h1>
+                        <p id="result"></p>
+                        <br><br>
+                        <a id="generate" class="btn btn-success">Genera</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="{{ asset('js/letters.shuffle.js') }}"></script>
+    <script>
+        $('#generate').click(function() {
+            $('#generated-coupon').show();
+            $.ajax({
+                type: "GET",
+                url: '{{ asset('ajax/admin/admin.generateCoupon.php') }}',
+                data: {'uid': '{{ app.user.id }}',
+                       'value': $('#value').val()},
+            })
+            .done(function (data) {
+                // insert data into div
+                $("#generated-coupon").html(data);
+                $('#result').text("Codice Coupon salvato nel database");
+            });
+        });
+    </script>
+
+{% endblock %}

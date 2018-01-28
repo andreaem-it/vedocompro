@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}404 - VedoCompro.it - Acquista e vendi con un video!{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">404!</h1>
+    <h3 class="text-center">Ops! Non riesco a trovare la pagina!</h3>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {# ... #}
+    {% endif %}
+
+    <p>
+        Potrebbe trattarsi di un nostro errore, oppure hai digitato un'indirizzo non valido.
+        Ti consigliamo di riporvare o controllare il link da cui provieni, la pagina potrebbe essere stata rimossa,
+        Prova a <a href="{{ path('homepage') }}">tornare alla homepage.</a>.
+    </p>
+{% endblock %}

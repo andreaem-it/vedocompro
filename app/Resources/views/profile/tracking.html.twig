@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="container-fluid scrollbar"">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="{{ app.request.headers.get('referer') }}">< Torna al Profilo</a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="card" style="width:100%">
+                    <div class="card-block">
+                        <h3>Traccia Spedizione</h3>
+                        <small><p>Puoi tracciare il tuo pacco tra oltre 200 corrieri, se il venditore ha comunicato il codice di tracciabilità puoi vedere a che punto si trova la spedizione.</p></small>
+                        <hr>
+                        <div class="content">
+                        <h4>Codice: {{ code }}</h4>
+                            <div class="result"></div>
+                        </div>
+                        <script>
+                            $.ajax({
+                                type: 'POST',
+                                url: 'https://api.aftership.com/v4',
+                                headers: {
+                                    'aftership-api-key': '3107e56b-2762-4151-9db6-0adf0d230627',
+                                    'Content-Type': 'application/json',
+                                },
+                                data: {
+                                    'tracking_number': '{{ code }}'
+                                },
+                                dataType: 'application/json',
+                                success: function (result) {
+                                    $('.result').html(result);
+                                },
+                                error: function (error) {
+                                    $('.result').html(error);
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

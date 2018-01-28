@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{% include 'template/header.html.twig' %}
+<div class="wrapper">
+    <div class="container-fluid scrollbar">
+        
+        <div class="row">
+            <div class="col-sm-12 register-form text-center" style="max-width:500px">
+                        <br>
+                        <h1 style="font-size:4em">Grazie!</h1>
+                        <br><br><br>
+
+                        {% if oauth is not defined %}
+                        <h6>Riceverai a breve un'e-mail nella casella da te specificata contenente un link per verificare la tua registrazione.</h6>
+                        <p><small>Fino a quando non l'avrai verificato, il tuo account resterà bloccato.</small></p>
+                        <br><br>
+                        {% endif %}
+                        <a class="btn btn-success" href="{{ url('homepage') }}">Torna alla Home</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

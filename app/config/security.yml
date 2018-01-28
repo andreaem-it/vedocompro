@@ -1,0 +1,73 @@
+security:
+    providers:
+        user_db:
+            entity: { class: AppBundle:User, property: username }
+        administrators:
+            entity: { class: AppBundle:User, property: username }
+
+    encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm: bcrypt
+            cost: 12
+        AppBundle\Entity\User: bcrypt
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            pattern: ^/
+            http_basic: ~
+            anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login
+            logout: true
+            logout:
+                csrf_parameter:       _csrf_token
+                csrf_token_generator:  ~
+                csrf_token_id:        logout
+                path:                 /logout
+                target:               /
+                success_handler:      ~
+                invalidate_session:   true
+                delete_cookies:
+                    name:
+                        path:                 null
+                        domain:               null
+                handlers:             []
+            provider: user_db
+            remember_me:
+                secret:      "%secret%"
+                lifetime: 31536000
+                path:     /
+                domain:   ~
+            oauth:
+                # Declare the OAuth Callback URLs for every resource owner
+                # They will be added in the routing.yml file too later
+                resource_owners:
+                    google: "/connect/check-google"
+                    facebook: "/connect/check-facebook"
+                ## Provide the original login path of your application (fosuserroute)
+                ## and the failure route when the authentication fails.
+                login_path:     /login
+                failure_path:   /login
+                # Inject a service that will be created in the step #6
+                oauth_user_provider:
+                    service: app.fos_user.oauth_provider
+                failure_handler:     app.oauthfailurehandler
+        admin:
+            pattern:    ^/admin
+            http_basic: ~
+        
+    role_hierarchy:
+            ROLE_ADMIN:       [ROLE_MODERATOR, ROLE_SUPPORT, ROLE_USER]
+            ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_MODERATOR, ROLE_SUPPORT, ROLE_ALLOWED_TO_SWITCH]
+            ROLE_MODERATOR:   [ROLE_SUPPORT, ROLE_USER]
+            ROLE_SUPPORT:     [ROLE_USER]
+            
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_SUPPORT }
+        - { path: ^/profilo, roles: [ROLE_USER, ROLE_ADMIN] }

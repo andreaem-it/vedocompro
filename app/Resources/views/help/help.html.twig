@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+<div class="container-fluid scrollbar"">
+    <div class="container">
+        <div class="row">
+            <div class="float-left col-md-10">
+                <h3>Help Desk</h3>
+                <small>Utilizziamo un sistema di ticket per elaborare le richieste di assistenza così da assegnarle al giusto reparto e gestirle velocemente</small>
+            </div>
+            <div class="float-right col-md-2">
+                <a href="{{ url("helpdesk_create") }}" class="md-right float-right btn btn-success btn-lg">Apri Ticket</a>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card" style="width:100%">
+                    <div class="card-block">
+                        <div class="">
+                            <h2>1</h2> Ticket Aperti
+                        </div>
+                        <br>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="">Richiesta 1</a>&nbsp;<small>01-08-2017 16:08</small>&nbsp; (Aperta)
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card" style="width:100%">
+                    <div class="card-block">
+                        <div class="">
+                            <h2>0</h2> Ticket Chiusi
+                        </div>
+                        <br>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                Nessuno
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

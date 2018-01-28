@@ -1,0 +1,36 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+    core.amazon_s3.class: AmazonS3
+    core_storage.video_uploader.class: LM\Bundle\CoreBundle\Service\PhotoUploader
+
+services:
+    app.twig_extension:
+        class: AppBundle\Twig\Category
+        public: false
+        tags:
+            - { name: twig.extension }
+    app.aws_s3.client:
+        class: Aws\S3\S3Client
+        factory: [Aws\S3\S3Client, 'factory']
+        arguments:
+            -
+                version: latest
+                region: "%amazon.region%"
+                credentials:
+                    key: "%amazon.key%"
+                    secret: "%amazon.secret%"
+    app.fos_user.oauth_provider:
+        # Change the class according to the location of the FOSUBUserProvider class
+        class: AppBundle\Security\Core\User\FOSUBUserProvider
+        arguments:
+            session: "@session"
+            # Inject as first argument the user_manager of FOSUserBundle
+            user_manager: "@fos_user.user_manager"
+            # An object/array with the registered Social Media from config.yml
+            user_response:
+                facebook: facebook_id
+                google: google_id
+    app.oauthfailurehandler:
+        class: AppBundle\Security\Core\User\OAuthFailureHandler
+        arguments: ["@security.http_utils", {}, "@service_container"]
