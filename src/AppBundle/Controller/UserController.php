@@ -578,7 +578,7 @@ class UserController extends Controller
             ->find($userID);
         if ($user === null) {
             return null;
-        } elseif (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+        } elseif ($user->hasRole('ROLE_SUPER_ADMIN') == true || $user->hasRole('ROLE_ADMIN')) {
             return 'Vedocompro.it';
         } else {
             return $user->getName();
