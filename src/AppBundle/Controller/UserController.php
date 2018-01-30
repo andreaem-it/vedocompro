@@ -25,6 +25,15 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 
 class UserController extends Controller
 {
+    public function redirectToReferer(Request $request)
+    {
+        return $this->redirect(
+            $request
+                ->headers
+                ->get('referer')
+        );
+    }
+
     /**
      * @Route("profilo/{query}", name="profilo")
      */
@@ -236,7 +245,7 @@ class UserController extends Controller
             $notification->setDate(new \DateTime());
             $em->persist($notification);
             $em->flush();
-            return $this->redirectToRoute('profilo', ['query' => $toUser->getUsername()]);
+            return $this->redirectToReferer($request);
         }  else {
             return $this->redirectToRoute('login');
         }
