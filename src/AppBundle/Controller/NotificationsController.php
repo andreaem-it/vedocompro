@@ -14,6 +14,7 @@ use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -84,21 +85,18 @@ class NotificationsController extends Controller
         switch ($format) {
             case 'icon':
                 return $icon;
-                break;
             case 'text':
                 return $text;
-                break;
             case 'link':
                 return $link;
-                break;
         }
     }
 
     /**
-     * @Route("/notifications/mark-read", name="notifications_mark_read")
+     * @Route("/notifications/open/{id}", name="notifications_open")
      * @Secure(roles="IS_AUTHENTICATED_FULLY")
      */
-    public function markNotificationsReadAction()
+    public function openNotificationAction($id)
     {
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             /** @var User $user */
@@ -106,15 +104,17 @@ class NotificationsController extends Controller
             $em = $this->get('doctrine.orm.entity_manager');
             $notificationRepo = $em->getRepository('AppBundle:Notifications');
             /** @var Notifications $notifications */
-            $notifications = $notificationRepo->findBy(['uid' => $user->getId()]);
-            foreach($notifications as $notification) {
-                if ($notification->getReaded() == false) {
-                    $notification->setReaded(true);
-                    $em->persist($notification);
-                }
+            $notification = $notificationRepo->findOneBy(['id' => $id, 'uid' => $user->getId()]);
+            if ($notification->getReaded() == false) {
+                $notification->setReaded(true);
+                $em->persist($notification);
             }
             $em->flush();
-            return new Response("OK");
+            if ($link = $this->convertNotifications($notification->getType(), 'link', $notification->getObject())) {
+                return new RedirectResponse($link);
+            } else {
+                return new Response('OK');
+            }
         } else {
             return $this->redirectToRoute('login');
         }

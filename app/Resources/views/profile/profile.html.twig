@@ -361,7 +361,7 @@
                                                                 <strong><a
                                                                             href="{{ url('message',{'id' : message.id}) }}">Messaggio
                                                                         da
-                                                                        "{{ user.convertUser(message.fromuid) }}"
+                                                                        "{{ user.getMessageFromUser(message.fromuid) }}"
                                                                         relativo
                                                                         all'inserzione
                                                                         "{{ user.convertAds(message.object) }}".</a>
@@ -376,12 +376,12 @@
                                                                 {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a
                                                                     href="{{ url('message',{'id' : message.id}) }}">Messaggio
                                                                 da
-                                                                "{{ user.convertUser(message.fromuid) }}".</a>
+                                                                "{{ user.getMessageFromUser(message.fromuid) }}".</a>
                                                             {% else %}
                                                                 {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a
                                                                     href="{{ url('message',{'id' : message.id}) }}">Messaggio
                                                                 da
-                                                                "{{ user.convertUser(message.fromuid) }}" relativo
+                                                                "{{ user.getMessageFromUser(message.fromuid) }}" relativo
                                                                 all'inserzione
                                                                 "{{ user.convertAds(message.object) }}".</a>
                                                             {% endif %}
