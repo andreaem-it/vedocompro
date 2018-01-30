@@ -354,7 +354,7 @@
                                                                 <strong><a
                                                                             href="{{ url('message',{'id' : message.id}) }}">Messaggio
                                                                         da
-                                                                        "{{ user.convertUser(message.fromuid) }}.</a>
+                                                                        "{{ user.getMessageFromUser(message.fromuid) }}.</a>
                                                                     <small>(Non letto)</small>
                                                                 </strong>
                                                             {% else %}

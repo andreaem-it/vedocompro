@@ -570,6 +570,21 @@ class UserController extends Controller
         return $user ? $user->getName() : null;
     }
 
+    public function getMessageFromUser($userID)
+    {
+        /** @var User $uname */
+        $user = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->find($userID);
+        if ($user === null) {
+            return null;
+        } elseif (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+            return 'Vedocompro.it';
+        } else {
+            return $user->getName();
+        }
+    }
+
     public function convertUID($userID)
     {
         $user = $this->getDoctrine()
