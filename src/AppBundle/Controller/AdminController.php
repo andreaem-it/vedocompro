@@ -600,7 +600,6 @@ class AdminController extends Controller
                     $message->setObject(-1);
                     $message->setDatetime(new \DateTime());
                     $message->setIsRead(0);
-                    $message->setCanReply(false);
                     $em->persist($message);
                     $em->flush();
                     $notification = new Notifications();

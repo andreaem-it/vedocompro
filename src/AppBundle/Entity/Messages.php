@@ -36,10 +36,6 @@ class Messages
      */
     private $isRead;
     /**
-     * @ORM\Column (type="boolean")
-     */
-    private $canReply = true;
-    /**
      * @ORM\Column (type="integer")
      */
     private $object;
@@ -196,29 +192,5 @@ class Messages
     public function getObject()
     {
         return $this->object;
-    }
-
-    /**
-     * Set canReply
-     *
-     * @param boolean $canReply
-     *
-     * @return Messages
-     */
-    public function setCanReply($canReply)
-    {
-        $this->canReply = $canReply;
-
-        return $this;
-    }
-
-    /**
-     * Get canReply
-     *
-     * @return boolean
-     */
-    public function getCanReply()
-    {
-        return $this->canReply;
     }
 }

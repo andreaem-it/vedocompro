@@ -34,16 +34,14 @@
                         - {{ user.convertUser(message.0.fromUID) }}
                         <br>
                         <hr>
-                        {% if message.0.canReply == true %}
-                            <form action="{{ url('nuovo_message', {to: message.0.fromUID}) }}" method="post">
+                        <form action="{{ url('nuovo_message', {to: message.0.fromUID}) }}" method="post">
                             <textarea class="form-control" id="message" name="message"
                                       placeholder="Inserisci messaggio..."></textarea>
-                                <br>
-                                <input type="submit" class="card-link btn btn-outline-success" value="Rispondi"/>
-                                <a href="#" class="card-link btn btn-outline-danger" data-toggle="modal"
-                                   data-target="#deleteMessage">Elimina</a>
-                            </form>
-                        {% endif %}
+                            <br>
+                            <input type="submit" class="card-link btn btn-outline-success" value="Rispondi"/>
+                            <a href="#" class="card-link btn btn-outline-danger" data-toggle="modal"
+                               data-target="#deleteMessage">Elimina</a>
+                        </form>
                     </div>
                 </div>
             </div>
