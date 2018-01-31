@@ -214,7 +214,15 @@ class AdsController extends Controller
                     'placeholder' => 'Scegli Categoria',
                     'empty_data' => null,
                     'required' => true,
-                    'label' => 'Categoria'))
+                    'label' => 'Categoria',
+                    'class' => 'AppBundle\Entity\Category',
+                    'group_by' => 'parentName',
+                    'query_builder' => function (EntityRepository $repo) {
+                        $qb = $repo->createQueryBuilder('l');
+                        $qb->andWhere('l.parent IS NOT NULL');
+                        return $qb;
+                    },
+                    'label' => 'Category'))
                 ->add('price', MoneyType::class, array('label' => 'Prezzo'))
                 ->add('objCondition', ChoiceType::class, array('label' => 'Condizione', 'choices' => array(
                     'Nuovo' => 'Nuovo',

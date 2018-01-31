@@ -1,6 +1,10 @@
 html {
     overflow-x: hidden;
 }
+.wrapper {
+    margin-top:75px;
+}
+
 .color-light-blue {
     background-color: rgb(70,163,217)!important;
     color: #FFF;
@@ -33,12 +37,16 @@ html {
 }
 .navbar-nav {
     line-height: 45px;
+        
 }
 .navbar-nav .nav-item a {
-    color: #000!important;
     display: block!important;
     padding: .5rem 1rem!important;
     text-decoration: none;
+    color: #FFF;
+}
+.color-000 a{
+    color: #000!important;
 }
 .navbar-nav .nav-item a:hover {
     color: rgb(70,163,217)!important;

@@ -2,50 +2,10 @@
 {% block body %}
     <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=0 ">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="{{asset('js/jquery.scrolling-tabs.min.js') }}"></script>
     <link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
-    <nav class="navbar navbar-expand-lg  blue-header">
-      <a class="navbar-brand" href="#">
-          <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-cobalt.png')}}" class="inverse-logo img-fluid" style="max-width:280px"/>
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse ml-auto" id="navbarNavDropdown">
-        <ul class="navbar-nav ml-auto" style="font-size:1vw">
-          <li class="nav-item">
-              <a href="{{ url('homepage') }}" class="nav-link">HOME</a>
-            </li>
-            {% if app.user %}
-                {{ render(controller('AppBundle:Notifications:Notification')) }}
-                <li class="nav-item">
-                    <a href="{{ url('profilo' , {'query': app.user.username }) }}" class=" head-txt-bold txt-light">PROFILO</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ logout_path('main') }}" class="head-txt-bold txt-light">ESCI</a>
-                </li>
-             {% else %}
-                 <li class="nav-item">
-                     <a href="{{ url('login') }}" class="nav-link active txt-light">ACCEDI</a>
-                 </li>
-                 <li class="nav-item">
-                     <a href="{{ url('registrati') }}" class="nav-link txt-light">REGISTRATI </a>
-                 </li>
-             {% endif %}
-            <li class="nav-item">
-              <a href="" class="nav-link txt-light">SUPPORTO</a>
-            </li>
-            <a href="{{  url('nuovo') }}" class="btn btn-lg btn-primary float-right color-light-blue btn-add-ad">
-                INSERISCI ANNUNCIO 
-                <img src="{{ asset('img/home/camera.svg') }}" class="btn-camera" style="width:32px">
-            </a>
-        </ul>
-      </div>
-    </nav>
+    {% include 'template/header.html.twig' %}
+
     <div class="wrapper">
         <section id="profile-header">
             <div class="container">
@@ -73,42 +33,58 @@
                 </div>
                 <div class="row">
                     <ul class="nav nav-tabs ml-auto" id="profileTab" role="tablist">
-                      <li role="presentation" class="nav-item pr-2">
-                        <a class="nav-link active " id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">BACHECA</a>
-                      </li>
-                      <li role="presentation" class="nav-item pr-2">
-                        <a class="nav-link" id="messaggi-tab" data-toggle="tab" href="#messaggi" role="tab" aria-controls="messaggi" aria-selected="false">MESSAGGI</a>
-                      </li>
-                      <li role="presentation" class="nav-item pr-2">
-                        <a class="nav-link" id="annunci-tab" data-toggle="tab" href="#annunci" role="tab" aria-controls="annunci" aria-selected="false">ANNUNCI</a>
-                      </li>
-                      <li role="presentation" class="nav-item pr-2">
-                        <a class="nav-link" id="feedback-tab" data-toggle="tab" href="#feedback" role="tab" aria-controls="feedback" aria-selected="false">FEEDBACK</a>
-                      </li>
-                      <li role="presentation" class="nav-item pr-2">
-                        <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">IMPOSTAZIONI</a>
-                      </li>
+                        {% if app.user.username is defined %}
+                            {% if app.user.username == user_info.0.name %}
+                                <li role="presentation" class="nav-item pr-2">
+                                    <a class="nav-link active " id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">BACHECA</a>
+                                </li>
+                                <li role="presentation" class="nav-item pr-2">
+                                    <a class="nav-link" id="messaggi-tab" data-toggle="tab" href="#messaggi" role="tab" aria-controls="messaggi" aria-selected="false">MESSAGGI</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                        <li role="presentation" class="nav-item pr-2">
+                            <a class="nav-link {% if app.user.username != user_info.0.name %} active {% endif %}" id="annunci-tab" data-toggle="tab" href="#annunci" role="tab" aria-controls="annunci" aria-selected="false">ANNUNCI</a>
+                        </li>
+                        <li role="presentation" class="nav-item pr-2">
+                            <a class="nav-link" id="feedback-tab" data-toggle="tab" href="#feedback" role="tab" aria-controls="feedback" aria-selected="false">FEEDBACK</a>
+                        </li>
+                        {% if app.user.username is defined %}
+                            {% if app.user.username == user_info.0.name %}
+                                <li role="presentation" class="nav-item pr-2">
+                                    <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">IMPOSTAZIONI</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}    
                     </ul>
                     
                 </div>
             </div>
         </section>
         <div class="tab-content mx-4" id="myTabContent">
-          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-              <div id="dashboardContainer" class="mb-5"></div>
-          </div>
-          <div class="tab-pane fade" id="messaggi" role="tabpanel" aria-labelledby="messaggi-tab">
-              <div id="messagesContainer" class="mb-5"></div>
-          </div>
-          <div class="tab-pane fade" id="annunci" role="tabpanel" aria-labelledby="annunci-tab">
-              <div id="annunciContainer" class="mb-5"></div>
-          </div>
-          <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
-              <div id="feedbackContainer" class="mb-5"></div>
-          </div>
-          <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-              <div id="settingsContainer" class="mb-5"></div>
-          </div>
+            {% if app.user.username is defined %}
+                {% if app.user.username == user_info.0.name %}
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div id="dashboardContainer" class="mb-5"></div>
+                    </div>
+                    <div class="tab-pane fade" id="messaggi" role="tabpanel" aria-labelledby="messaggi-tab">
+                        <div id="messagesContainer" class="mb-5"></div>
+                    </div>
+                {% endif %}
+            {% endif %}    
+            <div class="tab-pane fade {% if app.user.username != user_info.0.name %} show active {% endif %}" id="annunci" role="tabpanel" aria-labelledby="annunci-tab">
+                <div id="annunciContainer" class="mb-5"></div>
+            </div>
+            <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
+                <div id="feedbackContainer" class="mb-5"></div>
+            </div>
+            {% if app.user.username is defined %}
+                {% if app.user.username == user_info.0.name %}
+                    <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                        <div id="settingsContainer" class="mb-5"></div>
+                    </div>
+                {% endif %}
+            {% endif %}    
         </div>
         <br>
     {% include 'template/footer.html.twig' %}
@@ -198,7 +174,10 @@
             showDashboard();
             $('messagesContainer a').each(function(e) {
                 e.preventDefault;
-            })
+            });
+            if ('{{app.user.username}}' != '{{user_info.0.name}}') {
+                showAds();
+            }
         })
         $('#messaggi-tab').click(function(){
             showMessages();

@@ -10,44 +10,9 @@
     <script src="{{ asset('js/masonry.pkgd.min.js') }}"></script>
     <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}"></script>
     <link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
-    <nav class="navbar navbar-expand-lg  blue-header">
-      <a class="navbar-brand" href="#">
-          <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-cobalt.png')}}" class="inverse-logo img-fluid" style="max-width:280px"/>
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse ml-auto" id="navbarNavDropdown">
-        <ul class="navbar-nav ml-auto" style="font-size:1vw">
-          <li class="nav-item">
-              <a href="{{ url('homepage') }}" class="nav-link">HOME</a>
-            </li>
-            {% if app.user %}
-                {{ render(controller('AppBundle:Notifications:Notification')) }}
-                <li class="nav-item">
-                    <a href="{{ url('profilo' , {'query': app.user.username }) }}" class=" head-txt-bold txt-light">PROFILO</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ logout_path('main') }}" class="head-txt-bold txt-light">ESCI</a>
-                </li>
-             {% else %}
-                 <li class="nav-item">
-                     <a href="{{ url('login') }}" class="nav-link active txt-light">ACCEDI</a>
-                 </li>
-                 <li class="nav-item">
-                     <a href="{{ url('registrati') }}" class="nav-link txt-light">REGISTRATI </a>
-                 </li>
-             {% endif %}
-            <li class="nav-item">
-              <a href="" class="nav-link txt-light">SUPPORTO</a>
-            </li>
-            <a href="{{  url('nuovo') }}" class="btn btn-lg btn-primary float-right color-light-blue btn-add-ad">
-                INSERISCI ANNUNCIO 
-                <img src="{{ asset('img/home/camera.svg') }}" class="btn-camera" style="width:32px">
-            </a>
-        </ul>
-      </div>
-    </nav>
+    
+        {% include 'template/header.html.twig' %}
+
     <div class="wrapper">
         <div class="container-medium">
             <div class="row">
@@ -77,8 +42,8 @@
                     </div>
             </div> <!-- Sponsorizzati -->
             <div class="row mt-5">
-                <div class="col-sm-1 mt-5 pt-4 hidden-sm-down">
-                    <img src="https://lh3.ggpht.com/3q0W5UdEjoVjCVFo4l5aJoAg2-ElBSpBSvcMwuGKG_RNyrePKwSA54ZMaqA_EpEBpBi00hF0=w120">
+                <div class="col-sm-1 mt-5 pt-4 hidden">
+                    <img class="hidden-sm-down" src="https://lh3.ggpht.com/3q0W5UdEjoVjCVFo4l5aJoAg2-ElBSpBSvcMwuGKG_RNyrePKwSA54ZMaqA_EpEBpBi00hF0=w120">
                 </div>
                 <div class="col-sm-10 pl-4 pr-4">
                     <div class="row">

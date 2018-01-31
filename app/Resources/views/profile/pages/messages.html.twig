@@ -25,7 +25,7 @@
                             <li class="list-group-item list-group-item-action list-item-shadow">
                                 {% if message.isRead == 0 %}
                                     <input type="checkbox" class="msg-checkbox" style="margin-right:10px">
-                                    {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<strong><a onClick="viewMessage({{ url('message',{'id' : message.id}) }})">Messaggio da "{{ user.convertUser(message.fromuid) }}" relativo all'inserzione "{{ user.convertAds(message.object) }}".</a> <small>(Non letto)</small></strong>
+                                    {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<strong><a onClick="viewMessage('{{ url('message',{'id' : message.id}) }}')">Messaggio da "{{ user.convertUser(message.fromuid) }}" relativo all'inserzione "{{ user.convertAds(message.object) }}".</a> <small>(Non letto)</small></strong>
                                 {% else %}
                                     <input type="checkbox" class="msg-checkbox" style="margin-right:10px">
                                     {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a onClick="viewMessage('{{ url('message',{'id' : message.id}) }}')">Messaggio da "{{ user.convertUser(message.fromuid) }}" relativo all'inserzione "{{ user.convertAds(message.object) }}".</a>
@@ -48,10 +48,10 @@
                             <li class="list-group-item list-group-item-action list-item-shadow">
                                 {% if messageR.isRead == 0 %}
                                     <input type="checkbox" class="msg-checkbox" style="margin-right:10px">
-                                    {{ messageR.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<strong><a onClick="viewMessage({{ url('message',{'id' : messageR.id}) }})">Messaggio a "{{ user.convertUser(messageR.fromuid) }}" relativo all'inserzione "{{ user.convertAds(messageR.object) }}".</a> <small>(Non letto)</small></strong>
+                                    {{ messageR.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<strong><a onClick="viewMessage('{{ url('message',{'id' : messageR.id}) }}')">Messaggio a "{{ user.convertUser(messageR.touid) }}" relativo all'inserzione "{{ user.convertAds(messageR.object) }}"</a> <small>(Non letto)</small></strong>
                                 {% else %}
                                     <input type="checkbox" class="msg-checkbox" style="margin-right:10px">
-                                    {{ messageR.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a onClick="viewMessage('{{ url('message',{'id' : messageR.id}) }}')">Messaggio a "{{ user.convertUser(messageR.fromuid) }}" relativo all'inserzione "{{ user.convertAds(messageR.object) }}".</a>
+                                    {{ messageR.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a onClick="viewMessage('{{ url('message',{'id' : messageR.id}) }}')">Messaggio a "{{ user.convertUser(messageR.touid) }}" relativo all'inserzione "{{ user.convertAds(messageR.object) }}"</a>
                                 {% endif %}
                             </li>
                         {% endfor %}

@@ -23,44 +23,9 @@
 {% endblock %}
 {% block body %}
     
-    <nav class="navbar navbar-expand-lg  blue-header">
-      <a class="navbar-brand" href="#">
-          <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-cobalt.png')}}" class="inverse-logo img-fluid" style="max-width:280px"/>
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse ml-auto" id="navbarNavDropdown">
-        <ul class="navbar-nav ml-auto" style="font-size:1vw">
-          <li class="nav-item">
-              <a href="{{ url('homepage') }}" class="nav-link">HOME</a>
-            </li>
-            {% if app.user %}
-                {{ render(controller('AppBundle:Notifications:Notification')) }}
-                <li class="nav-item">
-                    <a href="{{ url('profilo' , {'query': app.user.username }) }}" class=" head-txt-bold txt-light">PROFILO</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ logout_path('main') }}" class="head-txt-bold txt-light">ESCI</a>
-                </li>
-             {% else %}
-                 <li class="nav-item">
-                     <a href="{{ url('login') }}" class="nav-link active txt-light">ACCEDI</a>
-                 </li>
-                 <li class="nav-item">
-                     <a href="{{ url('registrati') }}" class="nav-link txt-light">REGISTRATI </a>
-                 </li>
-             {% endif %}
-            <li class="nav-item">
-              <a href="" class="nav-link txt-light">SUPPORTO</a>
-            </li>
-            <a href="{{  url('nuovo') }}" class="btn btn-lg btn-primary float-right color-light-blue btn-add-ad">
-                INSERISCI ANNUNCIO 
-                <img src="{{ asset('img/home/camera.svg') }}" class="btn-camera" style="width:32px">
-            </a>
-        </ul>
-      </div>
-    </nav>
+    
+        {% include 'template/header.html.twig' %}
+
     <!-- Modal Photos carousel -->
     <div class="modal fade" id="video-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

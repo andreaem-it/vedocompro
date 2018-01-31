@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('css/jquery.steps.css') }}"/>
     {% include 'template/header.html.twig' %}
     <br><br><br><br>
-    <div class="container scrollbar"">
+    <div class="container scrollbar">
         <div class="row" style="margin-top:-20px">
             <div class="col-lg-1 bg-light-grey"></div>
             <!--<div class="col-lg-3 padding-left-40 bg-light-grey hidden-sm">
@@ -104,21 +104,26 @@
                     <section id="step-3">
                         <div class="row">
                             <div class="col-lg-3 hidden-md-down">
-                                <small> massimo 200 MB, in formato AVI, MOV, MP4 o M4V.<strong>ATTENZIONE:</strong>Carica un video con orientamento orizzontale, eventuali video orientati in verticale verranno bocciati. Assicurati di rispettare i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a>.</small>
+                                <small> Massimo 200 MB, in formato AVI, MOV, MP4 o M4V. <strong>ATTENZIONE:</strong>Carica un video con <u>orientamento orizzontale</u>, eventuali video orientati in verticale verranno bocciati. Assicurati di rispettare i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a>.</small>
                                 <br><br>
                                 <small>Un consiglio, leggi le nostre <a href="{{ url('guidelines') }}" target="_blank">Linee Giuda</a> per un video di successo!</small>
                                 {{ form_widget(form.video) }}
                             </div>
                             <div class="col-lg-9">
+                                <div class="alert alert-info mb-3 text-center">
+                                    <strong>ATTENZIONE:</strong> Ricorda di caricare il video con orientamento <u>orizzontale</u>!
+                                    <img src="{{ asset('img/icon-horizontal.png') }}" class="image-fluid mx-auto" style="max-width: 150px">
+                                </div>
                                 <div id="dZUpload" class="dropzone">
                                     <div class="dz-default dz-message">
-                                        Carica video e foto cliccando qui o trascinandoli sopra
+                                        Carica un video cliccando qui o trascinandolo sopra
                                     </div>
                                 </div>
-                                <div class="checkbox">
+                                
+                                <div class="checkbox mt-3">
                                     <label><input type="checkbox" value="tosAccept" required />&nbsp; Accetto i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a></label>
                                 </div>
-                                <small class="hidden-md-up form-text text-muted">Inserisci il video del prodotto, gira un video esponendo i pregi e difetti di ciò che stai vendendo, massimo 200 MB, in formato AVI, MOV, MP4 o M4V. <br><strong>ATTENZIONE:</strong>Carica un video con orientamento orizzontale, eventuali video orientati in verticale verranno bocciati. <br> Assicurati di rispettare i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a>.</small>
+                                <small class="hidden-md-up form-text text-muted">Inserisci il video del prodotto, gira un video esponendo i pregi e difetti di ciò che stai vendendo, massimo 200 MB, in formato AVI, MOV, MP4 o M4V. <br><strong>ATTENZIONE:</strong>Carica un video con <u>orientamento orizzontale</u>, eventuali video orientati in verticale verranno bocciati. <br> Assicurati di rispettare i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a>.</small>
                                 <br>
                                 <small class="hidden-md-up form-text text-muted">Un consiglio, leggi le nostre <a href="{{ url('guidelines') }}" target="_blank">Linee Giuda</a> per un video di successo!</small>
                                 <script src="https://cdn.rawgit.com/enyo/dropzone/master/dist/min/dropzone.min.js"></script>
@@ -199,7 +204,7 @@
             bodyTag: "section",
             autoFocus: true,
             transitionEffect: "fade",
-            /*onStepChanging: function (event, currentIndex, newIndex)
+            onStepChanging: function (event, currentIndex, newIndex)
             {
                 if (validate(currentIndex) === true) {
                     form.find(".body:eq(" + newIndex + ") label.error").remove();
@@ -217,7 +222,7 @@
                     form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
                 }
 
-            },*/
+            },
             onStepChanging: function(e, currentIndex, newIndex) {
                 if(validate(currentIndex) === true) {
                     return true;

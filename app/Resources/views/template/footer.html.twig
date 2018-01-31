@@ -354,7 +354,9 @@
 </script>    
 <div class="row footer-bottom mr-0">
     <div class="col-8 pl-5 mt-5 ml-5 footer-txt">
-        Copyright &copy; 2018 - VedoCompro s.r.l.s. Tutti i diritti riservati
+        Copyright &copy; 2018 - VedoCompro s.r.l.s. Tutti i diritti riservati | <a href="{{ url('terms-of-service') }}">Termini di Servizio</a> | <a href="{{ url('privacy-policy') }}">Privacy Policy</a> {% if is_granted('ROLE_MODERATOR') %}
+                | <a href="{{ url('admin') }}">ADMIN</a>
+            {% endif %}
     </div>
     <div class="col-3">
         <img src="{{ asset('img/home/logo-vedocompro.png') }}" class="img-fluid mb-5 mt-4"/>

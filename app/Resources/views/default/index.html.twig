@@ -26,25 +26,24 @@
                     
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
-                              <a href="" class="nav-link">HOME</a>
+                              <a href="" class="nav-link color-000">HOME</a>
                             </li>
                             {% if app.user %}
-                                {{ render(controller('AppBundle:Notifications:Notification')) }}
-                                <li class="nav-item">
+                                <li class="nav-item color-000">
                                     <a href="{{ url('profilo' , {'query': app.user.username }) }}" class=" head-txt-bold">PROFILO</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item color-000">
                                     <a href="{{ logout_path('main') }}" class="head-txt-bold">ESCI</a>
                                 </li>
                              {% else %}
-                                 <li class="nav-item">
+                                 <li class="nav-item color-000">
                                      <a href="{{ url('login') }}" class="nav-link active">ACCEDI</a>
                                  </li>
-                                 <li class="nav-item">
+                                 <li class="nav-item color-000">
                                      <a href="{{ url('registrati') }}" class="nav-link">REGISTRATI </a>
                                  </li>
                              {% endif %}
-                            <li class="nav-item">
+                            <li class="nav-item color-000">
                               <a href="" class="nav-link">SUPPORTO</a>
                             </li>
                             <a href="{{  url('nuovo') }}" class="btn btn-lg btn-primary float-right color-light-blue btn-add-ad">
