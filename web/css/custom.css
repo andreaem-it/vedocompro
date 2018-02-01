@@ -327,7 +327,23 @@ input[type="checkbox"]:checked + label span {
     border-radius: 0px!important;
     border: none!important;
 }
-
+.profile_coin {
+    width: 20px!important;
+    border: none!important;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+.profile_coin_left {
+    width: 15px!important;
+    border: none!important;
+    margin-left: 5px;
+    margin-right: 10px;
+}
+.profile-btn-icon {
+    width: 20px!important;
+    margin:0 !important;
+    border:none!important;
+}
 /* 
   ##Device = Desktops
   ##Screen = 1281px to higher resolution desktops
@@ -404,4 +420,16 @@ input[type="checkbox"]:checked + label span {
      border-bottom: 2px solid #EBEBEB;
  }
 
+}
+/** UPGRADE **/
+.price-card {
+    transition: all .4s ease-in-out;
+    transform: scale(1);
+}
+.price-card:hover {
+    transition: all .4s ease-in-out;
+    transform: scale(1.20);
+}
+.price-card .card-block .card-img-top {
+    width: 30%!important;
 }

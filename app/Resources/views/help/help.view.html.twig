@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="wrapper mt-5 pt-3 container-fluid scrollbar" >
+    <div class="container">
+        <div class="row">
+            <div class="float-left col-md-10">
+                <h3>Help Desk</h3>
+                <small>Utilizziamo un sistema di ticket per elaborare le richieste di assistenza così da assegnarle al giusto reparto e gestirle velocemente</small>
+            </div>
+        </div>
+        <br>
+        <div class="row mb-4">
+            <div class="col-sm-12">
+                <p><strong>Titolo:</strong> {{ ticket.0.title }}</p>
+                <p><strong>Data:</strong> {{ ticket.0.timest|date('d-m-Y H:m:s') }}</p>
+                <p><strong>Tipo:</strong> {{ tools.convertHelpType(ticket.0.type) }}</p>
+                <p><strong>Stato:</strong> {{ tools.convertStatus(ticket.0.closed) }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card list-item-shadow">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <small>Il {{ ticket.0.timest|date('d-m-Y') }} alle ore {{ ticket.0.timest|date('H:m:s') }} scrive:</small>
+                        </div>
+                        <p class="card-title">{{ ticket.0.message }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        {% for reply in replies %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card list-item-shadow">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <small>{{ reply.timest|date('d-m-y') }} alle ore {{ reply.timest|date('H:m:s') }} scrive:</small>
+                            </div>    
+                            <p class="card-title">{{ reply.message }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+        {% if ticket.0.closed == 1 %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card list-item-shadow">
+                        <div class="card-body">
+                            <strong class="card-title">Questo Ticket è stato chiuso</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    </div>
+    <style>
+        .ticket-counter {
+            clear: both;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .list-item-shadow {
+            margin-bottom: .5em;
+            border-radius: 0px;
+            border-right: 10px solid rgb(67,150,193);
+            box-shadow: 5px 5px 10px 0px #BBB;
+            font-size: 16px;
+        }
+    </style>
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

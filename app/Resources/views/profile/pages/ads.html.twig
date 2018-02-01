@@ -18,11 +18,11 @@
                                         {{ ads[loop.index0].name }}
                                     </a>
                                     {% if ad.goldPromotionEndDate != null %}
-                                        <img src="{{ asset('img/coins/coin_gold.png') }}" class="profile_coin" data-toggle="tooltip" data-html="true" data-placement="right" title="<strong>Inserzione Oro </strong><br> Tempo Finale: {{ ad.goldPromotionEndDate|date("d/m/Y H:i:s") }}">
+                                        <img src="{{ asset('img/coins/coin_gold.png') }}" class="profile_coin" data-toggle="tooltip" data-html="true" data-placement="right" title="<strong>Inserzione Oro </strong><br> Scadenza: {{ ad.goldPromotionEndDate|date("d/m/Y H:i:s") }}">
                                     {% elseif ad.silverPromotionEndDate != null %}
-                                        <img src="{{ asset('img/coins/coin_silver.png') }}" class="profile_coin" data-toggle="tooltip" data-html="true" data-placement="right" title="<strong>Inserzione Argento </strong><br> Tempo Finale: {{ ad.silverPromotionEndDate|date("d/m/Y H:i:s") }}">
+                                        <img src="{{ asset('img/coins/coin_silver.png') }}" class="profile_coin" data-toggle="tooltip" data-html="true" data-placement="right" title="<strong>Inserzione Argento </strong><br> Scadenza: {{ ad.silverPromotionEndDate|date("d/m/Y H:i:s") }}">
                                     {% elseif ad.bronzePromotionEndDate != null %}
-                                        <img src="{{ asset('img/coins/coin_bronze.png') }}" class="profile_coin" data-toggle="tooltip" data-html="true" data-placement="right" title="<strong>Inserzione Bronzo </strong><br> Tempo Finale: {{ ad.goldPromotionEndDate|date("d/m/Y H:i:s") }}">
+                                        <img src="{{ asset('img/coins/coin_bronze.png') }}" class="profile_coin" data-toggle="tooltip" data-html="true" data-placement="right" title="<strong>Inserzione Bronzo </strong><br> Scadenza: {{ ad.goldPromotionEndDate|date("d/m/Y H:i:s") }}">
                                     {% endif %}
                                 </div>
                                 <div class="col-sm-2 no-padding align-middle d-flex align-items-center ml-5 pl-5" >
@@ -61,6 +61,11 @@
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
 <style>
     .ratio {
         margin: 0px 15px!important;

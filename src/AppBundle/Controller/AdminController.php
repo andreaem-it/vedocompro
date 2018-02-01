@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\AdminActions;
+use AppBundle\Entity\Messages;
+use AppBundle\Entity\Notifications;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Videos;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\User;
@@ -27,20 +30,20 @@ class AdminController extends Controller
         $page = 1;
 
         $actions = $this->getDoctrine()
-                ->getRepository('AppBundle:AdminActions')
-                ->createQueryBuilder('e')
-                ->select('e')
-                ->orderBy('e.linedate', 'DESC')
-                ->setMaxResults('20')
-                ->getQuery()
-                ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            ->getRepository('AppBundle:AdminActions')
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->orderBy('e.linedate', 'DESC')
+            ->setMaxResults('20')
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
         $getLines = $this->getDoctrine()
-                ->getRepository('AppBundle:AdminActions')
-                ->createQueryBuilder('e')
-                ->select('count(e)')
-                ->getQuery()
-                ->getSingleScalarResult();
+            ->getRepository('AppBundle:AdminActions')
+            ->createQueryBuilder('e')
+            ->select('count(e)')
+            ->getQuery()
+            ->getSingleScalarResult();
         $pages = ceil($getLines / 20);
 
         $adsCount = $this->getDoctrine()
@@ -66,7 +69,7 @@ class AdminController extends Controller
             ->getQuery()
             ->getSingleScalarResult();
 
-            if (!isset($_SESSION['visited'])):
+        if (!isset($_SESSION['visited'])):
 
             $now = $time = new \DateTime();
             $action = new AdminActions();
@@ -78,10 +81,11 @@ class AdminController extends Controller
             $em->persist($action);
             $em->flush();
 
-            endif; $_SESSION['visited'] = true;
+        endif;
+        $_SESSION['visited'] = true;
 
 
-        return $this->render('admin/index.html.twig',array(
+        return $this->render('admin/index.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'adminActions' => $actions,
             'adminActionsPages' => $pages,
@@ -99,7 +103,7 @@ class AdminController extends Controller
     {
         $this->denyAccessUnlessGranted('ROLE_SUPPORT', null, 'Unable to access this page!');
 
-        if($page != 1){
+        if ($page != 1) {
             $results = 20 * ($page - 1);
             $actions = $this->getDoctrine()
                 ->getRepository('AppBundle:AdminActions')
@@ -156,10 +160,11 @@ class AdminController extends Controller
             $em->persist($action);
             $em->flush();
 
-        endif; $_SESSION['visited'] = true;
+        endif;
+        $_SESSION['visited'] = true;
 
 
-        return $this->render('admin/index.html.twig',array(
+        return $this->render('admin/index.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'adminActions' => $actions,
             'adminActionsPages' => $pages,
@@ -182,7 +187,7 @@ class AdminController extends Controller
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-        return $this->render('admin/views/ads.html.twig',array(
+        return $this->render('admin/views/ads.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'ads' => $ads,
             'tools' => $this
@@ -202,12 +207,12 @@ class AdminController extends Controller
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-        foreach($payments as $idx => $payment) {
+        foreach ($payments as $idx => $payment) {
             $payments[$idx]['username'] = $this->convertUser($payment['userId'])->getName();
             $payments[$idx]['productName'] = $this->convertProduct($payment['productId'])->getName();
         }
 
-        return $this->render('admin/views/payments.html.twig',array(
+        return $this->render('admin/views/payments.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'payments' => $payments,
             'tools' => $this
@@ -225,14 +230,14 @@ class AdminController extends Controller
             ->createQueryBuilder('e')
             ->select('e')
             ->where('e.id = :id')
-            ->setParameter('id',$id)
+            ->setParameter('id', $id)
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         $video = $this->getDoctrine()
             ->getRepository('AppBundle:Videos')
             ->findOneBy(['aid' => $id]);
 
-        return $this->render('admin/views/ads.view.html.twig',array(
+        return $this->render('admin/views/ads.view.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'ad' => $ad,
             'video' => $video,
@@ -253,7 +258,7 @@ class AdminController extends Controller
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-        return $this->render(':admin/views:users.html.twig',array(
+        return $this->render(':admin/views:users.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'users' => $users));
     }
@@ -491,7 +496,7 @@ class AdminController extends Controller
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-        return $this->render(':admin/views:users.view.html.twig',array(
+        return $this->render(':admin/views:users.view.html.twig', array(
             'user' => $user,
             'admin_info' => $this->getAdminInfos()));
     }
@@ -503,7 +508,7 @@ class AdminController extends Controller
     {
         $videos = $this->getDoctrine()->getRepository('AppBundle:Videos')->findBy(['accepted' => 0]);
 
-        return $this->render(':admin/views:video.mod.html.twig',array(
+        return $this->render(':admin/views:video.mod.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'videos' => $videos,
             'functions' => $this));
@@ -524,10 +529,10 @@ class AdminController extends Controller
      * @return Response
      * @internal param $id
      */
-    public function videoViewAction($id,$video_uri)
+    public function videoViewAction($id, $video_uri)
     {
 
-        return $this->render(':admin/views:video.view.html.twig',array(
+        return $this->render(':admin/views:video.view.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'video_uri' => $video_uri,
             'key' => $id));
@@ -540,19 +545,35 @@ class AdminController extends Controller
     {
         $default = array();
         $form = $this->createFormBuilder($default)
-            ->add('to',EmailType::class)
-            ->add('from',ChoiceType::class, array(
+            ->add('type', ChoiceType::class, array(
                 'choices' => array(
-                    'no-reply @ vedocompro.it'=> 'no-reply@vedocompro.it',
-                    'admin @ vedocompro.it' => 'admin@vedocompro.it'
-                )))
-            ->add('subject',TextType::class)
-            ->add('message',TextareaType::class,array(
+                    'Internal' => 'internal',
+                    'Email' => 'email'
+                )
+            ))
+            ->add('to', EntityType::class, array(
+                    'class' => 'AppBundle:User',
+                    'placeholder' => 'Scegli User',
+                    'empty_data' => null,
+                    'required' => true,
+                    'label' => 'Categoria',
+                    'multiple' => true
+                )
+            )
+            ->add('from', ChoiceType::class, array(
+                    'choices' => array(
+                        'no-reply @ vedocompro.it' => 'no-reply@vedocompro.it',
+                        'admin @ vedocompro.it' => 'admin@vedocompro.it'
+                    )
+                )
+            )
+            ->add('subject', TextType::class)
+            ->add('message', TextareaType::class, array(
                 'attr' => array(
                     'rows' => 20
                 )
             ))
-            ->add('submit',SubmitType::class,array(
+            ->add('submit', SubmitType::class, array(
                 'attr' => array(
                     'class' => 'btn btn-success btn-lg pull-right'
                 )
@@ -561,35 +582,66 @@ class AdminController extends Controller
 
         $form->handleRequest($request);
 
-        if($form->isValid()) {
+        if ($form->isValid()) {
+            /** @var User[] $to */
             $to = $form->get('to')->getData();
             $from = $form->get('from')->getData();
             $subject = $form->get('subject')->getData();
-            $message = $form->get('message')->getData();
+            $message_text = $form->get('message')->getData();
+            $type = $form->get('type')->getData();
 
-            $message = \Swift_Message::newInstance()
-                ->setSubject($subject)
-                ->setFrom($from)
-                ->setTo($to)
-                ->setBody(
-                    $this->renderView(
-                        'Emails/message.blank.html.twig',
-                        array('message' => $message,'subject' => $subject)
-                    ),
-                    'text/html'
-                )
-            ;
-            $this->get('mailer')->send($message);
-            $this->addFlash(
-                'notice',
-                'Messaggio inviato!'
-            );
-            return $this->render(':admin/views:mail.html.twig',array(
+            if ($type == 'internal') {
+                $em = $this->getDoctrine()->getManager();
+                foreach ($to as $user) {
+                    $message = new Messages();
+                    $message->setFromUID($this->getUser()->getID());
+                    $message->setMessage($message_text);
+                    $message->setToUID($user->getId());
+                    $message->setObject(-1);
+                    $message->setDatetime(new \DateTime());
+                    $message->setIsRead(0);
+                    $em->persist($message);
+                    $em->flush();
+                    $notification = new Notifications();
+                    $notification->setReaded(false);
+                    $notification->setObject($message->getId());
+                    $notification->setType(6);
+                    $notification->setUid($user->getId());
+                    $notification->setDate(new \DateTime());
+                    $em->persist($notification);
+                    $em->flush();
+                    $this->addFlash(
+                        'notice',
+                        sprintf("Sent message to %s", $user->getName())
+                    );
+                }
+            } else if ($type == 'email') {
+                foreach ($to as $user) {
+                    $message = \Swift_Message::newInstance()
+                        ->setSubject($subject)
+                        ->setFrom($from)
+                        ->setTo($user->getEmail())
+                        ->setBody(
+                            $this->renderView(
+                                'Emails/message.blank.html.twig',
+                                array('message' => $message_text, 'subject' => $subject)
+                            ),
+                            'text/html'
+                        );
+                    $this->get('mailer')->send($message);
+                    $this->addFlash(
+                        'notice',
+                        sprintf("Sent email to %s", $user->getName())
+                    );
+                }
+            }
+
+            return $this->render(':admin/views:mail.html.twig', array(
                 'form' => $form->createView(),
                 'success' => $success = 1,
                 'admin_info' => $this->getAdminInfos()));
         }
-        return $this->render(':admin/views:mail.html.twig',array(
+        return $this->render(':admin/views:mail.html.twig', array(
             'form' => $form->createView(),
             'success' => $success = 0,
             'admin_info' => $this->getAdminInfos()));
@@ -607,7 +659,7 @@ class AdminController extends Controller
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-        return $this->render(':admin/views:coupons.html.twig',array(
+        return $this->render(':admin/views:coupons.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'coupons' => $coupons));
     }
@@ -617,7 +669,7 @@ class AdminController extends Controller
      */
     public function couponsGenAction()
     {
-        return $this->render(':admin/views:coupons.generate.html.twig',array(
+        return $this->render(':admin/views:coupons.generate.html.twig', array(
             'admin_info' => $this->getAdminInfos()));
     }
 
@@ -627,20 +679,20 @@ class AdminController extends Controller
     public function helpdeskAction()
     {
         $ticketsOpen = $this->getDoctrine()->getRepository('AppBundle:HelpDesk')
-                            ->createQueryBuilder('e')->select('e')->where('e.closed = 0')->andWhere('e.parent_m = 0')
-                            ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            ->createQueryBuilder('e')->select('e')->where('e.closed = 0')->andWhere('e.parent_m = 0')
+            ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         $ticketsClosed = $this->getDoctrine()->getRepository('AppBundle:HelpDesk')
-                            ->createQueryBuilder('e')->select('e')->where('e.closed = 1')
-                            ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            ->createQueryBuilder('e')->select('e')->where('e.closed = 1')
+            ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         $ticketsAssigned = $this->getDoctrine()->getRepository('AppBundle:HelpDesk')
-                            ->createQueryBuilder('e')->select('e')->where('e.closed = 2')
-                            ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            ->createQueryBuilder('e')->select('e')->where('e.closed = 2')
+            ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
         $countTO = count($ticketsOpen);
         $countTC = count($ticketsClosed);
         $countTA = count($ticketsAssigned);
 
-        return $this->render(':admin/views:helpdesk.html.twig',array(
+        return $this->render(':admin/views:helpdesk.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'tools' => $this,
             'ticketsOpen' => $ticketsOpen,
@@ -663,7 +715,7 @@ class AdminController extends Controller
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-        return $this->render(':admin/views:suggests.html.twig',array(
+        return $this->render(':admin/views:suggests.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'suggests' => $suggests));
     }
@@ -677,16 +729,16 @@ class AdminController extends Controller
             'server_name' => $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'],
             'server_host' => $_SERVER['HTTP_HOST'],
             'server_sftw' => $_SERVER['SERVER_SOFTWARE'],
-            'php_ini' =>  php_ini_loaded_file(),
+            'php_ini' => php_ini_loaded_file(),
             'php_version' => phpversion(),
             'php_max_execution_time' => ini_get('max_execution_time'),
             'php_upload_temp_dir' => ini_get('upload_tmp_dir'),
             'php_upload_max_filesize' => ini_get('upload_max_filesize'),
             'php_post_max_size' => ini_get('post_max_size'),
 
-    );
+        );
 
-        return $this->render(':admin/views:system.html.twig',array(
+        return $this->render(':admin/views:system.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'info' => $info));
     }
@@ -694,15 +746,17 @@ class AdminController extends Controller
     /**
      * @Route("/admin/lock", name="admin_lock")
      */
-    public function lockAction() {
+    public function lockAction()
+    {
 
-        return $this->render(':admin/views:lock.html.twig',array(
+        return $this->render(':admin/views:lock.html.twig', array(
             'currentUser' => $this->get('security.token_storage')->getToken()->getUser()->getID(),
             'tools' => $this
         ));
     }
 
-    public function getAdminInfos() {
+    public function getAdminInfos()
+    {
         $adminName = $this->get('security.token_storage')->getToken()->getUser();
         $admin = $this->getDoctrine()
             ->getRepository('AppBundle:User')
@@ -745,6 +799,7 @@ class AdminController extends Controller
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         return $uname[0]["id"];
     }
+
     public function convertAds($adID)
     {
         $uname = $this->getDoctrine()
@@ -757,6 +812,7 @@ class AdminController extends Controller
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         return $uname[0]["name"];
     }
+
     public function convertCategory($catID)
     {
         $catname = $this->getDoctrine()
@@ -769,6 +825,7 @@ class AdminController extends Controller
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         return $catname[0]["name"];
     }
+
     public function convertLevel($level)
     {
         switch ($level) {
@@ -789,7 +846,9 @@ class AdminController extends Controller
                 break;
         }
     }
-    public function convertAccessType($id,$switch) {
+
+    public function convertAccessType($id, $switch)
+    {
         $type = $this->getDoctrine()
             ->getRepository('AppBundle:AdminTypes')
             ->createQueryBuilder('e')
@@ -808,6 +867,7 @@ class AdminController extends Controller
         }
 
     }
+
     static public function slugify($text)
     {
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
@@ -822,7 +882,8 @@ class AdminController extends Controller
         return $text;
     }
 
-    public function checkExt($ext) {
+    public function checkExt($ext)
+    {
         if (strpos($ext, '.mp4') !== false) {
             return 1;
         } else {
@@ -830,22 +891,25 @@ class AdminController extends Controller
         }
     }
 
-    public function getBasename($string) {
+    public function getBasename($string)
+    {
         return basename($string);
     }
 
-    public function array_fill_keys($array) {
+    public function array_fill_keys($array)
+    {
         return array_fill_keys($array);
     }
 
-    function getDirContents($dir, &$results = array()){
+    function getDirContents($dir, &$results = array())
+    {
         $files = scandir($dir);
 
-        foreach($files as $key => $value){
-            $path = realpath($dir.DIRECTORY_SEPARATOR.$value);
-            if(!is_dir($path)) {
+        foreach ($files as $key => $value) {
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+            if (!is_dir($path)) {
                 $results[] = $path;
-            } else if($value != "." && $value != "..") {
+            } else if ($value != "." && $value != "..") {
                 $this::getDirContents($path, $results);
                 $results[] = $path;
             }
@@ -855,12 +919,14 @@ class AdminController extends Controller
     }
 }
 
-class scanDir {
+class scanDir
+{
     static private $directories, $files, $ext_filter, $recursive;
 
 // ----------------------------------------------------------------------------------------------
     // scan(dirpath::string|array, extensions::string|array, recursive::true|false)
-    static public function scan(){
+    static public function scan()
+    {
         // Initialize defaults
         self::$recursive = false;
         self::$directories = array();
@@ -868,21 +934,26 @@ class scanDir {
         self::$ext_filter = false;
 
         // Check we have minimum parameters
-        if(!$args = func_get_args()){
+        if (!$args = func_get_args()) {
             die("Must provide a path string or array of path strings");
         }
-        if(gettype($args[0]) != "string" && gettype($args[0]) != "array"){
+        if (gettype($args[0]) != "string" && gettype($args[0]) != "array") {
             die("Must provide a path string or array of path strings");
         }
 
         // Check if recursive scan | default action: no sub-directories
-        if(isset($args[2]) && $args[2] == true){self::$recursive = true;}
+        if (isset($args[2]) && $args[2] == true) {
+            self::$recursive = true;
+        }
 
         // Was a filter on file extensions included? | default action: return all file types
-        if(isset($args[1])){
-            if(gettype($args[1]) == "array"){self::$ext_filter = array_map('strtolower', $args[1]);}
-            else
-                if(gettype($args[1]) == "string"){self::$ext_filter[] = strtolower($args[1]);}
+        if (isset($args[1])) {
+            if (gettype($args[1]) == "array") {
+                self::$ext_filter = array_map('strtolower', $args[1]);
+            } else
+                if (gettype($args[1]) == "string") {
+                    self::$ext_filter[] = strtolower($args[1]);
+                }
         }
 
         // Grab path(s)
@@ -890,12 +961,15 @@ class scanDir {
         return self::$files;
     }
 
-    static private function verifyPaths($paths){
+    static private function verifyPaths($paths)
+    {
         $path_errors = array();
-        if(gettype($paths) == "string"){$paths = array($paths);}
+        if (gettype($paths) == "string") {
+            $paths = array($paths);
+        }
 
-        foreach($paths as $path){
-            if(is_dir($path)){
+        foreach ($paths as $path) {
+            if (is_dir($path)) {
                 self::$directories[] = $path;
                 $dirContents = self::find_contents($path);
             } else {
@@ -903,23 +977,29 @@ class scanDir {
             }
         }
 
-        if($path_errors){echo "The following directories do not exists<br />";die(var_dump($path_errors));}
+        if ($path_errors) {
+            echo "The following directories do not exists<br />";
+            die(var_dump($path_errors));
+        }
     }
 
     // This is how we scan directories
-    static private function find_contents($dir){
+    static private function find_contents($dir)
+    {
         $result = array();
         $root = scandir($dir);
-        foreach($root as $value){
-            if($value === '.' || $value === '..') {continue;}
-            if(is_file($dir.DIRECTORY_SEPARATOR.$value)){
-                if(!self::$ext_filter || in_array(strtolower(pathinfo($dir.DIRECTORY_SEPARATOR.$value, PATHINFO_EXTENSION)), self::$ext_filter)){
-                    self::$files[] = $result[] = $dir.DIRECTORY_SEPARATOR.$value;
+        foreach ($root as $value) {
+            if ($value === '.' || $value === '..') {
+                continue;
+            }
+            if (is_file($dir . DIRECTORY_SEPARATOR . $value)) {
+                if (!self::$ext_filter || in_array(strtolower(pathinfo($dir . DIRECTORY_SEPARATOR . $value, PATHINFO_EXTENSION)), self::$ext_filter)) {
+                    self::$files[] = $result[] = $dir . DIRECTORY_SEPARATOR . $value;
                 }
                 continue;
             }
-            if(self::$recursive){
-                foreach(self::find_contents($dir.DIRECTORY_SEPARATOR.$value) as $value) {
+            if (self::$recursive) {
+                foreach (self::find_contents($dir . DIRECTORY_SEPARATOR . $value) as $value) {
                     self::$files[] = $result[] = $value;
                 }
             }
