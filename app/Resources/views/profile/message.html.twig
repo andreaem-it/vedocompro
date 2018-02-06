@@ -1,11 +1,10 @@
-{% extends 'base.html.twig' %}
+
 {% block body %}
-    {% include 'template/header.html.twig' %}
     <div class="modal fade" id="deleteMessage">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document" >
             <div class="modal-content">
                 <div class="modal-body">
-                    <p>Eliminare Messaggio?</p>
+                    <h3>Sei sicuro di voler eliminare definitavamente il messaggio?</h3>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-danger">Elimina</button>
@@ -14,12 +13,13 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid scrollbar">
-        <div class="container">
-            <br>
-            <div class="row">
-                <div class="col-sm-12">
-                    <a href="{{ url('profilo', {query: app.user.username}) }}#messaggi">< Torna a Messaggi</a>
+        <div class="container-fluid scrollbar">
+            <div class="container">
+                <br>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a class="btn btn-outline-primary" onClick="showMessages()">< Torna a Messaggi</a>
+                    </div>
                 </div>
             </div>
             <br>
@@ -46,7 +46,5 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    {% include 'template/footer.html.twig' %}
 {% endblock %}

@@ -18,5 +18,9 @@
 /web/webtemp/*
 !web/webtemp/.gitkeep
 .DS_Store
+<<<<<<< HEAD
 /web/uploads/
+=======
+/web/uploads/*
+>>>>>>> restyle
 /.idea/

@@ -21,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-
+use Symfony\Component\Form\Extension\Core\Type\PhoneType;
 
 class UserController extends Controller
 {
@@ -45,6 +45,7 @@ class UserController extends Controller
 
         $usr = $this->get('security.token_storage')->getToken()->getUser();
 
+<<<<<<< HEAD
 //        $uid = $this->getDoctrine()
 //            ->getRepository('AppBundle:Ads')
 //            ->createQueryBuilder('e')
@@ -58,6 +59,21 @@ class UserController extends Controller
 //            ->select('e')
 //            ->getQuery()
 //            ->getResult(Query::HYDRATE_ARRAY);
+=======
+        $uid = $this->getDoctrine()
+            ->getRepository('AppBundle:Ads')
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->getQuery()
+            ->getResult(Query::HYDRATE_ARRAY);
+
+        $categories = $this->getDoctrine()
+            ->getRepository('AppBundle:Category')
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->getQuery()
+            ->getResult(Query::HYDRATE_ARRAY);
+>>>>>>> restyle
 
         $sells = $this->getDoctrine()
             ->getRepository('AppBundle:Sells')
@@ -151,7 +167,149 @@ class UserController extends Controller
             ]);
         }
     }
+    
+    /**
+     * @Route("api/messages/{uid}", name="apiMessages")
+    */
+    public function apiMessagesUid($uid) {
+        $user = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->findBy(array('name' => $uid));
+            
+        $messages = $this->getDoctrine()
+            ->getRepository('AppBundle:Messages')
+            ->findBy(array('toUID' => $uid), array('datetime' => "DESC"));
 
+        $notReadMsg = $this->getDoctrine()->getRepository('AppBundle:Messages')->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->where('u.toUID = :toUID')
+            ->andWhere('u.isRead = 0')
+            ->setParameter('toUID', $uid)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $messagesR = $this->getDoctrine()
+            ->getRepository('AppBundle:Messages')
+            ->findBy(array('fromUID' => $uid), array('datetime' => "DESC"));
+            
+        return $this->render('profile/pages/messages.html.twig',[
+            'user_info' => $user,
+            'messages' => $messages,
+            'messagesR' => $messagesR,
+            'notReadMsg' => $notReadMsg,
+            'user' => $this,
+            ]);    
+    }
+    
+    /**
+     * @Route("api/dashboard/{uid}", name="apiDashboard")
+    */
+    public function apiDashboard($uid) {
+        $user = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->findBy(array('name' => $uid));
+        $usr = $this->get('security.token_storage')->getToken()->getUser();
+            
+        $sells = $this->getDoctrine()
+            ->getRepository('AppBundle:Sells')
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->where('e.fuid = :uname')
+            ->setParameter('uname', $usr->getId())
+            ->getQuery()
+            ->getResult(Query::HYDRATE_ARRAY);
+
+        $buys = $this->getDoctrine()
+            ->getRepository('AppBundle:Buys')
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->where('e.tuid = :uname')
+            ->setParameter('uname', $usr)
+            ->getQuery()
+            ->getResult(Query::HYDRATE_ARRAY);
+
+        $wish = $this->getDoctrine()
+            ->getRepository('AppBundle:Wishlists')
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->where('e.uid = :uid')
+            ->setParameter('uid', $usr)
+            ->getQuery()
+            ->getResult(Query::HYDRATE_ARRAY);    
+        
+         return $this->render('profile/pages/dashboard.html.twig',[
+            'user_info' => $user,
+            'sells' => $sells,
+            'wishes' => $wish,
+            'buys' => $buys,
+            'user' => $this,
+            ]);    
+    }
+    /**
+     * @Route("/api/feedbacks/{uid}", name="apiFeedback")
+    */
+    public function apiFeedback($uid)
+    {
+        $feedbacks = $this->getDoctrine()
+            ->getRepository('AppBundle:Feedback')
+            ->findBy(array('uid' => $uid));
+            
+        return $this->render('profile/pages/feedbacks.html.twig', [
+            'feedback' => $feedbacks,
+            ]);
+    }
+    /**
+     * @Route("/api/settings/{uid}", name="apiSettings")
+    */
+    public function apiSettings($uid)
+    {
+        $entity = $this->getDoctrine()->getRepository('AppBundle:User')->find($uid);
+        
+        $user = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->findBy(array('id' => $uid));
+        
+        $settingsForm = $this->createFormBuilder($entity)
+            ->add('email', TextType::class)
+            ->add('plainpassword', PasswordType::class)
+            ->add('realname', TextType::class)
+            ->add('address', TextType::class)
+            ->add('city', TextType::class)
+            ->add('cap', TextType::class)
+            ->add('phone', PhoneType::class);
+        
+        return $this->render('profile/pages/settings.html.twig', [
+            'user_info' => $user,
+            'settingsForm' => $settingsForm
+            ]);
+    }
+    
+    /**
+     * @Route("/api/annunci/{uid}", name="apiAds")
+    */
+    public function apiAds($uid) {
+        
+        $user = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->findBy(array('id' => $uid));
+        
+        $ads = $this->getDoctrine()
+            ->getRepository('AppBundle:Ads')
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->where("e.uname = :uid")
+            ->setParameter('uid', $uid)
+            ->getQuery()
+            ->getResult(Query::HYDRATE_ARRAY);
+        
+        
+        return $this->render('profile/pages/ads.html.twig', [
+            'ads' => $ads,
+            'user' => $this,
+            'user_info' => $user
+            ]);
+    }
+    
     /**
      * @Route("/upgrade", name="upgrade")
      */

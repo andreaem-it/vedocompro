@@ -27,11 +27,14 @@ class HelpController extends Controller
             throw $this->createAccessDeniedException('GET OUT!');
         } else {
         $currentUser = $this->get('security.token_storage')->getToken()->getUser()->getID();
+        
+        $repo = $this->getDoctrine()->getManager()->getRepository('AppBundle:HelpDesk');
 
-        $ticketsO = $this->getDoctrine()->getManager()->getRepository('AppBundle:HelpDesk')->createQueryBuilder('e')->select('e')->where('e.uid = :uid')->setParameter('uid',$currentUser)->andWhere('e.closed = 0')->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);;
+        $ticketsO = $repo->createQueryBuilder('e')->select('e')->where('e.uid = :uid')->setParameter('uid',$currentUser)->andWhere('e.closed = 0')->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);;
         $ticketsOCount = count($ticketsO);
-        $ticketsC = $this->getDoctrine()->getManager()->getRepository('AppBundle:HelpDesk')->createQueryBuilder('e')->select('e')->where('e.uid = :uid')->setParameter('uid',$currentUser)->andWhere('e.closed = 1')->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);;
+        $ticketsC = $repo->createQueryBuilder('e')->select('e')->where('e.uid = :uid')->setParameter('uid',$currentUser)->andWhere('e.closed = 1')->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);;
         $ticketsCCount = count($ticketsC);
+        
 
         return $this->render('help/help.html.twig', array(
             'ticketsO' => $ticketsO,
@@ -57,7 +60,7 @@ class HelpController extends Controller
     }
 
     /**
-     * @Route("/helpdesk/apri_ticket", name="helpdesk_apri")
+     * @Route("/helpdesk/apri_ticket", name="helpdesk_create")
      */
     public function helpdeskNewAction(Request $request) {
 
@@ -75,7 +78,8 @@ class HelpController extends Controller
                     'Problema con utente' => '2',
                     'Problema con un inserzione' => '3',
                     'Errore generico' => '4'
-                )
+                ),
+                'label' => 'Tipo'
             ))
             ->add('message', TextType::class, array(
                 'label' => 'Messaggio',

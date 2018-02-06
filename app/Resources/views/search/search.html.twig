@@ -1,119 +1,29 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=0">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{{asset('js/jquery.scrolling-tabs.min.js') }}"></script>
     <script src="{{ asset('js/masonry.pkgd.min.js') }}"></script>
     <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}"></script>
-{% include 'template/header.html.twig' %}
-    <style>
-        @media only screen and (max-device-width: 480px) {
-            .result-card {
-                margin-bottom: 10px;
-            }
-        }
-        #resultsCol, #advSearchCol {
-            -webkit-transition: width 0.3s ease, margin 0.3s ease;
-            -moz-transition: width 0.3s ease, margin 0.3s ease;
-            -o-transition: width 0.3s ease, margin 0.3s ease;
-            transition: width 0.3s ease, margin 0.3s ease;
-        }
-        .span0 {
-            width: 0%;
-        }
-        .span0 + [class*="span"]{
+    <link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
+    
+        {% include 'template/header.html.twig' %}
 
-        }
-
-        .span3 {
-            margin-left: 10px;
-            width: 15.66%;
-        }
-        .hidden {
-            visibility: hidden;
-        }
-        .visible {
-            visibility: visible;
-        }
-        .item {
-            margin-bottom:15px
-        }
-    </style>
-<div class="wrapper">
-    <div class="container-fluid scrollbar">
-        <br>
-        <div class="row">
-            <div class="col-sm-12">
-                {% trans %}  Results for {% endtrans %} "{{ query }}" in {{ region }} &nbsp;<!--<small><a href="">Salva Ricerca</a></small> | <small><a href="" id="advSearch">Ricerca Avanzata</a></small><span class="float-right">Visualizza come: &nbsp;<img src="{{ asset('img/icons/icon_cards.png') }}" style="width:22px">&nbsp;|&nbsp;<img src="{{ asset('img/icons/icon_list.png') }}" style="width:22px"></span>-->
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="span0 hidden" id="advSearchCol" >
-                <div class="card hidden-sm-down">
-                    <div class="card-block">
-                        <h6 class="card-title">Ricerca</h6>
-                        {{ render(controller('AppBundle:Search:form')) }}
-                    </div>
-                </div>
-            </div>
-            <div class="span12 col-md-7" id="resultsCol">
-                <div class="row masonry-container">
-                {% for result in results %}
-                    {% set slug = search.slugify(result.name) %}
-                    <div class="col-md-3 item">
-                        {% if result.objLevel == 1 %}
-                            <div class="card result-card" style="border: 4px solid rgb(218, 165, 32);">
-                        {% elseif result.objLevel == 2 %}
-                            <div class="card result-card" style="border: 4px solid #ccc;">
-                        {% elseif result.objLevel == 3 %}
-                            <div class="card result-card" style="border: 4px solid #CD7F32">
-                        {% else %}
-                            <div class="card result-card">
-                        {% endif %}
-                            {% set catName = search.slugify(search.convertCategory(result.category)) %}
-                            {% set itemName = search.slugify(result.name) %}
-                            <a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': slug}) }}">
-                                <img class="card-img-top img-fluid" id="imgPreview-{{ result.id }}" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ result.id }}-1.jpg" alt="Card image cap">
-                            </a>
-                            <div class="card-block">
-                                <h6 class="card-title" style="font-size:14px"><a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': itemName}) }}">{{ result.name }}</a></h6>
-                                <p class="card-text"><strong>{{ result.price }}&nbsp;€</strong></p>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-                <script>
-                    var cycle = function(el) {
-                        var s = el.attr('src');
-                        var root = s.substring(0, s.lastIndexOf('-') + 1);
-                        var count = s.substring(s.lastIndexOf('-') + 1).replace('.jpg', '');
-                        count = (count*1+1)%5;
-                        console.log(count);
-                        console.log('-------');
-                        el.attr('src', root + ((count === 0) ? '5' : count) + '.jpg');
-                    };
-                    $('body').on('mouseenter', '[id^=imgPreview-]', function(e) {
-                        var thisImage = $(this);
-                        var timer;
-                        cycle(thisImage);
-                        timer = setInterval(function() {
-                            cycle(thisImage);
-                        }, 800);
-                        thisImage.on('mouseleave', function() {
-                            clearInterval(timer);
-                        });
-                    });
-                </script>
-                </div>
-            </div>
-            <div class="col-md-5 hidden-sm-down" id="showcaseCol" data-spy="affix" data-offset-top="200" data-offset-left="70%" data-offset-bottom="200">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-block">
-                                Vetrina<br>
-                                {% for item in showcase %}
-                                    {% set catName = search.slugify(search.convertCategory(item.category)) %}
-                                    {% set itemName = search.slugify(item.name) %}
-                                    {% set slug = search.slugify(item.name) %}
+    <div class="wrapper">
+        <div class="container-medium">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2 class="font-weight-light mt-5 mb-4 color-light-blue-txt section-title">Sponsorizzati</h2>
+                        {% for item in showcase %}
+                            {% set catName = search.slugify(search.convertCategory(item.category)) %}
+                            {% set itemName = search.slugify(item.name) %}
+                            {% set slug = search.slugify(item.name) %}
+                             <div class="card">
+                                <div class="card-block">
                                     <div class="card" style=" margin-bottom:10px">
                                         <div class="card-block" style="padding: 0">
                                             <div>
@@ -125,66 +35,101 @@
                                             </div>
                                         </div>
                                     </div>
-                                {% endfor %}
+                                </div>
                             </div>
+                        {% endfor %}
+                            
+                    </div>
+            </div> <!-- Sponsorizzati -->
+            <div class="row mt-5">
+                <div class="col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
+                    <img class="hidden-sm-up" src="https://lh3.ggpht.com/3q0W5UdEjoVjCVFo4l5aJoAg2-ElBSpBSvcMwuGKG_RNyrePKwSA54ZMaqA_EpEBpBi00hF0=w120">
+                </div>
+                <div class="col-sm-10 pl-4 pr-4">
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            <h1 class="font-weight-light mb-4 section-title">{% trans %}  Results for {% endtrans %} "{{ query }}" in {{ region }}</h1>
+                        </div>
+                        <div class="row ml-4 mr-3 masonry-container">
+                        {% for result in results %}
+                            {% set slug = search.slugify(result.name) %}
+                            <div class="col-md-2 item mt-3">
+                                {% if result.objLevel == 1 %}
+                                    <div class="card result-card" style="border: 4px solid rgb(218, 165, 32);">
+                                {% elseif result.objLevel == 2 %}
+                                    <div class="card result-card" style="border: 4px solid #ccc;">
+                                {% elseif result.objLevel == 3 %}
+                                    <div class="card result-card" style="border: 4px solid #CD7F32">
+                                {% else %}
+                                    <div class="card result-card">
+                                {% endif %}
+                                    {% set catName = search.slugify(search.convertCategory(result.category)) %}
+                                    {% set itemName = search.slugify(result.name) %}
+                                    <a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': slug}) }}">
+                                        <img class="card-img-top img-fluid" id="imgPreview-{{ result.id }}" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ result.id }}-1.jpg" alt="Card image cap">
+                                    </a>
+                                    <div class="card-body">
+                                        <h5 class="card-title font-weight-light">
+                                            <a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': itemName}) }}">{{ result.name }}</a>
+                                            <p><strong>{{ result.price }}&nbsp;€</strong></p>
+                                        </h5>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <script>
+                            var cycle = function(el) {
+                                var s = el.attr('src');
+                                var root = s.substring(0, s.lastIndexOf('-') + 1);
+                                var count = s.substring(s.lastIndexOf('-') + 1).replace('.jpg', '');
+                                count = (count*1+1)%5;
+                                el.attr('src', root + ((count === 0) ? '5' : count) + '.jpg');
+                            };
+                            $('body').on('mouseenter', '[id^=imgPreview-]', function(e) {
+                                var thisImage = $(this);
+                                var timer;
+                                cycle(thisImage);
+                                timer = setInterval(function() {
+                                    cycle(thisImage);
+                                }, 800);
+                                thisImage.on('mouseleave', function() {
+                                    clearInterval(timer);
+                                });
+                            });
+                            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                                 $('.container-medium').removeClass('container-medium').addClass('container-fluid');   
+                            }
+                        </script>
                         </div>
                     </div>
-                    <div class="col-md-2 text-center " id="bannerCol">
-                        <!--<img src="http://dianescorner.com/images/ad_placeholder.gif">-->
-                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                        <!-- VedoCompro -->
-                        <ins class="adsbygoogle"
-                             style="display:inline-block;width:160px;height:600px"
-                             data-ad-client="ca-pub-4967985757423249"
-                             data-ad-slot="7771954836"></ins>
-                        <script>
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
-                    </div>
+                </div>
+                <div class="col-sm-1 mt-5 pt-4">
+                    <img src="https://lh3.ggpht.com/3q0W5UdEjoVjCVFo4l5aJoAg2-ElBSpBSvcMwuGKG_RNyrePKwSA54ZMaqA_EpEBpBi00hF0=w120">
                 </div>
             </div>
+            <div class="row">
+                
+            </div>
+            
+            
         </div>
-        <br>
-
     </div>
-</div>
-
-<script>
-    var offsetFn = function() {
-        return $('#showcaseCol').position().top;
-    };
-    $('#showcaseCol').affix({
-        offset: {top: offsetFn}
-    });
-    $('.form-horizontal #form_submit').hide();
-    $('#advSearch').on('click', function (e) {
-        e.preventDefault();
-        $('.form-horizontal #form_submit').toggle();
-        $('#advSearchCol').toggleClass('span12 span3').toggleClass('hidden visible');
-        $('#resultsCol').toggleClass('span0 span9').toggleClass('col-md-5 col-md-7');
-
-    });
-    var $container = $('.masonry-container');
-    $container.imagesLoaded( function () {
-        $container.masonry({
-            columnWidth: '.item',
-            itemSelector: '.item'
-        });
-    });
-</script>
-<style>
-.affix {
-    position: fixed;
-    top: 1rem;
-}
-
-.affix-bottom {
-    position: absolute;
-}
-#showcaseCol.col-md-5.affix {
-    right: 0px;
-    top: 80px;
-}
-</style>
-    {% include 'template/footer.html.twig' %}
-{% endblock %}
+        {% include 'template/footer.html.twig' %}
+    <style>
+        .container-medium {
+            width: 100%;
+            padding-right: 55px;
+            padding-left: 55px;
+            margin-right: auto;
+            margin-left: auto;
+        } 
+        .section-title {
+            font-size: 28px;
+        }
+        .card {
+            box-shadow: 5px 5px 10px 0px #BBB;
+        }
+        
+    </style>
+{% endblock %}    

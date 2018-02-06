@@ -1,0 +1,243 @@
+<div class="container">
+    <div class="row mt-5 mb-5">
+        <h2 class="font-weight-light">Vendite</h2>
+    </div>
+    <div class="row">
+        <ul class="list-group" style="width:100%">
+        {% if sells > 0 %}
+            {% set index = 0 %}
+            {% for sell in sells %}
+              <li class="list-group-item list-group-item-action list-item-shadow" style="padding:0!important">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="dash-image-holder image-holder-desktop" style="background-image:url('https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ sell.aid }}-1.jpg');" class="img-fluid"></div>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="row mt-4">
+                            <h3 class="font-weight-light ad-title">{{ user.convertAds(sell.aid) }}</h3>
+                        </div>
+                        <div class="row mt-3 more-col">
+                            <div class="col-sm-3 actions-col">
+                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle btn-actions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Azioni
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    {% if sell.paid == 0 %}
+                                        <a class="dropdown-item" href="{{ url('setReceivedPayment',{uid: app.user.id, aid:sell.id}) }}">Segnala come Pagamento Ricevuto</a>
+                                    {% elseif sell.paid == 1 %}
+                                        <a class="dropdown-item" href="{{ url('unsetReceivedPayment',{uid: app.user.id, aid:sell.id}) }}">Annulla Pagamento Ricevuto</a>
+                                    {% endif %}
+                                    {% if sell.shipped == 0 %}
+                                        <a class="dropdown-item" href="{{ url('setAsShipped',{uid: app.user.id, aid:sell.id}) }}">Segnala come Spedito</a>
+                                    {% elseif sell.shipped == 1 %}
+                                        <a class="dropdown-item" href="{{ url('unsetAsShipped',{uid: app.user.id, aid:sell.id}) }}">Annulla Spedito</a>
+                                    {% endif %}
+                                    {% if sell.feedout == 0 %}
+                                        <a class="dropdown-item" href="{{ url('feedback_leave',{uid: app.user.id, aid:sell.id}) }}">Lascia Feedback</a>
+                                    {% elseif sell.feedout == 1 %}
+                                    {% endif %}
+                                    <a class="dropdown-item" href="{{ url('tracking',{'uid': app.user.username,'aid': sell.aid}) }}">Traccia la Spedizione</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Annulla transazione</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-9 status-col">
+                                <div class="ml-auto text-right mr-3">
+                                    <img src="{{ asset('img/icons/icon_check.png') }}" style="width:24px;margin-right:10px;{% if user.getSell(sell.id,'isVerified') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Verificato">
+                                    <img src="{{ asset('img/icons/icon_dollars.png') }}" style="width:24px;margin-right:10px;{% if user.getSell(sell.id,'isPaid') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Pagato">
+                                    <img src="{{ asset('img/icons/icon_package.png') }}" style="width:24px;margin-right:10px;{% if user.getSell(sell.id,'isShipped') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Spedito">
+                                    <img src="{{ asset('img/icons/icon_feed_sended.png') }}" style="width:20px;margin-right:10px;{% if user.getSell(sell.id,'isFeedOut') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Feedback lasciato">
+                                    <img src="{{ asset('img/icons/icon_feed_received.png') }}" style="width:20px;margin-right:10px;{% if user.getSell(sell.id,'isFeedIn') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Feedback ricevuto">
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+              </li>
+              {% set index = index + 1 %}
+            {% endfor %}
+        {% else %}
+            <div class="text-center">Non hai ancora alcun effettuato alcun Acquisto</div>
+        {% endif %}
+        </ul>
+    </div>
+    <br>
+    <div class="row mt-5 mb-5">
+        <h2 class="font-weight-light">Acquisti</h2>
+    </div>
+    <div class="row">
+        <ul class="list-group" style="width:100%">
+        {% if buys > 0 %}
+            {% set index = 0 %}
+            {% for buy in buys %}
+            
+              <li class="list-group-item list-group-item-action list-item-shadow" style="padding:0!important">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="dash-image-holder image-holder-desktop" style="background-image:url('https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ buy.aid }}-1.jpg')" class="img-fluid"></div>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="row mt-4">
+                            <h3 class="font-weight-light ad-title">{{ user.convertAds(buy.aid) }}</h3>
+                        </div>
+                          <div class="row mt-3 more-col">
+                            <div class="col-sm-3 actions-col">
+                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Azioni
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    {% if buy.paid == 0 %}
+                                        <a class="dropdown-item" href="{{ url('setReceivedPayment',{uid: app.user.id, aid:buy.id}) }}">Segnala come Pagamento Ricevuto</a>
+                                    {% elseif buy.paid == 1 %}
+                                        <a class="dropdown-item" href="{{ url('unsetReceivedPayment',{uid: app.user.id, aid:buy.id}) }}">Annulla Pagamento Ricevuto</a>
+                                    {% endif %}
+                                    {% if buy.shipped == 0 %}
+                                        <a class="dropdown-item" href="{{ url('setAsShipped',{uid: app.user.id, aid:buy.id}) }}">Segnala come Spedito</a>
+                                    {% elseif buy.shipped == 1 %}
+                                        <a class="dropdown-item" href="{{ url('unsetAsShipped',{uid: app.user.id, aid:buy.id}) }}">Annulla Spedito</a>
+                                    {% endif %}
+                                    {% if buy.feedout == 0 %}
+                                        <a class="dropdown-item" href="{{ url('feedback_leave',{uid: app.user.id, aid:buy.id}) }}">Lascia Feedback</a>
+                                    {% elseif buy.feedout == 1 %}
+                                    {% endif %}
+                                    <a class="dropdown-item" href="{{ url('tracking',{'uid': app.user.username,'aid': buy.aid}) }}">Traccia la Spedizione</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Annulla transazione</a>
+                                </div>
+                            </div>
+                            <div class="col-sm-9 status-col">
+                                <div class="ml-auto text-right mr-3">
+                                    <img src="{{ asset('img/icons/icon_check.png') }}" style="width:24px;margin-right:10px;{% if user.getSell(buy.id,'isVerified') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Verificato">
+                                            <img src="{{ asset('img/icons/icon_dollars.png') }}" style="width:24px;margin-right:10px;{% if user.getSell(buy.id,'isPaid') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Pagato">
+                                            <img src="{{ asset('img/icons/icon_package.png') }}" style="width:24px;margin-right:10px;{% if user.getSell(buy.id,'isShipped') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Spedito">
+                                            <img src="{{ asset('img/icons/icon_feed_sended.png') }}" style="width:20px;margin-right:10px;{% if user.getSell(buy.id,'isFeedOut') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Feedback lasciato">
+                                            <img src="{{ asset('img/icons/icon_feed_received.png') }}" style="width:20px;margin-right:10px;{% if user.getSell(buy.id,'isFeedIn') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Feedback ricevuto">
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+              </li>
+              {% set index = index + 1 %}
+            {% endfor %}
+        {% else %}
+            <div class="text-center">Non hai ancora alcun effettuato alcun Acquisto</div>
+        {% endif %}
+        </ul>
+    </div>
+       <!-- <div class="card" style="width:100%">
+            <div class="card-block">
+                <div class="card-title"><h5>Acquisti</h5></div>
+                <div class="card-text">
+                    {% if sells > 0 %}
+                        {% set index = 0 %}
+                        {% for buy in buys %}
+                            <div class="card">
+                                <div class="card-block profile-bacheca-card" style="padding:0px">
+                                    <img src="/uploads/photos/{{ buy.aid }}-1.jpg" style="width:80px;float:left;margin-right:10px">
+                                    <div class="row" style="margin-top:18px">
+                                        <div class="col-md">
+                                            <div class="card-title">{{ user.convertAds(buy.aid) }}</div>
+                                        </div>
+
+                                        <div class="ml-auto">
+                                            <img src="{{ asset('img/icons/icon_check.png') }}" style="width:24px;margin-right:10px;{% if user.getSell(buy.id,'isVerified') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Verificato">
+                                            <img src="{{ asset('img/icons/icon_dollars.png') }}" style="width:24px;margin-right:10px;{% if user.getSell(buy.id,'isPaid') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Pagato">
+                                            <img src="{{ asset('img/icons/icon_package.png') }}" style="width:24px;margin-right:10px;{% if user.getSell(buy.id,'isShipped') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Spedito">
+                                            <img src="{{ asset('img/icons/icon_feed_sended.png') }}" style="width:20px;margin-right:10px;{% if user.getSell(buy.id,'isFeedOut') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Feedback lasciato">
+                                            <img src="{{ asset('img/icons/icon_feed_received.png') }}" style="width:20px;margin-right:10px;{% if user.getSell(buy.id,'isFeedIn') == 0 %}filter:brightness(300%){% endif %}" data-toggle="tooltip" data-title="Feedback ricevuto">
+                                        </div>
+                                        <div class="ml-auto" style="margin-top: -6px;margin-right:10px">
+                                            <div class="btn-group" role="group">
+                                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Azioni
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                    <a class="dropdown-item" href="#">Segnala come Pagamento Inviato</a>
+                                                    <a class="dropdown-item" href="#">Segnala come Ricevuto</a>
+                                                    <a class="dropdown-item" href="#">Lascia Feedback</a>
+                                                    <a class="dropdown-item" href="{{ url('tracking',{'uid': app.user.username,'aid': buy.aid}) }}">Traccia la Spedizione</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Annulla transazione</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% set index = index + 1 %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center">Non hai ancora alcun effettuato alcun Acquisto</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="card" style="width: 100%;">
+            <div class="card-block">
+                <div class="card-title"><h5>Lista dei Desideri</h5></div>
+                <div class="card-text">
+                    {% if sells > 0 %}
+                        {% set index = 0 %}
+                        {% for wish in wishes %}
+
+                            <div class="card">
+                                <div class="card-block profile-bacheca-card" style="padding:0px">
+                                    <img src="/uploads/photos/{{ wish.aid }}-1.jpg" style="width:80px;float:left;margin-right:10px">
+                                    <div class="row" style="margin-top:18px">
+                                        <div class="col-md">
+                                            <div class="card-title">{{ user.convertAds(wish.aid) }}</div>
+                                        </div>
+                                        <div class="ml-auto" style="margin-top: -6px;margin-right:10px">
+                                            <div class="btn-group" role="group">
+                                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Azioni
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% set index = index + 1 %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center">Non hai ancora alcun effettuato alcun elemento nella lista desideri</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+<script>
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            $('.dash-image-holder').removeClass('image-holder-desktop').addClass('image-holder-mobile');
+            $('.ad-title').addClass('ml-5');
+            $('.actions-col').removeClass('col-sm-3').addClass('col-3 ml-4');
+            $('.status-col').removeClass('col-sm-9').addClass('col-8 mt-1');
+            $('.more-col').addClass('mb-3')
+        }
+</script>
+<style>
+    .image-holder-desktop {
+        margin:-2px!important;
+        min-height:150px;
+        min-width:150px;
+        background-size:contain;
+        background-position:center;
+        background-repeat:no-repeat
+    }
+    .image-holder-mobile {
+        margin:-1px!important;
+        min-height:270px;
+        min-width:150px;
+        background-size:contain;
+        background-position:center;
+        background-repeat:no-repeat
+    }
+</style>                        

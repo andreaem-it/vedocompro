@@ -200,7 +200,7 @@ class AdsController extends Controller
             $newAd->setOption3('');
             $newAd->setOption4('');
             $newAd->setOption5('');
-            $newAd->setObjLevel(0);
+
             $newAd->setShowcase(0);
             $newAd->setSold(0);
             $newAd->setTrackingCode('');
@@ -214,7 +214,15 @@ class AdsController extends Controller
                     'placeholder' => 'Scegli Categoria',
                     'empty_data' => null,
                     'required' => true,
-                    'label' => 'Categoria'))
+                    'label' => 'Categoria',
+                    'class' => 'AppBundle\Entity\Category',
+                    'group_by' => 'parentName',
+                    'query_builder' => function (EntityRepository $repo) {
+                        $qb = $repo->createQueryBuilder('l');
+                        $qb->andWhere('l.parent IS NOT NULL');
+                        return $qb;
+                    },
+                    'label' => 'Category'))
                 ->add('price', MoneyType::class, array('label' => 'Prezzo'))
                 ->add('objCondition', ChoiceType::class, array('label' => 'Condizione', 'choices' => array(
                     'Nuovo' => 'Nuovo',
@@ -223,13 +231,14 @@ class AdsController extends Controller
                     'Non Funzionante' => 'Non Funzionante'
                 ),))
                 ->add('location', TextType::class, array('label' => 'Dove si trova'))
-                ->add('region', TextType::class, array('label' => 'Regione'))
+                ->add('region', TextType::class, array('label' => 'Regione', 'attr' => array('class' => 'typeahead tt-query', 'id' => 'form_region', 'autocomplete' => 'off', 'spellcheck' => 'false', 'style' => 'width:100%')))
                 /**->add('option1',TextType::class, array('label' => 'Chilometraggio'))
                  * ->add('option2',TextType::class, array('label' => 'Anno'))
                  * ->add('option3',TextType::class, array('label' => 'Proprietari'))
                  * ->add('option4',TextType::class, array('label' => 'Targa'))
                  * ->add('option5',TextType::class)**/
                 ->add('video', HiddenType::class)
+                ->add('objLevel', HiddenType::class)
                 ->add('save', SubmitType::class, array('label' => 'Aggiungi Inserzione'))
                 ->getForm();
 

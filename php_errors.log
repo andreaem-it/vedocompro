@@ -1,0 +1,99 @@
+[28-Dec-2017 14:48:11 UTC] PHP Fatal error:  Uncaught exception 'RuntimeException' with message 'Unable to create the cache directory (/home/ubuntu/workspace/var/cache/prod)
+' in /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:570
+Stack trace:
+#0 /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(486): Symfony\Component\HttpKernel\Kernel->buildContainer()
+#1 /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(116): Symfony\Component\HttpKernel\Kernel->initializeContainer()
+#2 /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(165): Symfony\Component\HttpKernel\Kernel->boot()
+#3 /home/ubuntu/workspace/web/app.php(19): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#4 {main}
+  thrown in /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php on line 570
+[28-Dec-2017 14:49:08 UTC] PHP Fatal error:  Uncaught exception 'RuntimeException' with message 'Session Storage was not able to create directory "/var/lib/php/sessions"' in /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeFileSessionHandler.php:52
+Stack trace:
+#0 /home/ubuntu/workspace/var/cache/prod/appProdProjectContainer.php(3423): Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler->__construct('/var/lib/php/se...')
+#1 /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Container.php(311): appProdProjectContainer->getSession_HandlerService()
+#2 /home/ubuntu/workspace/var/cache/prod/appProdProjectContainer.php(3462): Symfony\Component\DependencyInjection\Container->get('session.handler')
+#3 /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Container.php(311): appProdProjectContainer->getSession_Storage_NativeService()
+#4 /home/ubuntu/workspace/var/cache/prod/appProdProjectContainer.ph in /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeFileSessionHandler.php on line 52
+[28-Dec-2017 14:49:57 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/ubuntu/workspace/src/AppBundle/Controller/AdminController.php on line 89
+[28-Dec-2017 14:49:57 UTC] PHP Stack trace:
+[28-Dec-2017 14:49:57 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app.php:0
+[28-Dec-2017 14:49:57 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /home/ubuntu/workspace/web/app.php:19
+[28-Dec-2017 14:49:57 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:168
+[28-Dec-2017 14:49:57 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[28-Dec-2017 14:49:57 UTC] PHP   5. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:129
+[28-Dec-2017 14:49:57 UTC] PHP   6. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/EventDispatcher.php:46
+[28-Dec-2017 14:49:57 UTC] PHP   7. call_user_func:{/home/ubuntu/workspace/vendor/symfony/event-dispatcher/EventDispatcher.php:184}() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/EventDispatcher.php:184
+[28-Dec-2017 14:49:57 UTC] PHP   8. Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/EventDispatcher.php:184
+[28-Dec-2017 14:49:57 UTC] PHP   9. Symfony\Component\Routing\Router->matchRequest() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/EventListener/RouterListener.php:101
+[28-Dec-2017 14:49:57 UTC] PHP  10. Symfony\Component\Routing\Router->getMatcher() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Router.php:260
+[28-Dec-2017 14:49:57 UTC] PHP  11. Symfony\Component\Config\ResourceCheckerConfigCacheFactory->cache() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Router.php:307
+[28-Dec-2017 14:49:57 UTC] PHP  12. call_user_func:{/home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[28-Dec-2017 14:49:57 UTC] PHP  13. Symfony\Component\Routing\Router->Symfony\Component\Routing\{closure}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[28-Dec-2017 14:49:57 UTC] PHP  14. Symfony\Component\Routing\Router->getMatcherDumperInstance() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Router.php:293
+[28-Dec-2017 14:49:57 UTC] PHP  15. Symfony\Bundle\FrameworkBundle\Routing\Router->getRouteCollection() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Router.php:371
+[28-Dec-2017 14:49:57 UTC] PHP  16. Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/Router.php:54
+[28-Dec-2017 14:49:57 UTC] PHP  17. Symfony\Component\Config\Loader\DelegatingLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/DelegatingLoader.php:72
+[28-Dec-2017 14:49:57 UTC] PHP  18. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/DelegatingLoader.php:45
+[28-Dec-2017 14:49:57 UTC] PHP  19. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[28-Dec-2017 14:49:57 UTC] PHP  20. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[28-Dec-2017 14:49:57 UTC] PHP  21. Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[28-Dec-2017 14:49:57 UTC] PHP  22. ReflectionClass->__construct() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[28-Dec-2017 14:49:57 UTC] PHP  23. spl_autoload_call() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[28-Dec-2017 14:49:57 UTC] PHP  24. Composer\Autoload\ClassLoader->loadClass() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[28-Dec-2017 14:49:57 UTC] PHP  25. Composer\Autoload\includeFile() /home/ubuntu/workspace/vendor/composer/ClassLoader.php:322
+[28-Dec-2017 14:54:23 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/ubuntu/workspace/src/AppBundle/Controller/AdminController.php on line 518
+[28-Dec-2017 14:54:23 UTC] PHP Stack trace:
+[28-Dec-2017 14:54:23 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app.php:0
+[28-Dec-2017 14:54:23 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /home/ubuntu/workspace/web/app.php:19
+[28-Dec-2017 14:54:23 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:168
+[28-Dec-2017 14:54:23 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/var/cache/prod/classes.php:4650
+[28-Dec-2017 14:54:23 UTC] PHP   5. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /home/ubuntu/workspace/var/cache/prod/classes.php:4680
+[28-Dec-2017 14:54:23 UTC] PHP   6. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /home/ubuntu/workspace/var/cache/prod/classes.php:3664
+[28-Dec-2017 14:54:23 UTC] PHP   7. call_user_func:{/home/ubuntu/workspace/var/cache/prod/classes.php:3749}() /home/ubuntu/workspace/var/cache/prod/classes.php:3749
+[28-Dec-2017 14:54:23 UTC] PHP   8. Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest() /home/ubuntu/workspace/var/cache/prod/classes.php:3749
+[28-Dec-2017 14:54:23 UTC] PHP   9. Symfony\Component\Routing\Router->matchRequest() /home/ubuntu/workspace/var/cache/prod/classes.php:3948
+[28-Dec-2017 14:54:23 UTC] PHP  10. Symfony\Component\Routing\Router->getMatcher() /home/ubuntu/workspace/var/cache/prod/classes.php:1905
+[28-Dec-2017 14:54:23 UTC] PHP  11. Symfony\Component\Config\ResourceCheckerConfigCacheFactory->cache() /home/ubuntu/workspace/var/cache/prod/classes.php:1937
+[28-Dec-2017 14:54:23 UTC] PHP  12. call_user_func:{/home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[28-Dec-2017 14:54:23 UTC] PHP  13. Symfony\Component\Routing\Router->Symfony\Component\Routing\{closure}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[28-Dec-2017 14:54:23 UTC] PHP  14. Symfony\Component\Routing\Router->getMatcherDumperInstance() /home/ubuntu/workspace/var/cache/prod/classes.php:1927
+[28-Dec-2017 14:54:23 UTC] PHP  15. Symfony\Bundle\FrameworkBundle\Routing\Router->getRouteCollection() /home/ubuntu/workspace/var/cache/prod/classes.php:1975
+[28-Dec-2017 14:54:23 UTC] PHP  16. Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader->load() /home/ubuntu/workspace/var/cache/prod/classes.php:2194
+[28-Dec-2017 14:54:23 UTC] PHP  17. Symfony\Component\Config\Loader\DelegatingLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/DelegatingLoader.php:72
+[28-Dec-2017 14:54:23 UTC] PHP  18. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/DelegatingLoader.php:45
+[28-Dec-2017 14:54:23 UTC] PHP  19. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[28-Dec-2017 14:54:23 UTC] PHP  20. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[28-Dec-2017 14:54:23 UTC] PHP  21. Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[28-Dec-2017 14:54:23 UTC] PHP  22. ReflectionClass->__construct() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[28-Dec-2017 14:54:23 UTC] PHP  23. spl_autoload_call() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[28-Dec-2017 14:54:23 UTC] PHP  24. Composer\Autoload\ClassLoader->loadClass() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[28-Dec-2017 14:54:23 UTC] PHP  25. Composer\Autoload\includeFile() /home/ubuntu/workspace/vendor/composer/ClassLoader.php:322
+[28-Dec-2017 22:44:00 UTC] PHP Fatal error:  Uncaught UnexpectedValueException: The stream or file "/home/ubuntu/workspace/var/logs/dev.log" could not be opened: failed to open stream: Permission denied in /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Handler/StreamHandler.php:107
+Stack trace:
+#0 /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Handler/AbstractProcessingHandler.php(37): Monolog\Handler\StreamHandler->write(Array)
+#1 /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Logger.php(337): Monolog\Handler\AbstractProcessingHandler->handle(Array)
+#2 /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Logger.php(518): Monolog\Logger->addRecord(500, 'Uncaught Except...', Array)
+#3 /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Debug/ErrorHandler.php(546): Monolog\Logger->log(500, 'Uncaught Except...', Array)
+#4 [internal function]: Symfony\Component\Debug\ErrorHandler->handleException(Object(UnexpectedValueException))
+#5 {main}
+  thrown in /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Handler/StreamHandler.php on line 107
+[28-Dec-2017 22:44:34 UTC] PHP Fatal error:  Uncaught UnexpectedValueException: The stream or file "/home/ubuntu/workspace/var/logs/dev.log" could not be opened: failed to open stream: Permission denied in /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Handler/StreamHandler.php:107
+Stack trace:
+#0 /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Handler/AbstractProcessingHandler.php(37): Monolog\Handler\StreamHandler->write(Array)
+#1 /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Logger.php(337): Monolog\Handler\AbstractProcessingHandler->handle(Array)
+#2 /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Logger.php(518): Monolog\Logger->addRecord(500, 'Uncaught Except...', Array)
+#3 /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Debug/ErrorHandler.php(546): Monolog\Logger->log(500, 'Uncaught Except...', Array)
+#4 [internal function]: Symfony\Component\Debug\ErrorHandler->handleException(Object(UnexpectedValueException))
+#5 {main}
+  thrown in /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Handler/StreamHandler.php on line 107
+[28-Dec-2017 22:44:56 UTC] PHP Fatal error:  Uncaught UnexpectedValueException: The stream or file "/home/ubuntu/workspace/var/logs/dev.log" could not be opened: failed to open stream: Permission denied in /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Handler/StreamHandler.php:107
+Stack trace:
+#0 /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Handler/AbstractProcessingHandler.php(37): Monolog\Handler\StreamHandler->write(Array)
+#1 /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Logger.php(337): Monolog\Handler\AbstractProcessingHandler->handle(Array)
+#2 /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Logger.php(518): Monolog\Logger->addRecord(500, 'Uncaught Except...', Array)
+#3 /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Debug/ErrorHandler.php(546): Monolog\Logger->log(500, 'Uncaught Except...', Array)
+#4 [internal function]: Symfony\Component\Debug\ErrorHandler->handleException(Object(UnexpectedValueException))
+#5 {main}
+  thrown in /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Handler/StreamHandler.php on line 107
+[06-Feb-2018 15:31:12 UTC] PHP Parse error:  syntax error, unexpected '<<' (T_SL), expecting ']' in /home/ubuntu/workspace/app/AppKernel.php on line 24
+[06-Feb-2018 15:31:15 UTC] PHP Parse error:  syntax error, unexpected '<<' (T_SL), expecting end of file in /home/ubuntu/workspace/web/app_dev.php on line 13

@@ -1,94 +1,74 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-
-    {% embed 'modals/profile.message.html.twig' %}
-    {% endembed %}
+    <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=0 ">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <script src="{{asset('js/jquery.scrolling-tabs.min.js') }}"></script>
+    <link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
+    
     {% include 'template/header.html.twig' %}
-    <div class="wrapper">
-        <div class="container-fluid scrollbar">
 
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="card">
-                        <img class="card-img-top img-fluid" src="/uploads/profile/{{ user_info.0.id }}.jpg">
-                        <div class="card-block">
-                            <h4 class="card-title">{{ user_info.0.name }} </h4>
+    <div class="wrapper">
+        <section id="profile-header" style="margin-top:-25px">
+            <div class="container">
+                <div class="row">
+                    <div id="profile_image" class="col-sm-3 mt-5 mb-5 pb-1">
+                        <div class="profile-image">
+                            <img id="profile-pic" class="card-img-top img-fluid rounded-circle" src="/uploads/profile/{{ user_info.0.id }}.jpg">
+                            <div class="overlay"></div>
+                            <div class="button"><a href="#"> CAMBIA </a></div>
                         </div>
-                        <ul class="list-group list-group-flush user-details-list">
-                            <li class="list-group-item">Punti: {{ user_info.0.points }} &nbsp;<img
-                                        src="{{ asset('/img/icons/icon_info.png') }}" style="width:16px;"
-                                        data-toggle="tooltip" data-placement="right"
-                                        title="Ogni utente guadagna 1 Punto ad ogni feedback positivo ricevuto."/></li>
-                            <li class="list-group-item">Vive
-                                a: {{ user_info.0.address ? (user_info.0.address| split('-', 3))[2] : "" }}</li>
-                            <li class="list-group-item">Registrato dal: {{ user_info.0.datejoin|date('d-m-Y') }}</li>
-                            <li class="list-group-item">Annunci: {{ ad_count }}</li>
+                    </div>
+                    <div id="user_info" class="col-sm-5 mt-5 pt-4 ">
+                        <div class="user-info pl-5">
+                            <h1>{{ user_info.0.realname }}</h1>
+                            <h4>{{ user_info.0.name }}</h4>
+                            <p class="mt-4">Vive a {{ user_info.0.address ? (user_info.0.address| split('-', 3))[2] : ""  }}</p>
+                            <p>Registrato dal {{ user_info.0.datejoin|date('d-m-Y') }}</p>
+                            <p>Annunci: {{ ad_count }}</p>
                             {% if app.user.username is defined %}
                                 {% if app.user.username == user_info.0.name %}
-                                    <li class="list-group-item">Crediti:&nbsp;
-                                        <small>{{ user_info.0.creditsGold }}<img
-                                                    src="{{ asset('img/coins/coin_gold.png') }}"
-                                                    class="profile_coin_left"/> {{ user_info.0.creditsSilver }} <img
-                                                    src="{{ asset('img/coins/coin_silver.png') }}"
-                                                    class="profile_coin_left"/> {{ user_info.0.creditsBronze }} <img
-                                                    src="{{ asset('img/coins/coin_bronze.png') }}"
-                                                    class="profile_coin_left"/></small>
-                                    </li>
+                                    <p>Crediti: <small>{{ user_info.0.creditsGold }}<img src="{{ asset('img/coins/coin_gold.png') }}" class="profile_coin_left"/> {{ user_info.0.creditsSilver }} <img src="{{ asset('img/coins/coin_silver.png') }}" class="profile_coin_left"/> {{ user_info.0.creditsBronze }} <img src="{{ asset('img/coins/coin_bronze.png') }}" class="profile_coin_left"/></p>
                                 {% endif %}
-                            {% endif %}
-                        </ul>
-                        {% if app.user.username is defined %}
-                            {% if app.user.username != user_info.0.name %}
-                                <div class="card-block">
-                                    <a href="#" class="card-link">Segui</a>
-                                    <a href="" data-toggle="modal" data-target="#send_message"
-                                       class="card-link float-right">Messaggio</a>
-                                </div>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-                    {% if app.user.username is defined %}{% if app.user.username == user_info.0.name %}
-                        <br>
-                        <a href="{{ url('upgrade') }}" class="btn btn-outline-success btn-block btn-lg">Upgrade</a>
-                    {% endif %}
-                    {% endif %}
-                    <br><br>
-                </div>
-
-                <div class="col-lg-8">
-                    {% if user_info.0.isEnabled == 0 %}
-                        <div class="alert alert-danger"><strong>Attenzione:</strong> Questo utente è stato bannato dalla
-                            piattaforma, se stai concludendo qualsiasi affare con lui, assicurati di contattarlo
-                            telefonicamente. Se hai problemi legali con questo utente, <a href="mailto:">contattaci</a>
-                            spiegando il problema, cercheremo di fornirti i dati per una denuncia alle autorità.
+                            {% endif %}    
                         </div>
-                    {% endif %}
-
-                    <ul class="nav nav-pills nav-justified">
+                    </div>
+                    <div id="col-profile-actions" class="col-sm-3 mt-5 pt-5">
+                        <div id="profile-actions" class="mt-5 pl-5">
+                            {% if app.user.username is defined %}
+                                {% if app.user.username == user_info.0.name %}
+                                    <a id="btn-profile-actions" class="btn btn-white" href="{{ url('upgrade') }}">Upgrade</a>
+                                {% else %}
+                                    <a id="btn-profile-actions" class="btn btn-white">Contatta</a>
+                                {% endif %}
+                            {% endif %}    
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <ul class="nav nav-tabs ml-auto" id="profileTab" role="tablist">
                         {% if app.user.username is defined %}
                             {% if app.user.username == user_info.0.name %}
-                                <li class="nav-item">
-                                    <a class="nav-link link-bacheca active" data-toggle="tab" href="#bacheca"
-                                       role="tab">Bacheca</a>
+                                <li role="presentation" class="nav-item pr-2">
+                                    <a class="nav-link active " id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">BACHECA</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link link-messaggi" data-toggle="tab" href="#messaggi" role="tab">Messaggi {% if notReadMsg != 0 %}({{ notReadMsg }}){% endif %}</a>
+                                <li role="presentation" class="nav-item pr-2">
+                                    <a class="nav-link" id="messaggi-tab" data-toggle="tab" href="#messaggi" role="tab" aria-controls="messaggi" aria-selected="false">MESSAGGI</a>
                                 </li>
                             {% endif %}
                         {% endif %}
-                        <li class="nav-item">
-                            <a class="nav-link link-annunci" data-toggle="tab" href="#annunci" role="tab">Annunci</a>
+                        <li role="presentation" class="nav-item pr-2">
+                            <a class="nav-link {% if app.user.username != user_info.0.name %} active {% endif %}" id="annunci-tab" data-toggle="tab" href="#annunci" role="tab" aria-controls="annunci" aria-selected="false">ANNUNCI</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link link-feedback" data-toggle="tab" href="#feedback" role="tab">Feedback</a>
+                        <li role="presentation" class="nav-item pr-2">
+                            <a class="nav-link" id="feedback-tab" data-toggle="tab" href="#feedback" role="tab" aria-controls="feedback" aria-selected="false">FEEDBACK</a>
                         </li>
                         {% if app.user.username is defined %}
                             {% if app.user.username == user_info.0.name %}
-                                <li class="nav-item">
-                                    <a class="nav-link link-settings" data-toggle="tab" href="#settings" role="tab">Impostazioni</a>
+                                <li role="presentation" class="nav-item pr-2">
+                                    <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">IMPOSTAZIONI</a>
                                 </li>
                             {% endif %}
-                        {% endif %}
+                        {% endif %}    
                     </ul>
                     <br>
                     <div class="tab-content">
@@ -651,44 +631,249 @@
                     </script>
                 </div>
             </div>
+        </section>
+        <div class="tab-content mx-4" id="myTabContent">
+            {% if app.user.username is defined %}
+                {% if app.user.username == user_info.0.name %}
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div id="dashboardContainer" class="mb-5"></div>
+                    </div>
+                    <div class="tab-pane fade" id="messaggi" role="tabpanel" aria-labelledby="messaggi-tab">
+                        <div id="messagesContainer" class="mb-5"></div>
+                    </div>
+                {% endif %}
+            {% endif %}    
+            <div class="tab-pane fade {% if app.user.username != user_info.0.name %} show active {% endif %}" id="annunci" role="tabpanel" aria-labelledby="annunci-tab">
+                <div id="annunciContainer" class="mb-5"></div>
+            </div>
+            <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
+                <div id="feedbackContainer" class="mb-5"></div>
+            </div>
+            {% if app.user.username is defined %}
+                {% if app.user.username == user_info.0.name %}
+                    <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                        <div id="settingsContainer" class="mb-5"></div>
+                    </div>
+                {% endif %}
+            {% endif %}    
         </div>
-        {% include 'template/footer.html.twig' %}
+        <br>
+    {% include 'template/footer.html.twig' %}
     </div>
     <script>
-        $(document).ready(function () {
-            var url = window.location.href;
-            if (url.indexOf("#") === -1) {
-                var activeTab = 'bacheca';
-            } else {
-                var activeTab = url.substring(url.indexOf("#") + 1);
-            }
-
-            if (activeTab == null) {
-                activeTab = 'bacheca';
-            }
-
-            var tab = 'a.link-' + activeTab;
-            $(tab).tab('show');
-
-            $("#delete-" + n).click(function () {
-                $.ajax({
-                    url: "demo_test.txt", success: function (result) {
-                        $("#div1").html(result);
-                    }
-                });
+    var loading = '<div class="container"><div class="row"><div class="col-md-12"><div class="text-center mt-5 mb-5"><h3><i class="fa fa-spin fa-spinner"></i></h3></div></div></div></div>';
+        function showDashboard() {
+            $.ajax({
+                url: '{{ url('apiDashboard',{'uid' : user_info.0.id}) }}',
+                method: 'GET',
+                dataType: 'html',
+                beforeSend: function() {
+                    $('#dashboardContainer').html(loading);
+                }
+            }).done(function(html) {
+                $('#dashboardContainer').html(html);
+            })
+        };
+        function showMessages() {
+            $.ajax({
+                url: '{{ url('apiMessages',{'uid' : user_info.0.id}) }}',
+                method: 'GET',
+                dataType: 'html',
+                beforeSend: function() {
+                    $('#messagesContainer').html(loading);
+                }
+            }).done(function(html) {
+                $('#messagesContainer').html(html);
+            })
+        };
+        function viewMessage(url) {
+            $.ajax({
+                url: url,
+                method: 'GET',
+                dataType: 'html',
+                beforeSend: function() {
+                    $('#messagesContainer').html(loading);
+                }
+            }).done(function(html) {
+                $('#messagesContainer').html(html);
+                $('#messagesContainer').fade();
+            })
+        };
+        function showAds() {
+            $.ajax({
+                url: '{{ url('apiAds',{'uid' : user_info.0.id}) }}',
+                method: 'GET',
+                dataType: 'html',
+                beforeSend: function() {
+                    $('#annunciContainer').html(loading);
+                }
+            }).done(function(html) {
+                $('#annunciContainer').html(html);
+            }).fail(function(html) {
+                $('#annunciContainer').html(loading);
+            })
+        };
+        function showFeedback() {
+            $.ajax({
+                url: '{{ url('apiFeedback',{'uid' : user_info.0.id}) }}',
+                method: 'GET',
+                dataType: 'html',
+                beforeSend: function() {
+                    $('#feedbackContainer').html(loading);
+                }
+            }).done(function(html) {
+                $('#feedbackContainer').html(html);
+            }).fail(function(html) {
+                $('#feedContainer').html(loading);
+            })
+        };
+        function showSettings() {
+            $.ajax({
+                url: '{{ url('apiSettings',{'uid' : user_info.0.id}) }}',
+                method: 'GET',
+                dataType: 'html',
+                beforeSend: function() {
+                    $('#settingsContainer').html(loading);
+                }
+            }).done(function(html) {
+                $('#settingsContainer').html(html);
+            }).fail(function(html) {
+                $('#settingsContainer').html(loading);
+            })
+        };
+        $(document).ready(function() {
+            showDashboard();
+            $('messagesContainer a').each(function(e) {
+                e.preventDefault;
             });
+            if ('{{app.user.username}}' != '{{user_info.0.name}}') {
+                showAds();
+            }
+        })
+        $('#messaggi-tab').click(function(){
+            showMessages();
         });
-    </script>
-    <style>
-        .ratio {
-            position: relative;
-            width: 130%;
-            height: 75px;
-            padding-bottom: 50%; /* % of width, defines aspect ratio*/
-
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
+        $('#home-tab').click(function(){
+            showDashboard();
+        });
+        $('#annunci-tab').click(function(){
+            showAds();
+        });
+        $('#feedback-tab').click(function(){
+            showFeedback();
+        });
+        $('#settings-tab').click(function(){
+            showSettings();
+        });
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            $('#user_info').removeClass('mt-5 col-sm-5').addClass('col-8');
+            $('.user-info').removeClass('pl-5')
+            $('#profile_image').removeClass().addClass('col-4').addClass('pl-4 mt-5 pt-3 mb-5 pb-1');
+            $('#col-profile-actions').prepend('<div class="row">').append('</div>').removeClass('mt-5 pt-5 col-sm-3').addClass('col-12');
+            $('#profile-actions').removeClass('mt-5 pl-5').addClass('pt-3 pb-3');
+            $('#btn-profile-actions').addClass('btn-block');
+            $('.dash-image-holder').removeClass('image-holder-desktop').addClass('image-holder-mobile');
+            initializeScrollingBar('.nav-tabs');
+            $(window).on( "orientationchange", function( event ) {
+                $('.nav-tabs').scrollingTabs('destroy');
+                initializeScrollingBar('.nav-tabs');
+            });
         }
+        function initializeScrollingBar(selector) {
+             $(selector).scrollingTabs({
+                bootstrapVersion: 4,
+                scrollToTabEdge: false,
+                ArrowsOnFullyScrolled: false,
+                widthMultiplier: 1,
+                leftArrowContent: '<div class="scrtabs-tab-scroll-arrow scrtabs-tab-scroll-arrow-left" style="display: block;"><span class="fa fa-arrow-left"></span></div>',
+                rightArrowContent: '<div class="scrtabs-tab-scroll-arrow scrtabs-tab-scroll-arrow-right" style="display: block;"><span class="fa fa-arrow-right"></span></div>',
+                enableSwiping: true,
+            });
+        }
+        
+    </script>
+
+    <style>
+        .list-item-shadow {
+            margin-bottom: .5em;
+            border-radius: 0px;
+            border-right: 10px solid rgb(67,150,193);
+            box-shadow: 5px 5px 10px 0px #BBB;
+            font-size: 16px
+        }
+        .list-item-shadow a {
+            text-decoration: none;
+        }
+        #messaggi-tab .active {
+            background-color: rgb(67,150,193)!important;
+            color: rgb(249,247,244)!important;
+        }
+        .txt-light {
+            color: #FFF!important;
+        }
+        .scrtabs-tab-scroll-arrow {
+            display: block;
+            padding: 0.6em 1.2em!important;
+            background-color: rgb(249,247,244)!important;
+            color: rgb(67,150,193)!important;
+            font-size: 22px!important;
+            border-radius: 0px!important;
+            border: none!important;
+            height: 60px;
+        }
+
+
+.overlay {
+  position: absolute;
+  top: 0px;
+  left: 15px;
+  width: 100%;
+  height: 100%;
+  width: 255px;
+  height: 255px;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.5s ease;
+  border-radius: 500px;
+}
+
+.container:hover .overlay {
+  display: block;
+  background: rgba(0, 0, 0, .3);
+}
+
+.profile-pic {
+  position: absolute;
+  width: 500px;
+  height: 300px;
+  left: 0;
+}
+
+.container:hover .title {
+  top: 60px;
+}
+
+.button {
+  position: absolute;
+  width: 100%;
+  left:0;
+  top: 140px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+
+.button a {
+  width: 200px;
+  padding: 12px 48px;
+  text-align: center;
+  color: white;
+  z-index: 1;
+  text-decoration: none;
+}
+
+.container:hover .button {
+  opacity: 1;
+}
+
     </style>
 {% endblock %}

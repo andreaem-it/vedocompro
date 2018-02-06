@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            {% if feedback %}
+                <ul class="list-group">
+                    {% for feed in feedback %}
+                        <li class="list-group-item list-group-item-action list-item-shadow">
+                            {% if feedback[loop.index0].positive == 1 %}
+                                <img style="width:20px" src="{{ asset('img/icons/icon_plus_green.png') }}">
+                            {% else %}
+                                <img style="width:20px" src="{{ asset('img/icons/icon_minus_red.png') }}">
+                            {% endif %}
+                            &nbsp;
+                            {{ feedback[loop.index0].description }}&nbsp;
+                            <span class="badge badge-default float-right" style="right: 10px; top:15px; position: absolute;">Voto: {{ feedback[loop.index0].vote }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <br><div class="text-center">Nessun Feedback</div><br>
+            {% endif %}
+        </div>
+    </div>
+</div>
