@@ -1,67 +1,149 @@
 <div class="container">
     <div class="row mt-3">
-      <div class="col-md-12" style="padding:10px;background-color: #FFF">
+        <div class="col-md-12" style="padding:10px;background-color: #FFF">
+
             <div class="btn-group" data-toggle="buttons">
-                <button class="btn btn-outline-primary">Nuovo</button>
-                <button class="btn btn-outline-danger">Elimina</button>
+                <label class="btn btn-outline-primary" style="margin-bottom:0px"
+                       id="checkAll">
+                    Seleziona Tutti
+                </label>
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle profile-msg-dropdown"
+                            type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Marca come...
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a id="come_letti" class="dropdown-item" href="#">Marca come
+                            letti</a>
+                        <a id="come_non_letti" class="dropdown-item" href="#">Marca come
+                            non letti</a>
+                    </div>
+                </div>
             </div>
-            <ul class="nav nav-tabs btn-group float-right" id="messaggi-tab">
-                <li class="nav-item">
-                    <a class="btn btn-outline-primary nav-link active" id="link-msg-rec" href="#messaggi-ricevuti" data-toggle="tab" role="tab">Messaggi Ricevuti</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-outline-primary nav-link" id="link-msc-inv" href="#messaggi-inviati" data-toggle="tab" role="tab">Messaggi Inviati</a>
-                </li>
-            </ul>
         </div>
     </div>
     <div class="tab-content">
         <div class="row mt-2 tab-pane active" id="messaggi-ricevuti" role="tabpanel">
             <div class="col-md-12">
-                 <form>
-                {% if messages %}
-                    <ul class="list-group">
-                        {% for message in messages %}
-                            <li class="list-group-item list-group-item-action list-item-shadow">
-                                {% if message.isRead == 0 %}
-                                    <input type="checkbox" class="msg-checkbox" style="margin-right:10px">
-                                    {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<strong><a onClick="viewMessage('{{ url('message',{'id' : message.id}) }}')">Messaggio da "{{ user.convertUser(message.fromuid) }}" relativo all'inserzione "{{ user.convertAds(message.object) }}".</a> <small>(Non letto)</small></strong>
-                                {% else %}
-                                    <input type="checkbox" class="msg-checkbox" style="margin-right:10px">
-                                    {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a onClick="viewMessage('{{ url('message',{'id' : message.id}) }}')">Messaggio da "{{ user.convertUser(message.fromuid) }}" relativo all'inserzione "{{ user.convertAds(message.object) }}".</a>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    Nessun messaggio ricevuto
-                {% endif %}
-            </form>
+                <form id="form-received-message" action="{{ url("message_set_read") }}"
+                      method="post">
+                    {% if messages %}
+                        <ul class="list-group">
+                            {% for message in messages %}
+                                <li class="list-group-item list-group-item-action list-item-shadow">
+                                    {% if message.isRead == 0 %}
+                                        <input id="{{ message.id }}" type="checkbox"
+                                               class="msg-checkbox"
+                                               style="margin-right:10px">
+                                        {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;
+                                        {% if message.object == -1 %}
+                                            <strong><a onClick="viewMessage('{{ url('message',{'id' : message.id}) }}')">Messaggio
+                                                    da
+                                                    "{{ user.getMessageFromUser(message.fromuid) }}.</a>
+                                                <small>(Non letto)</small>
+                                            </strong>
+                                        {% else %}
+                                            <strong><a onClick="viewMessage('{{ url('message',{'id' : message.id}) }}')">Messaggio
+                                                    da
+                                                    "{{ user.getMessageFromUser(message.fromuid) }}"
+                                                    relativo
+                                                    all'inserzione
+                                                    "{{ user.convertAds(message.object) }}".</a>
+                                                <small>(Non letto)</small>
+                                            </strong>
+                                        {% endif %}
+                                    </strong>
+                                    {% else %}
+                                        <input id="{{ message.id }}" type="checkbox"
+                                               class="msg-checkbox"
+                                               style="margin-right:10px">
+                                        {% if message.object == -1 %}
+                                            {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;
+                                            <a onClick="viewMessage('{{ url('message',{'id' : message.id}) }}')">Messaggio
+                                            da
+                                            "{{ user.getMessageFromUser(message.fromuid) }}".</a>
+                                        {% else %}
+                                            {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;
+                                            <a onClick="viewMessage('{{ url('message',{'id' : message.id}) }}')">Messaggio
+                                            da
+                                            "{{ user.getMessageFromUser(message.fromuid) }}" relativo
+                                            all'inserzione
+                                            "{{ user.convertAds(message.object) }}".</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        Nessun messaggio ricevuto
+                    {% endif %}
+                </form>
             </div>
         </div>
         <div class="row mt-2 tab-pane" id="messaggi-inviati" role="tabpanel">
             <div class="col-md-12">
-                 <form>
-                {% if messagesR %}
-                    <ul class="list-group">
-                        {% for messageR in messagesR %}
-                            <li class="list-group-item list-group-item-action list-item-shadow">
-                                {% if messageR.isRead == 0 %}
-                                    <input type="checkbox" class="msg-checkbox" style="margin-right:10px">
-                                    {{ messageR.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<strong><a onClick="viewMessage('{{ url('message',{'id' : messageR.id}) }}')">Messaggio a "{{ user.convertUser(messageR.touid) }}" relativo all'inserzione "{{ user.convertAds(messageR.object) }}"</a> <small>(Non letto)</small></strong>
-                                {% else %}
-                                    <input type="checkbox" class="msg-checkbox" style="margin-right:10px">
-                                    {{ messageR.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a onClick="viewMessage('{{ url('message',{'id' : messageR.id}) }}')">Messaggio a "{{ user.convertUser(messageR.touid) }}" relativo all'inserzione "{{ user.convertAds(messageR.object) }}"</a>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    Nessun messaggio ricevuto
-                {% endif %}
-            </form>
+                <form>
+                    {% if messagesR %}
+                        <ul class="list-group">
+                            {% for messageR in messagesR %}
+                                <li class="list-group-item list-group-item-action list-item-shadow">
+                                    {% if messageR.isRead == 0 %}
+                                        <input type="checkbox" class="msg-checkbox" style="margin-right:10px">
+                                        {{ messageR.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<strong><a
+                                                onClick="viewMessage('{{ url('message',{'id' : messageR.id}) }}')">Messaggio
+                                            a "{{ user.convertUser(messageR.touid) }}" relativo all'inserzione
+                                            "{{ user.convertAds(messageR.object) }}"</a>
+                                        <small>(Non letto)</small>
+                                    </strong>
+                                    {% else %}
+                                        <input type="checkbox" class="msg-checkbox" style="margin-right:10px">
+                                        {{ messageR.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a
+                                            onClick="viewMessage('{{ url('message',{'id' : messageR.id}) }}')">Messaggio
+                                        a "{{ user.convertUser(messageR.touid) }}" relativo all'inserzione
+                                        "{{ user.convertAds(messageR.object) }}"</a>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        Nessun messaggio ricevuto
+                    {% endif %}
+                </form>
             </div>
         </div>
     </div>
-    
 </div>
+<script>
+    $("#checkAll").click(function () {  //"select all" change
+        var checkBoxes = $(".msg-rec-checkbox");
+        checkBoxes.prop('checked', !checkBoxes.prop("checked"));
+    });
+
+    $("#come_letti").click(function () {
+        var idSelector = function () {
+            return this.id;
+        };
+        var url = "{{ url('message_set_read') }}";
+        var selected = $('#form-received-message').find('.msg-checkbox:checked').map(idSelector).get();
+        var formData = selected.toString();
+        alert(formData);
+        $.post(url, {"ids": formData}).done(function (data) {
+            location.reload();
+        });
+    });
+
+    $("#come_non_letti").click(function () {
+        var idSelector = function () {
+            return this.id;
+        };
+        var url = "{{ url('message_set_non_read') }}";
+        var selected = $('#form-received-message').find('.msg-checkbox:checked').map(idSelector).get();
+        var formData = selected.toString();
+        alert(formData);
+
+        $.post(url, {"ids": formData}).done(function (data) {
+            location.reload();
+        });
+    });
+</script>

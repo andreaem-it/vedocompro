@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <script src="{{asset('js/jquery.scrolling-tabs.min.js') }}"></script>
     <link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
-    
+
     {% include 'template/header.html.twig' %}
 
     <div class="wrapper">
@@ -27,9 +27,9 @@
                             <p>Annunci: {{ ad_count }}</p>
                             {% if app.user.username is defined %}
                                 {% if app.user.username == user_info.0.name %}
-                                    <p>Crediti: <small>{{ user_info.0.creditsGold }}<img src="{{ asset('img/coins/coin_gold.png') }}" class="profile_coin_left"/> {{ user_info.0.creditsSilver }} <img src="{{ asset('img/coins/coin_silver.png') }}" class="profile_coin_left"/> {{ user_info.0.creditsBronze }} <img src="{{ asset('img/coins/coin_bronze.png') }}" class="profile_coin_left"/></small></p>
+                                    <p>Crediti: <small>{{ user_info.0.creditsGold }}<img src="{{ asset('img/coins/coin_gold.png') }}" class="profile_coin_left"/> {{ user_info.0.creditsSilver }} <img src="{{ asset('img/coins/coin_silver.png') }}" class="profile_coin_left"/> {{ user_info.0.creditsBronze }} <img src="{{ asset('img/coins/coin_bronze.png') }}" class="profile_coin_left"/></p>
                                 {% endif %}
-                            {% endif %}    
+                            {% endif %}
                         </div>
                     </div>
                     <div id="col-profile-actions" class="col-sm-3 mt-5 pt-5">
@@ -40,7 +40,7 @@
                                 {% else %}
                                     <a id="btn-profile-actions" class="btn btn-white">Contatta</a>
                                 {% endif %}
-                            {% endif %}    
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -49,586 +49,28 @@
                         {% if app.user.username is defined %}
                             {% if app.user.username == user_info.0.name %}
                                 <li role="presentation" class="nav-item pr-2">
-                                    <a class="nav-link active " id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">BACHECA</a>
+                                    <a class="nav-link active link-home" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">BACHECA</a>
                                 </li>
                                 <li role="presentation" class="nav-item pr-2">
-                                    <a class="nav-link" id="messaggi-tab" data-toggle="tab" href="#messaggi" role="tab" aria-controls="messaggi" aria-selected="false">MESSAGGI</a>
+                                    <a class="nav-link link-messaggi" id="messaggi-tab" data-toggle="tab" href="#messaggi" role="tab" aria-controls="messaggi" aria-selected="false">MESSAGGI</a>
                                 </li>
                             {% endif %}
                         {% endif %}
                         <li role="presentation" class="nav-item pr-2">
-                            <a class="nav-link {% if app.user.username != user_info.0.name %} active {% endif %}" id="annunci-tab" data-toggle="tab" href="#annunci" role="tab" aria-controls="annunci" aria-selected="false">ANNUNCI</a>
+                            <a class="nav-link link-annunci {% if app.user.username != user_info.0.name %} active {% endif %}" id="annunci-tab" data-toggle="tab" href="#annunci" role="tab" aria-controls="annunci" aria-selected="false">ANNUNCI</a>
                         </li>
                         <li role="presentation" class="nav-item pr-2">
-                            <a class="nav-link" id="feedback-tab" data-toggle="tab" href="#feedback" role="tab" aria-controls="feedback" aria-selected="false">FEEDBACK</a>
+                            <a class="nav-link link-feedback" id="feedback-tab" data-toggle="tab" href="#feedback" role="tab" aria-controls="feedback" aria-selected="false">FEEDBACK</a>
                         </li>
                         {% if app.user.username is defined %}
                             {% if app.user.username == user_info.0.name %}
                                 <li role="presentation" class="nav-item pr-2">
-                                    <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">IMPOSTAZIONI</a>
+                                    <a class="nav-link link-settings" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">IMPOSTAZIONI</a>
                                 </li>
                             {% endif %}
-                        {% endif %}    
+                        {% endif %}
                     </ul>
-                    <br>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="bacheca" role="tabpanel">
-                            <div class="card" style="width: 100%;">
-                                <div class="card-block">
-                                    <div class="card-title"><h5>Vendite</h5></div>
-                                    <div class="card-text">
-                                        {% if sells > 0 %}
-                                            {% set index = 0 %}
-                                            {% for sell in sells %}
 
-                                                <div class="card">
-                                                    <div class="card-block profile-bacheca-card" style="padding:0px">
-                                                        <img src="/uploads/photos/{{ sell.aid }}-1.jpg"
-                                                             style="width:80px;float:left;margin-right:10px">
-                                                        <div class="row" style="margin-top:18px">
-                                                            <div class="col-md">
-                                                                <div class="card-title">{{ user.convertAds(sell.aid) }}</div>
-                                                            </div>
-
-                                                            <div class="ml-auto">
-                                                                <img src="{{ asset('img/icons/icon_check.png') }}"
-                                                                     style="width:24px;margin-right:10px;{% if user.getSell(sell.id,'isVerified') == 0 %}filter:brightness(300%){% endif %}"
-                                                                     data-toggle="tooltip" data-title="Verificato">
-                                                                <img src="{{ asset('img/icons/icon_dollars.png') }}"
-                                                                     style="width:24px;margin-right:10px;{% if user.getSell(sell.id,'isPaid') == 0 %}filter:brightness(300%){% endif %}"
-                                                                     data-toggle="tooltip" data-title="Pagato">
-                                                                <img src="{{ asset('img/icons/icon_package.png') }}"
-                                                                     style="width:24px;margin-right:10px;{% if user.getSell(sell.id,'isShipped') == 0 %}filter:brightness(300%){% endif %}"
-                                                                     data-toggle="tooltip" data-title="Spedito">
-                                                                <img src="{{ asset('img/icons/icon_feed_sended.png') }}"
-                                                                     style="width:20px;margin-right:10px;{% if user.getSell(sell.id,'isFeedOut') == 0 %}filter:brightness(300%){% endif %}"
-                                                                     data-toggle="tooltip"
-                                                                     data-title="Feedback lasciato">
-                                                                <img src="{{ asset('img/icons/icon_feed_received.png') }}"
-                                                                     style="width:20px;margin-right:10px;{% if user.getSell(sell.id,'isFeedIn') == 0 %}filter:brightness(300%){% endif %}"
-                                                                     data-toggle="tooltip"
-                                                                     data-title="Feedback ricevuto">
-                                                            </div>
-                                                            <div class="ml-auto"
-                                                                 style="margin-top: -6px;margin-right:10px">
-                                                                <div class="btn-group" role="group">
-                                                                    <button id="btnGroupDrop1" type="button"
-                                                                            class="btn btn-secondary dropdown-toggle"
-                                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                                            aria-expanded="false">
-                                                                        Azioni
-                                                                    </button>
-                                                                    <div class="dropdown-menu"
-                                                                         aria-labelledby="btnGroupDrop1">
-                                                                        {% if sell.paid == 0 %}
-                                                                            <a class="dropdown-item"
-                                                                               href="{{ url('setReceivedPayment',{uid: app.user.id, aid:sell.id}) }}">Segnala
-                                                                                come Pagamento Ricevuto</a>
-                                                                        {% elseif sell.paid == 1 %}
-                                                                            <a class="dropdown-item"
-                                                                               href="{{ url('unsetReceivedPayment',{uid: app.user.id, aid:sell.id}) }}">Annulla
-                                                                                Pagamento Ricevuto</a>
-                                                                        {% endif %}
-                                                                        {% if sell.shipped == 0 %}
-                                                                            <a class="dropdown-item"
-                                                                               href="{{ url('setAsShipped',{uid: app.user.id, aid:sell.id}) }}">Segnala
-                                                                                come Spedito</a>
-                                                                        {% elseif sell.shipped == 1 %}
-                                                                            <a class="dropdown-item"
-                                                                               href="{{ url('unsetAsShipped',{uid: app.user.id, aid:sell.id}) }}">Annulla
-                                                                                Spedito</a>
-                                                                        {% endif %}
-                                                                        {% if sell.feedout == 0 %}
-                                                                            <a class="dropdown-item"
-                                                                               href="{{ url('feedback_leave',{uid: app.user.id, aid:sell.id}) }}">Lascia
-                                                                                Feedback</a>
-                                                                        {% elseif sell.feedout == 1 %}
-                                                                        {% endif %}
-                                                                        <a class="dropdown-item"
-                                                                           href="{{ url('tracking',{'uid': app.user.username,'aid': sell.aid}) }}">Traccia
-                                                                            la Spedizione</a>
-                                                                        <div class="dropdown-divider"></div>
-                                                                        <a class="dropdown-item" href="#">Annulla
-                                                                            transazione</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {% set index = index + 1 %}
-                                            {% endfor %}
-                                        {% else %}
-                                            <div class="text-center">Non hai ancora alcun effettuato alcun Acquisto
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="card" style="width:100%">
-                                <div class="card-block">
-                                    <div class="card-title"><h5>Acquisti</h5></div>
-                                    <div class="card-text">
-                                        {% if sells > 0 %}
-                                            {% set index = 0 %}
-                                            {% for buy in buys %}
-                                                <div class="card">
-                                                    <div class="card-block profile-bacheca-card" style="padding:0px">
-                                                        <img src="/uploads/photos/{{ buy.aid }}-1.jpg"
-                                                             style="width:80px;float:left;margin-right:10px">
-                                                        <div class="row" style="margin-top:18px">
-                                                            <div class="col-md">
-                                                                <div class="card-title">{{ user.convertAds(buy.aid) }}</div>
-                                                            </div>
-
-                                                            <div class="ml-auto">
-                                                                <img src="{{ asset('img/icons/icon_check.png') }}"
-                                                                     style="width:24px;margin-right:10px;{% if user.getSell(buy.id,'isVerified') == 0 %}filter:brightness(300%){% endif %}"
-                                                                     data-toggle="tooltip" data-title="Verificato">
-                                                                <img src="{{ asset('img/icons/icon_dollars.png') }}"
-                                                                     style="width:24px;margin-right:10px;{% if user.getSell(buy.id,'isPaid') == 0 %}filter:brightness(300%){% endif %}"
-                                                                     data-toggle="tooltip" data-title="Pagato">
-                                                                <img src="{{ asset('img/icons/icon_package.png') }}"
-                                                                     style="width:24px;margin-right:10px;{% if user.getSell(buy.id,'isShipped') == 0 %}filter:brightness(300%){% endif %}"
-                                                                     data-toggle="tooltip" data-title="Spedito">
-                                                                <img src="{{ asset('img/icons/icon_feed_sended.png') }}"
-                                                                     style="width:20px;margin-right:10px;{% if user.getSell(buy.id,'isFeedOut') == 0 %}filter:brightness(300%){% endif %}"
-                                                                     data-toggle="tooltip"
-                                                                     data-title="Feedback lasciato">
-                                                                <img src="{{ asset('img/icons/icon_feed_received.png') }}"
-                                                                     style="width:20px;margin-right:10px;{% if user.getSell(buy.id,'isFeedIn') == 0 %}filter:brightness(300%){% endif %}"
-                                                                     data-toggle="tooltip"
-                                                                     data-title="Feedback ricevuto">
-                                                            </div>
-                                                            <div class="ml-auto"
-                                                                 style="margin-top: -6px;margin-right:10px">
-                                                                <div class="btn-group" role="group">
-                                                                    <button id="btnGroupDrop1" type="button"
-                                                                            class="btn btn-secondary dropdown-toggle"
-                                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                                            aria-expanded="false">
-                                                                        Azioni
-                                                                    </button>
-                                                                    <div class="dropdown-menu"
-                                                                         aria-labelledby="btnGroupDrop1">
-                                                                        <a class="dropdown-item" href="#">Segnala come
-                                                                            Pagamento Inviato</a>
-                                                                        <a class="dropdown-item" href="#">Segnala come
-                                                                            Ricevuto</a>
-                                                                        <a class="dropdown-item" href="#">Lascia
-                                                                            Feedback</a>
-                                                                        <a class="dropdown-item"
-                                                                           href="{{ url('tracking',{'uid': app.user.username,'aid': buy.aid}) }}">Traccia
-                                                                            la Spedizione</a>
-                                                                        <div class="dropdown-divider"></div>
-                                                                        <a class="dropdown-item" href="#">Annulla
-                                                                            transazione</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {% set index = index + 1 %}
-                                            {% endfor %}
-                                        {% else %}
-                                            <div class="text-center">Non hai ancora alcun effettuato alcun Acquisto
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="card" style="width: 100%;">
-                                <div class="card-block">
-                                    <div class="card-title"><h5>Lista dei Desideri</h5></div>
-                                    <div class="card-text">
-                                        {% if sells > 0 %}
-                                            {% set index = 0 %}
-                                            {% for wish in wishes %}
-
-                                                <div class="card">
-                                                    <div class="card-block profile-bacheca-card" style="padding:0px">
-                                                        <img src="/uploads/photos/{{ wish.aid }}-1.jpg"
-                                                             style="width:80px;float:left;margin-right:10px">
-                                                        <div class="row" style="margin-top:18px">
-                                                            <div class="col-md">
-                                                                <div class="card-title">{{ user.convertAds(wish.aid) }}</div>
-                                                            </div>
-                                                            <div class="ml-auto"
-                                                                 style="margin-top: -6px;margin-right:10px">
-                                                                <div class="btn-group" role="group">
-                                                                    <button id="btnGroupDrop1" type="button"
-                                                                            class="btn btn-secondary dropdown-toggle"
-                                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                                            aria-expanded="false">
-                                                                        Azioni
-                                                                    </button>
-                                                                    <div class="dropdown-menu"
-                                                                         aria-labelledby="btnGroupDrop1">
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {% set index = index + 1 %}
-                                            {% endfor %}
-                                        {% else %}
-                                            <div class="text-center">Non hai ancora alcun effettuato alcun elemento
-                                                nella lista desideri
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="messaggi" role="tabpanel">
-                            <ul class="nav nav-tabs nav-fill" id="messaggi-tab">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="link-msg-rec" href="#messaggi-ricevuti"
-                                       data-toggle="tab" role="tab">Ricevuti</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="link-msc-inv" href="#messaggi-inviati" data-toggle="tab"
-                                       role="tab">Inviati</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="messaggi-ricevuti" role="tabpanel">
-                                    <form id="form-received-message" action="{{ url("message_set_read") }}"
-                                          method="post">
-                                        <div style="border:1px solid rgba(0,0,0,.125);padding:10px;border-radius:4px;background-color: #FFF">
-                                            <div class="btn-group" data-toggle="buttons">
-                                                <label class="btn btn-outline-primary" style="margin-bottom:0px"
-                                                       id="checkAll">
-                                                    Seleziona Tutti
-                                                </label>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-outline-primary dropdown-toggle profile-msg-dropdown"
-                                                            type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                                                            aria-haspopup="true" aria-expanded="false">
-                                                        Marca come...
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a id="come_letti" class="dropdown-item" href="#">Marca come
-                                                            letti</a>
-                                                        <a id="come_non_letti" class="dropdown-item" href="#">Marca come
-                                                            non letti</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% if messages %}
-                                            <ul class="list-group">
-                                                {% for message in messages %}
-                                                    <li class="list-group-item list-group-item-action">
-                                                        {% if message.isRead == 0 %}
-                                                            <input id="{{ message.id }}" type="checkbox"
-                                                                   class="msg-rec-checkbox"
-                                                                   style="margin-right:10px">
-                                                            {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;
-                                                            {% if message.object == -1 %}
-                                                                <strong><a
-                                                                            href="{{ url('message',{'id' : message.id}) }}">Messaggio
-                                                                        da
-                                                                        "{{ user.getMessageFromUser(message.fromuid) }}.</a>
-                                                                    <small>(Non letto)</small>
-                                                                </strong>
-                                                            {% else %}
-                                                                <strong><a
-                                                                            href="{{ url('message',{'id' : message.id}) }}">Messaggio
-                                                                        da
-                                                                        "{{ user.getMessageFromUser(message.fromuid) }}"
-                                                                        relativo
-                                                                        all'inserzione
-                                                                        "{{ user.convertAds(message.object) }}".</a>
-                                                                    <small>(Non letto)</small>
-                                                                </strong>
-                                                            {% endif %}
-                                                        {% else %}
-                                                            <input id="{{ message.id }}" type="checkbox"
-                                                                   class="msg-rec-checkbox"
-                                                                   style="margin-right:10px">
-                                                            {% if message.object == -1 %}
-                                                                {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a
-                                                                    href="{{ url('message',{'id' : message.id}) }}">Messaggio
-                                                                da
-                                                                "{{ user.getMessageFromUser(message.fromuid) }}".</a>
-                                                            {% else %}
-                                                                {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a
-                                                                    href="{{ url('message',{'id' : message.id}) }}">Messaggio
-                                                                da
-                                                                "{{ user.getMessageFromUser(message.fromuid) }}" relativo
-                                                                all'inserzione
-                                                                "{{ user.convertAds(message.object) }}".</a>
-                                                            {% endif %}
-                                                        {% endif %}
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        {% else %}
-                                            Nessun messaggio ricevuto
-                                        {% endif %}
-                                    </form>
-                                </div>
-                                <div class="tab-pane" id="messaggi-inviati" role="tabpanel">
-                                    <form>
-                                        {% if messagesR %}
-                                            <ul class="list-group">
-                                                {% for messageR in messagesR %}
-                                                    <li class="list-group-item list-group-item-action">
-                                                        {% if messageR.object == -1 %}
-                                                            <input type="checkbox" class="msg-checkbox"
-                                                                   style="margin-right:10px">
-                                                            {{ messageR.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;
-                                                            <a href="{{ url('message',{'id' : messageR.id}) }}">Messaggio
-                                                                a "{{ user.convertUser(messageR.touid) }}".</a>
-                                                        {% else %}
-                                                            <input type="checkbox" class="msg-checkbox"
-                                                                   style="margin-right:10px">
-                                                            {{ messageR.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a
-                                                                href="{{ url('message',{'id' : messageR.id}) }}">Messaggio
-                                                            a "{{ user.convertUser(messageR.touid) }}" relativo
-                                                            all'inserzione "{{ user.convertAds(messageR.object) }}".</a>
-                                                        {% endif %}
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        {% else %}
-                                            Nessun messaggio ricevuto
-                                        {% endif %}
-                                    </form>
-                                </div>
-                                <script>
-                                    $("#checkAll").click(function () {  //"select all" change
-                                        var checkBoxes = $(".msg-rec-checkbox");
-                                        checkBoxes.prop('checked', !checkBoxes.prop("checked"));
-                                    });
-
-                                    $("#come_letti").click(function () {
-                                        var idSelector = function () {
-                                            return this.id;
-                                        };
-                                        var url = "{{ url('message_set_read') }}";
-                                        var selected = $('#form-received-message').find('.msg-rec-checkbox:checked').map(idSelector).get();
-                                        var formData = selected.toString();
-                                        $.post(url, {"ids": formData}).done(function (data) {
-                                            location.reload();
-                                        });
-                                    });
-
-                                    $("#come_non_letti").click(function () {
-                                        var idSelector = function () {
-                                            return this.id;
-                                        };
-                                        var url = "{{ url('message_set_non_read') }}";
-                                        var selected = $('#form-received-message').find('.msg-rec-checkbox:checked').map(idSelector).get();
-                                        var formData = selected.toString();
-                                        $.post(url, {"ids": formData}).done(function (data) {
-                                            location.reload();
-                                        });
-                                    });
-                                </script>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="annunci" role="tabpanel">
-                            <div class="card" style="width: 100%;border:none">
-                                <div class="">
-                                    <div class="card-text">
-                                        {% if ads %}
-                                            <ul class="list-group">
-                                                {% for ad in ads %}
-                                                    <li class="list-group-item profile-ads-list-item list-group-item-action">
-                                                        {% set adSlug = user.slugify(ads[loop.index0].name) %}
-                                                        {% set catName = user.slugify(user.convertCategory(ads[loop.index0].category)) %}
-                                                        <div class="row" style="width:100%">
-                                                            <div class="col-1 hidden-md-down">
-                                                                <a href="{{ url('vedi_oggetto',  {'category': catName,'item': ads[loop.index0].id,'title': adSlug }) }}">
-                                                                    <div class="ratio"
-                                                                         style="background-image: url('/uploads/photos/{{ ads[loop.index0].id }}-1.jpg')"></div>
-                                                                </a>
-                                                            </div>
-                                                            <div class="col-8 align-middle d-flex align-items-center"
-                                                                 style="margin-left:10px">
-                                                                <a href="{{ url('vedi_oggetto',  {'category': catName,'item': ads[loop.index0].id,'title': adSlug }) }}">
-                                                                    {{ ads[loop.index0].name }}
-                                                                </a>
-
-                                                                {% if ad.goldPromotionEndDate != null %}
-                                                                    <img src="{{ asset('img/coins/coin_gold.png') }}"
-                                                                         class="profile_coin" data-toggle="tooltip"
-                                                                         data-html="true" data-placement="right"
-                                                                         title="<strong>Inserzione Oro </strong><br> Tempo Finale: {{ ad.goldPromotionEndDate|date("d/m/Y H:i:s") }}">
-                                                                {% elseif ad.silverPromotionEndDate != null %}
-                                                                    <img src="{{ asset('img/coins/coin_silver.png') }}"
-                                                                         class="profile_coin" data-toggle="tooltip"
-                                                                         data-html="true" data-placement="right"
-                                                                         title="<strong>Inserzione Argento </strong><br> Tempo Finale: {{ ad.silverPromotionEndDate|date("d/m/Y H:i:s") }}">
-                                                                {% elseif ad.bronzePromotionEndDate != null %}
-                                                                    <img src="{{ asset('img/coins/coin_bronze.png') }}"
-                                                                         class="profile_coin" data-toggle="tooltip"
-                                                                         data-html="true" data-placement="right"
-                                                                         title="<strong>Inserzione Bronzo </strong><br> Tempo Finale: {{ ad.goldPromotionEndDate|date("d/m/Y H:i:s") }}">
-                                                                {% endif %}
-                                                            </div>
-                                                            <div class="col-2 d-block no-padding ml-auto align-middle d-flex align-items-center">
-                                                                <small class="text-muted info-status float-right">&nbsp;
-                                                                    {% set pStatus = ads[loop.index0].published %}
-                                                                    {% if pStatus == 0 %}
-                                                                        <i class="fa fa-pause-circle text-warning"
-                                                                           aria-hidden="true" data-toggle="tooltip"
-                                                                           data-placement="top"
-                                                                           title="In Attesa (Non pubblicato, in attesa di moderazione)"></i>
-                                                                    {% elseif pStatus == 1 %}
-                                                                        <i class="fa fa-check-circle text-success"
-                                                                           aria-hidden="true" data-toggle="tooltip"
-                                                                           data-placement="top" title="Pubblicato"></i>
-                                                                    {% elseif pStatus == 2 %}
-                                                                        <i class="fa fa-times-circle text-danger"
-                                                                           aria-hidden="true" data-toggle="tooltip"
-                                                                           data-placement="top"
-                                                                           title="Rifiutato (Verrà eliminato tra 7 giorni a meno che non venga modificato)"></i>
-                                                                    {% endif %}
-                                                                </small>
-                                                                <div class="ml-auto">
-                                                                    <div class="dropdown" style="margin-right: 15px;">
-                                                                        <button class="btn btn-secondary dropdown-toggle"
-                                                                                type="button" id="dropdownMenuButton"
-                                                                                data-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                            Opzioni
-                                                                        </button>
-                                                                        <div class="dropdown-menu dropdown-menu-right"
-                                                                             aria-labelledby="dropdownMenuButton">
-                                                                            <a class="dropdown-item"
-                                                                               href="{{ url('promote', {'id': ad.id}) }}"><img
-                                                                                        class="profile-btn-icon"
-                                                                                        src="{{ asset('img/icons/icon_promove.png') }}">&nbsp;Promuovi</a>
-                                                                            <div class="dropdown-divider"></div>
-                                                                            <a class="dropdown-item"
-                                                                               href="{{ url('sold_id', {'uid':user_info.0.name,'aid':ads[loop.index0].id}) }}"><img
-                                                                                        class="profile-btn-icon"
-                                                                                        src="{{ asset('img/icons/icon_check.png') }}">&nbsp;Venduto</a>
-                                                                            <a class="dropdown-item" id="edit" href="#"><img
-                                                                                        class="profile-btn-icon"
-                                                                                        src="{{ asset('img/icons/icon_edit.png') }}">&nbsp;Modifica</a>
-                                                                            <a class="dropdown-item"
-                                                                               id="delete-{{ ad.id }}"
-                                                                               href="{{ url("user_delete_ad", {'id': ad.id}) }}"><img
-                                                                                        class="profile-btn-icon"
-                                                                                        src="{{ asset('img/icons/icon_delete.png') }}">&nbsp;Elimina</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        {% else %}
-                                            <br>
-                                            <div class="text-center">Nessun Annuncio</div><br>
-                                        {% endif %}
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="feedback" role="tabpanel">
-                            <div class="card" style="width: 100%;border:none">
-                                <div class="">
-                                    <div class="card-text">
-                                        {% if feedback %}
-                                            <ul class="list-group">
-                                                {% for feed in feedback %}
-                                                    <li class="list-group-item list-group-item-action">
-                                                        {% if feedback[loop.index0].positive == 1 %}
-                                                            <img style="width:20px"
-                                                                 src="{{ asset('img/icons/icon_plus_green.png') }}">
-                                                        {% else %}
-                                                            <img style="width:20px"
-                                                                 src="{{ asset('img/icons/icon_minus_red.png') }}">
-                                                        {% endif %}
-                                                        &nbsp;
-                                                        {{ feedback[loop.index0].description }}&nbsp;
-                                                        <span class="badge badge-default float-right"
-                                                              style="right: 10px; top:15px; position: absolute;">Voto: {{ feedback[loop.index0].vote }}</span>
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        {% else %}
-                                            <br>
-                                            <div class="text-center">Nessun Feedback</div><br>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="settings" role="tabpanel">
-                            <div class="card" style="width: 100%;">
-                                <div class="card-block">
-                                    <div class="card-text">
-                                        <form>
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Indirizzo e-mail</label>
-                                                <input type="email" class="form-control" id="exampleInputEmail1"
-                                                       aria-describedby="emailHelp" placeholder="Enter email"
-                                                       value="{{ user_info.0.email }}">
-                                                <small id="emailHelp" class="form-text text-muted">L'indirizzo e-mail è
-                                                    nascosto agli altri.
-                                                </small>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Nome utente</label>
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                                       aria-describedby="emailHelp" placeholder="Enter email"
-                                                       value="{{ user_info.0.name }}">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputPassword1">Password</label>
-                                                <input type="password" class="form-control" id="exampleInputPassword1"
-                                                       placeholder="Password">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputPassword2">Reinserici password</label>
-                                                <input type="password" class="form-control" id="exampleInputPassword2"
-                                                       placeholder="Password">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Indirizzo</label>
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                                       aria-describedby="addressHelp"
-                                                       placeholder="Es: via col Vento, 12 - 01234 - Roma - RM"
-                                                       value="{{ user_info.0.address }}">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="telNum">Telefono</label>
-                                                <input type="text" class="form-control" id="telNum"
-                                                       aria-describedby="phoneHelp" placeholder="Es: 0123-456789"
-                                                       value="{{ user_info.0.phone }}">
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Aggiorna</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 text-center hidden-md-down">
-                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                    <!-- VedoCompro -->
-                    <ins class="adsbygoogle"
-                         style="display:inline-block;width:160px;height:600px"
-                         data-ad-client="ca-pub-4967985757423249"
-                         data-ad-slot="7771954836"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
                 </div>
             </div>
         </section>
@@ -642,7 +84,7 @@
                         <div id="messagesContainer" class="mb-5"></div>
                     </div>
                 {% endif %}
-            {% endif %}    
+            {% endif %}
             <div class="tab-pane fade {% if app.user.username != user_info.0.name %} show active {% endif %}" id="annunci" role="tabpanel" aria-labelledby="annunci-tab">
                 <div id="annunciContainer" class="mb-5"></div>
             </div>
@@ -655,13 +97,13 @@
                         <div id="settingsContainer" class="mb-5"></div>
                     </div>
                 {% endif %}
-            {% endif %}    
+            {% endif %}
         </div>
         <br>
-    {% include 'template/footer.html.twig' %}
+        {% include 'template/footer.html.twig' %}
     </div>
     <script>
-    var loading = '<div class="container"><div class="row"><div class="col-md-12"><div class="text-center mt-5 mb-5"><h3><i class="fa fa-spin fa-spinner"></i></h3></div></div></div></div>';
+        var loading = '<div class="container"><div class="row"><div class="col-md-12"><div class="text-center mt-5 mb-5"><h3><i class="fa fa-spin fa-spinner"></i></h3></div></div></div></div>';
         function showDashboard() {
             $.ajax({
                 url: '{{ url('apiDashboard',{'uid' : user_info.0.id}) }}',
@@ -749,7 +191,7 @@
             if ('{{app.user.username}}' != '{{user_info.0.name}}') {
                 showAds();
             }
-        })
+        });
         $('#messaggi-tab').click(function(){
             showMessages();
         });
@@ -780,7 +222,7 @@
             });
         }
         function initializeScrollingBar(selector) {
-             $(selector).scrollingTabs({
+            $(selector).scrollingTabs({
                 bootstrapVersion: 4,
                 scrollToTabEdge: false,
                 ArrowsOnFullyScrolled: false,
@@ -790,7 +232,29 @@
                 enableSwiping: true,
             });
         }
-        
+        $(document).ready(function () {
+            var url = window.location.href;
+            if (url.indexOf("#") === -1) {
+                var activeTab = 'bacheca';
+            } else {
+                var activeTab = url.substring(url.indexOf("#") + 1);
+            }
+
+            if (activeTab == null) {
+                activeTab = 'bacheca';
+            }
+
+            var tab = 'a.link-' + activeTab;
+            $(tab).click();
+
+            $("#delete-" + n).click(function () {
+                $.ajax({
+                    url: "demo_test.txt", success: function (result) {
+                        $("#div1").html(result);
+                    }
+                });
+            });
+        });
     </script>
 
     <style>
@@ -823,57 +287,57 @@
         }
 
 
-.overlay {
-  position: absolute;
-  top: 0px;
-  left: 15px;
-  width: 100%;
-  height: 100%;
-  width: 255px;
-  height: 255px;
-  background: rgba(0, 0, 0, 0);
-  transition: background 0.5s ease;
-  border-radius: 500px;
-}
+        .overlay {
+            position: absolute;
+            top: 0px;
+            left: 15px;
+            width: 100%;
+            height: 100%;
+            width: 255px;
+            height: 255px;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.5s ease;
+            border-radius: 500px;
+        }
 
-.container:hover .overlay {
-  display: block;
-  background: rgba(0, 0, 0, .3);
-}
+        .container:hover .overlay {
+            display: block;
+            background: rgba(0, 0, 0, .3);
+        }
 
-.profile-pic {
-  position: absolute;
-  width: 500px;
-  height: 300px;
-  left: 0;
-}
+        .profile-pic {
+            position: absolute;
+            width: 500px;
+            height: 300px;
+            left: 0;
+        }
 
-.container:hover .title {
-  top: 60px;
-}
+        .container:hover .title {
+            top: 60px;
+        }
 
-.button {
-  position: absolute;
-  width: 100%;
-  left:0;
-  top: 140px;
-  text-align: center;
-  opacity: 0;
-  transition: opacity .35s ease;
-}
+        .button {
+            position: absolute;
+            width: 100%;
+            left:0;
+            top: 140px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity .35s ease;
+        }
 
-.button a {
-  width: 200px;
-  padding: 12px 48px;
-  text-align: center;
-  color: white;
-  z-index: 1;
-  text-decoration: none;
-}
+        .button a {
+            width: 200px;
+            padding: 12px 48px;
+            text-align: center;
+            color: white;
+            z-index: 1;
+            text-decoration: none;
+        }
 
-.container:hover .button {
-  opacity: 1;
-}
+        .container:hover .button {
+            opacity: 1;
+        }
 
     </style>
 {% endblock %}
