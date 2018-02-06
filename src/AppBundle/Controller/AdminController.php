@@ -68,6 +68,11 @@ class AdminController extends Controller
             ->where('e.enabled = 1')
             ->getQuery()
             ->getSingleScalarResult();
+            
+        $ticketsOpen = $this->getDoctrine()->getRepository('AppBundle:HelpDesk')
+            ->createQueryBuilder('e')->select('e')->where('e.closed = 0')->andWhere('e.parent_m = 0')
+            ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);    
+        $ticketsOpenCount  = count($ticketsOpen);    
 
         if (!isset($_SESSION['visited'])):
 
@@ -92,6 +97,7 @@ class AdminController extends Controller
             'adsCount' => $adsCount,
             'videosToModerateCount' => $videosToModerateCount ?? 0,
             'activeUsersCount' => $activeUsersCount,
+            'ticketsOpenCount' => $ticketsOpenCount,
             'tools' => $this
         ));
     }

@@ -50,7 +50,7 @@
 
         {% endblock %}
     </head>
-    <body>
+    <body style="padding-right:0px!important">
         {% block body %}
         {% endblock %}
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
@@ -75,11 +75,38 @@
             gtag('js', new Date());
 
             gtag('config', 'UA-69743962-4');
+            
+              $(document).ready(function(){
+                $('.modal').on('show.bs.modal', function () {
+                  if ($(document).height() > $(window).height()) {
+                    // no-scroll
+                    $('body').addClass("modal-open-noscroll");
+                    $('.navbar').addClass("navbar-no-padding");
+                    $('#searchModal').addClass("modal-open-noscroll");
+                  }
+                  else { 
+                    $('body').removeClass("modal-open-noscroll");
+                  }
+                })
+                $('.modal').on('hide.bs.modal', function () {
+                    
+                })
+              })
         </script>
         <style>
             .cc-color-override--1943300103.cc-window {
                 max-width: 100%;
                 bottom: 0px!important;
+            }
+            .modal-open-noscroll {
+              padding-right: 0!important;
+              overflow: hidden;
+            }
+            .navbar-no-padding {
+                padding-right: 16px!important;
+            }
+            .modal-open-noscroll .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
+              padding-right: 0!important;
             }
         </style>
     </body>

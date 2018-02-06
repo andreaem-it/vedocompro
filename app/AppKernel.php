@@ -21,7 +21,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Avanzu\AdminThemeBundle\AvanzuAdminThemeBundle(),
-            new Petkopara\MultiSearchBundle\PetkoparaMultiSearchBundle(),
+            //new Petkopara\MultiSearchBundle\PetkoparaMultiSearchBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
 
         ];
