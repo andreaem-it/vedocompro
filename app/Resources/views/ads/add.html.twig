@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('css/jquery.steps.css') }}"/>
     {% include 'template/header.html.twig' %}
     <br><br><br><br>
-    <div class="container scrollbar"">
+    <div class="container scrollbar">
         <div class="row" style="margin-top:-20px">
             <div class="col-lg-1 bg-light-grey"></div>
             <!--<div class="col-lg-3 padding-left-40 bg-light-grey hidden-sm">
@@ -37,12 +37,11 @@
                 <br><br>
                 <!--<h3>Inserisci Inserzione</h3>-->
                 {{ form_start(form) }}
-                {% form_theme form 'forms/bootstrap_3_horizontal_layout_new.html.twig' %}
                 <div id="wizard">
-                    <h2>Descrizione</h2>
+                    <h2 class="section-title">Descrizione</h2>
                     <section id="step-1">
                         <div class="row">
-                            <div class="col-lg-3 hidden-md-down">
+                            <div class="col-lg-3 d-none d-md-block">
                                 <br>
                                 <small>Scegli un titolo per l'inserzione, cerca di essere più preciso possibile</small>
                                 <br><br>
@@ -67,10 +66,11 @@
                         </div>
 
                     </section>
-                    <h2>Prezzo e Ubicazione</h2>
+
+                    <h2 class="section-title">Prezzo e Ubicazione</h2>
                     <section id="step-2">
                         <div class="row">
-                            <div class="col-lg-3 hidden-md-down">
+                            <div class="col-lg-3 d-none d-md-block">
                                 <small>Dai un prezzo all'oggetto, cerca di essere realista, un prezzo troppo alto non vende.</small>
                                 <br><br>
                                 <small>Specifica la condizione dell'oggetto, evita di vendere come nuovo un'oggetto usato</small>
@@ -88,40 +88,46 @@
                                 <br>
                                 <div class="row">
                                     <div class="col">
-                                        <label for="form_location">Dove si trova</label>
-                                        {{ form_widget(form.location) }}
+                                        <label for="form_region">Provincia</label>
+                                        {{ form_widget(form.region) }}
                                     </div>
                                     <div class="col">
-                                        <label for="form_price">Regione</label>
-                                        {{ form_widget(form.region) }}
+                                        <label for="form_location">Comune</label>
+                                        {{ form_widget(form.location) }}
                                     </div>
                                 </div>
                                 <small class="hidden-md-up form-text text-muted">Dove si trova l'oggetto, questi campi vengono normalmente riempiti con i tuoi recapiti forniti nelle impostazioni del profilo. Tuttavia, puoi modificarli nel caso vendi un'oggetto che si trova in un'altra città (es: una casa vacanze)</small>
                             </div>
                         </div>
                     </section>
-                    <h2>Video e Foto</h2>
+
+                    <h2 class="section-title">Video e Foto</h2>
                     <section id="step-3">
                         <div class="row">
-                            <div class="col-lg-3 hidden-md-down">
-                                <small> massimo 200 MB, in formato AVI, MOV, MP4 o M4V.<strong>ATTENZIONE:</strong>Carica un video con orientamento orizzontale, eventuali video orientati in verticale verranno bocciati. Assicurati di rispettare i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a>.</small>
+                            <div class="col-lg-3 d-none d-md-block">
+                                <small> Massimo 200 MB, in formato AVI, MOV, MP4 o M4V. <strong>ATTENZIONE:</strong>Carica un video con <u>orientamento orizzontale</u>, eventuali video orientati in verticale verranno bocciati. Assicurati di rispettare i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a>.</small>
                                 <br><br>
                                 <small>Un consiglio, leggi le nostre <a href="{{ url('guidelines') }}" target="_blank">Linee Giuda</a> per un video di successo!</small>
                                 {{ form_widget(form.video) }}
                             </div>
                             <div class="col-lg-9">
+                                <div class="alert alert-info mb-3 text-center">
+                                    <strong>ATTENZIONE:</strong> Ricorda di caricare il video con orientamento <u>orizzontale</u>!<br>
+                                    <img src="{{ asset('img/icon-smartphone-rotate.gif') }}" class="image-fluid mx-auto" style="max-width: 130px">
+                                </div>
                                 <div id="dZUpload" class="dropzone">
                                     <div class="dz-default dz-message">
-                                        Carica video e foto cliccando qui o trascinandoli sopra
+                                        Carica un video cliccando qui o trascinandolo sopra
                                     </div>
                                 </div>
-                                <div class="checkbox">
+                                
+                                <div class="checkbox mt-3">
                                     <label><input type="checkbox" value="tosAccept" required />&nbsp; Accetto i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a></label>
                                 </div>
-                                <small class="hidden-md-up form-text text-muted">Inserisci il video del prodotto, gira un video esponendo i pregi e difetti di ciò che stai vendendo, massimo 200 MB, in formato AVI, MOV, MP4 o M4V. <br><strong>ATTENZIONE:</strong>Carica un video con orientamento orizzontale, eventuali video orientati in verticale verranno bocciati. <br> Assicurati di rispettare i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a>.</small>
+                                <small class="hidden-md-up form-text text-muted">Inserisci il video del prodotto, gira un video esponendo i pregi e difetti di ciò che stai vendendo, massimo 200 MB, in formato AVI, MOV, MP4 o M4V. <br><strong>ATTENZIONE:</strong>Carica un video con <u>orientamento orizzontale</u>, eventuali video orientati in verticale verranno bocciati. <br> Assicurati di rispettare i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a>.</small>
                                 <br>
                                 <small class="hidden-md-up form-text text-muted">Un consiglio, leggi le nostre <a href="{{ url('guidelines') }}" target="_blank">Linee Giuda</a> per un video di successo!</small>
-                                <script src="https://cdn.rawgit.com/enyo/dropzone/master/dist/min/dropzone.min.js"></script>
+                                <script src="{{ asset('js/dropzone.js') }}"></script>
                                 <script>
                                     $("#dZUpload").dropzone({
                                         url: "/uploadvideo",
@@ -144,7 +150,8 @@
                                             file.previewElement.classList.add("dz-error");
                                         }
                                     });
-                                    Dropzone.autoDiscover = false;
+
+                                    Dropzone.prototype.defaultOptions.autoDiscover = false;
                                     Dropzone.prototype.defaultOptions.dictRemoveFile = "Rimuovi file";
                                     Dropzone.prototype.defaultOptions.dictCancelUpload = "Annulla";
                                     Dropzone.prototype.defaultOptions.dictFileTooBig = "Il file è troppo grande!";
@@ -153,10 +160,133 @@
                                 </script>
                             </div>
                         </div>
-
-                        {{ form_end(form) }}
                     </section>
-                    <h2>Fine</h2>
+                    <h2 class="section-title">Promuovi</h2>
+                    <section id="step-4" class="text-center success">
+                        <h3>Vuoi dare più sprint al tuo annuncio?</h3>
+                        <img class="mt-1 mb-1" src="{{ asset('img/promote-hand.png') }}" alt="promote" style="width:150px"/>
+                        <br>
+                        <small>Sponsorizzare il tuo annuncio gli darà più visibilità, posizionandolo in cima ai risultati di ricerca.</small><br>
+                        <small>Utilizza i crediti in tuo possesso oppure ricarica il tuo conto! Raggiungere più clienti non è mai stato così facile.</small><br>
+                        <!--<small>Puoi decidere di inserire il tuo annuncio in Vetrina utilizzando 5 crediti, in questo modo il tuo annuncio comparirà sempre in cima alla pagina nella sezione <strong>Sponsorizzati</strong>.</small><br>
+                        <small>Il tuo annuncio verrà anche pubblicato nella nostra pagina Facebook aumentando in modo esponenziale la quantità di probabili acquirenti raggiunti!</small><br>
+                        --><br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <nav class="nav nav-pills nav-fill mx-auto">
+                                      <a class="nav-item nav-link active" id="gold-tab" data-toggle="tab" href="#gold" role="tab" aria-controls="home" aria-selected="true" >
+                                          <img src="{{ asset('img/coins/coin_gold.png') }}" class="coins-animated" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<strong>Oro</strong> La tua inserzione apparirà tra i primi risultati di ricerca.">
+                                          <input hidden type="radio" name="cointype" id="gold_selector" value="gold">
+                                          <p style="margin-top:-35px">{{ app.user.creditsGold }}</p>
+                                      </a>
+                                      <a class="nav-item nav-link" id="silver-tab" data-toggle="tab" href="#silver" role="tab" aria-controls="home" aria-selected="true">
+                                          <img src="{{ asset('img/coins/coin_silver.png') }}" class="coins-animated" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<strong>Argento</strong> La tua inserzione apparirà tra i primi risultati di ricerca, dopo le inserzioni Oro.">
+                                          <input hidden type="radio" name="cointype" id="silver_selector" value="silver">
+                                          <p style="margin-top:-35px">{{ app.user.creditsSilver }}</p>
+                                      </a>
+                                      <a class="nav-item nav-link" id="bronze-tab" data-toggle="tab" href="#bronze" role="tab" aria-controls="home" aria-selected="true">
+                                          <img src="{{ asset('img/coins/coin_bronze.png') }}" class="coins-animated" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<strong>Bronzo</strong> La tua inserzione apparirà tra i primi risultati di ricerca, dopo le inserzioni Oro e Argento.">
+                                          <input hidden type="radio" name="cointype" id="bronze_selector" value="bronze">
+                                          <p style="margin-top:-35px">{{ app.user.creditsBronze }}</p>
+                                      </a>
+                                    </nav>
+                                </div>
+                                <script>
+                                    $(function () {
+                                        $('[data-toggle="tooltip"]').tooltip();
+                                    });
+                                    $('#confirmGold').click(function(e) {
+                                         if ( $( this ).hasClass( "btn-success" ) ) {
+                                            e.preventDefault();
+                                            $(this).removeClass('btn-success').addClass('btn-outline-success').text('Conferma');
+                                            $('#confirmBtn').removeClass('btn-outline-success').addClass('btn-outline-secondary');
+                                            $('#form_objLevel').val(0);
+                                        } else {
+                                            e.preventDefault();
+                                            $(this).addClass('btn-success').removeClass('btn-outline-success').text('Sponsorizzato!');
+                                            $('#confirmBtn').addClass('btn-outline-success').removeClass('btn-outline-secondary');
+                                            $('#form_objLevel').val(1);
+                                        }
+                                        }
+                                    );
+                                    $('#confirmSilver').click(function(e) {
+                                        if ( $( this ).hasClass( "btn-success" ) ) {
+                                            e.preventDefault();
+                                            $(this).removeClass('btn-success').addClass('btn-outline-success').text('Conferma');
+                                            $('#confirmBtn').removeClass('btn-outline-success').addClass('btn-outline-secondary');
+                                            $('#form_objLevel').val(0);
+                                        } else {
+                                            e.preventDefault();
+                                            $(this).addClass('btn-success').removeClass('btn-outline-success').text('Sponsorizzato!');
+                                            $('#confirmBtn').addClass('btn-outline-success').removeClass('btn-outline-secondary');
+                                            $('#form_objLevel').val('2');
+                                        }}
+                                    );
+                                    $('#confirmBronze').click(function(e) {
+                                        if ( $( this ).hasClass( "btn-success" ) ) {
+                                            e.preventDefault();
+                                            $(this).removeClass('btn-success').addClass('btn-outline-success').text('Conferma');;
+                                            $('#confirmBtn').removeClass('btn-outline-success').addClass('btn-outline-secondary');
+                                            $('#form_objLevel').val(0);
+                                        } else {
+                                            e.preventDefault();
+                                            $(this).addClass('btn-success').removeClass('btn-outline-success').text('Sponsorizzato!');
+                                            $('#confirmBtn').addClass('btn-outline-success').removeClass('btn-outline-secondary');
+                                            $('#form_objLevel').val(3);
+                                        }}
+                                    );
+                                </script>
+                                <div class="row mt-2">
+                                    <div class="tab-content" id="myTabContent">
+                                      <div class="tab-pane fade show active" id="gold" role="tabpanel" aria-labelledby="home-tab">
+                                          <div id="promoteGold" class="col-sm-12">
+                                            <div class="mx-auto">
+                                                <!--<p><strong>ORO:</strong> la tua inserzione verrà sponsorizzata per 7 giorni e tornerà in cima ai risultati di ricerca ogni 24 ore.</p>-->
+                                                <p>Sponsorizzare questa inserzione ti costa 1 credito ORO.</p>
+                                                {% if app.user.creditsGold == 0 %}
+                                                    <p class="float-left text-danger">Non hai abbastanza crediti ORO.&nbsp;</p><a href="{{ url('upgrade') }}">Acquista</a>
+                                                {% else %}
+                                                    <a id="confirmGold" class="btn btn-outline-success">Conferma</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                      </div>
+                                      <div class="tab-pane fade" id="silver" role="tabpanel" aria-labelledby="profile-tab">
+                                          <div id="promoteSilver">
+                                            <!--<p><strong>ARGENTO:</strong> la tua inserzione verrà sponsorizzata per 3 giorni e tornerà in cima ai risultati di ricerca ogni 24 ore.</p>-->
+                                            <p>Sponsorizzare questa inserzione ti costa 1 credito ARGENTO.</p>
+                                            {% if app.user.creditsSilver == 0 %}
+                                                <p class="float-left text-danger">Non hai abbastanza crediti ARGENTO.&nbsp;</p><a href="{{ url('upgrade') }}">Acquista</a>
+                                            {% else %}
+                                                <a id="confirmSilver" class="btn btn-outline-success">Conferma</a>
+                                            {% endif %}
+                                        </div>
+                                      </div>
+                                      <div class="tab-pane fade" id="bronze" role="tabpanel" aria-labelledby="contact-tab">
+                                          <div id="promoteBronze">
+                                            <!--p><strong>BRONZO:</strong> la tua inserzione verrà sponsorizzata per 24 Ore.</p>-->
+                                            <p>Sponsorizzare questa inserzione ti costa 1 credito BRONZO.</p>
+                                            {% if app.user.creditsBronze == 0 %}
+                                                <p class="float-left text-danger">Non hai abbastanza crediti BRONZO.&nbsp;</p><a href="{{ url('upgrade') }}">Acquista</a>
+                                            {% else %}
+                                                <a id="confirmBronze" class="btn btn-outline-success">Conferma</a>
+                                            {% endif %}
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <div class="alert alert-info">
+                                            Ti consigliamo di sponsorizzare questo annuncio! Tuttavia, puoi proseguire anche senza effettuare questa operazione
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                    </section>
+                    <h2 class="section-title">Fine</h2>
                     <section class="text-center success">
                         <img src="{{ asset('img/svg/check.svg') }}" alt="check"/>
                         <br><br>
@@ -165,12 +295,11 @@
                         <p>Cliccando Fine la tua Inserzione verrà inserita e sarà in attesa di moderazione da parte del nostro staff!</p>
                         <p>Solitamente questo impiega poco ma in casi eccezionali può impiegare fino a 48 ore.</p>
                         <p>Verrai informato appena sarà disponibile tramite e-mail</p>
-
                     </section>
+                    {{ form_widget(form.objLevel) }}
+                        {{ form_end(form) }}
                 </div>
                 <br><br>
-
-
             </div>
         </div>
     </div>
@@ -189,8 +318,205 @@
         #form_save {
             visibility: hidden;
         }
+
+        .coins-animated {
+            width: 50px;
+        }
+        .typeahead,
+        .tt-query,
+        .tt-hint {
+          width: 396px;
+          padding: .375rem .75rem;
+          font-size: 1rem;
+          line-height: 1.5;
+          border: 2px solid #ccc;
+          border-radius: .25rem!important;
+          -webkit-border-radius: 8px;
+             -moz-border-radius: 8px;
+                  border-radius: 8px;
+          outline: none;
+        }
+        
+        .typeahead {
+          background-color: #fff;
+        }
+        
+        .typeahead:focus {
+          border: 2px solid #0097cf;
+        }
+        
+        .tt-query {
+          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+             -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+                  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        }
+        
+        .tt-hint {
+          color: #999
+        }
+        
+        .tt-menu {
+          width: 100%;
+          margin: 0;
+          padding: 8px 0;
+          background-color: #fff;
+          border: 1px solid #ccc;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          -webkit-border-radius: .25rem;
+             -moz-border-radius: .25rem;
+                  border-radius: .25rem;
+          -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+             -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+                  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+        }
+        
+        .tt-suggestion {
+          padding: 3px 20px;
+          font-size: 18px;
+          line-height: 24px;
+        }
+        
+        .tt-suggestion:hover {
+          cursor: pointer;
+          color: #fff;
+          background-color: #0097cf;
+        }
+        
+        .tt-suggestion.tt-cursor {
+          color: #fff;
+          background-color: #0097cf;
+        
+        }
+        
+        .tt-suggestion p {
+          margin: 0;
+        }
+        .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+            color: #fff;
+            background-color: rgb(67,150,193);
+        }
+        .tab-content {
+            width: 100%;
+        }
+        .wizard > .steps .current a, .wizard > .steps .current a:hover, .wizard > .steps .current a:active {
+            background: rgb(67,150,193);
+            color: #fff;
+            cursor: default;
+        }
+        .wizard > .actions a {
+            background-color: rgb(67,150,193)!important;
+            color: rgb(249,247,244)!important;
+            padding: 0.6em 1.2em!important;
+            font-size: 22px!important;
+            border-radius: 0px!important;
+            border: none!important;
+            margin: 0!important;
+        }
+        .wizard > .actions .disabled a {
+            background-color: rgb(249,247,244)!important;
+            color: rgb(67,150,193)!important;
+            padding: 0.6em 1.2em!important;
+            font-size: 22px!important;
+            border-radius: 0px!important;
+            border: none!important;
+            margin: 0!important;
+        }
+        .btn-success {
+            background-color: #28a745!important;
+            color: rgb(249,247,244)!important;
+            padding: 0.6em 1.2em!important;
+            font-size: 22px!important;
+            border-radius: 0px!important;
+            border: 1px solid #28a745!important;
+            margin: 0!important;
+        }
+        .btn-outline-success {
+            background-color: #eee!important;
+            color: #28a745!important;
+            padding: 0.6em 1.2em!important;
+            font-size: 22px!important;
+            border-radius: 0px!important;
+            border: 1px solid #28a745!important;
+            margin: 0!important;
+        }
+        .hidden {
+            display:none;
+        }
+        .tablist li {
+            width: 20%;
+        }
+        .wizard > .steps > ul > li {
+            float: left;
+            width: 20%;
+        }
+        .number-title {
+            width: 115%!important;
+        }
     </style>
     <script src='{{ asset('js/jquery.steps.min.js') }}' type="text/javascript"></script>
+    <script src="{{ asset('js/bloodhound.min.js') }}" type="text/javascript"></script> 
+    <script src="{{ asset('js/typeahead.jquery.min.js') }}" type="text/javascript"></script>
+    <script src="{{asset('js/jquery.scrolling-tabs.min.js') }}"></script>
+    <link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
+    <script>
+    $(document).ready( function() {
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            $('.number-title').addClass('hidden');
+            $('.title').addClass('text-center');
+            //initializeScrollingBar('.steps');
+            $(window).on( "orientationchange", function( event ) {
+                $('.steps').scrollingTabs('destroy');
+                //initializeScrollingBar('.steps');
+            });
+            $('.title').remove('.number-title');
+        }
+        function initializeScrollingBar(selector) {
+             $(selector).scrollingTabs({
+                bootstrapVersion: 4,
+                scrollToTabEdge: false,
+                ArrowsOnFullyScrolled: false,
+                widthMultiplier: 1,
+                leftArrowContent: '<div class="scrtabs-tab-scroll-arrow scrtabs-tab-scroll-arrow-left" style="display: block;"><span class="fa fa-arrow-left"></span></div>',
+                rightArrowContent: '<div class="scrtabs-tab-scroll-arrow scrtabs-tab-scroll-arrow-right" style="display: block;"><span class="fa fa-arrow-right"></span></div>',
+                enableSwiping: true,
+            });
+        };
+    });
+    </script>
+    <script>
+    /*var province = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: '{{ asset('json/province.json') }}',
+        templates: {
+            notFound: '<strong>Nessun Risultato</strong>',
+            header: '<strong>Provincia</strong>'
+        },
+        initialize: true
+    });
+        
+    $('.typeahead').typeahead(null, {
+        name: 'nome',
+        display: 'nome',
+        source: province
+    });*/
+    $(document).ready(function(){
+    // Sonstructs the suggestion engine
+    var countries = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        // The url points to a json file that contains an array of country names
+        prefetch: 'https://tariffe.segugio.it/includes/search-comuni-attivi.aspx?term=%query%'
+    });
+    
+    // Initializing the typeahead with remote dataset
+    $('.typeahead').typeahead(null, {
+        name: 'countries',
+        source: countries,
+        limit: 10 /* Specify maximum number of suggestions to be displayed */
+    });
+});  
+    </script>
     <script>
         var form = $("#wizard");
         var step = 1;
@@ -199,7 +525,7 @@
             bodyTag: "section",
             autoFocus: true,
             transitionEffect: "fade",
-            /*onStepChanging: function (event, currentIndex, newIndex)
+            onStepChanging: function (event, currentIndex, newIndex)
             {
                 if (validate(currentIndex) === true) {
                     form.find(".body:eq(" + newIndex + ") label.error").remove();
@@ -217,7 +543,7 @@
                     form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
                 }
 
-            },*/
+            },
             onStepChanging: function(e, currentIndex, newIndex) {
                 if(validate(currentIndex) === true) {
                     return true;

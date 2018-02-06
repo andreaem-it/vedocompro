@@ -27,7 +27,7 @@
                             <p>Annunci: {{ ad_count }}</p>
                             {% if app.user.username is defined %}
                                 {% if app.user.username == user_info.0.name %}
-                                    <p>Crediti: <small>{{ user_info.0.creditsGold }}<img src="{{ asset('img/coins/coin_gold.png') }}" class="profile_coin_left"/> {{ user_info.0.creditsSilver }} <img src="{{ asset('img/coins/coin_silver.png') }}" class="profile_coin_left"/> {{ user_info.0.creditsBronze }} <img src="{{ asset('img/coins/coin_bronze.png') }}" class="profile_coin_left"/></p>
+                                    <p>Crediti: <small>{{ user_info.0.creditsGold }}<img src="{{ asset('img/coins/coin_gold.png') }}" class="profile_coin_left"/> {{ user_info.0.creditsSilver }} <img src="{{ asset('img/coins/coin_silver.png') }}" class="profile_coin_left"/> {{ user_info.0.creditsBronze }} <img src="{{ asset('img/coins/coin_bronze.png') }}" class="profile_coin_left"/></small></p>
                                 {% endif %}
                             {% endif %}    
                         </div>
@@ -448,7 +448,7 @@
                                                             <div class="col-1 hidden-md-down">
                                                                 <a href="{{ url('vedi_oggetto',  {'category': catName,'item': ads[loop.index0].id,'title': adSlug }) }}">
                                                                     <div class="ratio"
-                                                                         style="background-image: url(/uploads/photos/{{ ads[loop.index0].id }}-1.jpg)"></div>
+                                                                         style="background-image: url('/uploads/photos/{{ ads[loop.index0].id }}-1.jpg')"></div>
                                                                 </a>
                                                             </div>
                                                             <div class="col-8 align-middle d-flex align-items-center"

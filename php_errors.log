@@ -97,3 +97,311 @@ Stack trace:
   thrown in /home/ubuntu/workspace/vendor/monolog/monolog/src/Monolog/Handler/StreamHandler.php on line 107
 [06-Feb-2018 15:31:12 UTC] PHP Parse error:  syntax error, unexpected '<<' (T_SL), expecting ']' in /home/ubuntu/workspace/app/AppKernel.php on line 24
 [06-Feb-2018 15:31:15 UTC] PHP Parse error:  syntax error, unexpected '<<' (T_SL), expecting end of file in /home/ubuntu/workspace/web/app_dev.php on line 13
+<<<<<<< HEAD
+=======
+[06-Feb-2018 17:14:02 UTC] PHP Warning:  require(/home/ubuntu/workspace/web/../vendor/autoload.php): failed to open stream: No such file or directory in /home/ubuntu/workspace/web/app.php on line 5
+[06-Feb-2018 17:14:02 UTC] PHP Stack trace:
+[06-Feb-2018 17:14:02 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app.php:0
+[06-Feb-2018 17:14:02 UTC] PHP Fatal error:  require(): Failed opening required '/home/ubuntu/workspace/web/../vendor/autoload.php' (include_path='.:/usr/share/php:/usr/share/pear') in /home/ubuntu/workspace/web/app.php on line 5
+[06-Feb-2018 17:14:02 UTC] PHP Stack trace:
+[06-Feb-2018 17:14:02 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app.php:0
+[06-Feb-2018 17:14:58 UTC] PHP Warning:  require(/home/ubuntu/workspace/app/../vendor/autoload.php): failed to open stream: No such file or directory in /home/ubuntu/workspace/app/autoload.php on line 7
+[06-Feb-2018 17:14:58 UTC] PHP Stack trace:
+[06-Feb-2018 17:14:58 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app_dev.php:0
+[06-Feb-2018 17:14:58 UTC] PHP   2. require() /home/ubuntu/workspace/web/app_dev.php:23
+[06-Feb-2018 17:14:58 UTC] PHP Fatal error:  require(): Failed opening required '/home/ubuntu/workspace/app/../vendor/autoload.php' (include_path='.:/usr/share/php:/usr/share/pear') in /home/ubuntu/workspace/app/autoload.php on line 7
+[06-Feb-2018 17:14:58 UTC] PHP Stack trace:
+[06-Feb-2018 17:14:58 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app_dev.php:0
+[06-Feb-2018 17:14:58 UTC] PHP   2. require() /home/ubuntu/workspace/web/app_dev.php:23
+[06-Feb-2018 17:33:40 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/ubuntu/workspace/src/AppBundle/Controller/AdminController.php on line 98
+[06-Feb-2018 17:33:40 UTC] PHP Stack trace:
+[06-Feb-2018 17:33:40 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app_dev.php:0
+[06-Feb-2018 17:33:40 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /home/ubuntu/workspace/web/app_dev.php:32
+[06-Feb-2018 17:33:40 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:168
+[06-Feb-2018 17:33:40 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[06-Feb-2018 17:33:40 UTC] PHP   5. Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher->dispatch() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:129
+[06-Feb-2018 17:33:40 UTC] PHP   6. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/TraceableEventDispatcher.php:133
+[06-Feb-2018 17:33:40 UTC] PHP   7. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/EventDispatcher.php:46
+[06-Feb-2018 17:33:40 UTC] PHP   8. call_user_func:{/home/ubuntu/workspace/vendor/symfony/event-dispatcher/EventDispatcher.php:184}() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/EventDispatcher.php:184
+[06-Feb-2018 17:33:40 UTC] PHP   9. Symfony\Component\EventDispatcher\Debug\WrappedListener->__invoke() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/EventDispatcher.php:184
+[06-Feb-2018 17:33:40 UTC] PHP  10. call_user_func:{/home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61}() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:33:40 UTC] PHP  11. Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:33:40 UTC] PHP  12. Symfony\Component\Routing\Router->matchRequest() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/EventListener/RouterListener.php:101
+[06-Feb-2018 17:33:40 UTC] PHP  13. Symfony\Component\Routing\Router->getMatcher() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Router.php:260
+[06-Feb-2018 17:33:40 UTC] PHP  14. Symfony\Component\Config\ResourceCheckerConfigCacheFactory->cache() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Router.php:307
+[06-Feb-2018 17:33:40 UTC] PHP  15. call_user_func:{/home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:33:40 UTC] PHP  16. Symfony\Component\Routing\Router->Symfony\Component\Routing\{closure}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:33:40 UTC] PHP  17. Symfony\Component\Routing\Router->getMatcherDumperInstance() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Router.php:293
+[06-Feb-2018 17:33:40 UTC] PHP  18. Symfony\Bundle\FrameworkBundle\Routing\Router->getRouteCollection() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Router.php:371
+[06-Feb-2018 17:33:40 UTC] PHP  19. Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/Router.php:54
+[06-Feb-2018 17:33:40 UTC] PHP  20. Symfony\Component\Config\Loader\DelegatingLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/DelegatingLoader.php:72
+[06-Feb-2018 17:33:40 UTC] PHP  21. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/DelegatingLoader.php:45
+[06-Feb-2018 17:33:40 UTC] PHP  22. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:33:40 UTC] PHP  23. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:33:40 UTC] PHP  24. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:33:40 UTC] PHP  25. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:33:40 UTC] PHP  26. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:33:40 UTC] PHP  27. Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:33:40 UTC] PHP  28. ReflectionClass->__construct() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:33:40 UTC] PHP  29. spl_autoload_call() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:33:40 UTC] PHP  30. Symfony\Component\Debug\DebugClassLoader->loadClass() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:34:24 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/ubuntu/workspace/src/AppBundle/Controller/AdminController.php on line 529
+[06-Feb-2018 17:34:24 UTC] PHP Stack trace:
+[06-Feb-2018 17:34:24 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app_dev.php:0
+[06-Feb-2018 17:34:24 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /home/ubuntu/workspace/web/app_dev.php:32
+[06-Feb-2018 17:34:24 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:168
+[06-Feb-2018 17:34:24 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/var/cache/dev/classes.php:4206
+[06-Feb-2018 17:34:24 UTC] PHP   5. Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher->dispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:4236
+[06-Feb-2018 17:34:24 UTC] PHP   6. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/TraceableEventDispatcher.php:133
+[06-Feb-2018 17:34:24 UTC] PHP   7. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:3220
+[06-Feb-2018 17:34:24 UTC] PHP   8. call_user_func:{/home/ubuntu/workspace/var/cache/dev/classes.php:3305}() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:34:24 UTC] PHP   9. Symfony\Component\EventDispatcher\Debug\WrappedListener->__invoke() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:34:24 UTC] PHP  10. call_user_func:{/home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61}() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:34:24 UTC] PHP  11. Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:34:24 UTC] PHP  12. Symfony\Component\Routing\Router->matchRequest() /home/ubuntu/workspace/var/cache/dev/classes.php:3504
+[06-Feb-2018 17:34:24 UTC] PHP  13. Symfony\Component\Routing\Router->getMatcher() /home/ubuntu/workspace/var/cache/dev/classes.php:1905
+[06-Feb-2018 17:34:24 UTC] PHP  14. Symfony\Component\Config\ResourceCheckerConfigCacheFactory->cache() /home/ubuntu/workspace/var/cache/dev/classes.php:1937
+[06-Feb-2018 17:34:24 UTC] PHP  15. call_user_func:{/home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:34:24 UTC] PHP  16. Symfony\Component\Routing\Router->Symfony\Component\Routing\{closure}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:34:24 UTC] PHP  17. Symfony\Component\Routing\Router->getMatcherDumperInstance() /home/ubuntu/workspace/var/cache/dev/classes.php:1927
+[06-Feb-2018 17:34:24 UTC] PHP  18. Symfony\Bundle\FrameworkBundle\Routing\Router->getRouteCollection() /home/ubuntu/workspace/var/cache/dev/classes.php:1975
+[06-Feb-2018 17:34:24 UTC] PHP  19. Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader->load() /home/ubuntu/workspace/var/cache/dev/classes.php:2194
+[06-Feb-2018 17:34:24 UTC] PHP  20. Symfony\Component\Config\Loader\DelegatingLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/DelegatingLoader.php:72
+[06-Feb-2018 17:34:24 UTC] PHP  21. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/DelegatingLoader.php:45
+[06-Feb-2018 17:34:24 UTC] PHP  22. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:34:24 UTC] PHP  23. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:34:24 UTC] PHP  24. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:34:24 UTC] PHP  25. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:34:24 UTC] PHP  26. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:34:24 UTC] PHP  27. Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:34:24 UTC] PHP  28. ReflectionClass->__construct() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:34:24 UTC] PHP  29. spl_autoload_call() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:34:24 UTC] PHP  30. Symfony\Component\Debug\DebugClassLoader->loadClass() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:34:45 UTC] PHP Fatal error:  Uncaught exception 'UnexpectedValueException' with message 'The stream or file "/home/ubuntu/workspace/var/logs/dev.log" could not be opened: failed to open stream: Permission denied' in /home/ubuntu/workspace/var/cache/dev/classes.php:7862
+Stack trace:
+#0 /home/ubuntu/workspace/var/cache/dev/classes.php(7792): Monolog\Handler\StreamHandler->write(Array)
+#1 /home/ubuntu/workspace/var/cache/dev/classes.php(8279): Monolog\Handler\AbstractProcessingHandler->handle(Array)
+#2 /home/ubuntu/workspace/var/cache/dev/classes.php(8350): Monolog\Logger->addRecord(500, 'Uncaught Except...', Array)
+#3 /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Debug/ErrorHandler.php(546): Monolog\Logger->log('critical', 'Uncaught Except...', Array)
+#4 [internal function]: Symfony\Component\Debug\ErrorHandler->handleException(Object(UnexpectedValueException))
+#5 {main}
+  thrown in /home/ubuntu/workspace/var/cache/dev/classes.php on line 7862
+[06-Feb-2018 17:35:31 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/ubuntu/workspace/src/AppBundle/Controller/AdsController.php on line 170
+[06-Feb-2018 17:35:31 UTC] PHP Stack trace:
+[06-Feb-2018 17:35:31 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app_dev.php:0
+[06-Feb-2018 17:35:31 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /home/ubuntu/workspace/web/app_dev.php:32
+[06-Feb-2018 17:35:31 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:168
+[06-Feb-2018 17:35:31 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/var/cache/dev/classes.php:4206
+[06-Feb-2018 17:35:31 UTC] PHP   5. Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher->dispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:4236
+[06-Feb-2018 17:35:31 UTC] PHP   6. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/TraceableEventDispatcher.php:133
+[06-Feb-2018 17:35:31 UTC] PHP   7. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:3220
+[06-Feb-2018 17:35:31 UTC] PHP   8. call_user_func:{/home/ubuntu/workspace/var/cache/dev/classes.php:3305}() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:35:31 UTC] PHP   9. Symfony\Component\EventDispatcher\Debug\WrappedListener->__invoke() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:35:31 UTC] PHP  10. call_user_func:{/home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61}() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:35:31 UTC] PHP  11. Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:35:31 UTC] PHP  12. Symfony\Component\Routing\Router->matchRequest() /home/ubuntu/workspace/var/cache/dev/classes.php:3504
+[06-Feb-2018 17:35:31 UTC] PHP  13. Symfony\Component\Routing\Router->getMatcher() /home/ubuntu/workspace/var/cache/dev/classes.php:1905
+[06-Feb-2018 17:35:31 UTC] PHP  14. Symfony\Component\Config\ResourceCheckerConfigCacheFactory->cache() /home/ubuntu/workspace/var/cache/dev/classes.php:1937
+[06-Feb-2018 17:35:31 UTC] PHP  15. call_user_func:{/home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:35:31 UTC] PHP  16. Symfony\Component\Routing\Router->Symfony\Component\Routing\{closure}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:35:31 UTC] PHP  17. Symfony\Component\Routing\Router->getMatcherDumperInstance() /home/ubuntu/workspace/var/cache/dev/classes.php:1927
+[06-Feb-2018 17:35:31 UTC] PHP  18. Symfony\Bundle\FrameworkBundle\Routing\Router->getRouteCollection() /home/ubuntu/workspace/var/cache/dev/classes.php:1975
+[06-Feb-2018 17:35:31 UTC] PHP  19. Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader->load() /home/ubuntu/workspace/var/cache/dev/classes.php:2194
+[06-Feb-2018 17:35:31 UTC] PHP  20. Symfony\Component\Config\Loader\DelegatingLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/DelegatingLoader.php:72
+[06-Feb-2018 17:35:31 UTC] PHP  21. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/DelegatingLoader.php:45
+[06-Feb-2018 17:35:31 UTC] PHP  22. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:35:31 UTC] PHP  23. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:35:31 UTC] PHP  24. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:35:31 UTC] PHP  25. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:35:31 UTC] PHP  26. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:35:31 UTC] PHP  27. Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:35:31 UTC] PHP  28. ReflectionClass->__construct() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:35:31 UTC] PHP  29. spl_autoload_call() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:35:31 UTC] PHP  30. Symfony\Component\Debug\DebugClassLoader->loadClass() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:35:54 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/ubuntu/workspace/src/AppBundle/Controller/AdsController.php on line 170
+[06-Feb-2018 17:35:54 UTC] PHP Stack trace:
+[06-Feb-2018 17:35:54 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app_dev.php:0
+[06-Feb-2018 17:35:54 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /home/ubuntu/workspace/web/app_dev.php:32
+[06-Feb-2018 17:35:54 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:168
+[06-Feb-2018 17:35:54 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/var/cache/dev/classes.php:4206
+[06-Feb-2018 17:35:54 UTC] PHP   5. Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher->dispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:4236
+[06-Feb-2018 17:35:54 UTC] PHP   6. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/TraceableEventDispatcher.php:133
+[06-Feb-2018 17:35:54 UTC] PHP   7. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:3220
+[06-Feb-2018 17:35:54 UTC] PHP   8. call_user_func:{/home/ubuntu/workspace/var/cache/dev/classes.php:3305}() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:35:54 UTC] PHP   9. Symfony\Component\EventDispatcher\Debug\WrappedListener->__invoke() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:35:54 UTC] PHP  10. call_user_func:{/home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61}() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:35:54 UTC] PHP  11. Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:35:54 UTC] PHP  12. Symfony\Component\Routing\Router->matchRequest() /home/ubuntu/workspace/var/cache/dev/classes.php:3504
+[06-Feb-2018 17:35:54 UTC] PHP  13. Symfony\Component\Routing\Router->getMatcher() /home/ubuntu/workspace/var/cache/dev/classes.php:1905
+[06-Feb-2018 17:35:54 UTC] PHP  14. Symfony\Component\Config\ResourceCheckerConfigCacheFactory->cache() /home/ubuntu/workspace/var/cache/dev/classes.php:1937
+[06-Feb-2018 17:35:54 UTC] PHP  15. call_user_func:{/home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:35:54 UTC] PHP  16. Symfony\Component\Routing\Router->Symfony\Component\Routing\{closure}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:35:54 UTC] PHP  17. Symfony\Component\Routing\Router->getMatcherDumperInstance() /home/ubuntu/workspace/var/cache/dev/classes.php:1927
+[06-Feb-2018 17:35:54 UTC] PHP  18. Symfony\Bundle\FrameworkBundle\Routing\Router->getRouteCollection() /home/ubuntu/workspace/var/cache/dev/classes.php:1975
+[06-Feb-2018 17:35:54 UTC] PHP  19. Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader->load() /home/ubuntu/workspace/var/cache/dev/classes.php:2194
+[06-Feb-2018 17:35:54 UTC] PHP  20. Symfony\Component\Config\Loader\DelegatingLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/DelegatingLoader.php:72
+[06-Feb-2018 17:35:54 UTC] PHP  21. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/DelegatingLoader.php:45
+[06-Feb-2018 17:35:54 UTC] PHP  22. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:35:54 UTC] PHP  23. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:35:54 UTC] PHP  24. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:35:54 UTC] PHP  25. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:35:54 UTC] PHP  26. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:35:54 UTC] PHP  27. Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:35:54 UTC] PHP  28. ReflectionClass->__construct() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:35:54 UTC] PHP  29. spl_autoload_call() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:35:54 UTC] PHP  30. Symfony\Component\Debug\DebugClassLoader->loadClass() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:36:34 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/ubuntu/workspace/src/AppBundle/Controller/AdsController.php on line 170
+[06-Feb-2018 17:36:34 UTC] PHP Stack trace:
+[06-Feb-2018 17:36:34 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app_dev.php:0
+[06-Feb-2018 17:36:34 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /home/ubuntu/workspace/web/app_dev.php:32
+[06-Feb-2018 17:36:34 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:168
+[06-Feb-2018 17:36:34 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/var/cache/dev/classes.php:4206
+[06-Feb-2018 17:36:34 UTC] PHP   5. Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher->dispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:4236
+[06-Feb-2018 17:36:34 UTC] PHP   6. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/TraceableEventDispatcher.php:133
+[06-Feb-2018 17:36:34 UTC] PHP   7. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:3220
+[06-Feb-2018 17:36:34 UTC] PHP   8. call_user_func:{/home/ubuntu/workspace/var/cache/dev/classes.php:3305}() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:36:34 UTC] PHP   9. Symfony\Component\EventDispatcher\Debug\WrappedListener->__invoke() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:36:34 UTC] PHP  10. call_user_func:{/home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61}() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:36:34 UTC] PHP  11. Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:36:34 UTC] PHP  12. Symfony\Component\Routing\Router->matchRequest() /home/ubuntu/workspace/var/cache/dev/classes.php:3504
+[06-Feb-2018 17:36:34 UTC] PHP  13. Symfony\Component\Routing\Router->getMatcher() /home/ubuntu/workspace/var/cache/dev/classes.php:1905
+[06-Feb-2018 17:36:34 UTC] PHP  14. Symfony\Component\Config\ResourceCheckerConfigCacheFactory->cache() /home/ubuntu/workspace/var/cache/dev/classes.php:1937
+[06-Feb-2018 17:36:34 UTC] PHP  15. call_user_func:{/home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:36:34 UTC] PHP  16. Symfony\Component\Routing\Router->Symfony\Component\Routing\{closure}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:36:34 UTC] PHP  17. Symfony\Component\Routing\Router->getMatcherDumperInstance() /home/ubuntu/workspace/var/cache/dev/classes.php:1927
+[06-Feb-2018 17:36:34 UTC] PHP  18. Symfony\Bundle\FrameworkBundle\Routing\Router->getRouteCollection() /home/ubuntu/workspace/var/cache/dev/classes.php:1975
+[06-Feb-2018 17:36:34 UTC] PHP  19. Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader->load() /home/ubuntu/workspace/var/cache/dev/classes.php:2194
+[06-Feb-2018 17:36:34 UTC] PHP  20. Symfony\Component\Config\Loader\DelegatingLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/DelegatingLoader.php:72
+[06-Feb-2018 17:36:34 UTC] PHP  21. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/DelegatingLoader.php:45
+[06-Feb-2018 17:36:34 UTC] PHP  22. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:36:34 UTC] PHP  23. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:36:34 UTC] PHP  24. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:36:34 UTC] PHP  25. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:36:34 UTC] PHP  26. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:36:34 UTC] PHP  27. Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:36:34 UTC] PHP  28. ReflectionClass->__construct() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:36:34 UTC] PHP  29. spl_autoload_call() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:36:34 UTC] PHP  30. Symfony\Component\Debug\DebugClassLoader->loadClass() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:42:02 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/ubuntu/workspace/src/AppBundle/Controller/AdsController.php on line 290
+[06-Feb-2018 17:42:02 UTC] PHP Stack trace:
+[06-Feb-2018 17:42:02 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app_dev.php:0
+[06-Feb-2018 17:42:02 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /home/ubuntu/workspace/web/app_dev.php:32
+[06-Feb-2018 17:42:02 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:168
+[06-Feb-2018 17:42:02 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/var/cache/dev/classes.php:4206
+[06-Feb-2018 17:42:02 UTC] PHP   5. Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher->dispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:4236
+[06-Feb-2018 17:42:02 UTC] PHP   6. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/TraceableEventDispatcher.php:133
+[06-Feb-2018 17:42:02 UTC] PHP   7. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:3220
+[06-Feb-2018 17:42:02 UTC] PHP   8. call_user_func:{/home/ubuntu/workspace/var/cache/dev/classes.php:3305}() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:42:02 UTC] PHP   9. Symfony\Component\EventDispatcher\Debug\WrappedListener->__invoke() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:42:02 UTC] PHP  10. call_user_func:{/home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61}() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:42:02 UTC] PHP  11. Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:42:02 UTC] PHP  12. Symfony\Component\Routing\Router->matchRequest() /home/ubuntu/workspace/var/cache/dev/classes.php:3504
+[06-Feb-2018 17:42:02 UTC] PHP  13. Symfony\Component\Routing\Router->getMatcher() /home/ubuntu/workspace/var/cache/dev/classes.php:1905
+[06-Feb-2018 17:42:02 UTC] PHP  14. Symfony\Component\Config\ResourceCheckerConfigCacheFactory->cache() /home/ubuntu/workspace/var/cache/dev/classes.php:1937
+[06-Feb-2018 17:42:02 UTC] PHP  15. call_user_func:{/home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:42:02 UTC] PHP  16. Symfony\Component\Routing\Router->Symfony\Component\Routing\{closure}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:42:02 UTC] PHP  17. Symfony\Component\Routing\Router->getMatcherDumperInstance() /home/ubuntu/workspace/var/cache/dev/classes.php:1927
+[06-Feb-2018 17:42:02 UTC] PHP  18. Symfony\Bundle\FrameworkBundle\Routing\Router->getRouteCollection() /home/ubuntu/workspace/var/cache/dev/classes.php:1975
+[06-Feb-2018 17:42:02 UTC] PHP  19. Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader->load() /home/ubuntu/workspace/var/cache/dev/classes.php:2194
+[06-Feb-2018 17:42:02 UTC] PHP  20. Symfony\Component\Config\Loader\DelegatingLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/DelegatingLoader.php:72
+[06-Feb-2018 17:42:02 UTC] PHP  21. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/DelegatingLoader.php:45
+[06-Feb-2018 17:42:02 UTC] PHP  22. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:42:02 UTC] PHP  23. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:42:02 UTC] PHP  24. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:42:02 UTC] PHP  25. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:42:02 UTC] PHP  26. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:42:02 UTC] PHP  27. Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:42:02 UTC] PHP  28. ReflectionClass->__construct() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:42:02 UTC] PHP  29. spl_autoload_call() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:42:02 UTC] PHP  30. Symfony\Component\Debug\DebugClassLoader->loadClass() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:47:27 UTC] PHP Parse error:  syntax error, unexpected 'function' (T_FUNCTION), expecting identifier (T_STRING) or \\ (T_NS_SEPARATOR) in /home/ubuntu/workspace/src/AppBundle/Controller/AuthController.php on line 9
+[06-Feb-2018 17:47:27 UTC] PHP Stack trace:
+[06-Feb-2018 17:47:27 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app_dev.php:0
+[06-Feb-2018 17:47:27 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /home/ubuntu/workspace/web/app_dev.php:32
+[06-Feb-2018 17:47:27 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:168
+[06-Feb-2018 17:47:27 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/var/cache/dev/classes.php:4206
+[06-Feb-2018 17:47:27 UTC] PHP   5. Symfony\Component\HttpKernel\Controller\TraceableControllerResolver->getController() /home/ubuntu/workspace/var/cache/dev/classes.php:4240
+[06-Feb-2018 17:47:27 UTC] PHP   6. Symfony\Component\HttpKernel\Controller\ControllerResolver->getController() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Controller/TraceableControllerResolver.php:58
+[06-Feb-2018 17:47:27 UTC] PHP   7. Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver->createController() /home/ubuntu/workspace/var/cache/dev/classes.php:3742
+[06-Feb-2018 17:47:27 UTC] PHP   8. Symfony\Component\HttpKernel\Controller\ControllerResolver->createController() /home/ubuntu/workspace/var/cache/dev/classes.php:4488
+[06-Feb-2018 17:47:27 UTC] PHP   9. class_exists() /home/ubuntu/workspace/var/cache/dev/classes.php:3798
+[06-Feb-2018 17:47:27 UTC] PHP  10. spl_autoload_call() /home/ubuntu/workspace/var/cache/dev/classes.php:3798
+[06-Feb-2018 17:47:27 UTC] PHP  11. Symfony\Component\Debug\DebugClassLoader->loadClass() /home/ubuntu/workspace/var/cache/dev/classes.php:3798
+[06-Feb-2018 17:48:21 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/ubuntu/workspace/src/AppBundle/Controller/AdsController.php on line 290
+[06-Feb-2018 17:48:21 UTC] PHP Stack trace:
+[06-Feb-2018 17:48:21 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app_dev.php:0
+[06-Feb-2018 17:48:21 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /home/ubuntu/workspace/web/app_dev.php:32
+[06-Feb-2018 17:48:21 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:168
+[06-Feb-2018 17:48:21 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/var/cache/dev/classes.php:4206
+[06-Feb-2018 17:48:21 UTC] PHP   5. Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher->dispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:4236
+[06-Feb-2018 17:48:21 UTC] PHP   6. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/TraceableEventDispatcher.php:133
+[06-Feb-2018 17:48:21 UTC] PHP   7. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:3220
+[06-Feb-2018 17:48:21 UTC] PHP   8. call_user_func:{/home/ubuntu/workspace/var/cache/dev/classes.php:3305}() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:48:21 UTC] PHP   9. Symfony\Component\EventDispatcher\Debug\WrappedListener->__invoke() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:48:21 UTC] PHP  10. call_user_func:{/home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61}() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:48:21 UTC] PHP  11. Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:48:21 UTC] PHP  12. Symfony\Component\Routing\Router->matchRequest() /home/ubuntu/workspace/var/cache/dev/classes.php:3504
+[06-Feb-2018 17:48:21 UTC] PHP  13. Symfony\Component\Routing\Router->getMatcher() /home/ubuntu/workspace/var/cache/dev/classes.php:1905
+[06-Feb-2018 17:48:21 UTC] PHP  14. Symfony\Component\Config\ResourceCheckerConfigCacheFactory->cache() /home/ubuntu/workspace/var/cache/dev/classes.php:1937
+[06-Feb-2018 17:48:21 UTC] PHP  15. call_user_func:{/home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:48:21 UTC] PHP  16. Symfony\Component\Routing\Router->Symfony\Component\Routing\{closure}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:48:21 UTC] PHP  17. Symfony\Component\Routing\Router->getMatcherDumperInstance() /home/ubuntu/workspace/var/cache/dev/classes.php:1927
+[06-Feb-2018 17:48:21 UTC] PHP  18. Symfony\Bundle\FrameworkBundle\Routing\Router->getRouteCollection() /home/ubuntu/workspace/var/cache/dev/classes.php:1975
+[06-Feb-2018 17:48:21 UTC] PHP  19. Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader->load() /home/ubuntu/workspace/var/cache/dev/classes.php:2194
+[06-Feb-2018 17:48:21 UTC] PHP  20. Symfony\Component\Config\Loader\DelegatingLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/DelegatingLoader.php:72
+[06-Feb-2018 17:48:21 UTC] PHP  21. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/DelegatingLoader.php:45
+[06-Feb-2018 17:48:21 UTC] PHP  22. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:48:21 UTC] PHP  23. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:48:21 UTC] PHP  24. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:48:21 UTC] PHP  25. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:48:21 UTC] PHP  26. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:48:21 UTC] PHP  27. Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:48:21 UTC] PHP  28. ReflectionClass->__construct() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:48:21 UTC] PHP  29. spl_autoload_call() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:48:21 UTC] PHP  30. Symfony\Component\Debug\DebugClassLoader->loadClass() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:52:18 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/ubuntu/workspace/src/AppBundle/Controller/AdsController.php on line 290
+[06-Feb-2018 17:52:18 UTC] PHP Stack trace:
+[06-Feb-2018 17:52:18 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app_dev.php:0
+[06-Feb-2018 17:52:18 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /home/ubuntu/workspace/web/app_dev.php:32
+[06-Feb-2018 17:52:18 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:168
+[06-Feb-2018 17:52:18 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/var/cache/dev/classes.php:4206
+[06-Feb-2018 17:52:18 UTC] PHP   5. Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher->dispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:4236
+[06-Feb-2018 17:52:18 UTC] PHP   6. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/TraceableEventDispatcher.php:133
+[06-Feb-2018 17:52:18 UTC] PHP   7. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /home/ubuntu/workspace/var/cache/dev/classes.php:3220
+[06-Feb-2018 17:52:18 UTC] PHP   8. call_user_func:{/home/ubuntu/workspace/var/cache/dev/classes.php:3305}() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:52:18 UTC] PHP   9. Symfony\Component\EventDispatcher\Debug\WrappedListener->__invoke() /home/ubuntu/workspace/var/cache/dev/classes.php:3305
+[06-Feb-2018 17:52:18 UTC] PHP  10. call_user_func:{/home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61}() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:52:18 UTC] PHP  11. Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest() /home/ubuntu/workspace/vendor/symfony/event-dispatcher/Debug/WrappedListener.php:61
+[06-Feb-2018 17:52:18 UTC] PHP  12. Symfony\Component\Routing\Router->matchRequest() /home/ubuntu/workspace/var/cache/dev/classes.php:3504
+[06-Feb-2018 17:52:18 UTC] PHP  13. Symfony\Component\Routing\Router->getMatcher() /home/ubuntu/workspace/var/cache/dev/classes.php:1905
+[06-Feb-2018 17:52:18 UTC] PHP  14. Symfony\Component\Config\ResourceCheckerConfigCacheFactory->cache() /home/ubuntu/workspace/var/cache/dev/classes.php:1937
+[06-Feb-2018 17:52:18 UTC] PHP  15. call_user_func:{/home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:52:18 UTC] PHP  16. Symfony\Component\Routing\Router->Symfony\Component\Routing\{closure}() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[06-Feb-2018 17:52:18 UTC] PHP  17. Symfony\Component\Routing\Router->getMatcherDumperInstance() /home/ubuntu/workspace/var/cache/dev/classes.php:1927
+[06-Feb-2018 17:52:18 UTC] PHP  18. Symfony\Bundle\FrameworkBundle\Routing\Router->getRouteCollection() /home/ubuntu/workspace/var/cache/dev/classes.php:1975
+[06-Feb-2018 17:52:18 UTC] PHP  19. Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader->load() /home/ubuntu/workspace/var/cache/dev/classes.php:2194
+[06-Feb-2018 17:52:18 UTC] PHP  20. Symfony\Component\Config\Loader\DelegatingLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/DelegatingLoader.php:72
+[06-Feb-2018 17:52:18 UTC] PHP  21. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/DelegatingLoader.php:45
+[06-Feb-2018 17:52:18 UTC] PHP  22. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:52:18 UTC] PHP  23. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:52:18 UTC] PHP  24. Symfony\Component\Routing\Loader\YamlFileLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:52:18 UTC] PHP  25. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[06-Feb-2018 17:52:18 UTC] PHP  26. Symfony\Component\Config\Loader\FileLoader->import() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[06-Feb-2018 17:52:18 UTC] PHP  27. Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[06-Feb-2018 17:52:18 UTC] PHP  28. ReflectionClass->__construct() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:52:18 UTC] PHP  29. spl_autoload_call() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:52:18 UTC] PHP  30. Symfony\Component\Debug\DebugClassLoader->loadClass() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:60
+[06-Feb-2018 17:55:43 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/ubuntu/workspace/src/AppBundle/Controller/UserController.php on line 378
+[06-Feb-2018 17:55:43 UTC] PHP Stack trace:
+[06-Feb-2018 17:55:43 UTC] PHP   1. {main}() /home/ubuntu/workspace/web/app_dev.php:0
+[06-Feb-2018 17:55:43 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /home/ubuntu/workspace/web/app_dev.php:32
+[06-Feb-2018 17:55:43 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:168
+[06-Feb-2018 17:55:43 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /home/ubuntu/workspace/var/cache/dev/classes.php:4206
+[06-Feb-2018 17:55:43 UTC] PHP   5. Symfony\Component\HttpKernel\Controller\TraceableControllerResolver->getController() /home/ubuntu/workspace/var/cache/dev/classes.php:4240
+[06-Feb-2018 17:55:43 UTC] PHP   6. Symfony\Component\HttpKernel\Controller\ControllerResolver->getController() /home/ubuntu/workspace/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Controller/TraceableControllerResolver.php:58
+[06-Feb-2018 17:55:43 UTC] PHP   7. Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver->createController() /home/ubuntu/workspace/var/cache/dev/classes.php:3742
+[06-Feb-2018 17:55:43 UTC] PHP   8. Symfony\Component\HttpKernel\Controller\ControllerResolver->createController() /home/ubuntu/workspace/var/cache/dev/classes.php:4488
+[06-Feb-2018 17:55:43 UTC] PHP   9. class_exists() /home/ubuntu/workspace/var/cache/dev/classes.php:3798
+[06-Feb-2018 17:55:43 UTC] PHP  10. spl_autoload_call() /home/ubuntu/workspace/var/cache/dev/classes.php:3798
+[06-Feb-2018 17:55:43 UTC] PHP  11. Symfony\Component\Debug\DebugClassLoader->loadClass() /home/ubuntu/workspace/var/cache/dev/classes.php:3798
+>>>>>>> 6d95c65f7fea27694db0f5b4e6b76f70c89a765e
