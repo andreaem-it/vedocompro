@@ -45,21 +45,7 @@ class UserController extends Controller
 
         $usr = $this->get('security.token_storage')->getToken()->getUser();
 
-<<<<<<< HEAD
-//        $uid = $this->getDoctrine()
-//            ->getRepository('AppBundle:Ads')
-//            ->createQueryBuilder('e')
-//            ->select('e')
-//            ->getQuery()
-//            ->getResult(Query::HYDRATE_ARRAY);
-//
-//        $categories = $this->getDoctrine()
-//            ->getRepository('AppBundle:Category')
-//            ->createQueryBuilder('e')
-//            ->select('e')
-//            ->getQuery()
-//            ->getResult(Query::HYDRATE_ARRAY);
-=======
+
         $uid = $this->getDoctrine()
             ->getRepository('AppBundle:Ads')
             ->createQueryBuilder('e')
@@ -73,7 +59,6 @@ class UserController extends Controller
             ->select('e')
             ->getQuery()
             ->getResult(Query::HYDRATE_ARRAY);
->>>>>>> restyle
 
         $sells = $this->getDoctrine()
             ->getRepository('AppBundle:Sells')
