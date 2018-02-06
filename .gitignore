@@ -18,5 +18,5 @@
 /web/webtemp/*
 !web/webtemp/.gitkeep
 .DS_Store
-/web/uploads/
+/web/uploads/*
 /.idea/
