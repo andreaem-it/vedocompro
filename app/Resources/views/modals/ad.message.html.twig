@@ -1,0 +1,29 @@
+<div class="modal fade" id="send_message">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Messaggio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <small>Puoi inviare un messaggio al venditore, tuttavia ti consigliamo di preferire come metodo la
+                    semplice telefonata.
+                </small>
+                <br><br>
+                <p>Destinatario: {{ user_info.0.name }}</p>
+                <form action="{{ url('nuovo_message', {to: user_info.0.id}) }}" method="post">
+                    <input type="hidden" name="fromUID" value="{{ app.user.id }}"/>
+                    <input type="hidden" name="toUID" value="{{ user_info.0.id }}"/>
+                    <input type="hidden" id="object" name="object" value="{{ ad_info.0.id }}"/>
+                    <textarea id="message" class="form-control" name="message" placeholder="Inserisci messaggio..."></textarea>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Invia"/>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

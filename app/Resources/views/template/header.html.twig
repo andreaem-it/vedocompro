@@ -1,0 +1,136 @@
+<meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=0 ">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="{{asset('js/jquery.scrolling-tabs.min.js') }}"></script>
+    <link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
+    
+    
+    
+    <nav class="navbar navbar-expand-lg fixed-top blue-header p navbar-toggleable-sm mb-5">
+      <a class="navbar-brand" href="{{ url('homepage') }}">
+          <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-white.png')}}" class="img-fluid" style="max-width:280px"/>
+      </a>
+      <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span> </span>
+            <span> </span>
+            <span> </span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ml-auto" style="font-size:1vw">
+            <li class="nav-item">
+                <a data-toggle="modal" data-target="#searchModal">
+                    <i class="fa fa-search"></i>
+                </a>
+            </li>
+          <li class="nav-item">
+              <a href="{{ url('homepage') }}" class="nav-link">HOME</a>
+            </li>
+            {% if app.user %}
+                
+                <li class="nav-item">
+                    <a href="{{ url('profilo' , {'query': app.user.username }) }}" class=" head-txt-bold txt-light">PROFILO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ logout_path('main') }}" class="head-txt-bold txt-light">ESCI</a>
+                </li>
+             {% else %}
+                 <li class="nav-item">
+                     <a href="{{ url('login') }}" class="nav-link active txt-light">ACCEDI</a>
+                 </li>
+                 <li class="nav-item">
+                     <a href="{{ url('registrati') }}" class="nav-link txt-light">REGISTRATI </a>
+                 </li>
+             {% endif %}
+            <li class="nav-item">
+              <a href="{{ url('helpdesk') }}" class="nav-link txt-light">SUPPORTO</a>
+            </li>
+            <a href="{{  url('nuovo') }}" class="btn btn-lg btn-primary float-right color-light-blue btn-add-ad">
+                INSERISCI ANNUNCIO 
+                <img src="{{ asset('img/home/camera.svg') }}" class="btn-camera" style="width:32px">
+            </a>
+        </ul>
+      </div>
+    </nav>
+    <div id="searchModal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+           {{ render(controller('AppBundle:Search:formTop')) }}
+          </div>
+        </div>
+      </div>
+    </div>
+<script>
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+         $('.navbar-nav .nav-item a').addClass('nav-mobile');   
+    }
+</script>
+<style>
+    .nav-mobile {
+        font-size: 4vw!important;
+    }
+    .navbar-toggler:focus,
+.navbar-toggler:active {
+    outline: 0;
+}
+
+.navbar-toggler {
+    border: 1px solid #FFF;
+    height: 45px;
+    width: 60px;
+    padding: 0px 15px;
+}
+
+.navbar-toggler span {
+   display: block;
+   background-color: #FFF;
+   height: 5px;
+   width: 25px;
+   margin-top: 4px;
+   margin-bottom: 4px;
+   -webkit-transform: rotate(0deg);
+   -moz-transform: rotate(0deg);
+   -o-transform: rotate(0deg);
+   transform: rotate(0deg);
+   position: relative;
+   left: 0;
+   opacity: 1;
+}
+
+.navbar-toggler span:nth-child(1),
+.navbar-toggler span:nth-child(3) {
+   -webkit-transition: transform .35s ease-in-out;
+   -moz-transition: transform .35s ease-in-out;
+   -o-transition: transform .35s ease-in-out;
+   transition: transform .35s ease-in-out;
+}
+
+.navbar-toggler:not(.collapsed) span:nth-child(1) {
+    position: relative;
+    left: 0;
+    top: 10px;
+    -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    -o-transform: rotate(135deg);
+    transform: rotate(135deg);
+    opacity: 0.9;
+}
+
+.navbar-toggler:not(.collapsed) span:nth-child(2) {
+    height: 12px;
+    visibility: hidden;
+    background-color: transparent;
+}
+
+.navbar-toggler:not(.collapsed) span:nth-child(3) {
+    position: relative;
+    left: 0;
+    top: -13px;
+    -webkit-transform: rotate(-135deg);
+    -moz-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+    opacity: 0.9;
+}
+
+</style>

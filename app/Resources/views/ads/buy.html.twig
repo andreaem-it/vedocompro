@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="container-fluid scrollbar"">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card">
+                        <img src="/uploads/photos/{{ ad.0.id }}-1.jpg" class="img-fluid card-img-top"/>
+                        <div class="card-block">
+                            <p><strong>{{ ad.0.name }}</strong></p>
+
+                            <p><strong>Totale:</strong>&nbsp; {{ ad.0.price }} €</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card" style="width:100%">
+                        <div class="card-block">
+                            <h3>Vuoi Acquistare l'oggetto?</h3>
+                            <br>
+                            <p>Hai scelto di acquistare <strong>{{ ad.0.name }}</strong>, non hai ancora confermato nulla, per cui non abbiamo notificato il venditore</p>
+                            <p>Procedendo invieremo una notifica al venditore che ti contatterà per concludere l'affare</p>
+                            <br>
+                            <a href="{{ url('acquista_conferma_id', {'id': ad.0.id}) }}" class="btn btn-success">Conferma</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

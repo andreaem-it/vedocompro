@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {% stylesheets
+    'css/dropzone.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('css/jquery.steps.css') }}"/>
+    {% include 'template/header.html.twig' %}
+    <br><br><br><br>
+    <div class="container scrollbar">
+    <div class="row" style="margin-top:-20px">
+        <div class="col-lg-1 bg-light-grey"></div>
+        <div class="col-lg-12">
+            <br><br>
+            {{ form_start(form) }}
+            {% form_theme form 'forms/bootstrap_3_horizontal_layout_new.html.twig' %}
+            <div id="wizard">
+                <h2>Messaggi</h2>
+                <div class="row">
+                    <div class="col-lg-6" id="form1">
+                        <label for="form_to">Nome Oggetto</label>
+                        {{ form_widget(form.to) }}
+                        <small class="hidden-md-up form-text text-muted">Scegli un titolo per l'inserzione, cerca di essere più preciso possibile</small>
+                        <br>
+                        <label for="form_message">Descrizione Oggetto</label>
+                        {{ form_widget(form.message) }}
+                        <small class="hidden-md-up form-text text-muted">Descrivi il tuo prodotto, elencane pregi e
+                            difetti, caratteristiche tecniche e quant'altro ti venga in mente. Se dimentichi
+                            qualcosa non preoccuparti, potrai sempre modificare l'inserzione dopo, oppure rispondere
+                            alle domande degli utenti
+                        </small>
+                        <br>
+                        {#<label for="form_cateogry">Categoria</label>#}
+                        {#{{ form_widget(form.category) }}#}
+                        {#<small class="hidden-md-up form-text text-muted">Scegli la categoria del prodotto, fai attenzione a scegliere quella giusta, gli utenti potrebbero non trovare la tua inserzione e potrebbe essere eliminata.</small>#}
+                    </div>
+                </div>
+            </div>
+            <br><br>
+        </div>
+    </div>
+    </div>
+    <style>
+        .dz-preview.dz-image-preview {
+            background-color: transparent !important;
+        }
+
+        #form_save {
+            visibility: hidden;
+        }
+    </style>
+    <script src='{{ asset('js/jquery.steps.min.js') }}' type="text/javascript"></script>
+    <script>
+        var form = $("#wizard");
+        var step = 1;
+
+        function validate(step) {
+            var step = step - 1;
+            var div = $("#form" + step + "");
+            $(div).find("input[type = 'text']").each(function () {
+                if (this.value === "") {
+                    return false;
+                }
+            });
+        }
+
+        function invalid(step) {
+            var div = $("#wizard-p-" + step + "");
+            $(div).find("input").each(function () {
+                if (null !== this.value) {
+                    return true;
+                }
+            });
+        }
+
+        function isValid(step) {
+            $("#wizard-p-" + step + ":input").each(function () {
+                var element = $(this);
+                if (element.val() === "") {
+                    isValid = false;
+                }
+                console.log(step);
+            })
+        }
+
+    </script>
+    {% include 'template/footer.html.twig' %}
+
+{% endblock %}

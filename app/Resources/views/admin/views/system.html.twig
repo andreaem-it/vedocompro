@@ -1,0 +1,113 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}VedoCompro.it - ADMIN - Sistema{% endblock %}
+
+{% block body %}
+
+    <section class="content-header">
+        <h1>
+            Sistema
+            <small>Impostazioni</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li class="active"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li>Sistema</li>
+        </ol>
+    </section>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <div class="box-title">Info Sistema</div>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tr>
+                                <td>Server Name</td>
+                                <td>{{ info.server_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Server Host</td>
+                                <td>{{ info.server_host }}</td>
+                            </tr>
+                            <tr>
+                                <td>Server Software</td>
+                                <td>{{ info.server_sftw }}</td>
+                            </tr>
+                            <tr>
+                                <td>PHP Version</td>
+                                <td>{{ info.php_version }}</td>
+                            </tr>
+                            <tr>
+                                <td>PHP Ini Location</td>
+                                <td>{{ info.php_ini }}</td>
+                            </tr>
+                            <tr>
+                                <td>PHP Max Execution Time</td>
+                                <td>{{ info.php_max_execution_time }}</td>
+                            </tr>
+                            <tr>
+                                <td>PHP Upload Temp Dir</td>
+                                <td>{{ info.php_upload_temp_dir }}</td>
+                            </tr>
+                            <tr>
+                                <td>PHP Upload Max Filesize</td>
+                                <td>{{ info.php_upload_max_filesize }}</td>
+                            </tr>
+                            <tr>
+                                <td>PHP Post Max Size</td>
+                                <td>{{ info.php_post_max_size }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <div class="box-title">Tools</div>
+                    </div>
+                    <div class="box-body">
+                        <strong class="pull-left" style="margin:6px">Video Temp Directory Size:</strong>&nbsp;<p class="Dsize pull-left" style="margin:6px"></p>
+                        <a class="btn btn-info pull-left" id="updateVideoDir" style="margin-right: 5px">Update Directory Size</a>
+                        <a class="btn btn-danger pull-left" id="resetVideoDir">Reset Video Temp Directory</a>
+                        <strong class="result1 text-success" style="float:left; margin: 6px;"></strong>
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+        $('#resetVideoDir').click(function() {
+            $.ajax({
+                url: '../../ajax/admin/admin.clearTemp.php'
+            }).done( function() {
+                $('.result1').text('Done!')
+                getSizeAjax();
+            }).fail( function () {
+                $('.result1').text('Error!')
+            });
+        });
+        $('#updateVideoDir').click(function() {
+            getSizeAjax();
+        })
+        window.setTimeout(getSizeAjax(),1000);
+        function getSizeAjax() {
+            $.ajax({
+                url: '../../ajax/admin/admin.getDirSize.php',
+                method: 'GET',
+                dataType: 'html',
+                success: function (data) {
+                    $('.Dsize').html(data);
+                },
+            })
+        }
+
+    </script>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{% include 'template/header.html.twig' %}
+<form class="form-inline" id="search-bar" method="GET" action="cerca">
+    <div class="col-lg-2">
+        <h4 class="text-right">Cosa stai cercando?</h4>
+    </div>
+    <div class="col-lg-4">
+        <input type="text" class="form-control mb-2 mr-lg-2 mb-lg-0" id="inlineFormInput" placeholder="Es: Chitarra, Audi, Appartamento" style="width: 100%;">
+    </div>
+    <div class="col-lg-2">
+        <select name="category" class="form-control mb-2 mr-lg-2 mb-lg-0" style="width:100%"  data-live-search="true" data-container="body">
+            <option>Tutte le Categorie</option>
+            <optgroup label="MOTORI">
+                <option value="Auto">Auto</option>
+                <option value="Accessori Auto">Accessori Auto</option>
+                <option value="Moto e Scooter">Moto e Scooter</option>
+                <option value="Accessori Moto">Accessori Moto</option>
+                <option value="Nautica">Nautica</option>
+                <option value="Caravan e Camper">Caravan e Camper</option>
+                <option value="Veicoli commerciali">Veicoli commerciali</option>
+            </optgroup>
+            <optgroup label="IMMOBILI">
+                <option value="Appartamenti">Appartamenti</option>
+                <option value="Camere/Posti letto">Camere/Posti letto</option>
+                <option value="Ville singole e a schiera">Ville singole e a schiera</option>
+                <option value="Terreni e rustici">Terreni e rustici</option>
+                <option value="Garage e box">Garage e box</option>
+                <option value="Loft, mansarde e altro">Loft, mansarde e altro</option>
+                <option value="Case vacanza">Case vacanza</option>
+                <option value="Uffici e Locali commerciali">Uffici e Locali commerciali</option>
+            </optgroup>
+            <optgroup label="LAVORO E SERVIZI">
+                <option value="Offerte di lavoro">Offerte di lavoro</option>
+                <option value="Servizi">Servizi</option>
+                <option value="Candidati in cerca di lavoro">Candidati in cerca di lavoro</option>
+                <option value="Attrezzature di lavoro">Attrezzature di lavoro</option>
+            </optgroup>
+            <optgroup label="ELETTRONICA">
+                <option value="Informatica">Informatica</option>
+                <option value="Console e Videogiochi">Console e Videogiochi</option>
+                <option value="Audio/Video">Audio/Video</option>
+                <option value="Fotografia">Fotografia</option>
+                <option value="Smartphone">Smartphone</option>
+                <option value="Tablet">Tablet</option>
+            </optgroup>
+            <optgroup label="PER LA CASA">
+                <option value="Arredamento e Casalinghi">Arredamento e Casalinghi</option>
+                <option value="Elettrodomestici">Elettrodomestici</option>
+                <option value="Giardino e Fai da te">Giardino e Fai da te</option>
+            </optgroup>
+            <optgroup label="PER LA PERSONA">
+                <option value="Abbigliamento Donna">Abbigliamento Donna</option>
+                <option value="Abbigliamento Uomo">Abbigliamento Uomo</option>
+                <option value="Accessori Donna">Accessori Donna</option>
+                <option value="Accessori Donna">Accessori Uomo</option>
+                <option value="Tutto per i bambini">Abbigliamento bambini</option>
+            </optgroup>
+            <optgroup label="SPORTS E HOBBY">
+                <option value="Animali">Animali</option>
+                <option value="Musica e Film">Musica e Film</option>
+                <option value="Libri e Riviste">Libri e Riviste</option>
+                <option value="Strumenti Musicali">Strumenti Musicali</option>
+                <option value="Sports">Sports</option>
+                <option value="Biciclette">Biciclette</option>
+                <option value="Collezionilgo">Collezionilgo</option>
+            </optgroup>
+        </select>
+    </div>
+    <div class="col-lg-2">
+        <select class="form-control mb-2 mr-lg-2 mb-lg-0" style="width:100%">
+            <option value="italy">Italia</option>
+            <option value="Valle d'Aosta">Valle d'Aosta</option>
+            <option value="Piemonte">Piemonte</option>
+            <option value="Liguria">Liguria</option>
+            <option value="Lombardia">Lombardia</option>
+            <option value="Trentino-Alto Adige">Trentino-Alto Adige</option>
+            <option value="Veneto">Veneto</option>
+            <option value="Friuli-Venezia Giulia">Friuli-Venezia Giulia</option>
+            <option value="Emilia-Romagna">Emilia-Romagna</option>
+            <option value="Toscana">Toscana</option>
+            <option value="Umbria">Umbria</option>
+            <option value="Lazio">Lazio</option>
+            <option value="Marche">Marche</option>
+            <option value="Abruzzo">Abruzzo</option>
+            <option value="Molise">Molise</option>
+            <option value="Campania">Campania</option>
+            <option value="Puglia">Puglia</option>
+            <option value="Basilicata">Basilicata</option>
+            <option value="Calabria">Calabria</option>
+            <option value="Sardegna">Sardegna</option>
+            <option value="Sicilia">Sicilia</option>
+        </select>
+    </div>
+    <div class="col-lg-2">
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Cerca</button>
+    </div>
+</form>
+{% include 'template/footer.html.twig' %}
+{% endblock %}

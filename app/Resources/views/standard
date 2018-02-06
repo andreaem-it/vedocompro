@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+<div class="wrapper">
+    <div class="container-fluid scrollbar"">
+        {% include 'template/header.html.twig' %}
+        <div class="row">
+            <div class="col-sm-12">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ query }} in {{ region }}
+
+{% endblock %}

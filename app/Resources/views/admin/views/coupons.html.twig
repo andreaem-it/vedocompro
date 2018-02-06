@@ -1,0 +1,55 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}VedoCompro.it - ADMIN - Coupons{% endblock %}
+
+{% block body %}
+
+    <section class="content-header">
+        <h1>
+            Coupons
+            <small>Lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li class="active"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li>Coupons</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Lista Coupons</h3>
+                        <div class="box-tools">
+                            <a href="{{ url('admin_coupons_genera') }}" class="btn btn-default">Genera Nuovo</a>
+                        </div>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th>ID</th>
+                                <th>Codice</th>
+                                <th>Valore</th>
+                                <th>Validità</th>
+                                <th>Utilizzatore</th>
+                            </tr>
+                            {% for coupon in coupons %}
+                                <tr>
+                                    <td>{{ coupon.id }}</td>
+                                    <td>{{ coupon.code }}</td>
+                                    <td>{{ coupon.value }}</td>
+                                    <td>{% if coupon.valid == 1 %}<img src="{{ asset('img/circle-green.png') }}" alt="Coupon non riscattato">{% else %}<img src="{{ asset('img/circle-red.png') }}" alt="Coupon riscattato">{% endif %}</td>
+                                    <td>{{ coupon.assigned }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

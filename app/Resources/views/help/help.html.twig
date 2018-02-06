@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <link rel="stylesheet" href="{{asset('css/font-awesome.min.css') }}">
+<div class="mt-5 pt-3 wrapper container-fluid scrollbar">
+    <div class="container">
+        <div class="row">
+            <div class="float-left col-md-10">
+                <h3>Help Desk</h3>
+                <small>Utilizziamo un sistema di ticket per elaborare le richieste di assistenza così da assegnarle al giusto reparto e gestirle velocemente</small>
+            </div>
+            <div class="float-right col-md-2">
+                <a href="{{ url("helpdesk_create") }}" class="mt-3 md-right float-right btn btn-success btn-lg">Apri Ticket</a>
+            </div>
+
+        </div>
+        <br>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card list-item-shadow" style="width:100%">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <h2>{{ ticketsOCount }}</h2> Ticket Aperti
+                            </div>
+                            <div class="col-sm-4">
+                                <h1 class="text-right" style="font-size: 6em; margin: -30px -10px;">
+                                    <i class="fa fa-question-circle"></i>
+                                </h1>    
+                            </div>
+                            
+                        </div>
+                        <br>
+                        <ul class="list-group">
+                            {% for ticketO in ticketsO %}
+                                <li class="list-group-item">
+                                    <a href="{{ url('helpdesk_ticket' , {'id': ticketO.id })}}">{{ ticketO.title }}</a>&nbsp;<small><span class="float-right">{{ ticketO.timest | date("d-m-y h:m") }}</span></small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card list-item-shadow" style="width:100%">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <h2>{{ ticketsCCount }}</h2> Ticket Chiusi
+                            </div>
+                            <div class="col-sm-4">
+                                <h1 class="text-right" style="font-size: 6em; margin: -30px -10px;">
+                                    <i class="fa fa-exclamation-circle"></i>
+                                </h1>
+                            </div>
+                        </div>
+                        <br>
+                        <ul class="list-group">
+                            {% for ticketC in ticketsC %}
+                                <li class="list-group-item">
+                                    <a href="{{ url('helpdesk_ticket' , {'id': ticketC.id })}}">{{ ticketC.title }}</a>&nbsp;<small><span class="float-right">{{ ticketC.timest | date("d-m-y h:m") }}</span></small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .list-item-shadow {
+            margin-bottom: .5em;
+            border-radius: 0px;
+            border-right: 10px solid rgb(67,150,193);
+            box-shadow: 5px 5px 10px 0px #BBB;
+            font-size: 16px;
+        }
+        .fa {
+            color: rgb(67,150,193);
+        }
+</style>
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

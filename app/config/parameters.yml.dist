@@ -1,0 +1,22 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_host: localhost
+    database_port: 3306
+    database_name: vedocompro
+    database_user: root
+    database_password:
+    mailer_transport: smtp
+    mailer_host: email-smtp.eu-west-1.amazonaws.com
+    mailer_user:
+    mailer_password:
+    secret:
+    amazon.key: example
+    amazon.secret: example
+    amazon_s3_base_url: 'http://s3.amazonaws.com/vedocompro/'
+    amazon.region: eu-west-2
+    google_client_id: example
+    google_secret: example
+    facebook_client_id: example
+    facebook_secret: example

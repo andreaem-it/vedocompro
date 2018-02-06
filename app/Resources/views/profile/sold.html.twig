@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="container-fluid scrollbar"">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="{{ app.request.headers.get('referer') }}">< Torna al Profilo</a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="card" style="width:100%">
+                    <div class="card-block">
+                        <h3>Hai venduto l'oggetto  ?</h3>
+                        <small>Inserisci il nome dell'utente a cui hai venduto l'oggetto, invieremo una notifica a quest'ultimo così da poter seguire l'andamento della vendita</small>
+                        <hr style="margin: 20px -20px 40px -20px;">
+                        {{ form_start(form) }}
+                        <div class="row">
+                            <div class="col-lg text-right" style="margin-top:5px">
+                                {{ form_label(form.tuid) }}
+                            </div>
+                            <div class="col-lg">
+                                {{ form_widget(form.tuid) }}
+                                {{ form_widget(form.fuid) }}
+                                {{ form_widget(form.aid) }}
+                            </div>
+                            <div class="col-lg">
+                                {{ form_widget(form.submit) }}
+                            </div>
+                        </div>
+
+
+                        <br>
+
+                        {{ form_end(form) }}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

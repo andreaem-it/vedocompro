@@ -1,0 +1,72 @@
+
+<div class="wrapper">
+    <div class="container-fluid scrollbar">
+        
+        <div class="row">
+            <div class="col-sm-12 register-form">    
+            {% form_theme form 'forms/bootstrap_3_horizontal_layout_new.html.twig' %}
+                  {{ form_start(form) }}
+                        <div class="row">
+                            {% if form.name is defined %}
+                            <div class="col-md-6">
+                                {{ form_row(form.name) }}
+                                <p id="usern_error" class="text-danger" style="margin-left: 15px;margin-top: -15px"><small id="usern_error_data"></small></p>
+                                {{ form_row(form.email) }}
+                                {{ form_row(form.password.first) }}
+                                {{ form_row(form.password.second) }}
+                            </div>
+                            {% endif %}
+                            <div class="col-md-6">
+                                {{ form_row(form.realname) }}
+                                {{ form_row(form.address) }}
+                                {{ form_row(form.city) }}
+                                {{ form_row(form.cap) }}
+                                {{ form_row(form.phone) }}
+                            </div>
+                        </div>
+                        <script>
+                            $('#usern_error').hide();
+                            $('#user_name').keyup(function(e) {
+                                if (e.which === 32) {
+                                    $('#user_name').addClass('error');
+                                    $('#usern_error_data').html('Non inserire spazi nel nome utente');
+                                    $('#usern_error').show();
+                                    var str = $(this).val();
+                                    str = str.replace(/\s/g,'');
+                                    $(this).val(str);
+                                }
+                            }).blur(function() {
+                                var str = $(this).val();
+                                str = str.replace(/\s/g,'');
+                                $(this).val(str);
+                            });
+                            $('#user_name').keyup(function() {
+                                jQuery.ajax({
+                                    url: "/ajax/username.avaiability.php",
+                                    data:'username='+$("#username").val(),
+                                    type: "POST",
+                                    success:function(data){
+                                        $('#usern_error').show();
+                                        $("#usern_error_data").html(data);
+                                        $('#user_name').addClass('error');
+                                    },
+                                    error:function (){}
+                                });
+                            });
+                        </script>
+                        <div class="col-sm-6 offset-sm-3">
+                            <br><br>
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Registrati</button>
+                        </div>
+                    {{ form_end(form) }}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .error {
+        border: 1px solid #ff0000;
+    }
+</style>
+

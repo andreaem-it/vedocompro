@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{% include 'template/header.html.twig' %}
+<div class="container" style="margin-top:150px">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <h4 class="alert-heading">
+                    <strong>{{ error_title }}</strong>
+                </h4>
+                <br>
+                {% if error_body is iterable %}
+                    {% for error in error_body %}
+                        {% if loop.first %}
+                            {{ error }}<br>
+                        {% elseif loop.last %}
+                            {{ error }}<a href="{{ link_href }}" class="alert-link">{{ link_title }}</a>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {{ error_body }}
+                {% endif %}
+                <hr>
+                <p><a href="javascript:history.back()" class="alert-link">Torna Indietro</a></p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% include 'template/footer.html.twig' %}
+{% endblock %}
