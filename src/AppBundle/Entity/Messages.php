@@ -36,10 +36,13 @@ class Messages
      */
     private $isRead;
     /**
+<<<<<<< HEAD
      * @ORM\Column (type="boolean")
      */
     private $canReply = true;
     /**
+=======
+>>>>>>> restyle
      * @ORM\Column (type="integer")
      */
     private $object;

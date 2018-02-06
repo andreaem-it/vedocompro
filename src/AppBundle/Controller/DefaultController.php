@@ -46,4 +46,5 @@ class DefaultController extends Controller
     {
         return $this->render('default/guidelines.html.twig');
     }
+
 }

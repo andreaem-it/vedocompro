@@ -185,8 +185,9 @@ class SearchController extends Controller
             ->add('name', TextType::class, array(
                 'label' => 'Cerca',
                 'attr' => array(
-                    'placeholder' => 'Es: Appartamento, Chitarra, Automobile',
-                    'style' => 'width:100%')))
+                    'placeholder' => 'Cosa cerchi?',
+                    'class' => 'form-control-plaintext',
+                    'style' => 'width:100%;border-bottom:2px solid #BBB;border-radius:0px;border-top:none')))
             ->add('category', EntityType::class, array(
                 'class' => 'AppBundle\Entity\Category',
                 'group_by' => 'parentName',
@@ -197,7 +198,8 @@ class SearchController extends Controller
                 },
                 'label' => 'Category',
                 'attr' => array(
-                    'style' => 'width:100%')))
+                    'class' => 'form-control form-control-plaintext form-control-select',
+                    'style' => 'width:100%;border-left:none;border-right:none;border-top:none;border-radius:0px')))
             ->add('region', EntityType::class, array(
                 'class' => 'AppBundle\Entity\Regions',
                 'query_builder' => function (EntityRepository $repo) {
@@ -206,8 +208,9 @@ class SearchController extends Controller
                 },
                 'label' => 'Region',
                 'attr' => array(
-                    'style' => 'width:100%')))
-            ->add('submit', SubmitType::class, array('label' => 'Search', 'attr' => array('class' => 'btn-success btn-block btn-lg hidden-xs-up')))
+                    'class' => 'form-control form-control-plaintext form-control-select',
+                    'style' => 'width:100%;border-left:none;border-right:none;border-top:none;border-radius:0px')))
+            ->add('submit', SubmitType::class, array('label' => 'Search', 'attr' => array('class' => 'btn btn-primary btn-block btn-lg color-light-blue btn-find')))
             ->getForm();
 
         $request = Request::createFromGlobals();

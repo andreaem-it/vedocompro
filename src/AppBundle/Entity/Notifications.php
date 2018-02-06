@@ -37,6 +37,7 @@ class Notifications
     private $type;
 
     /**
+<<<<<<< HEAD
      * @var int
      *
      * @ORM\Column(name="object", type="integer", nullable=true)
@@ -44,6 +45,8 @@ class Notifications
     private $object;
 
     /**
+=======
+>>>>>>> restyle
      * @var bool
      *
      * @ORM\Column(name="readed", type="boolean")

@@ -73,7 +73,11 @@
 
 .wizard > .steps > ul > li
 {
+<<<<<<< HEAD
     width: 25%;
+=======
+    width: 20%;
+>>>>>>> restyle
 }
 
 .wizard > .steps > ul > li,
@@ -142,7 +146,11 @@
     background: #eee;
     display: block;
     margin: 0.5em;
+<<<<<<< HEAD
     min-height: 35em;
+=======
+    min-height: 40em;
+>>>>>>> restyle
     overflow: hidden;
     position: relative;
     width: auto;
@@ -164,7 +172,11 @@
 {
     float: left;
     position: absolute;
+<<<<<<< HEAD
     width: 95%;
+=======
+    width: 100%;
+>>>>>>> restyle
     height: 95%;
     padding: 2.5%;
 }
