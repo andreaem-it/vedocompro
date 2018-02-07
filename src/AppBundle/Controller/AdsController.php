@@ -34,10 +34,10 @@ class AdsController extends Controller
      */
     public function showAction($category, $item)
     {
-        
+
         $ad = $this->getDoctrine()
-        ->getRepository('AppBundle:Ads')
-        ->findBy(array('id' => $item));
+            ->getRepository('AppBundle:Ads')
+            ->findBy(array('id' => $item));
 
         $video = $this->getDoctrine()
             ->getRepository('AppBundle:Videos')
@@ -45,7 +45,7 @@ class AdsController extends Controller
 
         $id = $item;
 
-        if($ad != null) {
+        if ($ad != null) {
 
             $categoryID = $this->getDoctrine()->getRepository('AppBundle:Ads')
                 ->createQueryBuilder('e')->select('e.category')->where('e.id = :item')->setParameter('item', $item)
@@ -173,9 +173,10 @@ class AdsController extends Controller
                 'ads' => $this
             ]);
         } else {
-            return $this->redirectToRoute('error',array('error'=>'02-001'));
+            return $this->redirectToRoute('error', array('error' => '02-001'));
         }
     }
+
     /**
      * @Route("/nuovo/", name="nuovo")
      * @Secure(roles="IS_AUTHENTICATED_FULLY")
@@ -224,14 +225,139 @@ class AdsController extends Controller
                     },
                     'label' => 'Category'))
                 ->add('price', MoneyType::class, array('label' => 'Prezzo'))
-                ->add('objCondition', ChoiceType::class, array('label' => 'Condizione', 'choices' => array(
-                    'Nuovo' => 'Nuovo',
-                    'Usato' => 'Usato',
-                    'Ricondizionato' => 'Ricondizionato',
-                    'Non Funzionante' => 'Non Funzionante'
-                ),))
-                ->add('location', TextType::class, array('label' => 'Dove si trova'))
-                ->add('region', TextType::class, array('label' => 'Regione', 'attr' => array('class' => 'typeahead tt-query', 'id' => 'form_region', 'autocomplete' => 'off', 'spellcheck' => 'false', 'style' => 'width:100%')))
+                ->add('objCondition', ChoiceType::class, array(
+                    'label' => 'Condizione',
+                    'placeholder' => 'Seleziona Conizione',
+                    'required' => true,
+                    'choices' => array(
+                        'Nuovo' => 'Nuovo',
+                        'Usato' => 'Usato',
+                        'Ricondizionato' => 'Ricondizionato',
+                        'Non Funzionante' => 'Non Funzionante'
+                    )
+                ))
+                ->add('location', ChoiceType::class, array(
+                    'label' => 'Dove si trova',
+                    'placeholder' => 'Seleziona Comune',
+                    'required' => true,
+                    'empty_data' => null,
+                    'choices' => array(
+                        'Agrigento' => 'Agrigento',
+                        'Alessandria' => 'Alessandria',
+                        'Ancona' => 'Ancona',
+                        'Aosta' => 'Aosta',
+                        'Arezzo' => 'Arezzo',
+                        'Ascoli Piceno' => 'Ascoli Piceno',
+                        'Asti' => 'Asti',
+                        'Avellino' => 'Avellino',
+                        'Bari' => 'Bari',
+                        'Barletta-Andria-Trani' => 'Barletta-Andria-Trani',
+                        'Belluno' => 'Belluno',
+                        'Benevento' => 'Benevento',
+                        'Bergamo' => 'Bergamo',
+                        'Biella' => 'Biella',
+                        'Bologna' => 'Bologna',
+                        'Brescia' => 'Brescia',
+                        'Brindisi' => 'Brindisi',
+                        'Cagliari' => 'Cagliari',
+                        'Caltanissetta' => 'Caltanissetta',
+                        'Campobasso' => 'Campobasso',
+                        'Carbonia-Iglesias' => 'Carbonia-Iglesias',
+                        'Caserta' => 'Caserta',
+                        'Catania' => 'Catania',
+                        'Catanzaro' => 'Catanzaro',
+                        'Chieti' => 'Chieti',
+                        'Como' => 'Como',
+                        'Cosenza' => 'Cosenza',
+                        'Cremona' => 'Cremona',
+                        'Crotone' => 'Crotone',
+                        'Cuneo' => 'Cuneo',
+                        'Enna' => 'Enna',
+                        'Fermo' => 'Fermo',
+                        'Ferrara' => 'Ferrara',
+                        'Florence' => 'Florence',
+                        'Foggia' => 'Foggia',
+                        'Forlì-Cesena' => 'Forlì-Cesena',
+                        'Frosinone' => 'Frosinone',
+                        'Genoa' => 'Genoa',
+                        'Grosseto' => 'Grosseto',
+                        'Imperia' => 'Imperia',
+                        'Isernia' => 'Isernia',
+                        "L'Aquila" => "L'Aquila",
+                        'La Spezia' => 'La Spezia',
+                        'Latina' => 'Latina',
+                        'Lecce' => 'Lecce',
+                        'Lecco' => 'Lecco',
+                        'Livorno' => 'Livorno',
+                        'Lodi' => 'Lodi',
+                        'Lucca' => 'Lucca',
+                        'Macerata' => 'Macerata',
+                        'Mantua' => 'Mantua',
+                        'Massa and Carrara' => 'Massa and Carrara',
+                        'Matera' => 'Matera',
+                        'Messina' => 'Messina',
+                        'Milan' => 'Milan',
+                        'Modena' => 'Modena',
+                        'Monza and Brianza' => 'Monza and Brianza',
+                        'Naples' => 'Naples',
+                        'Novara' => 'Novara',
+                        'Nuoro' => 'Nuoro',
+                        'Oristano' => 'Oristano',
+                        'Padua' => 'Padua',
+                        'Palermo' => 'Palermo',
+                        'Parma' => 'Parma',
+                        'Pavia' => 'Pavia',
+                        'Perugia' => 'Perugia',
+                        'Pesaro and Urbino' => 'Pesaro and Urbino',
+                        'Pescara' => 'Pescara',
+                        'Piacenza' => 'Piacenza',
+                        'Pisa' => 'Pisa',
+                        'Pistoia' => 'Pistoia',
+                        'Potenza' => 'Potenza',
+                        'Prato' => 'Prato',
+                        'Ragusa' => 'Ragusa',
+                        'Ravenna' => 'Ravenna',
+                        'Reggio Calabria' => 'Reggio Calabria',
+                        'Reggio Emilia' => 'Reggio Emilia',
+                        'Rieti' => 'Rieti',
+                        'Rimini' => 'Rimini',
+                        'Rome' => 'Rome',
+                        'Rovigo' => 'Rovigo',
+                        'Salerno' => 'Salerno',
+                        'Sassari' => 'Sassari',
+                        'Savona' => 'Savona',
+                        'Siena' => 'Siena',
+                        'Sondrio' => 'Sondrio',
+                        'South Sardinia' => 'South Sardinia',
+                        'South Tyrol' => 'South Tyrol',
+                        'Syracuse' => 'Syracuse',
+                        'Taranto' => 'Taranto',
+                        'Teramo' => 'Teramo',
+                        'Terni' => 'Terni',
+                        'Trapani' => 'Trapani',
+                        'Trentino' => 'Trentino',
+                        'Treviso' => 'Treviso',
+                        'Turin' => 'Turin',
+                        'Varese' => 'Varese',
+                        'Venice' => 'Venice',
+                        'Verbano-Cusio-Ossola' => 'Verbano-Cusio-Ossola',
+                        'Vercelli' => 'Vercelli',
+                        'Verona' => 'Verona',
+                        'Vibo Valentia' => 'Vibo Valentia',
+                        'Vicenza' => 'Vicenza',
+                        'Viterbo' => 'Viterbo'
+                    )
+                ))
+                ->add('region', EntityType::class, array(
+                    'label' => 'Regione',
+                    'empty_data' => null,
+                    'placeholder' => 'Seleziona Regione',
+                    'class' => 'AppBundle\Entity\Regions',
+                    'query_builder' => function (EntityRepository $repo) {
+                        $qb = $repo->createQueryBuilder('r');
+                        return $qb;
+                    },
+                ))
                 /**->add('option1',TextType::class, array('label' => 'Chilometraggio'))
                  * ->add('option2',TextType::class, array('label' => 'Anno'))
                  * ->add('option3',TextType::class, array('label' => 'Proprietari'))
@@ -265,7 +391,7 @@ class AdsController extends Controller
             return $this->render('ads/add.html.twig', array(
                 'form' => $form->createView(),
             ));
-        }  else {
+        } else {
             return $this->redirectToRoute('login');
         }
     }
@@ -404,27 +530,28 @@ class AdsController extends Controller
     /**
      * @Route("/errore_acquisto/", name="buy_error")
      */
-    public function buyErrorAction() {
+    public function buyErrorAction()
+    {
         return $this->render('buy/buy.cancel.html.twig');
     }
 
     /**
      * @Route("/promuovi/{type}/{id}", name="promuovi_tipo_id")
      */
-    public function promoteTypeID($type,$id)
+    public function promoteTypeID($type, $id)
     {
         $promote = $this->getDoctrine()
-                        ->getRepository('AppBundle:Ads')
-                        ->createQueryBuilder('e')
-                        ->select('e')
-                        ->where('e.id = :id')
-                        ->andWhere('e.uid = :uid')
-                        ->andWhere('level != :level')
-                        ->setParameter('id', $id)
-                        ->setParameter('uid', $this->get('security.context')->getToken()->getUser())
-                        ->setParameter('level',$type)
-                        ->getQuery()
-                        ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            ->getRepository('AppBundle:Ads')
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->where('e.id = :id')
+            ->andWhere('e.uid = :uid')
+            ->andWhere('level != :level')
+            ->setParameter('id', $id)
+            ->setParameter('uid', $this->get('security.context')->getToken()->getUser())
+            ->setParameter('level', $type)
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
     }
 
@@ -459,14 +586,14 @@ class AdsController extends Controller
     public function convertCategory($catID)
     {
         $catName = $this->getDoctrine()
-               ->getRepository('AppBundle:Category')
-               ->createQueryBuilder('e')
-               ->select('e.name')
-               ->where('e.id = :id')
-               ->setParameter('id', $catID)
-               ->getQuery()
-               ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-        return $catName[0]["name"];    
+            ->getRepository('AppBundle:Category')
+            ->createQueryBuilder('e')
+            ->select('e.name')
+            ->where('e.id = :id')
+            ->setParameter('id', $catID)
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        return $catName[0]["name"];
     }
 
     public function convertCategoryName($catname)
@@ -502,7 +629,8 @@ class AdsController extends Controller
         }
     }
 
-    public function getCategoriesName() {
+    public function getCategoriesName()
+    {
         $category = $this->getDoctrine()
             ->getRepository('AppBundle:Category')
             ->createQueryBuilder('e')
@@ -511,7 +639,9 @@ class AdsController extends Controller
             ->getResult();
         return $category[0]['name'];
     }
-    public function getCategoriesID() {
+
+    public function getCategoriesID()
+    {
         $category = $this->getDoctrine()
             ->getRepository('AppBundle:Category')
             ->createQueryBuilder('e')
@@ -520,6 +650,7 @@ class AdsController extends Controller
             ->getResult();
         return $category[0]['id'];
     }
+
     public function convertUID($userID)
     {
         $uname = $this->getDoctrine()
@@ -532,6 +663,7 @@ class AdsController extends Controller
             ->getResult(Query::HYDRATE_ARRAY);
         return $uname[0]["id"];
     }
+
     public function convertUname($userID)
     {
         $uname = $this->getDoctrine()
@@ -544,7 +676,9 @@ class AdsController extends Controller
             ->getResult(Query::HYDRATE_ARRAY);
         return $uname[0]['name'];
     }
-    public function undash($string) {
+
+    public function undash($string)
+    {
         return preg_replace('/\-\//', '?', $string);
     }
 
