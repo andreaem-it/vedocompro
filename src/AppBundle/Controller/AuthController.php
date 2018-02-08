@@ -74,7 +74,10 @@ class AuthController extends Controller
         $user->setRealname($realname);
         $user->setName($email);
         if (in_array($resource, ['google', 'facebook'])) {
-            $form = $this->createForm(OAuthUserType::class, $user);
+            $form = $this->createForm(OAuthUserType::class, $user, array(
+                'action' => '/registrati',
+                'method' => 'POST',
+            ));
             $user->setEnabled(true);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -107,11 +110,13 @@ class AuthController extends Controller
                 return $this->render('auth/register.success.html.twig', ['oauth' => true]);
             }
         } else {
-            $form = $this->createForm(UserType::class, $user);
+            $form = $this->createForm(UserType::class, $user, array(
+                'action' => $this->generateUrl('registrati'),
+                'method' => 'POST',
+            ));
             $user->setEnabled(false);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-
                 $password = $this->get('security.password_encoder')
                     ->encodePassword($user, $user->getPassword());
                 $user->setPassword($password);
@@ -133,6 +138,7 @@ class AuthController extends Controller
                 $code = uniqid('AUTH-', TRUE);
                 $user->setCode($code);
 
+                $logger->critical("ASDASD");
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
@@ -141,18 +147,18 @@ class AuthController extends Controller
 
                 $userEmail = $form->get('email')->getData();
 
-                $message = \Swift_Message::newInstance()
-                    ->setSubject('Benvenuto in VedoCompro.it')
-                    ->setFrom('noreply@vedocompro.it')
-                    ->setTo($userEmail)
-                    ->setBody(
-                        $this->renderView(
-                            'Emails/registration.html.twig',
-                            array('name' => $form->get('name')->getData(), 'code' => $code)
-                        ),
-                        'text/html'
-                    );
-                $this->get('mailer')->send($message);
+//                $message = \Swift_Message::newInstance()
+//                    ->setSubject('Benvenuto in VedoCompro.it')
+//                    ->setFrom('noreply@vedocompro.it')
+//                    ->setTo($userEmail)
+//                    ->setBody(
+//                        $this->renderView(
+//                            'Emails/registration.html.twig',
+//                            array('name' => $form->get('name')->getData(), 'code' => $code)
+//                        ),
+//                        'text/html'
+//                    );
+//                $this->get('mailer')->send($message);
 
                 return $this->redirectToRoute('registrato');
             }
