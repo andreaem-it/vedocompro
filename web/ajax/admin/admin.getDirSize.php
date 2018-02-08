@@ -5,7 +5,15 @@
  * Date: 24/07/17
  * Time: 19:16
  */
-print formatSizeUnits(dirsize($_SERVER['DOCUMENT_ROOT'] . '/webtemp/'));
+print formatSizeUnits(get_dir_size($_SERVER['DOCUMENT_ROOT'] . '/webtemp/'));
+
+function get_dir_size($directory) {
+    $size = 0;
+    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file) {
+        $size += $file->getSize();
+    }
+    return $size;
+}
 
 function dirsize($dir)
 {
@@ -28,6 +36,15 @@ function dirsize($dir)
     }
     @closedir($dh);
     return  $size;
+}
+
+function folderSize ($dir)
+{
+    $size = 0;
+    foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+        $size += is_file($each) ? filesize($each) : folderSize($each);
+    }
+    return $size;
 }
 
 function formatSizeUnits($bytes)

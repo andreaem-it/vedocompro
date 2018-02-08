@@ -5,15 +5,19 @@
  * Date: 24/07/17
  * Time: 16:26
  */
-$dir = $_SERVER['DOCUMENT_ROOT'] . '/web/webtemp/';
+$dir = $_SERVER['DOCUMENT_ROOT'] . '/webtemp/';
 
 
 rrmdir($dir);
 
 mkdir($dir,0777,true);
-mkdir($dir . '/thumb', 0777, true);
+mkdir($dir . '/encvideos', 0777, true);
+mkdir($dir . '/images', 0777, true);
+mkdir($dir . '/rawvideos', 0777, true);
 chmod($dir,0777);
-chmod($dir . '/thumb', 0777);
+chmod($dir . '/encvideos', 0777);
+chmod($dir . '/images', 0777);
+chmod($dir . '/rawvideos', 0777);
 
 function rrmdir($dir) {
     if (is_dir($dir)) {

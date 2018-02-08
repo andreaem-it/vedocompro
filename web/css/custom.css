@@ -37,7 +37,7 @@ html {
 }
 .navbar-nav {
     line-height: 45px;
-        
+
 }
 .navbar-nav .nav-item a {
     display: block!important;
@@ -157,7 +157,7 @@ input:focus, select:focus {
     */
 .txt-white {
     color: #FFF;
-}    
+}
 .inverse-logo {
     filter: brightness(6);
 }
@@ -227,7 +227,7 @@ input:focus, select:focus {
     color: #555;
     text-align: center;
     text-decoration: none;
-    
+
 }
 .acc-create-link:hover {
     color: #000;
@@ -269,7 +269,7 @@ input[type="checkbox"]:checked + label span {
     */
 .blue-header {
     background-color: rgb(67,150,193);
-}    
+}
 #profile-header {
     background-color: rgb(226,239,238);
 }
@@ -344,38 +344,38 @@ input[type="checkbox"]:checked + label span {
     margin:0 !important;
     border:none!important;
 }
-/* 
+/*
   ##Device = Desktops
   ##Screen = 1281px to higher resolution desktops
 */
 
 @media (min-width: 1281px) {
-  
-  
-  
+
+
+
 }
 
-/* 
+/*
   ##Device = Laptops, Desktops
   ##Screen = B/w 1025px to 1280px
 */
 
 @media (min-width: 1025px) and (max-width: 1280px) {
-  
+
 
 }
 
-/* 
+/*
   ##Device = Tablets, Ipads (portrait)
   ##Screen = B/w 768px to 1024px
 */
 
 @media (min-width: 768px) and (max-width: 1024px) {
-  
-  
+
+
 }
 
-/* 
+/*
   ##Device = Tablets, Ipads (landscape)
   ##Screen = B/w 768px to 1024px
 */
@@ -383,35 +383,40 @@ input[type="checkbox"]:checked + label span {
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
 
 
-  
+
 }
 
-/* 
+/*
   ##Device = Low Resolution Tablets, Mobiles (Landscape)
   ##Screen = B/w 481px to 767px
 */
 
 @media (min-width: 481px) and (max-width: 767px) {
-  
 
-  
+
+
 }
 
-/* 
+/*
   ##Device = Most of the Smartphones Mobiles (Portrait)
   ##Screen = B/w 320px to 479px
 */
 
 @media (min-width: 320px) and (max-width: 480px) {
-  
+
   #vedocompro_logo {
       max-width: 200px!important;
+      top: 10px;
   }
-  
+
+  .navbar-toggler{
+    top: 10px!important;
+  }
+
  .display-3 {
      font-size: 2.0rem!important;
  }
- 
+
  .color-light-blue-txt {
      font-size: 2rem!important;
  }

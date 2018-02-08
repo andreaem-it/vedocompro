@@ -43,7 +43,15 @@
             </div> <!-- Sponsorizzati -->
             <div class="row mt-5">
                 <div class="col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
-                    <img class="hidden-sm-up" src="https://lh3.ggpht.com/3q0W5UdEjoVjCVFo4l5aJoAg2-ElBSpBSvcMwuGKG_RNyrePKwSA54ZMaqA_EpEBpBi00hF0=w120">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                                <!-- VedoCompro thin -->
+                                                <ins class="adsbygoogle"
+                                                    style="display:inline-block;width:120px;height:600px"
+                                                    data-ad-client="ca-pub-4967985757423249"
+                                                    data-ad-slot="5432794279"></ins>
+                                                <script>
+                                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                                </script>
                 </div>
                 <div class="col-sm-10 pl-4 pr-4">
                     <div class="row">
@@ -78,6 +86,18 @@
                                 </div>
                             </div>
                         {% endfor %}
+                            <div class="mobile-pub-container hidden mt-3 container-fluid" style="width:100%;height:35%">
+                                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                <ins class="adsbygoogle"
+                                    style="display:block"
+                                    data-ad-format="fluid"
+                                    data-ad-layout-key="-8v+36-lu+73+1mm"
+                                    data-ad-client="ca-pub-4967985757423249"
+                                    data-ad-slot="9546588662"></ins>
+                                <script>
+                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                </script>
+                            </div>
                         <script>
                             var cycle = function(el) {
                                 var s = el.attr('src');
@@ -98,14 +118,24 @@
                                 });
                             });
                             if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-                                 $('.container-medium').removeClass('container-medium').addClass('container-fluid');   
+                                 $('.container-medium').removeClass('container-medium').addClass('container-fluid');  
+                                 $('.masonry-container').removeClass('ml-4').removeClass('mr-3'); 
+                                 $('.mobile-pub-container').addClass('shown').removeClass('hidden');
                             }
                         </script>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-1 mt-5 pt-4">
-                    <img src="https://lh3.ggpht.com/3q0W5UdEjoVjCVFo4l5aJoAg2-ElBSpBSvcMwuGKG_RNyrePKwSA54ZMaqA_EpEBpBi00hF0=w120">
+                <div class="col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- VedoCompro thin -->
+                    <ins class="adsbygoogle"
+                        style="display:inline-block;width:120px;height:600px"
+                        data-ad-client="ca-pub-4967985757423249"
+                        data-ad-slot="5432794279"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 </div>
             </div>
             <div class="row">
@@ -130,6 +160,16 @@
         .card {
             box-shadow: 5px 5px 10px 0px #BBB;
         }
-        
+        .mobile-pub-container {
+            min-width:100%;
+            min-height: 150px;
+            box-shadow: 5px 5px 10px 0px #BBB;
+        }
+        .hidden {
+            visibility: hidden;
+        }
+        .shown {
+            visibility: visible;
+        }
     </style>
 {% endblock %}    
