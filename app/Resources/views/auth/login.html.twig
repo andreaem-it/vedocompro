@@ -37,7 +37,7 @@
 
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a href="" class="nav-link">HOME</a>
+                                <a href="/" class="nav-link">HOME</a>
                             </li>
                             {% if app.user %}
                                 {{ render(controller('AppBundle:Notifications:Notification')) }}
@@ -53,7 +53,7 @@
                                     <a href="{{ url('login') }}" class="nav-link active txt-light">ACCEDI</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('registrati') }}" class="nav-link txt-light">REGISTRATI </a>
+                                    <a href="{{ url('login') }}#registrati" class="nav-link txt-light">REGISTRATI</a>
                                 </li>
                             {% endif %}
                             <li class="nav-item">
@@ -236,12 +236,19 @@
 <script>
     $(window).on('load', function (e) {
         var opened = 1;
+        var url = window.location.href;
+        if (url.indexOf("#registrati") !== -1) {
+            openCreateAccountPage(e)
+        }
     });
     $('#navbar-toggler').click(function () {
         $('.navbar-collapse').slideToggle(300)
     });
-    $('#createAccountLink').click(function (e) {
-        e.preventDefault();
+    $('a:contains("REGISTRATI")').click(function() {
+        openCreateAccountPage();
+    });
+    function openCreateAccountPage () {
+//        e.preventDefault();
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             $('.circle').addClass("transform-180").addClass('pt-5').removeClass('mt-5').addClass('circle-top-margin');
             $('#createAccountLink').addClass('mb-5').addClass('pb-5');
@@ -258,7 +265,8 @@
         $('html, body').animate({scrollTop: 0}, 800);
         $(this).removeAttr("href");
         $('#passwReset').fadeToggle().hide();
-    });
+    }
+    $('#createAccountLink').click(openCreateAccountPage);
     $('.circle').click(function (e) {
         e.preventDefault();
         $('#login-social').show();

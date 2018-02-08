@@ -7,7 +7,8 @@
                         <div class="row">
                             {% if form.name is defined %}
                             <div class="col-md-6">
-                                {{ form_row(form.name) }}
+                                {{ form_row(form.name, { 'attr': {'autocomplete': 'off'} }) }}
+
                                 <p id="usern_error" class="text-danger" style="margin-left: 15px;margin-top: -15px"><small id="usern_error_data"></small></p>
                                 {{ form_row(form.email) }}
                                 {{ form_row(form.password.first) }}
@@ -40,13 +41,19 @@
                             });
                             $('#user_name').keyup(function() {
                                 jQuery.ajax({
-                                    url: "/ajax/username.avaiability.php",
-                                    data:'username='+$("#username").val(),
-                                    type: "POST",
+                                    url: "{{ url('username-availability') }}?username=" + $("#user_name").val(),
+                                    type: "GET",
                                     success:function(data){
-                                        $('#usern_error').show();
-                                        $("#usern_error_data").html(data);
-                                        $('#user_name').addClass('error');
+                                        resp = JSON.parse(data)
+                                        if (resp.status == 1) {
+                                            $('#usern_error').show();
+                                            $('#user_name').addClass('error');
+                                            $("#usern_error_data").html(resp.message);
+                                        } else {
+                                            $('#usern_error').hide();
+                                            $('#user_name').removeClass('error');
+                                        }
+
                                     },
                                     error:function (){}
                                 });

@@ -7,6 +7,7 @@ use AppBundle\Form\UserType;
 use AppBundle\Form\PasswordResetType;
 use AppBundle\Entity\User;
 use function PHPSTORM_META\type;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -55,6 +56,24 @@ class AuthController extends Controller
             'last_username' => $session->get(SecurityContextInterface::LAST_USERNAME),
             'error' => $error,
         );
+    }
+
+
+    /**
+     * @Route("api/username-availability", name="username-availability")
+     * @Method("GET")
+     */
+    public function checkUsernameAvailability(Request $request)
+    {
+        $username = $request->get('username');
+        $userRepo = $this->getDoctrine()->getRepository('AppBundle:User');
+        $user = $userRepo->findOneBy(['username' => $username]);
+        if ($user) {
+            $response = json_encode(['status' => 1, "message" => "Username Non disponibile."]);
+        } else {
+            $response = json_encode(['status' => 0, "message" => "Username disponibile."]);
+        }
+        return new Response($response);
     }
 
     /**
