@@ -138,7 +138,6 @@ class AuthController extends Controller
                 $code = uniqid('AUTH-', TRUE);
                 $user->setCode($code);
 
-                $logger->critical("ASDASD");
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
@@ -147,18 +146,18 @@ class AuthController extends Controller
 
                 $userEmail = $form->get('email')->getData();
 
-//                $message = \Swift_Message::newInstance()
-//                    ->setSubject('Benvenuto in VedoCompro.it')
-//                    ->setFrom('noreply@vedocompro.it')
-//                    ->setTo($userEmail)
-//                    ->setBody(
-//                        $this->renderView(
-//                            'Emails/registration.html.twig',
-//                            array('name' => $form->get('name')->getData(), 'code' => $code)
-//                        ),
-//                        'text/html'
-//                    );
-//                $this->get('mailer')->send($message);
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('Benvenuto in VedoCompro.it')
+                    ->setFrom('noreply@vedocompro.it')
+                    ->setTo($userEmail)
+                    ->setBody(
+                        $this->renderView(
+                            'Emails/registration.html.twig',
+                            array('name' => $form->get('name')->getData(), 'code' => $code)
+                        ),
+                        'text/html'
+                    );
+                $this->get('mailer')->send($message);
 
                 return $this->redirectToRoute('registrato');
             }
