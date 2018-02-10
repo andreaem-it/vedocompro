@@ -100,13 +100,13 @@ input:focus, select:focus {
 }
 
 .card-text {
-  color: white;
+  /*color: white;*/
   font-size: 20px;
-  position: absolute;
+  /*position: absolute;*/
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
+  /*transform: translate(-50%, -50%);*/
+  /*-ms-transform: translate(-50%, -50%);*/
 }
 .btn-bottom {
     padding: 12px 50px!important;
@@ -200,7 +200,7 @@ input:focus, select:focus {
     top:1em;
     -webkit-transition: all 1s;
     -moz-transition: all 1s;
-    -ms-transition: all 1s
+    -ms-transition: all 1s;
     -o-transition: all 1s;
     transition: all 1s;
 }

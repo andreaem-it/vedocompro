@@ -235,18 +235,21 @@
         }
         $(document).ready(function () {
             var url = window.location.href;
-            if (url.indexOf("#") === -1) {
+            if (url.indexOf("?message_id=") > -1) {
+                var res = url.split("?message_id=", 2);
+                var tab = 'a.link-messaggi';
+                $(tab).click();
+                viewMessage("/profilo/messaggi/" + res[1]);
+                return
+            } else if (url.indexOf("#") === -1) {
                 var activeTab = 'bacheca';
+                var tab = 'a.link-' + activeTab;
+                $(tab).click();
             } else {
                 var activeTab = window.location.hash.substr(1);
+                var tab = 'a.link-' + activeTab;
+                $(tab).click();
             }
-
-            if (activeTab == null) {
-                activeTab = 'bacheca';
-            }
-
-            var tab = 'a.link-' + activeTab;
-            $(tab).click();
 
             $("#delete-" + n).click(function () {
                 $.ajax({
