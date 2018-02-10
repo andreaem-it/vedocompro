@@ -1,28 +1,26 @@
-<li class="nav-item">
-    <div class="btn-group">
-        <a class="float-right dropdown-toggle head-txt-bold" id="notification-menu" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">
-            NOTIFICHE
-            <span class="badge badge-pill badge-success head-badge">{{ count }}</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right">
-            {% if count > 0 %}
-                {% for notification in notifications %}
-                    <strong>
-                        <a class="dropdown-item notification-item"
-                           href="{{ url('notifications_open', {id: notification.id}) }}"><i
-                                    class="{{ tools.convertNotifications(notification.type,'icon') }}"
-                                    aria-hidden="true"></i>&nbsp;{{ tools.convertNotifications(notification.type,'text') }}
-                        </a>
-                    </strong>
-                {% endfor %}
-            {% else %}
-                <span style="color: grey;" class="notification-item">Nessuna nuova notifica</span>
-                {#<a class="dropdown-item notification-item"#}
-                   {#href="#">#}
-                    {#VEDI TUTTO...#}
-                {#</a>#}
-            {% endif %}
-        </div>
+<div class="btn-group">
+    <a class="float-right dropdown-toggle head-txt-bold" id="notification-menu" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">
+        NOTIFICHE
+        <span class="badge badge-pill badge-success head-badge">{{ count }}</span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right">
+        {% if count > 0 %}
+            {% for notification in notifications %}
+                <strong>
+                    <a class="dropdown-item notification-item"
+                       href="{{ url('notifications_open', {id: notification.id}) }}"><i
+                                class="{{ tools.convertNotifications(notification.type,'icon') }}"
+                                aria-hidden="true"></i>&nbsp;{{ tools.convertNotifications(notification.type,'text') }}
+                    </a>
+                </strong>
+            {% endfor %}
+        {% else %}
+            <span style="color: grey;" class="notification-item">Nessuna nuova notifica</span>
+            {#<a class="dropdown-item notification-item"#}
+               {#href="#">#}
+                {#VEDI TUTTO...#}
+            {#</a>#}
+        {% endif %}
     </div>
-</li>
+</div>

@@ -116,6 +116,7 @@
                 $('#dashboardContainer').html(html);
             })
         };
+
         function showMessages() {
             $.ajax({
                 url: '{{ url('apiMessages',{'uid' : user_info.0.id}) }}',
@@ -237,7 +238,7 @@
             if (url.indexOf("#") === -1) {
                 var activeTab = 'bacheca';
             } else {
-                var activeTab = url.substring(url.indexOf("#") + 1);
+                var activeTab = window.location.hash.substr(1);
             }
 
             if (activeTab == null) {

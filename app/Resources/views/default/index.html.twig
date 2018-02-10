@@ -21,14 +21,17 @@
                       <button id="navbar-toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                       </button>
-                    
+
                       <div class="collapse navbar-collapse">
-                    
+
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
                               <a href="" class="nav-link color-000">HOME</a>
                             </li>
                             {% if app.user %}
+                                <li class="nav-item color-000">
+                                    {{ render(controller('AppBundle:Notifications:notifications')) }}
+                                </li>
                                 <li class="nav-item color-000">
                                     <a href="{{ url('profilo' , {'query': app.user.username }) }}" class=" head-txt-bold">PROFILO</a>
                                 </li>
@@ -47,10 +50,10 @@
                               <a href="{{ url('helpdesk') }}" class="nav-link">SUPPORTO</a>
                             </li>
                             <a href="{{  url('nuovo') }}" class="btn btn-lg btn-primary float-right color-light-blue btn-add-ad">
-                                INSERISCI ANNUNCIO 
+                                INSERISCI ANNUNCIO
                                 <img src="{{ asset('img/home/camera.svg') }}" class="btn-camera" style="width:32px">
                             </a>
-                            
+
                         </ul>
                       </div>
                     </nav>
