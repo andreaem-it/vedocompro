@@ -60,6 +60,9 @@ html {
     display: block!important;
     padding: .5rem 1rem!important;
 }
+.nav-item a.dropdown-item {
+    color: #212529!important;
+}
 .form-control-select {
     border-width: 2px!important;
     border-bottom:2px solid #BBB;
@@ -200,7 +203,7 @@ input:focus, select:focus {
     top:1em;
     -webkit-transition: all 1s;
     -moz-transition: all 1s;
-    -ms-transition: all 1s
+    -ms-transition: all 1s;
     -o-transition: all 1s;
     transition: all 1s;
 }
