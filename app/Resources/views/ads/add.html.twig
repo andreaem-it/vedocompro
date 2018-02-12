@@ -13,29 +13,8 @@
     <div class="container scrollbar">
         <div class="row" style="margin-top:-20px">
             <div class="col-lg-1 bg-light-grey"></div>
-            <!--<div class="col-lg-3 padding-left-40 bg-light-grey hidden-sm">
-                <br><br>
-                    <h4>Istruzioni:</h4>
-                <br>
-                <small>Inserisci il video del prodotto, gira un video esponendo i pregi e difetti di ciò che stai vendendo, è richiesta anche un'immagine che verrà utilizzata per le anteprime nei risultati di ricerca, puoi aggiungerne quante vuoi, assicurati di rispettare i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a>.</small>
-                <br><br><br><br><br>
-                <small>Scegli un titolo per l'inserzione, cerca di essere più preciso possibile</small>
-                <br><br><br><br><br>
-                <small>Descrivi il tuo prodotto, elencane pregi e difetti, caratteristiche tecniche e quant'altro ti venga in mente. Se dimentichi qualcosa non preoccuparti, potrai sempre modificare l'inserzione dopo, oppure rispondere alle domande degli utenti</small>
-                <br><br><br><br>
-                <small>Scegli la categoria del prodotto, fai attenzione a scegliere quella giusta, gli utenti potrebbero non trovare la tua inserzione e potrebbe essere eliminata.</small>
-                <br><br><br>
-                <small>Dai un prezzo all'oggetto, cerca di essere realista, un prezzo troppo alto non vende.</small>
-                <br><br><br>
-                <small>Specifica la condizione dell'oggetto, evita di vendere come nuovo un'oggetto usato</small>
-                <br><br><br>
-                <small>Dove si trova l'oggetto, questi campi vengono normalmente riempiti con i tuoi recapiti forniti nelle impostazioni del profilo. Tuttavia, puoi modificarli nel caso vendi un'oggetto che si trova in un'altra città (es: una casa vacanze)</small>
-                <br><br><br><br><br><br><br>
-                <small>Questi campi sono opzionali, puoi decidere di specificare alcuni dettagli che verranno visualizzati dinamicamente per ogni categoria diversa.</small>
-            </div>-->
             <div class="col-lg-12">
                 <br><br>
-                <!--<h3>Inserisci Inserzione</h3>-->
                 {{ form_start(form, {'attr': {'id': 'wizard'}}) }}
                     <h2 class="section-title">Descrizione</h2>
                     <section id="step-1">
@@ -166,10 +145,7 @@
                         <img class="mt-1 mb-1" src="{{ asset('img/promote-hand.png') }}" alt="promote" style="width:150px"/>
                         <br>
                         <small>Sponsorizzare il tuo annuncio gli darà più visibilità, posizionandolo in cima ai risultati di ricerca.</small><br>
-                        <small>Utilizza i crediti in tuo possesso oppure ricarica il tuo conto! Raggiungere più clienti non è mai stato così facile.</small><br>
-                        <!--<small>Puoi decidere di inserire il tuo annuncio in Vetrina utilizzando 5 crediti, in questo modo il tuo annuncio comparirà sempre in cima alla pagina nella sezione <strong>Sponsorizzati</strong>.</small><br>
-                        <small>Il tuo annuncio verrà anche pubblicato nella nostra pagina Facebook aumentando in modo esponenziale la quantità di probabili acquirenti raggiunti!</small><br>
-                        --><br>
+                        <small>Utilizza i crediti in tuo possesso oppure ricarica il tuo conto! Raggiungere più clienti non è mai stato così facile.</small><br><br>
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="row">
@@ -462,13 +438,7 @@
     $(document).ready( function() {
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
             $('.number-title').addClass('hidden');
-            $('.title').addClass('text-center');
-            //initializeScrollingBar('.steps');
-            $(window).on( "orientationchange", function( event ) {
-                $('.steps').scrollingTabs('destroy');
-                //initializeScrollingBar('.steps');
-            });
-            $('.title').remove('.number-title');
+            $('.title').addClass('text-center').remove('.number-title');
         }
         function initializeScrollingBar(selector) {
              $(selector).scrollingTabs({
@@ -478,37 +448,32 @@
                 widthMultiplier: 1,
                 leftArrowContent: '<div class="scrtabs-tab-scroll-arrow scrtabs-tab-scroll-arrow-left" style="display: block;"><span class="fa fa-arrow-left"></span></div>',
                 rightArrowContent: '<div class="scrtabs-tab-scroll-arrow scrtabs-tab-scroll-arrow-right" style="display: block;"><span class="fa fa-arrow-right"></span></div>',
-                enableSwiping: true,
+                enableSwiping: true
             });
-        };
+        }
     });
     </script>
     <script>
-    /*var province = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.whitespace,
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: '{{ asset('json/province.json') }}',
-        templates: {
-            notFound: '<strong>Nessun Risultato</strong>',
-            header: '<strong>Provincia</strong>'
-        },
-        initialize: true
-    });
-        
-    $('.typeahead').typeahead(null, {
-        name: 'nome',
-        display: 'nome',
-        source: province
-    });*/
+        $('#form_region').on('change', function() {
+            var id = $(this).value();
+            alert(id);
+            $.ajax ({
+                url: "/ajax/get.province.php?nome=" + id,
+                type: 'GET',
+                dataType: 'JSON'
+            }).done(function(data, textStatus, jqXHR) {
+                alert(jqXHR.responseText);
+                var lenght = data.length;
+                var html = '';
+                for (i = 0; i < lenght; i++) {
+                    html += '<option value="' + data[i].nome + '">' + data[i].nome + '</option>';
+                }
+                console.log(html);
+                $('#form_region').append(html);
 
-    
-    // Initializing the typeahead with remote dataset
-   /* $('.typeahead').typeahead(null, {
-        name: 'countries',
-        source: countries,
-        limit: 10
-    });*/
-//});
+            });
+        });
+
     </script>
     <script>
         var step = 1;
@@ -517,48 +482,22 @@
             bodyTag: "section",
             autoFocus: true,
             transitionEffect: "fade",
-            onStepChanging: function (event, currentIndex, newIndex)
-            {
-                if (currentIndex > newIndex)
-                {
+            onStepChanging: function (event, currentIndex, newIndex) {
+                if (currentIndex > newIndex) {
                     return true;
                 }
 
                 var form = $(this);
 
-                if (currentIndex < newIndex)
-                {
-                    form.find(".body:eq(" + (newIndex+1) + ") label.error").remove();
-                    form.find(".body:eq(" + (newIndex+1) + ") .error").removeClass("error");
+                if (currentIndex < newIndex) {
+                    form.find(".body:eq(" + (newIndex + 1) + ") label.error").remove();
+                    form.find(".body:eq(" + (newIndex + 1) + ") .error").removeClass("error");
                 }
 
                 form.validate().settings.ignore = ":disabled,:hidden";
 
                 return form.valid();
-
-//                if (validate(currentIndex) === true) {
-//                    form.find(".body:eq(" + newIndex + ") label.error").remove();
-//                    form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
-//                    return true;
-//                } else {
-////                    if(invalid(currentIndex) === true) {
-////                        $("#form" + (currentIndex + 1) + " > input").addClass('error');
-////                        return false;
-////                    }
-//                    $('#form'+(currentIndex+1)).find(':input').each(function(){
-//                        alert($(this).v);
-//                    });
-//                }
             },
-//            onStepChanging: function(e, currentIndex, newIndex) {
-//                if(validate(currentIndex) === true) {
-//                    alert("VALIDATED");
-//                    return true;
-//                } else {
-//                    alert("NOT VALIDATED");
-//                    return false;
-//                }
-//            },
             onStepChanged: function (event, currentIndex, priorIndex)
             {
 
@@ -586,15 +525,6 @@
                 }
             }
         });
-//        function validate(step){
-//            var step = step -1;
-//            var div = $("#form" + step + "");
-//            $(div).find("input[type = 'text']").each(function() {
-//                if(this.value === "") {
-//                    return false;
-//                }
-//            });
-//        }
         function invalid(step){
             var div = $("#wizard-p-" + step + "");
             $(div).find("input").each(function() {
@@ -612,7 +542,29 @@
                 console.log(step);
             })
         }
-
+        $.extend( $.validator.messages, {
+            required: "Campo obbligatorio",
+            remote: "Controlla questo campo",
+            email: "Inserisci un indirizzo email valido",
+            url: "Inserisci un indirizzo web valido",
+            date: "Inserisci una data valida",
+            dateISO: "Inserisci una data valida (ISO)",
+            number: "Inserisci un numero valido",
+            digits: "Inserisci solo numeri",
+            creditcard: "Inserisci un numero di carta di credito valido",
+            equalTo: "Il valore non corrisponde",
+            extension: "Inserisci un valore con un&apos;estensione valida",
+            maxlength: $.validator.format( "Non inserire pi&ugrave; di {0} caratteri" ),
+            minlength: $.validator.format( "Inserisci almeno {0} caratteri" ),
+            rangelength: $.validator.format( "Inserisci un valore compreso tra {0} e {1} caratteri" ),
+            range: $.validator.format( "Inserisci un valore compreso tra {0} e {1}" ),
+            max: $.validator.format( "Inserisci un valore minore o uguale a {0}" ),
+            min: $.validator.format( "Inserisci un valore maggiore o uguale a {0}" ),
+            nifES: "Inserisci un NIF valido",
+            nieES: "Inserisci un NIE valido",
+            cifES: "Inserisci un CIF valido",
+            currency: "Inserisci una valuta valida"
+        } );
     </script>
 {% include 'template/footer.html.twig'%}
 
