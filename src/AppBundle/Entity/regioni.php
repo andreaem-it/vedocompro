@@ -38,9 +38,9 @@ class regioni
     /**
      * @var string
      *
-     * @ORM\Column(name="logitudine", type="decimal", precision=10, scale=0)
+     * @ORM\Column(name="longitudine", type="decimal", precision=10, scale=0)
      */
-    private $logitudine;
+    private $longitudine;
 
 
     /**
@@ -102,27 +102,27 @@ class regioni
     }
 
     /**
-     * Set logitudine
+     * Set longitudine
      *
-     * @param string $logitudine
+     * @param string $longitudine
      *
      * @return regioni
      */
-    public function setLogitudine($logitudine)
+    public function setLongitudine($longitudine)
     {
-        $this->logitudine = $logitudine;
+        $this->longitudine = $longitudine;
 
         return $this;
     }
 
     /**
-     * Get logitudine
+     * Get longitudine
      *
      * @return string
      */
-    public function getLogitudine()
+    public function getLongitudine()
     {
-        return $this->logitudine;
+        return $this->longitudine;
     }
 }
 
