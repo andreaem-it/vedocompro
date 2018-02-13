@@ -61,7 +61,8 @@ class NotificationsController extends Controller
                 break;
             case 6:
                 $text =  'Hai un nuovo messaggio';
-                if ($routeParam != null) $link = $this->generateUrl('message', ['id' => $routeParam]);
+                $user = $this->get('security.token_storage')->getToken()->getUser();
+                if ($routeParam != null) $link = $this->generateUrl('profilo', ['query' => $user, 'message_id' => $routeParam]);
                 break;
             case 7:
                 $text =  'Hai ricevuto un feedback';

@@ -127,7 +127,7 @@
         var url = "{{ url('message_set_read') }}";
         var selected = $('#form-received-message').find('.msg-checkbox:checked').map(idSelector).get();
         var formData = selected.toString();
-        alert(formData);
+
         $.post(url, {"ids": formData}).done(function (data) {
             location.reload();
         });
@@ -140,7 +140,6 @@
         var url = "{{ url('message_set_non_read') }}";
         var selected = $('#form-received-message').find('.msg-checkbox:checked').map(idSelector).get();
         var formData = selected.toString();
-        alert(formData);
 
         $.post(url, {"ids": formData}).done(function (data) {
             location.reload();
