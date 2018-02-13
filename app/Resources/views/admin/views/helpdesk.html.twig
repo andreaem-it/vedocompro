@@ -27,7 +27,7 @@
                     <div class="icon">
                         <i class="ion ion-help"></i>
                     </div>
-                    <a href="http://aemhomenet.ddns.net/admin/helpdesk/" class="small-box-footer">
+                    <a href="{{ url('admin_helpdesk', {'show': 'aperti'}) }}" class="small-box-footer">
                         Vedi tutti <i class="fa fa-arrow-circle-right"></i>
                     </a>
                 </div>
@@ -43,7 +43,7 @@
                     <div class="icon">
                         <i class="ion ion-help"></i>
                     </div>
-                    <a href="http://aemhomenet.ddns.net/admin/helpdesk/" class="small-box-footer">
+                    <a href="{{ url('admin_helpdesk', {'show': 'chiusi'}) }}" class="small-box-footer">
                         Vedi tutti <i class="fa fa-arrow-circle-right"></i>
                     </a>
                 </div>
@@ -59,7 +59,7 @@
                     <div class="icon">
                         <i class="ion ion-help"></i>
                     </div>
-                    <a href="http://aemhomenet.ddns.net/admin/helpdesk/" class="small-box-footer">
+                    <a href="" class="small-box-footer">
                         Vedi tutti <i class="fa fa-arrow-circle-right"></i>
                     </a>
                 </div>
@@ -68,14 +68,14 @@
                 <!-- small box -->
                 <div class="small-box bg-red">
                     <div class="inner">
-                        <h3>0<sup style="font-size: 20px"></sup></h3>
+                        <h3>{{  countTA }}<sup style="font-size: 20px"></sup></h3>
     
-                        <p>Richieste Assistenza</p>
+                        <p>Richieste Assegnate</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-help"></i>
                     </div>
-                    <a href="http://aemhomenet.ddns.net/admin/helpdesk/" class="small-box-footer">
+                    <a href="{{ url('admin_helpdesk', {'show': 'assegnati'}) }}" class="small-box-footer">
                         Vedi tutti <i class="fa fa-arrow-circle-right"></i>
                     </a>
                 </div>
@@ -92,19 +92,21 @@
                                 <th>Utente</th>
                                 <th>Data</th>
                                 <th>Titolo</th>
-                                <th>Messaggio</th>
                                 <th>Stato</th>
-                                <th>Assegnato</th>
+                                <th class="text-center">Assegnato</th>
+                                <th>Assegnato a</th>
+                                <th>Priorità</th>
                             </tr>
                             {% for ticketOpen in ticketsOpen %}
                                 <tr>
                                     <td>{{ ticketOpen.id }}</td>
-                                    <td><a href=""></a>{{ ticketOpen.uid }}</td>
+                                    <td><a href="{{ url('admin_utenti_vedi',{'id':ticketOpen.uid} ) }}">{{ tools.convertUname(ticketOpen.uid) }}</a></td>
                                     <td>{{ ticketOpen.timest|date("d-m-y h:m") }}</td>
-                                    <td>{{ ticketOpen.title }}</td>
-                                    <td>{{ ticketOpen.message }}</td>
-                                    <td>{% if (ticketOpen.closed == 0) %} Aperto {% else %} Chiuso {% endif %} </td>
-                                    <td></td>
+                                    <td><a href="{{ url('helpdesk_view' , {'id' :ticketOpen.id}) }}">{{ ticketOpen.title }}</a></td>
+                                    <td>{% if (ticketOpen.closed == 0) %} <span class="text-success">Aperto</span> {% else %} Chiuso {% endif %} </td>
+                                    <td class="text-center">{% if (ticketOpen.closed == 2) %}<i class="fa fa-check-circle text-success"></i>{% else %}<i class="fa fa-times-circle text-danger"></i>{% endif %}</td>
+                                    <td>{% if (ticketOpen.assignedTo != null) %}{{ tools.convertUname(ticketOpen.assignedTo) }}{% else %}<strong class="text-danger">Non Assegnato</strong>{% endif %}</td>
+                                    <td><stong class="text-success">Nessuna</stong></td>
                                 </tr>
                             {% endfor %}
                             </tbody>

@@ -1,0 +1,130 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}VedoCompro.it - ADMIN - HelpDesk{% endblock %}
+
+{% block body %}
+
+    <section class="content-header">
+        <h1>
+            HelpDesk
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li class="active"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li>HelpDesk</li>
+        </ol>
+    </section>
+    <div class="content container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="pull-left">
+                            <h3>
+                                ID Ticket: {{ ticket.id }}
+                                {% if ticket.assignedTo == null %}
+                                    - <strong class="text-danger">Non Assegnato</strong>
+                                {% else %}
+                                    - <span class="text-success">Assegnato</span>
+                                {% endif %}
+                                {% if ticket.closed == 0 %}
+                                    - <strong class="text-success">Aperto</strong>
+                                {% else %}
+                                    - <strong class="text-danger">Chiuso</strong>
+                                {% endif %}
+                            </h3>
+                        </div>
+                        <div class="pull-right">
+                            <h3>
+                                {% if ticket.closed == 1 %}
+                                <a href="" class="btn btn-success">Riapri Ticket</a>
+                                {% else %}
+                                <a href="" class="btn btn-danger">Chiudi Ticket</a>
+                                {% endif %}
+                                <a href="" class="btn btn-warning">Imposta Importante</a>
+                                <a href="" class="btn btn-success">Cambia Assegnazione</a>
+                                <a href="" class="btn btn-default">Cambia Tipo</a>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <strong>Titolo:</strong> {{ ticket.title }}
+                            </div>
+                            <div class="col-sm-2">
+                                <strong>ID Utente:</strong> <a href="{{ url('admin_utenti_vedi',{'id':ticket.uid} ) }}">{{ tools.convertUname(ticket.uid) }}</a>
+                            </div>
+                            <div class="col-sm-2">
+                                <strong>Data Apertura:</strong> {{ ticket.timest|date("d-m-Y H:m") }}
+                            </div>
+                            <div class="col-sm-2">
+                                <strong>Tipo Ticket:</strong> {{ tools.convertHelpDeskType(ticket.type) }}
+                            </div>
+                            <div class="col-sm-2">
+                                <strong>Stato:</strong> {{ tools.convertHelpDeskStatus(ticket.closed) }}
+                            </div>
+                            <div class="col-sm-2">
+                                {% if ticket.assignedTo != null %}
+                                <strong>Assegnato a:</strong> <a href="{{ url('admin_utenti_vedi',{'id': ticket.assignedTo} ) }}">{{ tools.convertUname(ticket.assignedTo) }}</a>
+                                {% else %}
+                                <div class="form-inline" style="margin-top:-5px">
+                                    <div class="form-group">
+                                        <label for="assignTicket">
+                                            <strong>Assegna Ticket</strong>
+                                        </label>
+                                        <select name="assignTicket" class="form-control" style="margin-left: 5px">
+                                            <option>-- Seleziona --</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="box">
+                            <div class="box-header">
+                                {{ tools.convertUname(ticket.uid) }} - {{ ticket.timest|date("d-m-Y H:m") }}
+                            </div>
+                            <div class="box-body">
+                                {{ ticket.message }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% for reply in replies %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="box">
+                            <div class="box-header">
+                                {% if reply.uid == 0 %}
+                                <strong>Sistema</strong>
+                                {% else %}
+                                    {{ tools.convertUname(reply.uid) }}
+                                {% endif %}- {{ reply.timest|date("d-m-Y H:m") }}
+                            </div>
+                            <div class="box-body">
+                                {{ reply.message }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <textarea rows="5" style="width:100%" placeholder="{% if ticket.closed == 1 %}Attenzione: Il Ticket risulta chiuso, rispondendo, verrà automaticamente riaperto e l'utente notificato.{% endif %}"></textarea>
+                                <button class="btn btn-success">Rispondi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

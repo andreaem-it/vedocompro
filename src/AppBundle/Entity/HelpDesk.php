@@ -85,6 +85,13 @@ class HelpDesk
     private $closed;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="assignedTo", type="integer")
+     */
+    private $assignedTo;
+
+    /**
      * Get id
      *
      * @return int
@@ -308,5 +315,29 @@ class HelpDesk
     public function getReplyTo()
     {
         return $this->replyTo;
+    }
+
+    /**
+     * Set assignedTo
+     *
+     * @param integer $parentM
+     *
+     * @return HelpDesk
+     */
+    public function setAssignedTo($assignedTo)
+    {
+        $this->assigned_to = $assignedTo;
+
+        return $this;
+    }
+
+    /**
+     * Get assignedTo
+     *
+     * @return integer
+     */
+    public function getAssignedTo()
+    {
+        return $this->assigned_to;
     }
 }

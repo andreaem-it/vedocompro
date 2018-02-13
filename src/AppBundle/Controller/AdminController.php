@@ -680,9 +680,9 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admin/helpdesk/", name="admin_helpdesk")
+     * @Route("/admin/helpdesk/{show}", name="admin_helpdesk", defaults={"show" = "aperti"})
      */
-    public function helpdeskAction()
+    public function helpdeskAction($show)
     {
         $ticketsOpen = $this->getDoctrine()->getRepository('AppBundle:HelpDesk')
             ->createQueryBuilder('e')->select('e')->where('e.closed = 0')->andWhere('e.parent_m = 0')
@@ -698,6 +698,21 @@ class AdminController extends Controller
         $countTC = count($ticketsClosed);
         $countTA = count($ticketsAssigned);
 
+        switch ($show) {
+            default:
+                $ticketsOpen = $ticketsOpen;
+                break;
+            case 'aperti':
+                $ticketsOpen = $ticketsOpen;
+                break;
+            case 'chiusi':
+                $ticketsOpen = $ticketsClosed;
+                break;
+            case 'assegnati':
+                $ticketsOpen = $ticketsAssigned;
+                break;
+        }
+
         return $this->render(':admin/views:helpdesk.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'tools' => $this,
@@ -707,6 +722,28 @@ class AdminController extends Controller
             'countTO' => $countTO,
             'countTC' => $countTC,
             'countTA' => $countTA));
+    }
+
+    /**
+     * @Route("/admin/helpdesk/vedi/{id}/", name="helpdesk_view")
+     */
+    public function helpdeskViewAction($id) {
+
+        $ticket = $this->getDoctrine()->getRepository('AppBundle:HelpDesk')
+                ->createQueryBuilder('e')->select('e')->where('e.id = :id')->setParameter('id', $id)
+                ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+        $replies = $this->getDoctrine()->getManager()->getRepository('AppBundle:HelpDesk')
+            ->createQueryBuilder('r')->select('r')->where('r.isReply = 1')->andWhere('r.parent_m = :id')->setParameter('id', $id)
+            ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+
+        return $this->render('admin/views/helpdesk.view.html.twig', array(
+            'admin_info' => $this->getAdminInfos(),
+            'tools' => $this,
+            'ticket' => $ticket[0],
+            'replies' => $replies
+        ));
     }
 
     /**
@@ -804,6 +841,19 @@ class AdminController extends Controller
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         return $uname[0]["id"];
+    }
+
+    public function convertUname($userID)
+    {
+        $uname = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->createQueryBuilder('e')
+            ->select('e.name')
+            ->where('e.id = :id')
+            ->setParameter('id', $userID)
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        return $uname[0]["name"];
     }
 
     public function convertAds($adID)
@@ -922,6 +972,44 @@ class AdminController extends Controller
         }
 
         return $results;
+    }
+    function convertHelpDeskType ($type) {
+        switch ($type) {
+            case '1':
+                return 'Assistenza con il sito';
+                break;
+            case '2':
+                return 'Problema con utente';
+                break;
+            case '3':
+                return 'Problema con un inserzione';
+                break;
+            case '4':
+                return 'Errore generico';
+                break;
+            default:
+                return 'Non specificato';
+                break;
+        }
+    }
+    function convertHelpDeskStatus ($status) {
+        switch ($status) {
+            case '0':
+                return 'Aperto';
+                break;
+            case '1':
+                return 'Chiuso';
+                break;
+            case '2':
+                return 'Assegnato';
+                break;
+            case '3':
+                return 'Posticipato';
+                break;
+            default:
+                return 'Sconosciuto';
+                break;
+        }
     }
 }
 
