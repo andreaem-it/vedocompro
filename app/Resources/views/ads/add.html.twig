@@ -100,7 +100,7 @@
                                 </div>
                                 
                                 <div class="checkbox mt-3">
-                                    <label><input type="checkbox" value="tosAccept" required />&nbsp; Accetto i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a></label>
+                                    <label><input name="accepttos" type="checkbox" value="tosAccept" required />&nbsp; Accetto i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a></label>
                                 </div>
                                 <small class="hidden-md-up form-text text-muted">Inserisci il video del prodotto, gira un video esponendo i pregi e difetti di ciò che stai vendendo, massimo 200 MB, in formato AVI, MOV, MP4 o M4V. <br><strong>ATTENZIONE:</strong>Carica un video con <u>orientamento orizzontale</u>, eventuali video orientati in verticale verranno bocciati. <br> Assicurati di rispettare i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a>.</small>
                                 <br>
@@ -456,7 +456,6 @@
     <script>
         $('#form_region').on('change', function() {
             var id = $(this).value();
-            alert(id);
             $.ajax ({
                 url: "/ajax/get.province.php?nome=" + id,
                 type: 'GET',
@@ -468,9 +467,7 @@
                 for (i = 0; i < lenght; i++) {
                     html += '<option value="' + data[i].nome + '">' + data[i].nome + '</option>';
                 }
-                console.log(html);
                 $('#form_region').append(html);
-
             });
         });
 
@@ -494,7 +491,7 @@
                     form.find(".body:eq(" + (newIndex + 1) + ") .error").removeClass("error");
                 }
 
-                form.validate().settings.ignore = ":disabled,:hidden";
+                form.validate().settings.ignore = ":disabled,:hidden,.ignore";
 
                 return form.valid();
             },
@@ -521,6 +518,9 @@
             },
             rules: {
                 form_name: {
+                    required: true
+                },
+                accepttos: {
                     required: true
                 }
             }

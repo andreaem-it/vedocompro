@@ -70,6 +70,10 @@ class comuni
      */
     private $longitudine;
 
+    public function __toString()
+    {
+        return $this->getNome();
+    }
 
     /**
      * Get id

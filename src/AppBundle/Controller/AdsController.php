@@ -205,6 +205,7 @@ class AdsController extends Controller
             $newAd->setShowcase(0);
             $newAd->setSold(0);
             $newAd->setTrackingCode('');
+            $newAd->setObjLevel(0);
 
             $form = $this->createFormBuilder($newAd)
                 //*->add('video', FileType::class, array('attr' => array('class' => 'dropzone')))**/
