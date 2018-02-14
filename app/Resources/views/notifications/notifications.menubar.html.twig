@@ -5,11 +5,11 @@
             NOTIFICHE
             <span class="badge badge-pill badge-success head-badge">{{ count }}</span>
         </a>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu notification-menu">
             {% if count > 0 %}
                 {% for notification in notifications %}
                     <strong>
-                        <a class="dropdown-item"
+                        <a class="dropdown-item notification-item"
                            href="{{ url('notifications_open', {id: notification.id}) }}"><i
                                     class="{{ tools.convertNotifications(notification,'icon') }}"
                                     aria-hidden="true"></i>&nbsp;{{ tools.convertNotifications(notification,'text') }}
@@ -26,3 +26,13 @@
         </div>
     </div>
 </div>
+<style>
+    .notification-item {
+        margin: 5px 15px;
+    }
+    .notification-menu {
+        position: absolute!important;
+        float: left!important;
+        width: 260%!important;
+    }
+</style>
