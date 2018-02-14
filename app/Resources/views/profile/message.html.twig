@@ -1,50 +1,51 @@
-
 {% block body %}
     <div class="modal fade" id="deleteMessage">
-        <div class="modal-dialog modal-lg" role="document" >
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-body">
-                    <h3>Sei sicuro di voler eliminare definitavamente il messaggio?</h3>
+                <form method="post" action="{{ url('deletemessage', {id: message.0.id}) }}">
+                    <div class="modal-body">
+                        <h3>Sei sicuro di voler eliminare definitavamente il messaggio?</h3>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="submit" class="btn btn-outline-danger" id="eliminaMessage">Elimina</button>
+                        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Annulla</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid scrollbar">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <a class="btn btn-outline-primary" onClick="showMessages()">< Torna a Messaggi</a>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger">Elimina</button>
-                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="card" style="width:100%">
+                <div class="card-block">
+                    <h4 class="card-title">Messaggio da {{ user.getMessageFromUser(message.0.fromUID) }}</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ user.convertAds(message.0.object) }}</h6>
+                    <small class="card-subtitle">{{ message.0.datetime|date('d-m-Y H:i:s') }}</small>
+                    <br><br>
+                    <p class="card-text">{{ message.0.message }}</p>
+                    - {{ user.getMessageFromUser(message.0.fromUID) }}
+                    <br>
+                    <hr>
+                    <form action="{{ url('nuovo_message', {to: message.0.fromUID}) }}" method="post">
+                            <textarea class="form-control" id="message" name="message"
+                                      placeholder="Inserisci messaggio..."></textarea>
+                        <br>
+                        <input type="submit" class="card-link btn btn-outline-success" value="Rispondi"/>
+                        <a href="#" class="card-link btn btn-outline-danger" data-toggle="modal"
+                           data-target="#deleteMessage">Elimina</a>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-        <div class="container-fluid scrollbar">
-            <div class="container">
-                <br>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <a class="btn btn-outline-primary" onClick="showMessages()">< Torna a Messaggi</a>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="card" style="width:100%">
-                    <div class="card-block">
-                        <h4 class="card-title">Messaggio da {{ user.getMessageFromUser(message.0.fromUID) }}</h4>
-                        <h6 class="card-subtitle mb-2 text-muted">{{ user.convertAds(message.0.object) }}</h6>
-                        <small class="card-subtitle">{{ message.0.datetime|date('d-m-Y H:i:s') }}</small>
-                        <br><br>
-                        <p class="card-text">{{ message.0.message }}</p>
-                        - {{ user.getMessageFromUser(message.0.fromUID) }}
-                        <br>
-                        <hr>
-                        <form action="{{ url('nuovo_message', {to: message.0.fromUID}) }}" method="post">
-                            <textarea class="form-control" id="message" name="message"
-                                      placeholder="Inserisci messaggio..."></textarea>
-                            <br>
-                            <input type="submit" class="card-link btn btn-outline-success" value="Rispondi"/>
-                            <a href="#" class="card-link btn btn-outline-danger" data-toggle="modal"
-                               data-target="#deleteMessage">Elimina</a>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
 {% endblock %}
