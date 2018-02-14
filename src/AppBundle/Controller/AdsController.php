@@ -250,13 +250,25 @@ class AdsController extends Controller
                         return $qb;
                     },
                 ))
-                ->add('region', EntityType::class, array(
+                ->add('provincia', EntityType::class, array(
                     'label' => 'Provincia',
                     'empty_data' => null,
                     'placeholder' => 'Seleziona Provincia',
                     'class' => 'AppBundle\Entity\province',
                     'choice_label' => 'nome',
                     'choice_value' => 'sigla_automobilistica',
+                    'query_builder' => function (EntityRepository $repo) {
+                        $qb = $repo->createQueryBuilder('r')->orderBy('r.nome', 'ASC');
+                        return $qb;
+                    },
+                ))
+                ->add('region', EntityType::class, array(
+                    'label' => 'Region',
+                    'empty_data' => null,
+                    'placeholder' => 'Seleziona Regione',
+                    'class' => 'AppBundle\Entity\regioni',
+                    'choice_label' => 'nome',
+                    'choice_value' => 'nome',
                     'query_builder' => function (EntityRepository $repo) {
                         $qb = $repo->createQueryBuilder('r')->orderBy('r.nome', 'ASC');
                         return $qb;

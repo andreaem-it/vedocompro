@@ -47,7 +47,12 @@ class Ads
      * @ORM\Column(type="string")
      */
     private $location;
-    
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $provincia;
+
     /**
      * @ORM\Column(type="integer")
      */
@@ -367,6 +372,30 @@ class Ads
     public function getRegion()
     {
         return $this->region;
+    }
+
+    /**
+     * Set provincia
+     *
+     * @param string $provincia
+     *
+     * @return Ads
+     */
+    public function setProvincia($provincia)
+    {
+        $this->provincia = $provincia;
+
+        return $this;
+    }
+
+    /**
+     * Get provincia
+     *
+     * @return string
+     */
+    public function getProvincia()
+    {
+        return $this->provincia;
     }
 
     /**
