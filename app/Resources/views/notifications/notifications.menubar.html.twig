@@ -11,8 +11,8 @@
                     <strong>
                         <a class="dropdown-item"
                            href="{{ url('notifications_open', {id: notification.id}) }}"><i
-                                    class="{{ tools.convertNotifications(notification.type,'icon') }}"
-                                    aria-hidden="true"></i>&nbsp;{{ tools.convertNotifications(notification.type,'text') }}
+                                    class="{{ tools.convertNotifications(notification,'icon') }}"
+                                    aria-hidden="true"></i>&nbsp;{{ tools.convertNotifications(notification,'text') }}
                         </a>
                     </strong>
                 {% endfor %}

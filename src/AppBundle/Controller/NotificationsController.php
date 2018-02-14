@@ -37,13 +37,14 @@ class NotificationsController extends Controller
     }
 
     /**
-     * @param $type
+     * @param Notifications $notification
+     * @param string $format
      * @return string
      */
-    public function convertNotifications($type, $format, $routeParam = null) {
+    public function convertNotifications($notification, $format) {
         $icon = '';
         $text = '';
-        switch ($type) {
+        switch ($notification->getType()) {
             case 1:
                 $text =  'Il tuo annuncio è stato approvato';
                 break;
@@ -60,9 +61,15 @@ class NotificationsController extends Controller
                 $text =  '';
                 break;
             case 6:
-                $text =  'Hai un nuovo messaggio';
+                $message = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Messages')->find($notification->getObject());
+                if ($message) {
+                    $user = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:User')->find($message->getFromUID());
+                    $text = 'Hai un nuovo messaggio da ' . $user->getName();
+                } else {
+                    $text = 'Hai un nuovo messaggio';
+                }
                 $user = $this->get('security.token_storage')->getToken()->getUser();
-                if ($routeParam != null) $link = $this->generateUrl('profilo', ['query' => $user, 'message_id' => $routeParam]);
+                if ($msg = $notification->getObject()) $link = $this->generateUrl('profilo', ['query' => $user, 'message_id' => $msg]);
                 break;
             case 7:
                 $text =  'Hai ricevuto un feedback';
@@ -111,7 +118,7 @@ class NotificationsController extends Controller
                 $em->persist($notification);
             }
             $em->flush();
-            if ($link = $this->convertNotifications($notification->getType(), 'link', $notification->getObject())) {
+            if ($link = $this->convertNotifications($notification, 'link')) {
                 return new RedirectResponse($link);
             } else {
                 return new Response('OK');
