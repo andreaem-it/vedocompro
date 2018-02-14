@@ -84,6 +84,9 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
+                            <p class="font-weight-light mt-3">
+                                Visualizzato <span class="text-blue">{{ ad_info.0.views }} </span>volte
+                            </p>
                         </div>
 
                         <div class="col-sm-8">
@@ -141,6 +144,7 @@
                                     <p class="font-weight-light">
                                         Località: <span class="text-blue">{{ ad_info.0.location }} ({{ ad_info.0.region }})</span>
                                     </p>
+
                                     <div class="row mt-4 mb-4">
                                         <div class="col-xs-3 ml-3 mr-4">
                                             <a href="" data-toggle="modal" data-target="#call" class="btn btn-block btn-outline-success">Chiama</a>
