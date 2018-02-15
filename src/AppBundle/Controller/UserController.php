@@ -22,6 +22,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\Form\Extension\Core\Type\PhoneType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 
 class UserController extends Controller
 {
@@ -662,6 +664,23 @@ class UserController extends Controller
         $em->remove($ad);
         $em->flush();
 
+    }
+
+    /**
+     * @Route("api/deletemessage/{id}", name="deletemessage")
+     * @Method({"POST"})
+     */
+    public function deleteMessage(Request $request, $id)
+    {
+        /** @var \Symfony\Component\Security\Core\User\User $user */
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $em = $this->get('doctrine.orm.entity_manager');
+        $messagesRepo = $em->getRepository('AppBundle:Messages');
+        if ($message = $messagesRepo->findOneBy(['fromUID' => $user->getId(), 'id' => $id])) {
+            $em->remove($message);
+            $em->flush();
+        }
+        return $this->redirectToRoute("profilo", ["query" => $user->getUsername(), "_fragment" => "messaggi"]);
     }
 
     /**
