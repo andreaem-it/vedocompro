@@ -372,13 +372,14 @@ class UserController extends Controller
     {
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $em = $this->getDoctrine()->getManager();
+            $messageTime = new \DateTime();
             $message = new Messages();
             $message->setFromUID($this->getUser()->getID());
             $toUser = $em->getRepository('AppBundle:User')->findOneBy(['id' => $request->get('to')]);
             $message->setMessage($request->request->get('message'));
             $message->setToUID($toUser->getId());
             $message->setObject($request->request->get('object') ?? -1);
-            $message->setDatetime(new \DateTime());
+            $message->setDatetime($messageTime);
             $message->setIsRead(0);
             $em->persist($message);
             $em->flush();
@@ -387,9 +388,27 @@ class UserController extends Controller
             $notification->setObject($message->getId());
             $notification->setType(6);
             $notification->setUid($toUser->getId());
-            $notification->setDate(new \DateTime());
+            $notification->setDate($messageTime);
             $em->persist($notification);
             $em->flush();
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Hai un nuovo messaggio!')
+                ->setFrom('noreply@vedocompro.it')
+                ->setFrom(array('noreply@vedocompro.it' => 'VedoCompro'))
+                ->setTo($toUser->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'Emails/message.notify.html.twig',
+                        array(
+                            'datetime' => $messageTime->format('d/m/Y H:i:s'),
+                            'message' => $request->request->get('message'),
+                            'userFrom' => $this->getUser()->getUsername()
+                        )
+                    ),
+                    'text/html'
+                )
+            ;
+            $this->get('mailer')->send($message);
             return $this->redirectToReferer($request);
         }  else {
             return $this->redirectToRoute('login');
