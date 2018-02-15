@@ -124,5 +124,9 @@ class regioni
     {
         return $this->longitudine;
     }
+
+    public function __toString() {
+        return (string) $this->nome;
+    }
 }
 
