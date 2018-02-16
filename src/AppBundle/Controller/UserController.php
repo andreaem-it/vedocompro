@@ -695,7 +695,7 @@ class UserController extends Controller
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $em = $this->get('doctrine.orm.entity_manager');
         $messagesRepo = $em->getRepository('AppBundle:Messages');
-        if ($message = $messagesRepo->findOneBy(['fromUID' => $user->getId(), 'id' => $id])) {
+        if ($message = $messagesRepo->findOneBy(['toUID' => $user->getId(), 'id' => $id])) {
             $em->remove($message);
             $em->flush();
         }
