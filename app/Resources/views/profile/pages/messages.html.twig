@@ -36,7 +36,7 @@
                                         <input id="{{ message.id }}" type="checkbox"
                                                class="msg-checkbox"
                                                style="margin-right:10px">
-                                        {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;
+                                        {{ message.datetime|date("d-m-Y H:i") }}&nbsp;-&nbsp;
                                         {% if message.object == -1 %}
                                             <strong><a onClick="viewMessage('{{ url('message',{'id' : message.id}) }}')">Messaggio
                                                     da
@@ -59,7 +59,7 @@
                                                class="msg-checkbox"
                                                style="margin-right:10px">
                                         {% if message.object == -1 %}
-                                            {{ message.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;
+                                            {{ message.datetime|date("d-m-Y H:i") }}&nbsp;-&nbsp;
                                             <a onClick="viewMessage('{{ url('message',{'id' : message.id}) }}')">Messaggio
                                             da
                                             "{{ user.getMessageFromUser(message.fromuid) }}".</a>
@@ -90,7 +90,7 @@
                                 <li class="list-group-item list-group-item-action list-item-shadow">
                                     {% if messageR.isRead == 0 %}
                                         <input type="checkbox" class="msg-checkbox" style="margin-right:10px">
-                                        {{ messageR.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<strong><a
+                                        {{ messageR.datetime|date("d-m-Y H:i") }}&nbsp;-&nbsp;<strong><a
                                                 onClick="viewMessage('{{ url('message',{'id' : messageR.id}) }}')">Messaggio
                                             a "{{ user.convertUser(messageR.touid) }}" relativo all'inserzione
                                             "{{ user.convertAds(messageR.object) }}"</a>
@@ -98,7 +98,7 @@
                                     </strong>
                                     {% else %}
                                         <input type="checkbox" class="msg-checkbox" style="margin-right:10px">
-                                        {{ messageR.datetime|date("d-m-Y H:m") }}&nbsp;-&nbsp;<a
+                                        {{ messageR.datetime|date("d-m-Y H:i") }}&nbsp;-&nbsp;<a
                                             onClick="viewMessage('{{ url('message',{'id' : messageR.id}) }}')">Messaggio
                                         a "{{ user.convertUser(messageR.touid) }}" relativo all'inserzione
                                         "{{ user.convertAds(messageR.object) }}"</a>

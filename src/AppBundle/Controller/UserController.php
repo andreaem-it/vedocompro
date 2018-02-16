@@ -154,15 +154,16 @@ class UserController extends Controller
             ]);
         }
     }
-    
+
     /**
      * @Route("api/messages/{uid}", name="apiMessages")
-    */
-    public function apiMessagesUid($uid) {
+     */
+    public function apiMessagesUid($uid)
+    {
         $user = $this->getDoctrine()
             ->getRepository('AppBundle:User')
             ->findBy(array('name' => $uid));
-            
+
         $messages = $this->getDoctrine()
             ->getRepository('AppBundle:Messages')
             ->findBy(array('toUID' => $uid), array('datetime' => "DESC"));
@@ -178,25 +179,26 @@ class UserController extends Controller
         $messagesR = $this->getDoctrine()
             ->getRepository('AppBundle:Messages')
             ->findBy(array('fromUID' => $uid), array('datetime' => "DESC"));
-            
-        return $this->render('profile/pages/messages.html.twig',[
+
+        return $this->render('profile/pages/messages.html.twig', [
             'user_info' => $user,
             'messages' => $messages,
             'messagesR' => $messagesR,
             'notReadMsg' => $notReadMsg,
             'user' => $this,
-            ]);    
+        ]);
     }
-    
+
     /**
      * @Route("api/dashboard/{uid}", name="apiDashboard")
-    */
-    public function apiDashboard($uid) {
+     */
+    public function apiDashboard($uid)
+    {
         $user = $this->getDoctrine()
             ->getRepository('AppBundle:User')
             ->findBy(array('name' => $uid));
         $usr = $this->get('security.token_storage')->getToken()->getUser();
-            
+
         $sells = $this->getDoctrine()
             ->getRepository('AppBundle:Sells')
             ->createQueryBuilder('e')
@@ -222,40 +224,42 @@ class UserController extends Controller
             ->where('e.uid = :uid')
             ->setParameter('uid', $usr)
             ->getQuery()
-            ->getResult(Query::HYDRATE_ARRAY);    
-        
-         return $this->render('profile/pages/dashboard.html.twig',[
+            ->getResult(Query::HYDRATE_ARRAY);
+
+        return $this->render('profile/pages/dashboard.html.twig', [
             'user_info' => $user,
             'sells' => $sells,
             'wishes' => $wish,
             'buys' => $buys,
             'user' => $this,
-            ]);    
+        ]);
     }
+
     /**
      * @Route("/api/feedbacks/{uid}", name="apiFeedback")
-    */
+     */
     public function apiFeedback($uid)
     {
         $feedbacks = $this->getDoctrine()
             ->getRepository('AppBundle:Feedback')
             ->findBy(array('uid' => $uid));
-            
+
         return $this->render('profile/pages/feedbacks.html.twig', [
             'feedback' => $feedbacks,
-            ]);
+        ]);
     }
+
     /**
      * @Route("/api/settings/{uid}", name="apiSettings")
-    */
+     */
     public function apiSettings($uid)
     {
         $entity = $this->getDoctrine()->getRepository('AppBundle:User')->find($uid);
-        
+
         $user = $this->getDoctrine()
             ->getRepository('AppBundle:User')
             ->findBy(array('id' => $uid));
-        
+
         $settingsForm = $this->createFormBuilder($entity)
             ->add('email', TextType::class)
             ->add('plainpassword', PasswordType::class)
@@ -264,22 +268,23 @@ class UserController extends Controller
             ->add('city', TextType::class)
             ->add('cap', TextType::class)
             ->add('phone', PhoneType::class);
-        
+
         return $this->render('profile/pages/settings.html.twig', [
             'user_info' => $user,
             'settingsForm' => $settingsForm
-            ]);
+        ]);
     }
-    
+
     /**
      * @Route("/api/annunci/{uid}", name="apiAds")
-    */
-    public function apiAds($uid) {
-        
+     */
+    public function apiAds($uid)
+    {
+
         $user = $this->getDoctrine()
             ->getRepository('AppBundle:User')
             ->findBy(array('id' => $uid));
-        
+
         $ads = $this->getDoctrine()
             ->getRepository('AppBundle:Ads')
             ->createQueryBuilder('e')
@@ -288,15 +293,15 @@ class UserController extends Controller
             ->setParameter('uid', $uid)
             ->getQuery()
             ->getResult(Query::HYDRATE_ARRAY);
-        
-        
+
+
         return $this->render('profile/pages/ads.html.twig', [
             'ads' => $ads,
             'user' => $this,
             'user_info' => $user
-            ]);
+        ]);
     }
-    
+
     /**
      * @Route("/upgrade", name="upgrade")
      */
@@ -323,7 +328,7 @@ class UserController extends Controller
                 'user_id' => $user->getId(),
                 'bronze' => $bronze,
                 'silver' => $silver,
-                'gold'   => $gold
+                'gold' => $gold
             ]
         );
     }
@@ -333,34 +338,30 @@ class UserController extends Controller
      */
     public function messageAction($id)
     {
-        $message = $this->getDoctrine()
-                        ->getRepository('AppBundle:Messages')
-                        ->createQueryBuilder('m')
-                        ->select('m')
-                        ->where("m.id = :mid")
-                        ->setParameter('mid', $id)
-                        ->getQuery()
-                        ->getResult(Query::HYDRATE_ARRAY);
+        $em = $this->getDoctrine()->getManager();
+        $messageRepo = $em->getRepository('AppBundle:Messages');
+        $notificationRepo = $em->getRepository('AppBundle:Notifications');
 
-        $usr= $this->get('security.token_storage')->getToken()->getUser();
-        $usr->getId();
-
-        if (isset($message[0]) && $message[0]['toUID'] == $usr->getId()) {
-            if ($message[0]['isRead'] == '0') {
-                $em = $this->getDoctrine()->getManager();
-                $conn = $em->getConnection();
-                $query=("UPDATE `messages` SET `is_read` = '1' WHERE `messages`.`id` = :mid;");
-                $stmt = $conn->prepare($query);
-                $stmt->bindParam("mid", $message[0]['id']);
-                $stmt->execute();
+        if ($message = $messageRepo->find($id)) {
+            $usr = $this->get('security.token_storage')->getToken()->getUser();
+            if ($message->getToUID() == $usr->getId() && $message->getIsRead() == 0) {
+                $message->setIsRead(1);
+                $em->persist($message);
+                $em->flush();
             }
-            return $this->render('profile/message.html.twig',
-                array('message' => $message,
-                      'user' => $this));
-        } elseif (isset($message[0]) && $message[0]['fromUID'] == $usr->getId()) {
-            return $this->render('profile/message.html.twig',
-                array('message' => $message,
-                    'user' => $this));
+            if ($message->getToUID() == $usr->getId() && $notification = $notificationRepo->findOneBy(['object' => $message->getId()])) {
+                if ($notification->getReaded() == false) {
+                    $notification->setReaded(true);
+                    $em->persist($notification);
+                    $em->flush();
+                }
+            }
+            if ($message->getToUID() == $usr->getId() || $message->getFromUID() == $usr->getId()) {
+                return $this->render('profile/message.html.twig',
+                    array('message' => $message,
+                        'user' => $this));
+
+            }
         }
     }
 
@@ -406,11 +407,10 @@ class UserController extends Controller
                         )
                     ),
                     'text/html'
-                )
-            ;
+                );
             $this->get('mailer')->send($message);
             return $this->redirectToReferer($request);
-        }  else {
+        } else {
             return $this->redirectToRoute('login');
         }
     }
@@ -424,7 +424,7 @@ class UserController extends Controller
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $this->setMessagesReadStatus($request->get('ids'), 1);
             return new Response("OK");
-        }  else {
+        } else {
             return $this->redirectToRoute('login');
         }
     }
@@ -438,7 +438,7 @@ class UserController extends Controller
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $this->setMessagesReadStatus($request->get('ids'), 0);
             return new Response("OK");
-        }  else {
+        } else {
             return $this->redirectToRoute('login');
         }
     }
@@ -448,7 +448,7 @@ class UserController extends Controller
         $ids = explode(',', $ids);
         $em = $this->getDoctrine()->getManager();
         $messageRepo = $em->getRepository('AppBundle:Messages');
-        foreach($ids as $id) {
+        foreach ($ids as $id) {
             $message = $messageRepo->find($id);
             if ($message) {
                 $message->setIsRead($status);
@@ -462,17 +462,18 @@ class UserController extends Controller
      * @Route("profilo/{uid}/venduto/{aid}", name="sold_id")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function soldAction($aid) {
+    public function soldAction($aid)
+    {
 
         $entity = new Sells();
 
         $form = $this->createFormBuilder($entity)
             ->setMethod('GET')
             ->setAction($this->generateUrl('processSell'))
-            ->add('tuid', TextType::class, array('label'=> 'Utente','attr' =>array('class' => 'form-control')))
+            ->add('tuid', TextType::class, array('label' => 'Utente', 'attr' => array('class' => 'form-control')))
             ->add('fuid', HiddenType::class, array('data' => $this->getUser()->getUsername()))
             ->add('aid', HiddenType::class, array('data' => $aid))
-            ->add('submit',SubmitType::class, array('label' => 'Salva','attr' => array('class' => 'btn-outline-success')))
+            ->add('submit', SubmitType::class, array('label' => 'Salva', 'attr' => array('class' => 'btn-outline-success')))
             ->getForm()
             ->createView();
 
@@ -483,7 +484,8 @@ class UserController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("profilo/venduto/process",name="processSell")
      */
-    public function soldForm() {
+    public function soldForm()
+    {
         return null;
     }
 
@@ -493,15 +495,15 @@ class UserController extends Controller
     public function trackingAction($aid)
     {
         $trackingCode = $this->getDoctrine()
-                            ->getRepository("AppBundle:Ads")
-                            ->createQueryBuilder("t")
-                            ->select('t.trackingCode')
-                            ->where('t.id = :id')
-                            ->setParameter('id',$aid)
-                            ->getQuery()
-                            ->getResult(Query::HYDRATE_ARRAY);
+            ->getRepository("AppBundle:Ads")
+            ->createQueryBuilder("t")
+            ->select('t.trackingCode')
+            ->where('t.id = :id')
+            ->setParameter('id', $aid)
+            ->getQuery()
+            ->getResult(Query::HYDRATE_ARRAY);
 
-        return $this->render(':profile:tracking.html.twig',[
+        return $this->render(':profile:tracking.html.twig', [
             'code' => $trackingCode[0]['trackingCode']
         ]);
     }
@@ -509,75 +511,76 @@ class UserController extends Controller
     /**
      * @Route("profilo/{uid}/{aid}/srp/", name="setReceivedPayment")
      */
-    public function setReceivedPayment($uid,$aid)
+    public function setReceivedPayment($uid, $aid)
     {
         $em = $this->getDoctrine()->getEntityManager();
         $conn = $em->getConnection();
-        $query=("UPDATE `sells` SET `paid` = '1' WHERE `sells`.`id` = $aid;");
+        $query = ("UPDATE `sells` SET `paid` = '1' WHERE `sells`.`id` = $aid;");
         $stmt = $conn->prepare($query);
         $stmt->execute();
         $uid = $this->convertUser($uid);
-        return $this->redirectToRoute("profilo",['query'=>$uid]);
+        return $this->redirectToRoute("profilo", ['query' => $uid]);
     }
 
     /**
      * @Route("profilo/{uid}/{aid}/usrp/", name="unsetReceivedPayment")
      */
-    public function unsetReceivedPayment($uid,$aid)
+    public function unsetReceivedPayment($uid, $aid)
     {
         $em = $this->getDoctrine()->getEntityManager();
         $conn = $em->getConnection();
-        $query=("UPDATE `sells` SET `paid` = '0' WHERE `sells`.`id` = $aid;");
+        $query = ("UPDATE `sells` SET `paid` = '0' WHERE `sells`.`id` = $aid;");
         $stmt = $conn->prepare($query);
         $stmt->execute();
         $uid = $this->convertUser($uid);
-        return $this->redirectToRoute("profilo",['query'=>$uid]);
+        return $this->redirectToRoute("profilo", ['query' => $uid]);
     }
 
     /**
      * @Route("profilo/{uid}/{aid}/sas/", name="setAsShipped")
      */
-    public function setAsShipped($uid,$aid)
+    public function setAsShipped($uid, $aid)
     {
         $em = $this->getDoctrine()->getManager();
         $conn = $em->getConnection();
-        $query=("UPDATE `sells` SET `shipped` = '1' WHERE `sells`.`id` = $aid;");
+        $query = ("UPDATE `sells` SET `shipped` = '1' WHERE `sells`.`id` = $aid;");
         $stmt = $conn->prepare($query);
         $stmt->execute();
         $uid = $this->convertUser($uid);
-        return $this->redirectToRoute("profilo",['query'=>$uid]);
+        return $this->redirectToRoute("profilo", ['query' => $uid]);
     }
 
     /**
      * @Route("profilo/{uid}/{aid}/usas/", name="unsetAsShipped")
      */
-    public function unsetAsShipped($uid,$aid)
+    public function unsetAsShipped($uid, $aid)
     {
         $em = $this->getDoctrine()->getManager();
         $conn = $em->getConnection();
-        $query=("UPDATE `sells` SET `shipped` = '0' WHERE `sells`.`id` = $aid;");
+        $query = ("UPDATE `sells` SET `shipped` = '0' WHERE `sells`.`id` = $aid;");
         $stmt = $conn->prepare($query);
         $stmt->execute();
         $uid = $this->convertUser($uid);
-        return $this->redirectToRoute("profilo",['query'=>$uid]);
+        return $this->redirectToRoute("profilo", ['query' => $uid]);
     }
 
     /**
      * @Route("profilo/messaggi/processSendMessage/{mid}", name="sendmessage")
      */
 
-    public function processSendMessage($mid) {
+    public function processSendMessage($mid)
+    {
         $em = $this->getDoctrine()->getRepository('AppBundle:Messages')->createQueryBuilder('m')
-                   ->select('m')->where('m.id = :mid')->setParameter('mid', $mid)
-                   ->getQuery()->getResult(Query::HYDRATE_ARRAY);
+            ->select('m')->where('m.id = :mid')->setParameter('mid', $mid)
+            ->getQuery()->getResult(Query::HYDRATE_ARRAY);
 
-        if($this->getLoggedUser() == $em[0]['toUID']) {
-            if($_GET['fromUID'] && $_GET['toUID'] && $_GET['datetime'] && $_GET['message'] && $_GET['objectID']) {
+        if ($this->getLoggedUser() == $em[0]['toUID']) {
+            if ($_GET['fromUID'] && $_GET['toUID'] && $_GET['datetime'] && $_GET['message'] && $_GET['objectID']) {
                 $fromUID = $this->get('security.token_storage')->getToken()->getUser();
 
                 $em = $this->getDoctrine()->getManager();
                 $conn = $em->getConnection();
-                $query=("INSERT INTO `messages` (`id`, `from_uid`, `to_uid`, `datetime`, `message`, `is_read`, `object`) VALUES (NULL, :fromUID, :toUID, :mdatetime, :message, '0', :objectID)");
+                $query = ("INSERT INTO `messages` (`id`, `from_uid`, `to_uid`, `datetime`, `message`, `is_read`, `object`) VALUES (NULL, :fromUID, :toUID, :mdatetime, :message, '0', :objectID)");
                 $stmt = $conn->prepare($query);
                 $stmt->bindValue("fromUID", $_GET['fromUID']);
                 $stmt->bindValue("toUID", $_GET['toUID']);
@@ -586,7 +589,7 @@ class UserController extends Controller
                 $stmt->bindValue("objectID", $_GET['objectID']);
                 $stmt->execute();
 
-                $usr= $this->get('security.token_storage')->getToken()->getUser();
+                $usr = $this->get('security.token_storage')->getToken()->getUser();
                 $uname = $usr->getUsername();
                 $mail = $usr->getEmail();
 
@@ -597,7 +600,7 @@ class UserController extends Controller
                     ->createQueryBuilder('e')
                     ->select('e.email')
                     ->where('e.id = :usr')
-                    ->setParameter('usr',$_GET['toUID'])
+                    ->setParameter('usr', $_GET['toUID'])
                     ->getQuery()
                     ->getResult(Query::HYDRATE_ARRAY);
 
@@ -616,11 +619,10 @@ class UserController extends Controller
                             )
                         ),
                         'text/html'
-                    )
-                ;
+                    );
                 $this->get('mailer')->send($message);
 
-                return $this->redirectToRoute("profilo",['query'=>$uname]);
+                return $this->redirectToRoute("profilo", ['query' => $uname]);
             }
 
         }
@@ -630,11 +632,12 @@ class UserController extends Controller
      * @Route("messaggi/processSendMessageAds", name="sendmessageAds")
      */
 
-    public function processSendMessageAds() {
-        if($_GET['fromUID'] && $_GET['toUID'] && $_GET['datetime'] && $_GET['message'] && $_GET['objectID']) {
+    public function processSendMessageAds()
+    {
+        if ($_GET['fromUID'] && $_GET['toUID'] && $_GET['datetime'] && $_GET['message'] && $_GET['objectID']) {
             $em = $this->getDoctrine()->getManager();
             $conn = $em->getConnection();
-            $query=("INSERT INTO `messages` (`id`, `from_uid`, `to_uid`, `datetime`, `message`, `is_read`, `object`) VALUES (NULL, :fromUID, :toUID, :mdatetime, :message, '0', :objectID)");
+            $query = ("INSERT INTO `messages` (`id`, `from_uid`, `to_uid`, `datetime`, `message`, `is_read`, `object`) VALUES (NULL, :fromUID, :toUID, :mdatetime, :message, '0', :objectID)");
             $stmt = $conn->prepare($query);
             $stmt->bindValue("fromUID", $_GET['fromUID']);
             $stmt->bindValue("toUID", $_GET['toUID']);
@@ -646,7 +649,7 @@ class UserController extends Controller
 
             $userEmail = $this->getDoctrine()->getRepository('AppBundle:User')
                 ->createQueryBuilder('e')
-                ->select('e.mail')->where('e.id = :usr')->setParameter('usr',$uid)
+                ->select('e.mail')->where('e.id = :usr')->setParameter('usr', $uid)
                 ->getQuery()->getResult();
 
             $userName = $this->get('security.token_storage')->getToken()->getUsername();
@@ -665,11 +668,10 @@ class UserController extends Controller
                         )
                     ),
                     'text/html'
-                )
-            ;
+                );
             $this->get('mailer')->send($message);
 
-            return $this->redirectToRoute("profilo",['query'=>$uid]);
+            return $this->redirectToRoute("profilo", ['query' => $uid]);
         }
     }
 
@@ -705,7 +707,7 @@ class UserController extends Controller
     /**
      * @Route("ads/leavefeed/{uid}/{aid}", name="feedback_leave")
      */
-    public function leaveFeedbackPage($uid,$aid)
+    public function leaveFeedbackPage($uid, $aid)
     {
         return $this->render('profile/feedback.leave.html.twig', [
             'uid' => $uid,
@@ -716,7 +718,7 @@ class UserController extends Controller
     /**
      * @Route("ads/leavefeed/process/{uid}/{aid}", name="leave_feed_process")
      */
-    public function leave_feed_process($uid,$aid)
+    public function leave_feed_process($uid, $aid)
     {
         return dump($_GET);
     }
@@ -726,17 +728,17 @@ class UserController extends Controller
      * @param $uid
      * @return Response
      */
-    public function upload_user_pic($uid) {
+    public function upload_user_pic($uid)
+    {
 
         $entity = new User();
 
         $form = $this->createFormBuilder($entity)
-            ->add('file', FileType::class, array('label'=> 'Immagine Profilo', 'attr' => array('class' => 'form-control')))
-            ->add('submit',SubmitType::class, array('label' => 'Search','attr' => array('class' => 'btn-success')))
+            ->add('file', FileType::class, array('label' => 'Immagine Profilo', 'attr' => array('class' => 'form-control')))
+            ->add('submit', SubmitType::class, array('label' => 'Search', 'attr' => array('class' => 'btn-success')))
             ->getForm();
 
-        if($form->isSubmitted && $form->isValid)
-        {
+        if ($form->isSubmitted && $form->isValid) {
             return null;
         }
 
@@ -747,7 +749,8 @@ class UserController extends Controller
      * @Route("porta-un-amico", name="bring-a-friend")
      */
 
-    public function referAction() {
+    public function referAction()
+    {
         return $this->render('bring-a-friend/bring-a-friend.html.twig');
     }
 
@@ -755,8 +758,8 @@ class UserController extends Controller
     {
         /** @var User $uname */
         $user = $this->getDoctrine()
-               ->getRepository('AppBundle:User')
-               ->find($userID);
+            ->getRepository('AppBundle:User')
+            ->find($userID);
         return $user ? $user->getName() : null;
     }
 
@@ -778,19 +781,21 @@ class UserController extends Controller
     public function convertUID($userID)
     {
         $user = $this->getDoctrine()
-                ->getRepository('AppBundle:User')
-                ->findOneBy(['name' => $userID]);
+            ->getRepository('AppBundle:User')
+            ->findOneBy(['name' => $userID]);
         return $user ? $user->getId() : null;
     }
+
     public function convertAds($adID)
     {
         /** @var Ads $ad */
         $ad = $this->getDoctrine()
-               ->getRepository('AppBundle:Ads')
-               ->find($adID);
+            ->getRepository('AppBundle:Ads')
+            ->find($adID);
 
         return $ad ? $ad->getName() : null;
     }
+
     public function convertCategory($catID)
     {
         $catname = $this->getDoctrine()
@@ -803,21 +808,22 @@ class UserController extends Controller
             ->getResult(Query::HYDRATE_ARRAY);
         return $catname[0]["name"];
     }
+
     static public function slugify($text)
     {
-      $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-      $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-      $text = preg_replace('~[^-\w]+~', '', $text);
-      $text = trim($text, '-');
-      $text = preg_replace('~-+~', '-', $text);
-      $text = strtolower($text);
-      if (empty($text)) {
-        return 'n-a';
-      }
-      return $text;
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        $text = preg_replace('~[^-\w]+~', '', $text);
+        $text = trim($text, '-');
+        $text = preg_replace('~-+~', '-', $text);
+        $text = strtolower($text);
+        if (empty($text)) {
+            return 'n-a';
+        }
+        return $text;
     }
 
-    public function getSell($id,$option)
+    public function getSell($id, $option)
     {
         switch ($option) {
             case 'isSellOrBuy':
@@ -900,8 +906,9 @@ class UserController extends Controller
         }
     }
 
-    function getLoggedUser() {
-        $usr= $this->get('security.token_storage')->getToken()->getUser();
+    function getLoggedUser()
+    {
+        $usr = $this->get('security.token_storage')->getToken()->getUser();
         return $usr->getId();
     }
 }
