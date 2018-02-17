@@ -698,6 +698,13 @@ class UserController extends Controller
         $em = $this->get('doctrine.orm.entity_manager');
         $messagesRepo = $em->getRepository('AppBundle:Messages');
         if ($message = $messagesRepo->findOneBy(['toUID' => $user->getId(), 'id' => $id])) {
+            $notificationRepo = $em->getRepository('AppBundle:Notifications');
+            if ($message->getToUID() == $user->getId() && $notification = $notificationRepo->findOneBy(['object' => $message->getId()])) {
+                if ($notification->getReaded() == false) {
+                    $notification->setReaded(true);
+                    $em->remove($notification);
+                }
+            }
             $em->remove($message);
             $em->flush();
         }

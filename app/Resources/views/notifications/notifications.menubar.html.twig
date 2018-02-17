@@ -1,38 +1,29 @@
-<div class="nav-item">
-    <div class="btn-group">
-        <a class="nav-link dropdown-toggle" id="notification-menu" data-toggle="dropdown" aria-haspopup="true"
-           aria-expanded="false">
-            NOTIFICHE
-            <span class="badge badge-pill badge-success head-badge">{{ count }}</span>
-        </a>
-        <div class="dropdown-menu notification-menu">
-            {% if count > 0 %}
-                {% for notification in notifications %}
-                    <strong>
-                        <a class="dropdown-item notification-item"
-                           href="{{ url('notifications_open', {id: notification.id}) }}"><i
-                                    class="{{ tools.convertNotifications(notification,'icon') }}"
-                                    aria-hidden="true"></i>&nbsp;{{ tools.convertNotifications(notification,'text') }}
-                        </a>
-                    </strong>
-                {% endfor %}
-            {% else %}
-                <span style="color: grey;" class="notification-item">Nessuna nuova notifica</span>
-                {#<a class="dropdown-item notification-item"#}
-                {#href="#">#}
-                {#VEDI TUTTO...#}
-                {#</a>#}
-            {% endif %}
-        </div>
-    </div>
-</div>
+<a class="dropdown-toggle head-txt-bold" data-toggle="dropdown" href="#">
+    NOTIFICHE <span class="badge badge-pill badge-success head-badge">{{ count }}</span>
+    <span class="caret"></span></a>
+<ul class="dropdown-menu">
+    {% if count > 0 %}
+        {% for notification in notifications %}
+            <strong>
+                <a class="dropdown-item notification-item"
+                   href="{{ url('notifications_open', {id: notification.id}) }}"><i
+                            class="{{ tools.convertNotifications(notification,'icon') }}"
+                            aria-hidden="true"></i>&nbsp;{{ tools.convertNotifications(notification,'text') }}
+                </a>
+            </strong>
+        {% endfor %}
+    {% else %}
+        <span style="color: grey;" class="notification-item">Nessuna nuova notifica</span>
+    {% endif %}
+</ul>
 <style>
     .notification-item {
         margin: 5px 15px;
     }
+
     .notification-menu {
-        position: absolute!important;
-        float: left!important;
-        width: 260%!important;
+        position: absolute !important;
+        float: left !important;
+        width: 260% !important;
     }
 </style>
