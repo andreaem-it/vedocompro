@@ -403,7 +403,8 @@ class UserController extends Controller
                         array(
                             'datetime' => $messageTime->format('d/m/Y H:i:s'),
                             'message' => $request->request->get('message'),
-                            'userFrom' => $this->getUser()->getUsername()
+                            'userFrom' => $this->getUser()->getUsername(),
+                            'userTo' => $toUser->getUsername()
                         )
                     ),
                     'text/html'
@@ -595,27 +596,23 @@ class UserController extends Controller
 
                 $uid = $this->getLoggedUser();
 
-                $userEmail = $this->getDoctrine()
+                $user = $this->getDoctrine()
                     ->getRepository('AppBundle:User')
-                    ->createQueryBuilder('e')
-                    ->select('e.email')
-                    ->where('e.id = :usr')
-                    ->setParameter('usr', $_GET['toUID'])
-                    ->getQuery()
-                    ->getResult(Query::HYDRATE_ARRAY);
+                    ->find($_GET['toUID']);
 
                 $message = \Swift_Message::newInstance()
                     ->setSubject('Hai un nuovo messaggio!')
                     ->setFrom('noreply@vedocompro.it')
                     ->setFrom(array('noreply@vedocompro.it' => 'VedoCompro'))
-                    ->setTo($userEmail[0]['email'])
+                    ->setTo($user->getEmail())
                     ->setBody(
                         $this->renderView(
                             'Emails/message.notify.html.twig',
                             array(
                                 'datetime' => $_GET['datetime'],
                                 'message' => $_GET['message'],
-                                'userFrom' => $uname
+                                'userFrom' => $uname,
+                                'userTo' => $user->getUsername()
                             )
                         ),
                         'text/html'
@@ -647,24 +644,23 @@ class UserController extends Controller
             $stmt->execute();
             $uid = $this->convertUser($this->getLoggedUser());
 
-            $userEmail = $this->getDoctrine()->getRepository('AppBundle:User')
-                ->createQueryBuilder('e')
-                ->select('e.mail')->where('e.id = :usr')->setParameter('usr', $uid)
-                ->getQuery()->getResult();
+            $user = $this->getDoctrine()->getRepository('AppBundle:User')
+                ->find($uid);
 
             $userName = $this->get('security.token_storage')->getToken()->getUsername();
 
             $message = \Swift_Message::newInstance()
                 ->setSubject('Hai un nuovo messaggio da' . $userName . '!')
                 ->setFrom('noreply@vedocompro.it')
-                ->setTo($userEmail)
+                ->setTo($user->getEmail())
                 ->setBody(
                     $this->renderView(
                         'Emails/message.notify.html.twig',
                         array(
                             'datetime' => $_GET['datetime'],
                             'message' => $_GET['message'],
-                            'userFrom' => $userName
+                            'userFrom' => $userName,
+                            'userTo' => $user->getUsername()
                         )
                     ),
                     'text/html'
