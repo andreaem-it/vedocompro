@@ -449,9 +449,17 @@ class UserController extends Controller
         $ids = explode(',', $ids);
         $em = $this->getDoctrine()->getManager();
         $messageRepo = $em->getRepository('AppBundle:Messages');
+        $notificationRepo = $em->getRepository('AppBundle:Notifications');
+
         foreach ($ids as $id) {
             $message = $messageRepo->find($id);
             if ($message) {
+                if ($notification = $notificationRepo->findOneBy(['object' => $message->getId()])) {
+                    if ($notification->getReaded() == false) {
+                        $notification->setReaded(true);
+                        $em->persist($notification);
+                    }
+                }
                 $message->setIsRead($status);
                 $em->persist($message);
             }
