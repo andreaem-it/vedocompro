@@ -23,7 +23,6 @@
                   url: "{{ url("uploadpic", {'uid': user_info.0.id}) }}",
                   maxFilesize: 2000000,
                   acceptedFiles: ".jpg",
-                  addRemoveLinks: true,
                   dataType: "HTML",
                   createImageThumbnails: true,
                   maxThumbnailFilesize: 100,
@@ -34,6 +33,7 @@
                       file.previewElement.classList.add("dz-success");
                       $('.profile-pic').attr("src", "/uploads/profile/{{ user_info.0.id }}.jpg");
                       $('#changepic').modal('toggle');
+                      $('#dropzone').destroy();
                   },
                   error: function (file, response) {
                       file.previewElement.classList.add("dz-error");

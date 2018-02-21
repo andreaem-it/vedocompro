@@ -927,7 +927,7 @@ class UserController extends Controller
      */
     public function uploadPicAction()
     {
-        $target_dir = __DIR__ . "/../../../web/uploads/pictures/";
+        $target_dir = __DIR__ . "/../../../web/uploads/profile/";
         $logger = $this->get('logger');
 
         set_time_limit(0);
@@ -985,6 +985,7 @@ class UserController extends Controller
             // DO NOT USE $_FILES['file']['name'] WITHOUT ANY VALIDATION !!
             // On this example, obtain safe unique name from its binary data.
             $fileName = $this->get('security.token_storage')->getToken()->getUser()->getId() . '.jpg';
+            if(file_exists("$target_dir. '/' . $fileName")) unlink("$target_dir. '/' . $fileName");
             if (!move_uploaded_file($_FILES['file']['tmp_name'], sprintf('%s%s.%s', $target_dir, $fileName, $ext ))) {
                 throw new \RuntimeException('Failed to move uploaded file.');
             }
