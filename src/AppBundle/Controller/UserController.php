@@ -922,4 +922,76 @@ class UserController extends Controller
         $usr = $this->get('security.token_storage')->getToken()->getUser();
         return $usr->getId();
     }
+    /**
+     * @Route("profile/uploadpic/{uid}", name="uploadpic")
+     */
+    public function uploadPicAction()
+    {
+        $target_dir = __DIR__ . "/../../../web/uploads/pictures/";
+        $logger = $this->get('logger');
+
+        set_time_limit(0);
+        ini_set('upload_max_filesize', '20M');
+        ini_set('post_max_size', '21M');
+        ini_set('max_input_time', 3200);
+        ini_set('max_execution_time', 3200);
+        ini_set('memory_limit', '256M');
+
+        try {
+            // Undefined | Multiple Files | $_FILES Corruption Attack
+            // If this request falls under any of them, treat it invalid.
+            if (
+                !isset($_FILES['file']['error']) ||
+                is_array($_FILES['file']['error'])
+            ) {
+                throw new \RuntimeException('Invalid parameters.');
+            }
+            // Check $_FILES['file']['error'] value.
+            switch ($_FILES['file']['error']) {
+                case UPLOAD_ERR_OK:
+                    break;
+                case UPLOAD_ERR_NO_FILE:
+                    throw new \RuntimeException('No file sent.');
+                    break;
+                case UPLOAD_ERR_INI_SIZE:
+                    throw new \RuntimeException('Exceeded ini file size limit.');
+                    break;
+                case UPLOAD_ERR_FORM_SIZE:
+                    throw new \RuntimeException('Exceeded filesize limit.');
+                    break;
+                default:
+                    throw new \RuntimeException('Unknown errors.');
+                    break;
+            }
+
+            // You should also check filesize here.
+            if ($_FILES['file']['size'] > 20971520) {
+                throw new \RuntimeException('Exceeded filesize limit.');
+            }
+
+            // DO NOT TRUST $_FILES['file']['mime'] VALUE !!
+            // Check MIME Type by yourself.
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            if (false === $ext = array_search(
+                    $finfo->file($_FILES['file']['tmp_name']),
+                    array(
+                        'jpg' => 'image/jpg'
+                    ),
+                    true
+                )) {
+                throw new \RuntimeException('Invalid file format: ' . $finfo->file($_FILES['file']['tmp_name']));
+            }
+            // You should name it uniquely.
+            // DO NOT USE $_FILES['file']['name'] WITHOUT ANY VALIDATION !!
+            // On this example, obtain safe unique name from its binary data.
+            $fileName = $this->get('security.token_storage')->getToken()->getUser()->getId() . '.jpg';
+            if (!move_uploaded_file($_FILES['file']['tmp_name'], sprintf('%s%s.%s', $target_dir, $fileName, $ext ))) {
+                throw new \RuntimeException('Failed to move uploaded file.');
+            }
+            return new Response(sprintf("%s.%s",$fileName,$ext), 200, ['Content-Type', 'text/plain; charset=utf-8']);
+        } catch (\RuntimeException $e) {
+            $logger->critical($e->getMessage());
+            return new Response ($e->getMessage());
+        }
+    }
 }

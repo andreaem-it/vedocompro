@@ -6,8 +6,9 @@
     <link rel="stylesheet" href="{{ asset('css/jquery.scrolling-tabs.min.css') }}">
 
     {% include 'template/header.html.twig' %}
-    {% embed 'modals/profile.message.html.twig' %}
-    {% endembed %}
+    {% embed 'modals/profile.message.html.twig' %}{% endembed %}
+    {% embed 'modals/profile.changepic.html.twig' %}{% endembed %}
+
 
     <div class="wrapper">
         <section id="profile-header" style="margin-top:-25px">
@@ -18,10 +19,10 @@
                             <img id="profile-pic" class="card-img-top img-fluid rounded-circle"
                                  src="/uploads/profile/{{ user_info.0.id }}.jpg">
                             <div class="overlay"></div>
-                            <div class="button"><a href="#"> CAMBIA </a></div>
+                            <div class="button"><a href="#" data-toggle="modal" data-target="#changepic"> CAMBIA </a></div>
                         </div>
                     </div>
-                    <div id="user_info" class="col-sm-5 mt-5 pt-4 ">
+                    <div id="user_info" class="col-sm-5 mt-5 pt-4 mb-5">
                         <div class="user-info pl-5">
                             <h1>{{ user_info.0.realname }}</h1>
                             <h4>{{ user_info.0.name }}</h4>
@@ -32,7 +33,7 @@
                             {% if app.user.username is defined %}
                                 {% if app.user.username == user_info.0.name %}
                                     <p>Crediti:
-                                        <small>{{ user_info.0.creditsGold }}<img
+                                        <small>{{ user_info.0.creditsGold }}</small><img
                                                     src="{{ asset('img/coins/coin_gold.png') }}"
                                                     class="profile_coin_left"/> {{ user_info.0.creditsSilver }} <img
                                                     src="{{ asset('img/coins/coin_silver.png') }}"

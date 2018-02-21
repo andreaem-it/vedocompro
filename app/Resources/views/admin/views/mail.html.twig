@@ -3,7 +3,7 @@
 {% block title %}VedoCompro.it - ADMIN - Mail{% endblock %}
 
 {% block body %}
-
+    {{ tinymce_init() }}
     <section class="content-header">
         <h1>
             Mail
@@ -26,42 +26,70 @@
                     {% endfor %}
                 {% endif %}
                 {{ form_start(form) }}
-                <div class="form-group">
-                    <label for="form_to" class="col-sm-1 control-label">Type:</label>
-                    <div class="col-sm-11">
-                        {{ form_widget(form.type) }}
-                        <br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="form_to" class="col-sm-2 control-label">Tipo:</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.type) }}
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="form_default" class="col-sm-3 control-label">Messaggio predefinito:</label>
+                            <div class="col-sm-9">
+                                {{ form_widget(form.default) }}
+                                <br>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="form_to" class="col-sm-1 control-label">Destinatario:</label>
-                    <div class="col-sm-11">
-                        {{ form_widget(form.to) }}
-                        <br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="form_to" class="col-sm-2 control-label">Destinatario:</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.to) }}
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="form_from" class="col-sm-2 control-label">Mittente:</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.from) }}
+                                <br>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="form_subject" class="col-sm-2 control-label">Oggetto:</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.subject) }}
+                                <br>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="form_from" class="col-sm-1 control-label">Mittente:</label>
-                    <div class="col-sm-11">
-                        {{ form_widget(form.from) }}
-                        <br>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="form_message" class="col-sm-1 control-label">Messaggio:</label>
+                            <div class="col-sm-11">
+                                {{ form_widget(form.message) }}
+                                <br>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="form_subject" class="col-sm-1 control-label">Oggetto:</label>
-                    <div class="col-sm-11">
-                        {{ form_widget(form.subject) }}
-                        <br>
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ form_widget(form.submit) }}
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="form_subject" class="col-sm-1 control-label">Messaggio:</label>
-                    <div class="col-sm-11">
-                        {{ form_widget(form.message) }}
-                        <br>
-                    </div>
-                </div>
-                {{ form_widget(form.submit) }}
+
                 {{ form_end(form) }}
             </div>
         </div>

@@ -176,3 +176,11 @@ hwi_oauth:
             client_secret:       "%facebook_secret%"
             infos_url:           "https://graph.facebook.com/me?fields=id,name,email,address"
             scope:               "email"
+stfalcon_tinymce:
+        include_jquery: false
+        tinymce_jquery: true
+        selector: ".tinymce"
+        language: %locale%
+        theme:
+            simple:
+                theme: "modern"

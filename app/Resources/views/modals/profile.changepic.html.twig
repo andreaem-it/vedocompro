@@ -1,0 +1,50 @@
+<script type="text/javascript" src="{{ asset('js/dropzone.js') }}"></script>
+<link href="{{ asset('css/dropzone.css') }}" rel="stylesheet">
+<div class="modal fade" id="changepic">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Cambia Immagine profilo
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div id="dropzone" class="dropzone" style="border:none">
+              <div class="dz-default dz-message">
+                  Carica la foto cliccando qui o trascinandola sopra<br>
+                  <small>Carica una foto in JPG di almeno 300x300</small>
+              </div>
+          </div>
+          <script>
+              $("#dropzone").dropzone({
+                  url: "{{ url("uploadpic", {'uid': user_info.0.id}) }}",
+                  maxFilesize: 2000000,
+                  acceptedFiles: ".jpg",
+                  addRemoveLinks: true,
+                  dataType: "HTML",
+                  createImageThumbnails: true,
+                  maxThumbnailFilesize: 100,
+                  timeout: 1800000,
+                  maxFiles: 1,
+                  success: function (file, response, data) {
+                      var imgName = response;
+                      file.previewElement.classList.add("dz-success");
+                      $('.profile-pic').attr("src", "/uploads/profile/{{ user_info.0.id }}.jpg");
+                      $('#changepic').modal('toggle');
+                  },
+                  error: function (file, response) {
+                      file.previewElement.classList.add("dz-error");
+                      $( "#changepic" ).effect( "shake" );
+                  }
+              });
+          </script>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Annulla</button>
+      </div>
+    </div>
+  </div>
+</div>

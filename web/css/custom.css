@@ -50,7 +50,9 @@ html {
 }
 @media (min-width: 900px) {
     .navbar-nav .nav-item > a:hover {
-        -webkit-transform: scale(1.1);
+        color: #DDD!important;
+        /* this is horribly old school */
+        /*-webkit-transform: scale(1.1);*/
     }
 }
 

@@ -553,10 +553,19 @@ class AdminController extends Controller
         $form = $this->createFormBuilder($default)
             ->add('type', ChoiceType::class, array(
                 'choices' => array(
-                    'Internal' => 'internal',
-                    'Email' => 'email'
+                    'Interna' => 'internal',
+                    'E-mail' => 'email'
                 )
             ))
+            ->add('default', EntityType::class, array(
+                    'class' => 'AppBundle:AdminDefaultMails',
+                    'placeholder' => 'Non usare Messaggio predefinito',
+                    'empty_data' => null,
+                    'required' => null,
+                    'label' => 'Messaggio Predefinito',
+                    'choice_label' => 'title'
+                )
+            )
             ->add('to', EntityType::class, array(
                     'class' => 'AppBundle:User',
                     'placeholder' => 'Scegli User',
@@ -576,12 +585,14 @@ class AdminController extends Controller
             ->add('subject', TextType::class)
             ->add('message', TextareaType::class, array(
                 'attr' => array(
+                    'class' => 'tinymce',
                     'rows' => 20
                 )
             ))
             ->add('submit', SubmitType::class, array(
                 'attr' => array(
-                    'class' => 'btn btn-success btn-lg pull-right'
+                    'class' => 'btn btn-success btn-lg pull-right',
+                    'label' => 'Invia'
                 )
             ))
             ->getForm();
@@ -618,7 +629,7 @@ class AdminController extends Controller
                     $em->flush();
                     $this->addFlash(
                         'notice',
-                        sprintf("Sent message to %s", $user->getName())
+                        sprintf("Messaggio interno inviato a %s", $user->getName())
                     );
                 }
             } else if ($type == 'email') {
@@ -637,7 +648,7 @@ class AdminController extends Controller
                     $this->get('mailer')->send($message);
                     $this->addFlash(
                         'notice',
-                        sprintf("Sent email to %s", $user->getName())
+                        sprintf("Email inviata a %s", $user->getName())
                     );
                 }
             }
