@@ -628,6 +628,7 @@ class AdminController extends Controller
                     $notification->setDate(new \DateTime());
                     $em->persist($notification);
                     $em->flush();
+
                     $message = \Swift_Message::newInstance()
                         ->setSubject('Hai un nuovo messaggio!')
                         ->setFrom('noreply@vedocompro.it')
@@ -638,7 +639,7 @@ class AdminController extends Controller
                                 'Emails/message.notify.html.twig',
                                 array(
                                     'datetime' => $messageTime->format('d/m/Y H:i:s'),
-                                    'message' => $request->request->get('message'),
+                                    'message' => $message_text,
                                     'userFrom' => $this->getUser()->getUsername(),
                                     'userTo' => $user->getUsername()
                                 )
