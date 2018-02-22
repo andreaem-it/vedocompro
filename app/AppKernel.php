@@ -23,7 +23,7 @@ class AppKernel extends Kernel
             new Avanzu\AdminThemeBundle\AvanzuAdminThemeBundle(),
             new Petkopara\MultiSearchBundle\PetkoparaMultiSearchBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
-            //new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
+            new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
 
         ];
 

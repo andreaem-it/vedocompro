@@ -68,11 +68,11 @@ class AdminController extends Controller
             ->where('e.enabled = 1')
             ->getQuery()
             ->getSingleScalarResult();
-            
+
         $ticketsOpen = $this->getDoctrine()->getRepository('AppBundle:HelpDesk')
             ->createQueryBuilder('e')->select('e')->where('e.closed = 0')->andWhere('e.parent_m = 0')
-            ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);    
-        $ticketsOpenCount  = count($ticketsOpen);    
+            ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        $ticketsOpenCount = count($ticketsOpen);
 
         if (!isset($_SESSION['visited'])):
 
@@ -577,8 +577,8 @@ class AdminController extends Controller
             )
             ->add('from', ChoiceType::class, array(
                     'choices' => array(
-                        'no-reply @ vedocompro.it' => 'no-reply@vedocompro.it',
-                        'admin @ vedocompro.it' => 'admin@vedocompro.it'
+                        'no-reply@vedocompro.it' => 'no-reply@vedocompro.it',
+                        'admin@vedocompro.it' => 'admin@vedocompro.it'
                     )
                 )
             )
@@ -609,6 +609,7 @@ class AdminController extends Controller
 
             if ($type == 'internal') {
                 $em = $this->getDoctrine()->getManager();
+                $messageTime = new \DateTime();
                 foreach ($to as $user) {
                     $message = new Messages();
                     $message->setFromUID($this->getUser()->getID());
@@ -627,6 +628,24 @@ class AdminController extends Controller
                     $notification->setDate(new \DateTime());
                     $em->persist($notification);
                     $em->flush();
+                    $message = \Swift_Message::newInstance()
+                        ->setSubject('Hai un nuovo messaggio!')
+                        ->setFrom('noreply@vedocompro.it')
+                        ->setFrom(array('noreply@vedocompro.it' => 'VedoCompro'))
+                        ->setTo($user->getEmail())
+                        ->setBody(
+                            $this->renderView(
+                                'Emails/message.notify.html.twig',
+                                array(
+                                    'datetime' => $messageTime->format('d/m/Y H:i:s'),
+                                    'message' => $request->request->get('message'),
+                                    'userFrom' => $this->getUser()->getUsername(),
+                                    'userTo' => $user->getUsername()
+                                )
+                            ),
+                            'text/html'
+                        );
+                    $this->get('mailer')->send($message);
                     $this->addFlash(
                         'notice',
                         sprintf("Messaggio interno inviato a %s", $user->getName())
@@ -738,11 +757,12 @@ class AdminController extends Controller
     /**
      * @Route("/admin/helpdesk/vedi/{id}/", name="helpdesk_view")
      */
-    public function helpdeskViewAction($id) {
+    public function helpdeskViewAction($id)
+    {
 
         $ticket = $this->getDoctrine()->getRepository('AppBundle:HelpDesk')
-                ->createQueryBuilder('e')->select('e')->where('e.id = :id')->setParameter('id', $id)
-                ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            ->createQueryBuilder('e')->select('e')->where('e.id = :id')->setParameter('id', $id)
+            ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
         $replies = $this->getDoctrine()->getManager()->getRepository('AppBundle:HelpDesk')
             ->createQueryBuilder('r')->select('r')->where('r.isReply = 1')->andWhere('r.parent_m = :id')->setParameter('id', $id)
@@ -984,7 +1004,9 @@ class AdminController extends Controller
 
         return $results;
     }
-    function convertHelpDeskType ($type) {
+
+    function convertHelpDeskType($type)
+    {
         switch ($type) {
             case '1':
                 return 'Assistenza con il sito';
@@ -1003,7 +1025,9 @@ class AdminController extends Controller
                 break;
         }
     }
-    function convertHelpDeskStatus ($status) {
+
+    function convertHelpDeskStatus($status)
+    {
         switch ($status) {
             case '0':
                 return 'Aperto';
