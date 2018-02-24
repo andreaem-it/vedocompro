@@ -35,7 +35,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <div id="video"></div>
-                                        {% if video and video.accepted == 0 %}<img src="{{ asset('img/circle-red.png') }}">&nbsp;<a href="{{ url("admin_video_accept",{'adID':ad.0.id}) }}" class="float-right btn btn-success">Approva</a>{% else %}<img src="{{ asset('img/circle-green.png') }}"> <a href="{{ url("admin_video_unaccept",{'adID':ad.0.id}) }}" class="float-right btn btn-warning">Boccia</a>{% endif %}
+                                        {% if video and video.accepted == 0 %}<img src="{{ asset('img/circle-green.png') }}">&nbsp;<a href="{{ url("admin_video_accept",{'adID':ad.0.id}) }}" class="float-right btn btn-success">Approva</a><img src="{{ asset('img/circle-red.png') }}"> <a href="{{ url("admin_video_unaccept",{'adID':ad.0.id}) }}" class="float-right btn btn-warning">Boccia</a>{% endif %}
                                     </div>
                                 </div>
                             </div>

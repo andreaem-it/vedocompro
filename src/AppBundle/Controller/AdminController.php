@@ -7,6 +7,7 @@ use AppBundle\Entity\Messages;
 use AppBundle\Entity\Notifications;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Videos;
+use AppBundle\Repository\AdminDefaultMailsRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -306,9 +307,10 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         /** @var Videos $video */
         $video = $em->getRepository('AppBundle:Videos')->findOneBy(['aid' => $adID]);
-
         $video->setAccepted(false);
         $em->flush();
+
+        $user = $em->getRepository('AppBundle:User')->find($video->getUid());
 
         $now = $time = new \DateTime();
 
@@ -320,6 +322,32 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($action);
         $em->flush();
+
+        $messageTime = new \DateTime();
+
+        $rejectMessage = $this->getDoctrine()->getRepository('AppBundle:AdminDefaultMails')->find(1);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($rejectMessage->getTitle())
+            ->setFrom('noreply@vedocompro.it')
+            ->setFrom(array('noreply@vedocompro.it' => 'VedoCompro'))
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'Emails/ad.reject.notify.html.twig',
+                    array(
+                        'datetime' => $messageTime->format('d/m/Y H:i:s'),
+                        'message' => $rejectMessage->getMessage(),
+                        'title' => $rejectMessage->getTitle()
+                    )
+                ),
+                'text/html'
+            );
+        $this->get('mailer')->send($message);
+        $this->addFlash(
+            'notice',
+            sprintf("Messaggio interno inviato a %s", $user->getName())
+        );
 
         return $this->redirectToRoute('admin_vedi_inserzioni', ['id' => $adID]);
     }
@@ -334,11 +362,12 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         /** @var Videos $video */
         $video = $em->getRepository('AppBundle:Videos')->findOneBy(['aid' => $adID]);
-
         $video->setAccepted(true);
         $em->flush();
 
-        $now = $time = new \DateTime();
+        $user = $em->getRepository('AppBundle:User')->find($video->getUid());
+
+        $now = new \DateTime();
 
         $action = new AdminActions();
         $action->setLinedate($now);
@@ -348,6 +377,30 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($action);
         $em->flush();
+
+        $acceptMessage = $this->getDoctrine()->getRepository('AppBundle:AdminDefaultMails')->find(2);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($acceptMessage->getTitle())
+            ->setFrom('noreply@vedocompro.it')
+            ->setFrom(array('noreply@vedocompro.it' => 'VedoCompro'))
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'Emails/ad.reject.notify.html.twig',
+                    array(
+                        'datetime' => $now->format('d/m/Y H:i:s'),
+                        'message' => $acceptMessage->getMessage(),
+                        'title' => $acceptMessage->getTitle()
+                    )
+                ),
+                'text/html'
+            );
+        $this->get('mailer')->send($message);
+        $this->addFlash(
+            'notice',
+            sprintf("Messaggio interno inviato a %s", $user->getName())
+        );
 
         return $this->redirectToRoute('admin_vedi_inserzioni', ['id' => $adID]);
     }
