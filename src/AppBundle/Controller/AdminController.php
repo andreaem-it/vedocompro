@@ -310,8 +310,6 @@ class AdminController extends Controller
         $video->setAccepted(false);
         $em->flush();
 
-        $user = $em->getRepository('AppBundle:User')->find($video->getUid());
-
         $now = $time = new \DateTime();
 
         $action = new AdminActions();
@@ -322,32 +320,6 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($action);
         $em->flush();
-
-        $messageTime = new \DateTime();
-
-        $rejectMessage = $this->getDoctrine()->getRepository('AppBundle:AdminDefaultMails')->find(1);
-
-        $message = \Swift_Message::newInstance()
-            ->setSubject($rejectMessage->getTitle())
-            ->setFrom('noreply@vedocompro.it')
-            ->setFrom(array('noreply@vedocompro.it' => 'VedoCompro'))
-            ->setTo($user->getEmail())
-            ->setBody(
-                $this->renderView(
-                    'Emails/ad.reject.notify.html.twig',
-                    array(
-                        'datetime' => $messageTime->format('d/m/Y H:i:s'),
-                        'message' => $rejectMessage->getMessage(),
-                        'title' => $rejectMessage->getTitle()
-                    )
-                ),
-                'text/html'
-            );
-        $this->get('mailer')->send($message);
-        $this->addFlash(
-            'notice',
-            sprintf("Messaggio interno inviato a %s", $user->getName())
-        );
 
         return $this->redirectToRoute('admin_vedi_inserzioni', ['id' => $adID]);
     }
@@ -365,8 +337,6 @@ class AdminController extends Controller
         $video->setAccepted(true);
         $em->flush();
 
-        $user = $em->getRepository('AppBundle:User')->find($video->getUid());
-
         $now = new \DateTime();
 
         $action = new AdminActions();
@@ -377,30 +347,6 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($action);
         $em->flush();
-
-        $acceptMessage = $this->getDoctrine()->getRepository('AppBundle:AdminDefaultMails')->find(2);
-
-        $message = \Swift_Message::newInstance()
-            ->setSubject($acceptMessage->getTitle())
-            ->setFrom('noreply@vedocompro.it')
-            ->setFrom(array('noreply@vedocompro.it' => 'VedoCompro'))
-            ->setTo($user->getEmail())
-            ->setBody(
-                $this->renderView(
-                    'Emails/ad.reject.notify.html.twig',
-                    array(
-                        'datetime' => $now->format('d/m/Y H:i:s'),
-                        'message' => $acceptMessage->getMessage(),
-                        'title' => $acceptMessage->getTitle()
-                    )
-                ),
-                'text/html'
-            );
-        $this->get('mailer')->send($message);
-        $this->addFlash(
-            'notice',
-            sprintf("Messaggio interno inviato a %s", $user->getName())
-        );
 
         return $this->redirectToRoute('admin_vedi_inserzioni', ['id' => $adID]);
     }
@@ -413,21 +359,40 @@ class AdminController extends Controller
         $this->denyAccessUnlessGranted('ROLE_SUPPORT', null, 'Unable to access this page!');
 
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('AppBundle:Ads')->find($adID);
-
-        $user->setPublished(false);
+        $ad = $em->getRepository('AppBundle:Ads')->find($adID);
+        $ad->setPublished(false);
         $em->flush();
+        $user = $em->getRepository('AppBundle:User')->find($ad->getUname());
 
-        $now = $time = new \DateTime();
+        $now = new \DateTime();
 
         $action = new AdminActions();
         $action->setLinedate($now);
         $action->setType(7);
         $action->setUid($this->get('security.token_storage')->getToken()->getUser()->getID());
 
-        $em = $this->getDoctrine()->getManager();
         $em->persist($action);
         $em->flush();
+
+        $rejectMessage = $this->getDoctrine()->getRepository('AppBundle:AdminDefaultMails')->find(1);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($rejectMessage->getTitle())
+            ->setFrom('noreply@vedocompro.it')
+            ->setFrom(array('noreply@vedocompro.it' => 'VedoCompro'))
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'Emails/ad.reject.notify.html.twig',
+                    array(
+                        'datetime' => $now->format('d/m/Y H:i:s'),
+                        'message' => $rejectMessage->getMessage(),
+                        'title' => $rejectMessage->getTitle()
+                    )
+                ),
+                'text/html'
+            );
+        $this->get('mailer')->send($message);
 
         return $this->redirectToRoute('admin_vedi_inserzioni', ['id' => $adID]);
     }
@@ -468,12 +433,12 @@ class AdminController extends Controller
         $this->denyAccessUnlessGranted('ROLE_SUPPORT', null, 'Unable to access this page!');
 
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('AppBundle:Ads')->find($adID);
-
-        $user->setPublished(true);
+        $ad = $em->getRepository('AppBundle:Ads')->find($adID);
+        $ad->setPublished(true);
         $em->flush();
+        $user = $em->getRepository('AppBundle:User')->find($ad->getUname());
 
-        $now = $time = new \DateTime();
+        $now = new \DateTime();
 
         $action = new AdminActions();
         $action->setLinedate($now);
@@ -483,6 +448,26 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($action);
         $em->flush();
+
+        $acceptMessage = $this->getDoctrine()->getRepository('AppBundle:AdminDefaultMails')->find(2);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($acceptMessage->getTitle())
+            ->setFrom('noreply@vedocompro.it')
+            ->setFrom(array('noreply@vedocompro.it' => 'VedoCompro'))
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'Emails/ad.accept.notify.html.twig',
+                    array(
+                        'datetime' => $now->format('d/m/Y H:i:s'),
+                        'message' => $acceptMessage->getMessage(),
+                        'title' => $acceptMessage->getTitle()
+                    )
+                ),
+                'text/html'
+            );
+        $this->get('mailer')->send($message);
 
         return $this->redirectToRoute('admin_vedi_inserzioni', ['id' => $adID]);
     }
