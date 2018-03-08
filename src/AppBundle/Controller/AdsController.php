@@ -300,6 +300,7 @@ class AdsController extends Controller
                 $video->setFilename($newAd->getVideo() ?? '');
                 $video->setUploaded(false);
                 $em->persist($video);
+                /** TODO: Togliere credito se selezionato promuovi  **/
                 $em->flush();
                 return $this->redirectToRoute('profilo', array('query' => $usrName));
             }

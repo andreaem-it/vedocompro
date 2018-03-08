@@ -963,29 +963,13 @@ class UserController extends Controller
                     throw new \RuntimeException('Unknown errors.');
                     break;
             }
-
-            // You should also check filesize here.
             if ($_FILES['file']['size'] > 20971520) {
                 throw new \RuntimeException('Exceeded filesize limit.');
             }
-
-            // DO NOT TRUST $_FILES['file']['mime'] VALUE !!
-            // Check MIME Type by yourself.
             $finfo = new \finfo(FILEINFO_MIME_TYPE);
-            if (false === $ext = array_search(
-                    $finfo->file($_FILES['file']['tmp_name']),
-                    array(
-                        'jpg' => 'image/jpg'
-                    ),
-                    true
-                )) {
-                throw new \RuntimeException('Invalid file format: ' . $finfo->file($_FILES['file']['tmp_name']));
-            }
-            // You should name it uniquely.
-            // DO NOT USE $_FILES['file']['name'] WITHOUT ANY VALIDATION !!
-            // On this example, obtain safe unique name from its binary data.
-            $fileName = $this->get('security.token_storage')->getToken()->getUser()->getId() . '.jpg';
-            if(file_exists("$target_dir. '/' . $fileName")) unlink("$target_dir. '/' . $fileName");
+            $ext = '.jpg';
+            $fileName = $this->get('security.token_storage')->getToken()->getUser()->getId();
+            if(file_exists("$target_dir. '/' . $fileName . $ext")) unlink("$target_dir. '/' . $fileName . $ext");
             if (!move_uploaded_file($_FILES['file']['tmp_name'], sprintf('%s%s.%s', $target_dir, $fileName, $ext ))) {
                 throw new \RuntimeException('Failed to move uploaded file.');
             }
