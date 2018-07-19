@@ -15,6 +15,7 @@
 
     <div class="wrapper">
         <div class="container-medium">
+            {% if showcase|length < 0 %}
             <div class="row">
                 <div class="col-sm-12">
                     <h2 class="font-weight-light mt-5 mb-4 color-light-blue-txt section-title">Sponsorizzati</h2>
@@ -41,6 +42,7 @@
                             
                     </div>
             </div> <!-- Sponsorizzati -->
+            {% endif %}
             <div class="row mt-5">
                 <div class="col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -56,7 +58,7 @@
                 <div class="col-sm-10 pl-4 pr-4">
                     <div class="row">
                         <div class="col-sm-12 ">
-                            <h1 class="font-weight-light mb-4 section-title">{% trans %}  Results for {% endtrans %} "{{ query }}" in {{ region }}</h1>
+                            <h1 class="font-weight-light mb-4 section-title">{% trans %}  Results for {% endtrans %} "{{ query }}" in {{ region }} <small>( {{ results|length }} elementi )</small></h1>
                         </div>
                         <div class="row ml-4 mr-3 masonry-container">
                         {% for result in results %}

@@ -165,8 +165,12 @@
                     <div class="row">
                         <h4 class="mb-4 mt-4 font-weight-light">Inserzioni simili</h4>
                             <hr>
+                        {% if similar|length == 1 %}
+                            </div>
+                        {% endif %}
                             {% for similars in similar %}
-                            {% if  loop.index % 4 == 1 or loop.first %}
+
+                            {% if  loop.index % 6 == 1 or loop.first %}
                             <br>
                             <div class="row">
                                 {% endif %}
@@ -191,11 +195,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            {% if  loop.index % 4 == 0 or loop.last %}
+                                            {% if  loop.index % 6 == 0 or loop.last %}
                                         </div>
                                     {% elseif loop.last %}
                                         <p></p>
                                     {% endif %}
+
                                 {% endfor %}
                             </div>
                         </div>

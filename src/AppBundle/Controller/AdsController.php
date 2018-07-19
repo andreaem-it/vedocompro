@@ -302,6 +302,8 @@ class AdsController extends Controller
                 $em->persist($video);
                 /** TODO: Togliere credito se selezionato promuovi  **/
                 $em->flush();
+                //$user = $this->getDoctrine()->getRepository('AppBundle:Users')->find($usr);
+
                 return $this->redirectToRoute('profilo', array('query' => $usrName));
             }
 
