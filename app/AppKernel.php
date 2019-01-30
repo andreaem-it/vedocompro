@@ -24,7 +24,7 @@ class AppKernel extends Kernel
             new Petkopara\MultiSearchBundle\PetkoparaMultiSearchBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
-
+            new Liip\ImagineBundle\LiipImagineBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

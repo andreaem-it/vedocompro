@@ -7,8 +7,72 @@
 
     {% include 'template/header.html.twig' %}
     {% embed 'modals/profile.message.html.twig' %}{% endembed %}
-    {% embed 'modals/profile.changepic.html.twig' %}{% endembed %}
-
+    <script type="text/javascript" src="{{ asset('js/dropzone.js') }}"></script>
+    <link href="{{ asset('css/dropzone.css') }}" rel="stylesheet">
+    <div class="modal fade" id="changepic">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Cambia Immagine profilo
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="dropzone" class="dropzone" style="border:none">
+                        <div class="dz-default dz-message">
+                            Carica la foto cliccando qui o trascinandola sopra<br>
+                            <small>Carica una foto in JPG di almeno 300x300</small>
+                        </div>
+                    </div>
+                    <script>
+                        $("#dropzone").dropzone({
+                            url: "{{ url("uploadpic", {'uid': user_info.0.id}) }}",
+                            maxFilesize: 10,
+                            acceptedFiles: 'image/*',
+                            maxFiles: 1,
+                            dictMaxFilesExceeded: 'Carica una sola immagine',
+                            dataType: "HTML",
+                            createImageThumbnails: true,
+                            maxThumbnailFilesize: 100,
+                            timeout: 1800000,
+                            addRemoveLinks: true,
+                            init: function () {
+                                this.on("maxfilesexceeded", function(file) {
+                                    this.removeFile(file);
+                                });
+                                this.on("sending", function(file, xhr, formData) {
+                                    // send additional data with the file as POST data if needed.
+                                    // formData.append("key", "value");
+                                });
+                                this.on("success", function(file, response) {
+                                    if (response.uploaded) {
+                                        var imgName = response;
+                                        file.previewElement.classList.add("dz-success");
+                                        $('#changepic').modal('toggle');
+                                        //$('#profile-pic').attr("src", $(this).attr('src'));
+                                        $('#image').html('<img id="profile-pic" class="card-img-top img-fluid rounded-circle"\n' +
+                                            '                                     src="../uploads/profile/{{ user_info.0.id }}.jpg">')
+                                    }
+                                });
+                                this.on("error", function(file, response) {
+                                    if(response.error) {
+                                        file.previewElement.classList.add("dz-error");
+                                        $( "#changepic" ).effect( "shake" );
+                                    }
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Annulla</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="wrapper">
         <section id="profile-header" style="margin-top:-25px">
@@ -16,8 +80,10 @@
                 <div class="row">
                     <div id="profile_image" class="col-sm-3 mt-5 mb-5 pb-1">
                         <div class="profile-image">
-                            <img id="profile-pic" class="card-img-top img-fluid rounded-circle"
-                                 src="../uploads/profile/{{ user_info.0.id }}.jpg">
+                            <div id="image">
+                                <img id="profile-pic" class="card-img-top img-fluid rounded-circle"
+                                     src="{{ asset('uploads/profile/' ~ user_info.0.id ~ '.jpg') | imagine_filter('profile_img_filter')}}">
+                            </div>
                             <div class="overlay"></div>
                             <div class="button"><a href="#" data-toggle="modal" data-target="#changepic"> CAMBIA </a></div>
                         </div>

@@ -9,7 +9,9 @@ use AppBundle\Entity\Notifications;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Sells;
 use AppBundle\Entity\User;
+use AppBundle\Form\UserType;
 use Doctrine\ORM\Query;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -18,11 +20,13 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\Form\Extension\Core\Type\PhoneType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 
 
 class UserController extends Controller
@@ -925,58 +929,26 @@ class UserController extends Controller
     /**
      * @Route("profile/uploadpic/{uid}", name="uploadpic")
      */
-    public function uploadPicAction()
+    public function uploadPicAction(Request $request, $uid)
     {
-        $target_dir = __DIR__ . "/../../../web/uploads/profile/";
-        $logger = $this->get('logger');
+        $output = array('uploaded' => false);
+        // get the file from the request object
+        $file = $request->files->get('file');
+        // generate a new filename (safer, better approach)
+        // To use original filename, $fileName = $this->file->getClientOriginalName();
+        $fileName = $uid. '.jpg';
 
-        set_time_limit(0);
-        ini_set('upload_max_filesize', '20M');
-        ini_set('post_max_size', '21M');
-        ini_set('max_input_time', 3200);
-        ini_set('max_execution_time', 3200);
-        ini_set('memory_limit', '256M');
-
-        try {
-            // Undefined | Multiple Files | $_FILES Corruption Attack
-            // If this request falls under any of them, treat it invalid.
-            if (
-                !isset($_FILES['file']['error']) ||
-                is_array($_FILES['file']['error'])
-            ) {
-                throw new \RuntimeException('Invalid parameters.');
-            }
-            // Check $_FILES['file']['error'] value.
-            switch ($_FILES['file']['error']) {
-                case UPLOAD_ERR_OK:
-                    break;
-                case UPLOAD_ERR_NO_FILE:
-                    throw new \RuntimeException('No file sent.');
-                    break;
-                case UPLOAD_ERR_INI_SIZE:
-                    throw new \RuntimeException('Exceeded ini file size limit.');
-                    break;
-                case UPLOAD_ERR_FORM_SIZE:
-                    throw new \RuntimeException('Exceeded filesize limit.');
-                    break;
-                default:
-                    throw new \RuntimeException('Unknown errors.');
-                    break;
-            }
-            if ($_FILES['file']['size'] > 20971520) {
-                throw new \RuntimeException('Exceeded filesize limit.');
-            }
-            $finfo = new \finfo(FILEINFO_MIME_TYPE);
-            $ext = '.jpg';
-            $fileName = $this->get('security.token_storage')->getToken()->getUser()->getId();
-            if(file_exists("$target_dir. '/' . $fileName . $ext")) unlink("$target_dir. '/' . $fileName . $ext");
-            if (!move_uploaded_file($_FILES['file']['tmp_name'], sprintf('%s%s.%s', $target_dir, $fileName, $ext ))) {
-                throw new \RuntimeException('Failed to move uploaded file.');
-            }
-            return new Response(sprintf("%s.%s",$fileName,$ext), 200, ['Content-Type', 'text/plain; charset=utf-8']);
-        } catch (\RuntimeException $e) {
-            $logger->critical($e->getMessage());
-            return new Response ($e->getMessage());
+        // set your uploads directory
+        $uploadDir = $this->get('kernel')->getRootDir() . '/../web/uploads/profile/';
+        if (!file_exists($uploadDir) && !is_dir($uploadDir)) {
+            mkdir($uploadDir, 0775, true);
         }
+        if ($file->move($uploadDir, $fileName)) {
+            $output['uploaded'] = true;
+            $output['fileName'] = $fileName;
+        }
+        //$cacheManager->remove($fileName);
+
+        return new JsonResponse($output);
     }
 }

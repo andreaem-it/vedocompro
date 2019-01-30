@@ -21,22 +21,37 @@
           <script>
               $("#dropzone").dropzone({
                   url: "{{ url("uploadpic", {'uid': user_info.0.id}) }}",
-                  maxFilesize: 2000000,
-                  acceptedFiles: ".jpg",
+                  maxFilesize: 10,
+                  acceptedFiles: 'image/*',
+                  maxFiles: 1,
+                  dictMaxFilesExceeded: 'Carica una sola immagine',
                   dataType: "HTML",
                   createImageThumbnails: true,
                   maxThumbnailFilesize: 100,
                   timeout: 1800000,
-                  maxFiles: 1,
-                  success: function (file, response, data) {
-                      var imgName = response;
-                      file.previewElement.classList.add("dz-success");
-                      $('.profile-pic').attr("src", "/uploads/profile/{{ user_info.0.id }}.jpg");
-                      $('#changepic').modal('toggle');
-                  },
-                  error: function (file, response) {
-                      file.previewElement.classList.add("dz-error");
-                      $( "#changepic" ).effect( "shake" );
+                  addRemoveLinks: true,
+                  init: function () {
+                      this.on("maxfilesexceeded", function(file) {
+                          this.removeFile(file);
+                      });
+                      this.on("sending", function(file, xhr, formData) {
+                          // send additional data with the file as POST data if needed.
+                          // formData.append("key", "value");
+                      });
+                      this.on("success", function(file, response) {
+                          if (response.uploaded) {
+                              var imgName = response;
+                              file.previewElement.classList.add("dz-success");
+                              $('#changepic').modal('toggle');
+                              $('#profile-pic').attr("src", "/uploads/profile/{{ user_info.0.id }}.jpg");
+                          }
+                      });
+                      this.on("error", function(file, response) {
+                          if(response.error) {
+                              file.previewElement.classList.add("dz-error");
+                              $( "#changepic" ).effect( "shake" );
+                          }
+                      });
                   }
               });
           </script>

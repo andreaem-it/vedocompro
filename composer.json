@@ -30,6 +30,7 @@
         "jackalope/jackalope-jackrabbit": "1.*",
         "jms/security-extra-bundle": "1.6.1",
         "knplabs/knp-gaufrette-bundle": "~0.4",
+        "liip/imagine-bundle": "^1.9",
         "petkopara/multi-search-bundle": "^1.0@dev",
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/httplug-bundle": "^1.7",
@@ -44,7 +45,7 @@
         "symfony/monolog-bundle": "^3.0.2",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/swiftmailer-bundle": "^2.3.10",
-        "symfony/symfony": "3.2.9",
+        "symfony/symfony": "3.*",
         "twig/twig": "^1.0||^2.0",
         "twitter/bootstrap": "4.0.0.0-alpha6"
     },
