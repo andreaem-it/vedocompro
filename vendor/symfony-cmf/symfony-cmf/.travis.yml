@@ -1,0 +1,21 @@
+language: php
+
+php: 7
+  
+sudo: false
+
+env:
+  - SYMFONY_VERSION=2.8.*
+  - SYMFONY_VERSION=3.0.*
+  - SYMFONY_VERSION=3.1.*
+
+before_script:
+  - phpenv config-rm xdebug.ini || true
+  - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
+
+# we are really only interested if the composer runs through or not
+script: composer update --dry-run
+
+notifications:
+  irc: "irc.freenode.org#symfony-cmf"
+  email: "symfony-cmf-devs@googlegroups.com"

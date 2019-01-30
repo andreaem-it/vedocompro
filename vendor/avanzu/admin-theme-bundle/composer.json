@@ -1,0 +1,29 @@
+{
+    "name": "avanzu/admin-theme-bundle",
+    "description": "Admin Theme based on the AdminLTE Template for easy integration into symfony",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marc Bach",
+            "email": "mail@avanzu.de"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.5.9",
+        "symfony/http-foundation" : ">=2.3",
+        "symfony/http-kernel"  : ">=2.3",
+        "symfony/event-dispatcher" : ">=2.3",
+        "almasaeed2010/adminlte": "^2.3"
+    },
+    "require-dev": {
+        "phpspec/prophecy": "^1.6"
+    },
+    "suggest" : {
+        "knplabs/knp-menu-bundle" : "Allows easy menu integration."
+    },
+    "autoload": {
+        "psr-4": { "Avanzu\\AdminThemeBundle\\": "" }
+    }
+
+}
