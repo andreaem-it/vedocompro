@@ -22,7 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use AppBundle\Entity\Ads;
 use Symfony\Component\Finder\Finder;
-
+//TODO: Sistemare immagine di default
 
 class AdsController extends Controller
 {
