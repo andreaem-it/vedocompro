@@ -99,6 +99,11 @@ class User extends BaseUser
     private $credits_bronze = 0;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $pic;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     protected $plainPassword;
@@ -491,5 +496,29 @@ class User extends BaseUser
     public function getGoogleAccessToken()
     {
         return $this->google_access_token;
+    }
+
+    /**
+     * Set pic
+     *
+     * @param string $pic
+     *
+     * @return User
+     */
+    public function setPic($pic)
+    {
+        $this->pic = $pic;
+
+        return $this;
+    }
+
+    /**
+     * Get pic
+     *
+     * @return string
+     */
+    public function getPic()
+    {
+        return $this->pic;
     }
 }

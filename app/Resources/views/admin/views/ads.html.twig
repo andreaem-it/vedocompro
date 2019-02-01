@@ -39,7 +39,7 @@
                                 <tr>
                                     <td>{{ ad.id }}</td>
                                     <td><a href="{{ url('admin_vedi_inserzioni',{'id':ad.id} ) }}">{{ ad.name }}</a></td>
-                                    <td>{{ tools.convertUser(ad.uname) }}</td>
+                                    <td><a href="{{ url('admin_utenti_vedi' , {'id': ad.uname}) }}"> {{ tools.convertUser(ad.uname) }}</a></td>
                                     <td>{{ tools.convertCategory(ad.category) }}</td>
                                     <td>{{ ad.region }}</td>
                                     <td>{{ ad.creationtime|date('d-m-Y H:m') }}</td>

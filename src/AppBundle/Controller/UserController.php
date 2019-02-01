@@ -15,6 +15,7 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -931,12 +932,25 @@ class UserController extends Controller
      */
     public function uploadPicAction(Request $request, $uid)
     {
+        $fileSystem = new Filesystem();
+
+        $manager = $this->getDoctrine()->getManager();
+        $user = $manager->getRepository(User::class)->find($uid);
+
         $output = array('uploaded' => false);
         // get the file from the request object
         $file = $request->files->get('file');
         // generate a new filename (safer, better approach)
         // To use original filename, $fileName = $this->file->getClientOriginalName();
-        $fileName = $uid. '.jpg';
+        //$fileName = $uid. '.jpg';
+        $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+        $currentPic = $user->getPic();
+        $fileSystem->remove($this->get('kernel')->getRootDir() . '/../web/uploads/profile/'. $currentPic);
+        $fileSystem->remove($this->get('kernel')->getRootDir() . '/../media/cache/profile_img_filter/uploads/profile/'. $currentPic);
+
+        $user->setPic($fileName);
+        $manager->flush($user);
 
         // set your uploads directory
         $uploadDir = $this->get('kernel')->getRootDir() . '/../web/uploads/profile/';
@@ -950,5 +964,35 @@ class UserController extends Controller
         //$cacheManager->remove($fileName);
 
         return new JsonResponse($output);
+    }
+
+    /**
+     * @Route("profile/deletepic/{uid}", name="deletepic")
+     */
+    public function deletePicAction($uid) {
+        $fileSystem = new Filesystem();
+
+        $manager = $this->getDoctrine()->getManager();
+        $user = $manager->getRepository(User::class)->find($uid);
+
+        $currentPic = $user->getPic();
+        $fileSystem->remove($this->get('kernel')->getRootDir() . '/../web/uploads/profile/'. $currentPic);
+        $fileSystem->remove($this->get('kernel')->getRootDir() . '/../media/cache/profile_img_filter/uploads/profile/'. $currentPic);
+
+        $newPic = md5(uniqid()).'.jpg';
+        copy($_SERVER['DOCUMENT_ROOT'] . "/uploads/default_upic.jpg", $_SERVER['DOCUMENT_ROOT'] . "/uploads/profile/" . $newPic);
+        $user->setPic($newPic);
+        $manager->flush($user);
+
+        return $this->redirectToRoute('profilo', [
+            'query' => $this->getUser()->getUsername()
+            ]);
+    }
+
+    /**
+     * @Route("media/cache/profile_img_filter/uploads/profile/{picid}", name="denyPic")
+     */
+    public function denyPicAction() {
+        return new Response('Sorry, You can\'t directly request this pic.');
     }
 }

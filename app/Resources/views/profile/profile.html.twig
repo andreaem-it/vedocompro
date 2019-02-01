@@ -13,8 +13,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">
-                        Cambia Immagine profilo
+                    <h5 class="modal-title text-center">
+                        Gestisci Immagine profilo
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -26,6 +26,10 @@
                             Carica la foto cliccando qui o trascinandola sopra<br>
                             <small>Carica una foto in JPG di almeno 300x300</small>
                         </div>
+                    </div>
+                    <div class="mx-auto text-center">
+                        <p>- oppure -</p>
+                        <a href="{{ url('deletepic', {'uid' : user_info.0.id }) }}">Elimina immagine profilo</a>
                     </div>
                     <script>
                         $("#dropzone").dropzone({
@@ -52,9 +56,8 @@
                                         var imgName = response;
                                         file.previewElement.classList.add("dz-success");
                                         $('#changepic').modal('toggle');
-                                        //$('#profile-pic').attr("src", $(this).attr('src'));
-                                        $('#image').html('<img id="profile-pic" class="card-img-top img-fluid rounded-circle"\n' +
-                                            '                                     src="../uploads/profile/{{ user_info.0.id }}.jpg">')
+                                        location.reload();
+                                        //$('#image').html('<img id="profile-pic" class="card-img-top img-fluid rounded-circle" src="../uploads/profile/{{ user_info.0.pic }}">')
                                     }
                                 });
                                 this.on("error", function(file, response) {
@@ -82,7 +85,7 @@
                         <div class="profile-image">
                             <div id="image">
                                 <img id="profile-pic" class="card-img-top img-fluid rounded-circle"
-                                     src="{{ asset('uploads/profile/' ~ user_info.0.id ~ '.jpg') | imagine_filter('profile_img_filter')}}">
+                                     src="{{ asset('uploads/profile/' ~ user_info.0.pic ) | imagine_filter('profile_img_filter')}}">
                             </div>
                             <div class="overlay"></div>
                             <div class="button"><a href="#" data-toggle="modal" data-target="#changepic"> CAMBIA </a></div>
@@ -328,6 +331,7 @@
         }
 
         $(document).ready(function () {
+            $('.overlay').width($('#profile-pic').width()).height($('#profile-pic').height());
             var url = window.location.href;
             if (url.indexOf("?message_id=") > -1) {
                 var res = url.split("?message_id=", 2);
