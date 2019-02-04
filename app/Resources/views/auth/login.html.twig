@@ -279,12 +279,12 @@
         $('#createAccountLink').attr("href", "");
         $('#passwReset').fadeToggle().hide();
     });
-    $('#lostPwdLink').click(function (e) {
+    /*$('#lostPwdLink').click(function (e) {
         e.preventDefault();
         $('#loginForm').fadeToggle().hide();
         $('#passwReset').fadeToggle();
         $('.circle').addClass("transform-180");
-    });
+    });*/
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         $('.circle').addClass('mt-5').addClass('pt-5').css('top', '-1em');
         $('#navbar').addClass('header-fixed');
