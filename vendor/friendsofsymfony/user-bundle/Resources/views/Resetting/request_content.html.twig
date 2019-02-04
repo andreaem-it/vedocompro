@@ -1,11 +1,31 @@
 {% trans_default_domain 'FOSUserBundle' %}
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="wrapper">
+        <div class="container-fluid scrollbar">
+            <script src='https://www.google.com/recaptcha/api.js'></script>
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <h2>Reset della password</h2>
+                    <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+                        <div>
+                            <label for="username">Inserisci username o indirizzo e-mail con cui ti sei registrato, se c'è corrispondenza, verrà inviata una mail con la procedura da seguire per reimpostare la tua password.</label>
+                            <input class="form-control" type="text" id="username" name="username" required="required" />
+                            <br>
+                            <div class="g-recaptcha" data-sitekey="6Ldp8i4UAAAAAJLdCJR_zqUA9uUug_6P03qb6W-6"></div>
+                            <br>
+                        </div>
+                        <div>
+                            <input class="btn btn-success" type="submit" value="Reimposta Password" />
+                        </div>
+                    </form>
+                    <br><br><br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'template/footer.html.twig' %}
 
-<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
-    <div>
-        <label for="username">{{ 'resetting.request.username'|trans }}</label>
-        <input type="text" id="username" name="username" required="required" />
-    </div>
-    <div>
-        <input type="submit" value="{{ 'resetting.request.submit'|trans }}" />
-    </div>
-</form>
+{% endblock %}

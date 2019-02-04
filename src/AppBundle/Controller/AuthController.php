@@ -254,7 +254,7 @@ class AuthController extends Controller
             ->add('email', EmailType::class, [
                 'label' => 'E-Mail'
             ])
-            ->add('submit', SubmitType::class, [
+            ->add('submitPwdReset', SubmitType::class, [
                 'label' => 'Ripristina',
                 'attr' => [
                     'class' => 'btn btn-primary btn-block btn-lg'
@@ -262,27 +262,27 @@ class AuthController extends Controller
             ])
             ->getForm();
 
-        $resetForm->submit($request->request->all(), false);
+        //$resetForm->submit($request->request->all(), false);
 
-        if ($_POST) {
+        /*if ($_POST) {
             $mail = $_POST['form']['email'];
-        }
+        }*/
 
-        if ($resetForm->isSubmitted() && $_POST) {
+        if ($resetForm->isSubmitted() && $resetForm->isValid()) {
 
             // && $this->captchaverify($request->get('g-recaptcha-response'))
 
-            $check = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(['email' => $mail]);
+            $check = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(['email' => $resetForm->getData()->get('email')]);
 
             if ($check) {
                 $token = uniqid('RESET-', true);
 
                 $em = $this->getDoctrine()->getManager();
-                $user = $em->getRepository(User::class)->findOneBy(['email' => $mail]);
+                $user = $em->getRepository(User::class)->findOneBy(['email' => $resetForm->getData()->get('email')]);
                 $user->setConfirmationToken($token);
                 $user->setPasswordRequestedAt(new \DateTime());
 
-                $em->flush();
+                $em->flush($user);
 
                 $message = \Swift_Message::newInstance()
                     ->setSubject('Reset della password di VedoCompro.it')
@@ -337,16 +337,16 @@ class AuthController extends Controller
 
             $form->submit($request->request->all(), false);
 
-            //if ($form->isValid()) {
-            if ($_POST) {
+            if ($form->isValid() && $form->isSubmitted()) {
+            //if ($_POST) {
                 $user->setConfirmationToken(null);
                 $user->setPasswordRequestedAt(null);
-                $plainPassword = $_POST['form']['plainPassword'];
+                $plainPassword = $form->getData()->get('plain_password');
                 $encoder = $this->get('security.encoder_factory')->getEncoder($user);
                 $encodedPassword = $encoder->encodePassword($user, $plainPassword);
                 $user->setPassword($encodedPassword);
                 $em = $this->getDoctrine()->getManager();
-                $em->flush();
+                $em->flush($user);
 
                 return $this->render('auth/reset.success.html.twig');
             }

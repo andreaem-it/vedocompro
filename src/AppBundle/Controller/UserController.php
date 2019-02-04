@@ -979,6 +979,7 @@ class UserController extends Controller
         $fileSystem->remove($this->get('kernel')->getRootDir() . '/../web/uploads/profile/'. $currentPic);
         $fileSystem->remove($this->get('kernel')->getRootDir() . '/../media/cache/profile_img_filter/uploads/profile/'. $currentPic);
 
+        //TODO: Non generare una nuova immagine, ma usa quella di default
         $newPic = md5(uniqid()).'.jpg';
         copy($_SERVER['DOCUMENT_ROOT'] . "/uploads/default_upic.jpg", $_SERVER['DOCUMENT_ROOT'] . "/uploads/profile/" . $newPic);
         $user->setPic($newPic);
