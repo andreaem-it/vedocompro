@@ -12,7 +12,6 @@
 namespace HWI\Bundle\OAuthBundle\OAuth\ResourceOwner;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 
 /**
  * AzureResourceOwner.
@@ -59,6 +58,8 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
      */
     public function getUserInformation(array $accessToken, array $extraParameters = array())
     {
@@ -74,8 +75,6 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
                 break;
 
             case 2:
-                $jwt .= '=';
-
             case 3:
                 $jwt .= '=';
                 break;
@@ -84,10 +83,8 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
                 throw new \InvalidArgumentException('Invalid base64 format sent back');
         }
 
-        $response = $this->getUserResponse();
-        $response->setResponse(base64_decode($jwt));
-        $response->setResourceOwner($this);
-        $response->setOAuthToken(new OAuthToken($accessToken));
+        $response = parent::getUserInformation($accessToken, $extraParameters);
+        $response->setData(base64_decode($jwt));
 
         return $response;
     }
@@ -102,7 +99,7 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
         $resolver->setRequired(array('resource'));
 
         $resolver->setDefaults(array(
-            'infos_url' => '',
+            'infos_url' => 'https://graph.microsoft.com/v1.0/me',
             'authorization_url' => 'https://login.windows.net/%s/oauth2/authorize',
             'access_token_url' => 'https://login.windows.net/%s/oauth2/token',
 

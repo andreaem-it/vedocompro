@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,9 +11,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Form\Type;
+namespace Sonata\Form\Type;
 
-use Sonata\CoreBundle\Form\EventListener\ResizeFormListener;
+use Sonata\Form\EventListener\ResizeFormListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

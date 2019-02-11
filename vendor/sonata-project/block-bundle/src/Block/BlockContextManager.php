@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -120,7 +122,7 @@ class BlockContextManager implements BlockContextManagerInterface
         if (!$meta instanceof BlockInterface) {
             $block = $this->blockLoader->load($meta);
 
-            if (is_array($meta) && isset($meta['settings'])) {
+            if (\is_array($meta) && isset($meta['settings'])) {
                 // merge user settings
                 $settings = array_merge($meta['settings'], $settings);
             }
@@ -166,7 +168,7 @@ class BlockContextManager implements BlockContextManagerInterface
      */
     protected function setDefaultSettings(OptionsResolverInterface $optionsResolver, BlockInterface $block)
     {
-        if (__CLASS__ !== get_called_class()) {
+        if (__CLASS__ !== \get_called_class()) {
             @trigger_error(
                 'The '.__METHOD__.' is deprecated since version 2.3, to be renamed in 4.0.'
                 .' Use '.__CLASS__.'::configureSettings instead.',
@@ -257,25 +259,19 @@ class BlockContextManager implements BlockContextManagerInterface
 
         $service = $this->blockService->get($block);
 
-        /* use new interface method whenever possible */
-        if (method_exists($service, 'configureSettings')) {
-            $service->configureSettings($optionsResolver);
-        } else {
-            $service->setDefaultSettings($optionsResolver);
-        }
-
         // Caching method reflection
-        $serviceClass = get_class($service);
+        // NEXT_MAJOR: Remove everything here
+        $serviceClass = \get_class($service);
         if (!isset($this->reflectionCache[$serviceClass])) {
             $reflector = new \ReflectionMethod($service, 'setDefaultSettings');
-            $isOldOverwritten = 'Sonata\BlockBundle\Block\AbstractBlockService' !== $reflector->getDeclaringClass()->getName();
+            $isOldOverwritten = \get_class($service) === $reflector->getDeclaringClass()->getName();
 
             // Prevention for service classes implementing directly the interface and not extends the new base class
             if (!method_exists($service, 'configureSettings')) {
                 $isNewOverwritten = false;
             } else {
                 $reflector = new \ReflectionMethod($service, 'configureSettings');
-                $isNewOverwritten = 'Sonata\BlockBundle\Block\AbstractBlockService' !== $reflector->getDeclaringClass()->getName();
+                $isNewOverwritten = \get_class($service) === $reflector->getDeclaringClass()->getName();
             }
 
             $this->reflectionCache[$serviceClass] = [
@@ -284,6 +280,7 @@ class BlockContextManager implements BlockContextManagerInterface
             ];
         }
 
+        // NEXT_MAJOR: Keep Only else case
         if ($this->reflectionCache[$serviceClass]['isOldOverwritten'] && !$this->reflectionCache[$serviceClass]['isNewOverwritten']) {
             @trigger_error(
                 'The Sonata\BlockBundle\Block\BlockServiceInterface::setDefaultSettings() method is deprecated'
@@ -291,6 +288,9 @@ class BlockContextManager implements BlockContextManagerInterface
                 .' This method will be added to the BlockServiceInterface with SonataBlockBundle 4.0.',
                 E_USER_DEPRECATED
             );
+            $service->setDefaultSettings($optionsResolver);
+        } else {
+            $service->configureSettings($optionsResolver);
         }
 
         return $optionsResolver->resolve($settings);

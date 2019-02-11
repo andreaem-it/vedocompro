@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,9 +11,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Form\DataTransformer;
+namespace Sonata\Form\DataTransformer;
 
-use Sonata\CoreBundle\Form\Type\BooleanType;
+use Sonata\Form\Type\BooleanType;
 use Symfony\Component\Form\DataTransformerInterface;
 
 class BooleanTypeToBooleanTransformer implements DataTransformerInterface
@@ -20,17 +22,23 @@ class BooleanTypeToBooleanTransformer implements DataTransformerInterface
     {
         if (true === $value or BooleanType::TYPE_YES === (int) $value) {
             return BooleanType::TYPE_YES;
+        } elseif (false === $value or BooleanType::TYPE_NO === (int) $value) {
+            return BooleanType::TYPE_NO;
         }
 
-        return BooleanType::TYPE_NO;
+        return null;
     }
 
     public function reverseTransform($value)
     {
         if (BooleanType::TYPE_YES === $value) {
             return true;
+        } elseif (BooleanType::TYPE_NO === $value) {
+            return false;
         }
 
-        return false;
+        return null;
     }
 }
+
+class_exists(\Sonata\CoreBundle\Form\DataTransformer\BooleanTypeToBooleanTransformer::class);

@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.32.59",
+    "Version": "2.1.43.65",
     "Names": {
         "AC": "Ascensionøen",
         "AD": "Andorra",
@@ -75,7 +75,7 @@
         "FI": "Finland",
         "FJ": "Fiji",
         "FK": "Falklandsøerne",
-        "FM": "Mikronesiens Forenede Stater",
+        "FM": "Mikronesien",
         "FO": "Færøerne",
         "FR": "Frankrig",
         "GA": "Gabon",
@@ -219,7 +219,7 @@
         "TA": "Tristan da Cunha",
         "TC": "Turks- og Caicosøerne",
         "TD": "Tchad",
-        "TF": "De franske besiddelser i Det Sydlige Indiske Ocean",
+        "TF": "De Franske Besiddelser i Det Sydlige Indiske Ocean",
         "TG": "Togo",
         "TH": "Thailand",
         "TJ": "Tadsjikistan",
@@ -236,7 +236,6 @@
         "UA": "Ukraine",
         "UG": "Uganda",
         "UM": "Amerikanske oversøiske øer",
-        "UN": "Forenede Nationer",
         "US": "USA",
         "UY": "Uruguay",
         "UZ": "Usbekistan",

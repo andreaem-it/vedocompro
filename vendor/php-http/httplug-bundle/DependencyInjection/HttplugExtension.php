@@ -11,9 +11,12 @@ use Http\Client\Common\PluginClientFactory;
 use Http\Client\HttpClient;
 use Http\Message\Authentication\BasicAuth;
 use Http\Message\Authentication\Bearer;
+use Http\Message\Authentication\QueryParam;
 use Http\Message\Authentication\Wsse;
+use Http\Mock\Client as MockClient;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -40,6 +43,9 @@ class HttplugExtension extends Extension
 
         $loader->load('services.xml');
         $loader->load('plugins.xml');
+        if (\class_exists(MockClient::class)) {
+            $loader->load('mock-client.xml');
+        }
 
         // Register default services
         foreach ($config['classes'] as $service => $class) {
@@ -50,7 +56,7 @@ class HttplugExtension extends Extension
 
         // Set main aliases
         foreach ($config['main_alias'] as $type => $id) {
-            $container->setAlias(sprintf('httplug.%s', $type), $id);
+            $container->setAlias(sprintf('httplug.%s', $type), new Alias($id, true));
         }
 
         // Configure toolbar
@@ -127,8 +133,6 @@ class HttplugExtension extends Extension
             if ($this->isConfigEnabled($container, $pluginConfig)) {
                 $def = $container->getDefinition($pluginId);
                 $this->configurePluginByName($name, $def, $pluginConfig, $container, $pluginId);
-            } else {
-                $container->removeDefinition($pluginId);
             }
         }
     }
@@ -138,7 +142,7 @@ class HttplugExtension extends Extension
      * @param Definition       $definition
      * @param array            $config
      * @param ContainerBuilder $container  In case we need to add additional services for this plugin
-     * @param string           $serviceId  Service id of the plugin, in case we need to add additional services for this plugin.
+     * @param string           $serviceId  service id of the plugin, in case we need to add additional services for this plugin
      */
     private function configurePluginByName($name, Definition $definition, array $config, ContainerBuilder $container, $serviceId)
     {
@@ -197,9 +201,24 @@ class HttplugExtension extends Extension
             /* client specific plugins */
 
             case 'add_host':
-                $uriService = $serviceId.'.host_uri';
-                $this->createUri($container, $uriService, $config['host']);
-                $definition->replaceArgument(0, new Reference($uriService));
+                $hostUriService = $serviceId.'.host_uri';
+                $this->createUri($container, $hostUriService, $config['host']);
+                $definition->replaceArgument(0, new Reference($hostUriService));
+                $definition->replaceArgument(1, [
+                    'replace' => $config['replace'],
+                ]);
+
+                break;
+            case 'add_path':
+                $pathUriService = $serviceId.'.path_uri';
+                $this->createUri($container, $pathUriService, $config['path']);
+                $definition->replaceArgument(0, new Reference($pathUriService));
+
+                break;
+            case 'base_uri':
+                $baseUriService = $serviceId.'.base_uri';
+                $this->createUri($container, $baseUriService, $config['uri']);
+                $definition->replaceArgument(0, new Reference($baseUriService));
                 $definition->replaceArgument(1, [
                     'replace' => $config['replace'],
                 ]);
@@ -213,6 +232,11 @@ class HttplugExtension extends Extension
 
                 break;
 
+            case 'query_defaults':
+                $definition->replaceArgument(0, $config['parameters']);
+
+                break;
+
             default:
                 throw new \InvalidArgumentException(sprintf('Internal exception: Plugin %s is not handled', $name));
         }
@@ -222,7 +246,7 @@ class HttplugExtension extends Extension
      * @param ContainerBuilder $container
      * @param array            $config
      *
-     * @return array List of service ids for the authentication plugins.
+     * @return array list of service ids for the authentication plugins
      */
     private function configureAuthentication(ContainerBuilder $container, array $config, $servicePrefix = 'httplug.plugin.authentication')
     {
@@ -246,6 +270,11 @@ class HttplugExtension extends Extension
                     $container->register($authServiceKey, Wsse::class)
                         ->addArgument($values['username'])
                         ->addArgument($values['password']);
+
+                    break;
+                case 'query_param':
+                    $container->register($authServiceKey, QueryParam::class)
+                        ->addArgument($values['params']);
 
                     break;
                 case 'service':
@@ -288,14 +317,18 @@ class HttplugExtension extends Extension
             }
         }
 
-        $container
-            ->register($serviceId.'.client', HttpClient::class)
-            ->setFactory([new Reference($arguments['factory']), 'createClient'])
-            ->addArgument($arguments['config'])
-            ->setPublic(false)
-        ;
+        if (empty($arguments['service'])) {
+            $container
+                ->register($serviceId.'.client', HttpClient::class)
+                ->setFactory([new Reference($arguments['factory']), 'createClient'])
+                ->addArgument($arguments['config'])
+                ->setPublic(false);
+        } else {
+            $container
+                ->setAlias($serviceId.'.client', new Alias($arguments['service'], false));
+        }
 
-        $container
+        $definition = $container
             ->register($serviceId, PluginClient::class)
             ->setFactory([new Reference(PluginClientFactory::class), 'createClient'])
             ->addArgument(new Reference($serviceId.'.client'))
@@ -312,6 +345,10 @@ class HttplugExtension extends Extension
             ])
         ;
 
+        if (is_bool($arguments['public'])) {
+            $definition->setPublic($arguments['public']);
+        }
+
         /*
          * Decorate the client with clients from client-common
          */
@@ -319,7 +356,7 @@ class HttplugExtension extends Extension
             $container
                 ->register($serviceId.'.flexible', FlexibleHttpClient::class)
                 ->addArgument(new Reference($serviceId.'.flexible.inner'))
-                ->setPublic(false)
+                ->setPublic($arguments['public'] ? true : false)
                 ->setDecoratedService($serviceId)
             ;
         }
@@ -328,7 +365,7 @@ class HttplugExtension extends Extension
             $container
                 ->register($serviceId.'.http_methods', HttpMethodsClient::class)
                 ->setArguments([new Reference($serviceId.'.http_methods.inner'), new Reference('httplug.message_factory')])
-                ->setPublic(false)
+                ->setPublic($arguments['public'] ? true : false)
                 ->setDecoratedService($serviceId)
             ;
         }
@@ -337,7 +374,7 @@ class HttplugExtension extends Extension
             $container
                 ->register($serviceId.'.batch_client', BatchClient::class)
                 ->setArguments([new Reference($serviceId.'.batch_client.inner')])
-                ->setPublic(false)
+                ->setPublic($arguments['public'] ? true : false)
                 ->setDecoratedService($serviceId)
             ;
         }

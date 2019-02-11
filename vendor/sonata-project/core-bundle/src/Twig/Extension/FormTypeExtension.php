@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Twig\Extension;
+namespace Sonata\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
@@ -38,3 +40,5 @@ class FormTypeExtension extends AbstractExtension implements GlobalsInterface
         return 'sonata_core_wrapping';
     }
 }
+
+class_exists(\Sonata\CoreBundle\Twig\Extension\FormTypeExtension::class);

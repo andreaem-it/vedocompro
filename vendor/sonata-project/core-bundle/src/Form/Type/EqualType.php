@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Form\Type;
+namespace Sonata\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -20,9 +22,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class EqualType extends AbstractType
 {
-    const TYPE_IS_EQUAL = 1;
+    public const TYPE_IS_EQUAL = 1;
 
-    const TYPE_IS_NOT_EQUAL = 2;
+    public const TYPE_IS_NOT_EQUAL = 2;
 
     /**
      * NEXT_MAJOR: remove this property.
@@ -41,7 +43,7 @@ class EqualType extends AbstractType
     public function __construct(TranslatorInterface $translator = null)
     {
         // check if class is overloaded and notify about removing deprecated translator
-        if (null !== $translator && __CLASS__ !== get_class($this)) {
+        if (null !== $translator && __CLASS__ !== \get_class($this)) {
             @trigger_error(
                 'The translator dependency in '.__CLASS__.' is deprecated since 3.1 and will be removed in 4.0. '.
                 'Please prepare your dependencies for this change.',

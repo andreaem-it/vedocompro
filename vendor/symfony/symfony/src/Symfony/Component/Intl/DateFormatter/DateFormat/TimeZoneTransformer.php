@@ -20,7 +20,7 @@ use Symfony\Component\Intl\Exception\NotImplementedException;
  *
  * @internal
  */
-class TimeZoneTransformer extends Transformer
+class TimezoneTransformer extends Transformer
 {
     /**
      * {@inheritdoc}
@@ -31,7 +31,7 @@ class TimeZoneTransformer extends Transformer
     {
         $timeZone = substr($dateTime->getTimezone()->getName(), 0, 3);
 
-        if (!in_array($timeZone, array('Etc', 'UTC', 'GMT'))) {
+        if (!\in_array($timeZone, ['Etc', 'UTC', 'GMT'])) {
             throw new NotImplementedException('Time zone different than GMT or UTC is not supported as a formatting output.');
         }
 
@@ -41,7 +41,7 @@ class TimeZoneTransformer extends Transformer
         }
 
         // From ICU >= 59.1 GMT and UTC are no longer unified
-        if (in_array($timeZone, array('UTC', 'UCT', 'Universal', 'Zulu'))) {
+        if (\in_array($timeZone, ['UTC', 'UCT', 'Universal', 'Zulu'])) {
             // offset is not supported with UTC
             return $length > 3 ? 'Coordinated Universal Time' : 'UTC';
         }
@@ -73,9 +73,9 @@ class TimeZoneTransformer extends Transformer
      */
     public function extractDateOptions($matched, $length)
     {
-        return array(
+        return [
             'timezone' => self::getEtcTimeZoneId($matched),
-        );
+        ];
     }
 
     /**
@@ -103,16 +103,13 @@ class TimeZoneTransformer extends Transformer
         if (preg_match('/GMT(?P<signal>[+-])(?P<hours>\d{2}):?(?P<minutes>\d{2})/', $formattedTimeZone, $matches)) {
             $hours = (int) $matches['hours'];
             $minutes = (int) $matches['minutes'];
-            $signal = $matches['signal'] == '-' ? '+' : '-';
+            $signal = '-' == $matches['signal'] ? '+' : '-';
 
             if (0 < $minutes) {
-                throw new NotImplementedException(sprintf(
-                    'It is not possible to use a GMT time zone with minutes offset different than zero (0). GMT time zone tried: %s.',
-                    $formattedTimeZone
-                ));
+                throw new NotImplementedException(sprintf('It is not possible to use a GMT time zone with minutes offset different than zero (0). GMT time zone tried: %s.', $formattedTimeZone));
             }
 
-            return 'Etc/GMT'.($hours !== 0 ? $signal.$hours : '');
+            return 'Etc/GMT'.(0 !== $hours ? $signal.$hours : '');
         }
 
         throw new \InvalidArgumentException(sprintf('The GMT time zone "%s" does not match with the supported formats GMT[+-]HH:MM or GMT[+-]HHMM.', $formattedTimeZone));

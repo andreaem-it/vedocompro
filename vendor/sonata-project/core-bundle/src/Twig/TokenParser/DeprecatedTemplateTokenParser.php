@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,16 +11,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Twig\TokenParser;
+namespace Sonata\Twig\TokenParser;
 
-use Sonata\CoreBundle\Twig\Node\DeprecatedTemplateNode;
+use Sonata\Twig\Node\DeprecatedTemplateNode;
 use Twig\Token;
 use Twig\TokenParser\AbstractTokenParser;
 
 /**
  * @author Marko Kunic <kunicmarko20@gmail.com>
  */
-final class DeprecatedTemplateTokenParser extends AbstractTokenParser
+class DeprecatedTemplateTokenParser extends AbstractTokenParser
 {
     public function parse(Token $token)
     {
@@ -38,3 +40,5 @@ final class DeprecatedTemplateTokenParser extends AbstractTokenParser
         return 'sonata_template_deprecate';
     }
 }
+
+class_exists(\Sonata\CoreBundle\Twig\TokenParser\DeprecatedTemplateTokenParser::class);

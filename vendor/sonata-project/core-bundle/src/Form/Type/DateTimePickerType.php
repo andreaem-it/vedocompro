@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Form\Type;
+namespace Sonata\Form\Type;
 
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -39,6 +41,8 @@ class DateTimePickerType extends BasePickerType
             'format' => DateTimeType::DEFAULT_DATE_FORMAT,
             'date_format' => null,
         ]));
+
+        parent::configureOptions($resolver);
     }
 
     public function getParent()

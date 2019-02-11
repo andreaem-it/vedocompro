@@ -56,11 +56,11 @@ class ArrayChoiceList implements ChoiceListInterface
      *
      * The given choice array must have the same array keys as the value array.
      *
-     * @param array|\Traversable $choices The selectable choices
-     * @param callable|null      $value   The callable for creating the value
-     *                                    for a choice. If `null` is passed,
-     *                                    incrementing integers are used as
-     *                                    values
+     * @param iterable      $choices The selectable choices
+     * @param callable|null $value   The callable for creating the value
+     *                               for a choice. If `null` is passed,
+     *                               incrementing integers are used as
+     *                               values
      */
     public function __construct($choices, callable $value = null)
     {
@@ -132,7 +132,7 @@ class ArrayChoiceList implements ChoiceListInterface
      */
     public function getChoicesForValues(array $values)
     {
-        $choices = array();
+        $choices = [];
 
         foreach ($values as $i => $givenValue) {
             if (array_key_exists($givenValue, $this->choices)) {
@@ -148,14 +148,14 @@ class ArrayChoiceList implements ChoiceListInterface
      */
     public function getValuesForChoices(array $choices)
     {
-        $values = array();
+        $values = [];
 
         // Use the value callback to compare choices by their values, if present
         if ($this->valueCallback) {
-            $givenValues = array();
+            $givenValues = [];
 
             foreach ($choices as $i => $givenChoice) {
-                $givenValues[$i] = (string) call_user_func($this->valueCallback, $givenChoice);
+                $givenValues[$i] = (string) \call_user_func($this->valueCallback, $givenChoice);
             }
 
             return array_intersect($givenValues, array_keys($this->choices));
@@ -185,24 +185,24 @@ class ArrayChoiceList implements ChoiceListInterface
      *                                   corresponding values
      * @param array    $structuredValues The values indexed by the original keys
      *
-     * @internal Must not be used by user-land code
+     * @internal
      */
     protected function flatten(array $choices, $value, &$choicesByValues, &$keysByValues, &$structuredValues)
     {
         if (null === $choicesByValues) {
-            $choicesByValues = array();
-            $keysByValues = array();
-            $structuredValues = array();
+            $choicesByValues = [];
+            $keysByValues = [];
+            $structuredValues = [];
         }
 
         foreach ($choices as $key => $choice) {
-            if (is_array($choice)) {
+            if (\is_array($choice)) {
                 $this->flatten($choice, $value, $choicesByValues, $keysByValues, $structuredValues[$key]);
 
                 continue;
             }
 
-            $choiceValue = (string) call_user_func($value, $choice);
+            $choiceValue = (string) \call_user_func($value, $choice);
             $choicesByValues[$choiceValue] = $choice;
             $keysByValues[$choiceValue] = $key;
             $structuredValues[$key] = $choiceValue;
@@ -216,13 +216,13 @@ class ArrayChoiceList implements ChoiceListInterface
      * @param array      $choices The choices
      * @param array|null $cache   The cache for previously checked entries. Internal
      *
-     * @return bool Returns true if the choices can be cast to strings and
-     *              false otherwise.
+     * @return bool returns true if the choices can be cast to strings and
+     *              false otherwise
      */
-    private function castableToString(array $choices, array &$cache = array())
+    private function castableToString(array $choices, array &$cache = [])
     {
         foreach ($choices as $choice) {
-            if (is_array($choice)) {
+            if (\is_array($choice)) {
                 if (!$this->castableToString($choice, $cache)) {
                     return false;
                 }

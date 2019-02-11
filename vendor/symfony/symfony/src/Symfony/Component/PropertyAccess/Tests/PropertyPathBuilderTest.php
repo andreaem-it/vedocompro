@@ -20,9 +20,6 @@ use Symfony\Component\PropertyAccess\PropertyPathBuilder;
  */
 class PropertyPathBuilderTest extends TestCase
 {
-    /**
-     * @var string
-     */
     const PREFIX = 'old1[old2].old3[old4][old5].old6';
 
     /**
@@ -207,10 +204,10 @@ class PropertyPathBuilderTest extends TestCase
 
     public function provideInvalidOffsets()
     {
-        return array(
-            array(6),
-            array(-7),
-        );
+        return [
+            [6],
+            [-7],
+        ];
     }
 
     public function testReplaceWithLengthGreaterOne()

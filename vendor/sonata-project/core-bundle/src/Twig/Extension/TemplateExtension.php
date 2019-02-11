@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,12 +11,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Twig\Extension;
+namespace Sonata\Twig\Extension;
 
 use Sonata\CoreBundle\Model\Adapter\AdapterInterface;
-use Sonata\CoreBundle\Twig\TokenParser\TemplateBoxTokenParser;
+use Sonata\Twig\TokenParser\TemplateBoxTokenParser;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 class TemplateExtension extends AbstractExtension
 {
@@ -46,8 +49,8 @@ class TemplateExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('sonata_slugify', [$this, 'slugify'], ['deprecated' => true, 'alternative' => 'slugify']),
-            new \Twig_SimpleFilter('sonata_urlsafeid', [$this, 'getUrlsafeIdentifier']),
+            new TwigFilter('sonata_slugify', [$this, 'slugify'], ['deprecated' => true, 'alternative' => 'slugify']),
+            new TwigFilter('sonata_urlsafeid', [$this, 'getUrlsafeIdentifier']),
         ];
     }
 
@@ -72,7 +75,7 @@ class TemplateExtension extends AbstractExtension
         $text = trim($text, '-');
 
         // transliterate
-        if (function_exists('iconv')) {
+        if (\function_exists('iconv')) {
             $text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
         }
 
@@ -98,3 +101,5 @@ class TemplateExtension extends AbstractExtension
         return 'sonata_core_template';
     }
 }
+
+class_exists(\Sonata\CoreBundle\Twig\Extension\TemplateExtension::class);

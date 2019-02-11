@@ -129,7 +129,7 @@ of referencing the email template below.
                 template:   email/password_resetting.email.twig
         registration:
             confirmation:
-                template:   '@FOSUser/Registration/email.html.twig'
+                template:   '@FOSUser/Registration/email.txt.twig'
 
 .. code-block:: html+jinja
 

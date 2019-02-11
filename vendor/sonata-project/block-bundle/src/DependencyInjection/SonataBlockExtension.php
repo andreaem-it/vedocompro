@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -77,7 +79,7 @@ class SonataBlockExtension extends Extension
             $this->configureClassesToCompile();
         }
 
-        if ($config['templates']['block_base'] === null) {
+        if (null === $config['templates']['block_base']) {
             if (isset($bundles['SonataPageBundle'])) {
                 $config['templates']['block_base'] = '@SonataPage/Block/block_base.html.twig';
                 $config['templates']['block_container'] = '@SonataPage/Block/block_container.html.twig';
@@ -106,7 +108,7 @@ class SonataBlockExtension extends Extension
      */
     public function fixConfigurationDeprecation(array &$config)
     {
-        if (count(array_diff($config['profiler']['container_types'], $config['container']['types']))) {
+        if (\count(array_diff($config['profiler']['container_types'], $config['container']['types']))) {
             $config['container']['types'] = array_merge($config['profiler']['container_types'], $config['container']['types']);
         }
     }
@@ -174,7 +176,7 @@ class SonataBlockExtension extends Extension
             $types[] = $service;
         }
 
-        $container->getDefinition('sonata.block.loader.service')->replaceArgument(0, $types);
+        $container->setParameter('sonata_blocks.block_types', $types);
     }
 
     /**
@@ -188,7 +190,7 @@ class SonataBlockExtension extends Extension
         $contexts = [];
 
         foreach ($config['blocks'] as $service => $settings) {
-            if (0 == count($settings['contexts'])) {
+            if (0 == \count($settings['contexts'])) {
                 $settings['contexts'] = $defaults;
             }
 

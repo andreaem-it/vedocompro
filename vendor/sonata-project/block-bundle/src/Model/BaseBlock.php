@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -278,6 +280,6 @@ abstract class BaseBlock implements BlockInterface
      */
     public function hasChildren()
     {
-        return count($this->children) > 0;
+        return \count($this->children) > 0;
     }
 }

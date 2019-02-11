@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Form\Type;
+namespace Sonata\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -50,7 +52,7 @@ abstract class BaseStatusType extends AbstractType
             $flip = true;
         } else {
             @trigger_error(
-                'Calling '.__CLASS__.' class with a flip parameter is deprecated since 3.x, to be removed with 4.0',
+                'Calling '.__CLASS__.' class with a flip parameter is deprecated since 3.9, to be removed with 4.0',
                 E_USER_DEPRECATED
             );
         }
@@ -88,7 +90,7 @@ abstract class BaseStatusType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $choices = call_user_func([$this->class, $this->getter]);
+        $choices = \call_user_func([$this->class, $this->getter]);
 
         // choice_as_value options is not needed in SF 3.0+
         if ($resolver->isDefined('choices_as_values')) {
@@ -97,11 +99,11 @@ abstract class BaseStatusType extends AbstractType
 
         // NEXT_MAJOR: remove this property
         if ($this->flip) {
-            $count = count($choices);
+            $count = \count($choices);
 
             $choices = array_flip($choices);
 
-            if (count($choices) !== $count) {
+            if (\count($choices) !== $count) {
                 throw new \RuntimeException('Unable to safely flip value as final count is different');
             }
         }

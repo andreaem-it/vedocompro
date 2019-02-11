@@ -1,3 +1,88 @@
+v0.8.1
+======
+
+## Fixes
+
+- Fix `rename` with `GoogleCloudStorage` adapter [#598](https://github.com/KnpLabs/Gaufrette/pull/598)
+
+Thank you @jerome-arzel for your contribution !
+
+v0.8
+====
+
+## New features
+
+- Implement `ChecksumCalculator` interface for `AzureBlobStorage` adapter #594
+
+## Changes
+
+In #593 :
+- Drop support for EOL php versions (5.6 and 7.0)
+- Minimim requirement is now php 7.1
+- Add support for php 7.3
+
+## Fixes
+
+- fix opencloud tests #579
+- fix appveyor build #589
+- Fix `ini_get()` for boolean values #595
+
+Thank you @andreybolonin, @damijank, @deguif and @nicolasmure for your
+contributions !
+
+v0.7
+====
+
+## Changes
+- `FilesystemMap::set()` should expect `FilesystemInterface` instead of
+`Filesystem` #576
+
+## Fixes
+
+- Add PutObjectAcl in the required permission #566
+- Ensure correct return type from Flysystem adapter "exists" method #572
+
+Thank you @andreybolonin, @clement-michelet, @jakob-stoeck, @nicolasmure,
+@teohhanhui, @tristanbes for your contributions !
+
+v0.6
+====
+
+## Changes
+- Add support for major release of Azure Blob Storage SDK [#558](https://github.com/KnpLabs/Gaufrette/pull/558)
+
+## Fixes
+- Fix Dockerfile for php 7.0 [aaa66dc](https://github.com/KnpLabs/Gaufrette/commit/aaa66dcf298d313e7ae3f525714923fcfd787e94)
+- Fix appveyor build [#562](https://github.com/KnpLabs/Gaufrette/pull/562)
+
+Thank you @nicolasmure, @NiR- and @z38 for your contributions!
+
+v0.5
+====
+
+## New features
+- Added support for calculated size for Azure Blob Storage #523
+- GridFS Support for Metadata Retrieval after Write #535
+
+## Changes
+- Test case for AwsS3 now inherits common test case #514
+- Run azure tests on appveyor #512
+- Bump PHPUnit to ^5.6.8 #529
+- Use composer's autoload-dev #530
+- Drop HHVM support + sync docker conf with Travis #528
+- Refactoring tests to have more detailed failure messages #542
+
+## Fixes
+- Documentation #510
+- Typos #506, #538
+- Fix incomplete tear down phase for AwsS3Test #516
+- Fix FTP tests + bug in PhpseclibSftp::fetchKeys() #527
+- fix travis build for php 5.6 #543
+- Quickfix for Adapter/AwsS3, check if count() call is allowed #544
+
+Thank you @andreasschacht, @bsperduto, @carusogabriel, @dawkaa, @gerkestam2,
+@GrahamCampbell, @Lctrs, @nicolasmure, @NiR- for your contributions !
+
 v0.4
 ====
 

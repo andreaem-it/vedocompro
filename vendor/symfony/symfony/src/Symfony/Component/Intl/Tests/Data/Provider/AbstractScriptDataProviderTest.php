@@ -23,8 +23,11 @@ abstract class AbstractScriptDataProviderTest extends AbstractDataProviderTest
 {
     // The below arrays document the state of the ICU data bundled with this package.
 
-    protected static $scripts = array(
+    protected static $scripts = [
+        'Adlm',
         'Afak',
+        'Aghb',
+        'Ahom',
         'Arab',
         'Armi',
         'Armn',
@@ -34,6 +37,7 @@ abstract class AbstractScriptDataProviderTest extends AbstractDataProviderTest
         'Bass',
         'Batk',
         'Beng',
+        'Bhks',
         'Blis',
         'Bopo',
         'Brah',
@@ -51,25 +55,31 @@ abstract class AbstractScriptDataProviderTest extends AbstractDataProviderTest
         'Cyrl',
         'Cyrs',
         'Deva',
+        'Dogr',
         'Dsrt',
         'Dupl',
         'Egyd',
         'Egyh',
         'Egyp',
+        'Elba',
         'Ethi',
         'Geok',
         'Geor',
         'Glag',
+        'Gong',
+        'Gonm',
         'Goth',
         'Gran',
         'Grek',
         'Gujr',
         'Guru',
+        'Hanb',
         'Hang',
         'Hani',
         'Hano',
         'Hans',
         'Hant',
+        'Hatr',
         'Hebr',
         'Hira',
         'Hluw',
@@ -78,6 +88,7 @@ abstract class AbstractScriptDataProviderTest extends AbstractDataProviderTest
         'Hung',
         'Inds',
         'Ital',
+        'Jamo',
         'Java',
         'Jpan',
         'Jurc',
@@ -103,20 +114,27 @@ abstract class AbstractScriptDataProviderTest extends AbstractDataProviderTest
         'Loma',
         'Lyci',
         'Lydi',
+        'Mahj',
+        'Maka',
         'Mand',
         'Mani',
+        'Marc',
         'Maya',
+        'Medf',
         'Mend',
         'Merc',
         'Mero',
         'Mlym',
+        'Modi',
         'Mong',
         'Moon',
         'Mroo',
         'Mtei',
+        'Mult',
         'Mymr',
         'Narb',
         'Nbat',
+        'Newa',
         'Nkgb',
         'Nkoo',
         'Nshu',
@@ -124,8 +142,10 @@ abstract class AbstractScriptDataProviderTest extends AbstractDataProviderTest
         'Olck',
         'Orkh',
         'Orya',
+        'Osge',
         'Osma',
         'Palm',
+        'Pauc',
         'Perm',
         'Phag',
         'Phli',
@@ -135,6 +155,7 @@ abstract class AbstractScriptDataProviderTest extends AbstractDataProviderTest
         'Plrd',
         'Prti',
         'Rjng',
+        'Rohg',
         'Roro',
         'Runr',
         'Samr',
@@ -144,9 +165,13 @@ abstract class AbstractScriptDataProviderTest extends AbstractDataProviderTest
         'Sgnw',
         'Shaw',
         'Shrd',
+        'Sidd',
         'Sind',
         'Sinh',
+        'Sogd',
+        'Sogo',
         'Sora',
+        'Soyo',
         'Sund',
         'Sylo',
         'Syrc',
@@ -176,13 +201,15 @@ abstract class AbstractScriptDataProviderTest extends AbstractDataProviderTest
         'Xpeo',
         'Xsux',
         'Yiii',
+        'Zanb',
         'Zinh',
         'Zmth',
+        'Zsye',
         'Zsym',
         'Zxxx',
         'Zyyy',
         'Zzzz',
-    );
+    ];
 
     /**
      * @var ScriptDataProvider
@@ -215,7 +242,10 @@ abstract class AbstractScriptDataProviderTest extends AbstractDataProviderTest
 
         sort($scripts);
 
-        $this->assertSame(static::$scripts, $scripts);
+        // We can't assert on exact list of scripts, as there's too many variations between locales.
+        // The best we can do is to make sure getNames() returns a subset of what getScripts() returns.
+        $this->assertNotEmpty($scripts);
+        $this->assertEmpty(array_diff($scripts, self::$scripts));
     }
 
     public function testGetNamesDefaultLocale()

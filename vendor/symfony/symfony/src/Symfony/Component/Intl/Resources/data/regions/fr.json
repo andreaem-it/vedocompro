@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.32.59",
+    "Version": "2.1.44.91",
     "Names": {
         "AC": "Île de l’Ascension",
         "AD": "Andorre",
@@ -212,7 +212,7 @@
         "SR": "Suriname",
         "SS": "Soudan du Sud",
         "ST": "Sao Tomé-et-Principe",
-        "SV": "El Salvador",
+        "SV": "Salvador",
         "SX": "Saint-Martin (partie néerlandaise)",
         "SY": "Syrie",
         "SZ": "Swaziland",
@@ -223,7 +223,7 @@
         "TG": "Togo",
         "TH": "Thaïlande",
         "TJ": "Tadjikistan",
-        "TK": "Tokélaou",
+        "TK": "Tokelau",
         "TL": "Timor oriental",
         "TM": "Turkménistan",
         "TN": "Tunisie",
@@ -236,7 +236,6 @@
         "UA": "Ukraine",
         "UG": "Ouganda",
         "UM": "Îles mineures éloignées des États-Unis",
-        "UN": "Nations Unies",
         "US": "États-Unis",
         "UY": "Uruguay",
         "UZ": "Ouzbékistan",

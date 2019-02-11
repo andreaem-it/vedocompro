@@ -111,6 +111,20 @@ class AzureMultiContainerBlobStorageTest extends FunctionalTestCase
     /**
      * @test
      * @group functional
+     */
+    public function shouldGetMd5Hash()
+    {
+        $path = $this->createUniqueContainerName('container') . '/foo';
+
+        $content = 'Some content';
+        $this->filesystem->write($path, $content);
+
+        $this->assertEquals(\md5($content), $this->filesystem->checksum($path));
+    }
+
+    /**
+     * @test
+     * @group functional
      * @expectedException \RuntimeException
      * @expectedMessage Could not get mtime for the "foo" key
      */
@@ -213,7 +227,7 @@ class AzureMultiContainerBlobStorageTest extends FunctionalTestCase
      * @test
      * @group functional
      */
-    public function shouldWrtieToSameFile()
+    public function shouldWriteToSameFile()
     {
         $path = $this->createUniqueContainerName('container') . '/somefile';
 
@@ -223,7 +237,7 @@ class AzureMultiContainerBlobStorageTest extends FunctionalTestCase
         $FileObjectB = $this->filesystem->createFile($path);
         $FileObjectB->setContent('DEF');
 
-        $this->assertEquals('DEF', $FileObjectB->getContent());
+        $this->assertEquals('DEF', $FileObjectA->getContent());
     }
 
     private function createUniqueContainerName($prefix)

@@ -1,21 +1,4 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license. For more information, see
- * <http://www.doctrine-project.org>.
- */
 
 namespace Doctrine\Tests\Common\DataFixtures;
 
@@ -46,10 +29,10 @@ class DependentFixtureTest extends BaseTest
         $orderedFixtures = $loader->getFixtures();
 
         $this->assertCount(4, $orderedFixtures);
-        $this->assertInstanceOf(__NAMESPACE__ . '\BaseParentFixture1', array_shift($orderedFixtures));
-        $this->assertInstanceOf(__NAMESPACE__ . '\DependentFixture1', array_shift($orderedFixtures));
-        $this->assertInstanceOf(__NAMESPACE__ . '\DependentFixture2', array_shift($orderedFixtures));
-        $this->assertInstanceOf(__NAMESPACE__ . '\DependentFixture3', array_shift($orderedFixtures));
+        $this->assertInstanceOf(BaseParentFixture1::class, array_shift($orderedFixtures));
+        $this->assertInstanceOf(DependentFixture1::class, array_shift($orderedFixtures));
+        $this->assertInstanceOf(DependentFixture2::class, array_shift($orderedFixtures));
+        $this->assertInstanceOf(DependentFixture3::class, array_shift($orderedFixtures));
     }
 
     public function test_orderFixturesByDependencies_orderClassesWithAMultipleParents()
@@ -87,14 +70,14 @@ class DependentFixtureTest extends BaseTest
         // BaseParentFixture1 has no dependencies, so it will always be first in this case
         $this->assertEquals($baseParentFixtureOrder, 0);
 
-        $this->assertTrue($contactFixtureOrder > $contactMethodFixtureOrder);
-        $this->assertTrue($contactFixtureOrder > $addressFixtureOrder);
-        $this->assertTrue($contactFixtureOrder > $countryFixtureOrder);
-        $this->assertTrue($contactFixtureOrder > $stateFixtureOrder);
-        $this->assertTrue($contactFixtureOrder > $contactMethodFixtureOrder);
+        $this->assertGreaterThan($contactMethodFixtureOrder, $contactFixtureOrder);
+        $this->assertGreaterThan($addressFixtureOrder, $contactFixtureOrder);
+        $this->assertGreaterThan($countryFixtureOrder, $contactFixtureOrder);
+        $this->assertGreaterThan($stateFixtureOrder, $contactFixtureOrder);
+        $this->assertGreaterThan($contactMethodFixtureOrder, $contactFixtureOrder);
 
-        $this->assertTrue($addressFixtureOrder > $stateFixtureOrder);
-        $this->assertTrue($addressFixtureOrder > $countryFixtureOrder);
+        $this->assertGreaterThan($stateFixtureOrder, $addressFixtureOrder);
+        $this->assertGreaterThan($countryFixtureOrder, $addressFixtureOrder);
     }
 
 
@@ -136,13 +119,13 @@ class DependentFixtureTest extends BaseTest
         $orderedFixtures = $loader->getFixtures();
 
         $this->assertCount(7, $orderedFixtures);
-        $this->assertInstanceOf(__NAMESPACE__ . '\OrderedByNumberFixture1', array_shift($orderedFixtures));
-        $this->assertInstanceOf(__NAMESPACE__ . '\OrderedByNumberFixture2', array_shift($orderedFixtures));
-        $this->assertInstanceOf(__NAMESPACE__ . '\OrderedByNumberFixture3', array_shift($orderedFixtures));
-        $this->assertInstanceOf(__NAMESPACE__ . '\BaseParentFixture1', array_shift($orderedFixtures));
-        $this->assertInstanceOf(__NAMESPACE__ . '\DependentFixture1', array_shift($orderedFixtures));
-        $this->assertInstanceOf(__NAMESPACE__ . '\DependentFixture2', array_shift($orderedFixtures));
-        $this->assertInstanceOf(__NAMESPACE__ . '\DependentFixture3', array_shift($orderedFixtures));
+        $this->assertInstanceOf(OrderedByNumberFixture1::class, array_shift($orderedFixtures));
+        $this->assertInstanceOf(OrderedByNumberFixture2::class, array_shift($orderedFixtures));
+        $this->assertInstanceOf(OrderedByNumberFixture3::class, array_shift($orderedFixtures));
+        $this->assertInstanceOf(BaseParentFixture1::class, array_shift($orderedFixtures));
+        $this->assertInstanceOf(DependentFixture1::class, array_shift($orderedFixtures));
+        $this->assertInstanceOf(DependentFixture2::class, array_shift($orderedFixtures));
+        $this->assertInstanceOf(DependentFixture3::class, array_shift($orderedFixtures));
     }
 
     public function test_inCaseAFixtureHasAnUnexistentDependencyOrIfItWasntLoaded_throwsException()
@@ -166,8 +149,8 @@ class DependentFixtureTest extends BaseTest
         $orderedFixtures = $loader->getFixtures();
 
         $this->assertCount(2, $orderedFixtures);
-        $this->assertInstanceOf(__NAMESPACE__ . '\BaseParentFixture1', array_shift($orderedFixtures));
-        $this->assertInstanceOf(__NAMESPACE__ . '\DependentFixture1', array_shift($orderedFixtures));
+        $this->assertInstanceOf(BaseParentFixture1::class, array_shift($orderedFixtures));
+        $this->assertInstanceOf(DependentFixture1::class, array_shift($orderedFixtures));
     }
 }
 
@@ -178,7 +161,7 @@ class DependentFixture1 implements FixtureInterface, DependentFixtureInterface
 
     public function getDependencies()
     {
-        return array( 'Doctrine\Tests\Common\DataFixtures\BaseParentFixture1' );
+        return [BaseParentFixture1::class];
     }
 }
 
@@ -189,7 +172,7 @@ class DependentFixture2 implements FixtureInterface, DependentFixtureInterface
 
     public function getDependencies()
     {
-        return array( 'Doctrine\Tests\Common\DataFixtures\DependentFixture1' );
+        return [DependentFixture1::class];
     }
 }
 
@@ -200,7 +183,7 @@ class DependentFixture3 implements FixtureInterface, DependentFixtureInterface
 
     public function getDependencies()
     {
-        return array( 'Doctrine\Tests\Common\DataFixtures\DependentFixture2' );
+        return [DependentFixture2::class];
     }
 }
 
@@ -217,9 +200,7 @@ class CountryFixture implements FixtureInterface, DependentFixtureInterface
 
     public function getDependencies()
     {
-        return array(
-            'Doctrine\Tests\Common\DataFixtures\BaseParentFixture1'
-        );
+        return [BaseParentFixture1::class];
     }
 }
 
@@ -230,10 +211,10 @@ class StateFixture implements FixtureInterface, DependentFixtureInterface
 
     public function getDependencies()
     {
-        return array(
-            'Doctrine\Tests\Common\DataFixtures\BaseParentFixture1',
-            'Doctrine\Tests\Common\DataFixtures\CountryFixture'
-        );
+        return [
+            BaseParentFixture1::class,
+            CountryFixture::class
+        ];
     }
 }
 
@@ -244,11 +225,11 @@ class AddressFixture implements FixtureInterface, DependentFixtureInterface
 
     public function getDependencies()
     {
-        return array(
-            'Doctrine\Tests\Common\DataFixtures\BaseParentFixture1',
-            'Doctrine\Tests\Common\DataFixtures\CountryFixture',
-            'Doctrine\Tests\Common\DataFixtures\StateFixture'
-        );
+        return [
+            BaseParentFixture1::class,
+            CountryFixture::class,
+            StateFixture::class
+        ];
     }
 }
 
@@ -259,9 +240,7 @@ class ContactMethodFixture implements FixtureInterface, DependentFixtureInterfac
 
     public function getDependencies()
     {
-        return array(
-            'Doctrine\Tests\Common\DataFixtures\BaseParentFixture1'
-        );
+        return [BaseParentFixture1::class];
     }
 }
 
@@ -272,10 +251,10 @@ class ContactFixture implements FixtureInterface, DependentFixtureInterface
 
     public function getDependencies()
     {
-        return array(
-            'Doctrine\Tests\Common\DataFixtures\AddressFixture',
-            'Doctrine\Tests\Common\DataFixtures\ContactMethodFixture'
-        );
+        return [
+            AddressFixture::class,
+            ContactMethodFixture::class
+        ];
     }
 }
 
@@ -286,9 +265,7 @@ class CircularReferenceFixture implements FixtureInterface, DependentFixtureInte
 
     public function getDependencies()
     {
-        return array(
-            'Doctrine\Tests\Common\DataFixtures\CircularReferenceFixture3'
-        );
+        return [CircularReferenceFixture3::class];
     }
 }
 
@@ -299,9 +276,7 @@ class CircularReferenceFixture2 implements FixtureInterface, DependentFixtureInt
 
     public function getDependencies()
     {
-        return array(
-            'Doctrine\Tests\Common\DataFixtures\CircularReferenceFixture'
-        );
+        return [CircularReferenceFixture::class];
     }
 }
 
@@ -312,9 +287,7 @@ class CircularReferenceFixture3 implements FixtureInterface, DependentFixtureInt
 
     public function getDependencies()
     {
-        return array(
-            'Doctrine\Tests\Common\DataFixtures\CircularReferenceFixture2'
-        );
+        return [CircularReferenceFixture2::class];
     }
 }
 
@@ -325,9 +298,7 @@ class FixtureWithItselfAsParent implements FixtureInterface, DependentFixtureInt
 
     public function getDependencies()
     {
-        return array(
-            'Doctrine\Tests\Common\DataFixtures\FixtureWithItselfAsParent'
-        );
+        return [FixtureWithItselfAsParent::class];
     }
 }
 
@@ -338,9 +309,7 @@ class FixtureWithUnexistentDependency implements FixtureInterface, DependentFixt
 
     public function getDependencies()
     {
-        return array(
-            'UnexistentDependency'
-        );
+        return ['UnexistentDependency'];
     }
 }
 
@@ -356,9 +325,7 @@ class FixtureImplementingBothOrderingInterfaces implements FixtureInterface, Ord
 
     public function getDependencies()
     {
-        return array(
-            'Doctrine\Tests\Common\DataFixtures\FixtureWithItselfAsParent'
-        );
+        return [FixtureWithItselfAsParent::class];
     }
 }
 

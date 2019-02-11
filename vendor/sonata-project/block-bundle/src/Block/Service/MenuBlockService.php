@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,10 +19,10 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Menu\MenuRegistry;
 use Sonata\BlockBundle\Menu\MenuRegistryInterface;
+use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Model\BlockInterface;
-use Sonata\CoreBundle\Form\Type\ImmutableArrayType;
-use Sonata\CoreBundle\Model\Metadata;
 use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\Form\Type\ImmutableArrayType;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -69,7 +71,7 @@ class MenuBlockService extends AbstractAdminBlockService
             $this->menuRegistry = $menuRegistry;
         } elseif (null === $menuRegistry) {
             $this->menuRegistry = new MenuRegistry();
-        } elseif (is_array($menuRegistry)) { //NEXT_MAJOR: Remove this case
+        } elseif (\is_array($menuRegistry)) { //NEXT_MAJOR: Remove this case
             @trigger_error(
                 'Initializing '.__CLASS__.' with an array parameter is deprecated since 3.3 and will be removed in 4.0.',
                 E_USER_DEPRECATED

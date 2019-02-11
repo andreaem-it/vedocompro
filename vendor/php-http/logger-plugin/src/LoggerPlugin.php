@@ -11,68 +11,60 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Log request, response and exception for a HTTP Client.
+ * Log request, response and exception for an HTTP Client.
  *
  * @author Joel Wurtz <joel.wurtz@gmail.com>
  */
 final class LoggerPlugin implements Plugin
 {
-    /**
-     * Logger to log request / response / exception for a http call.
-     *
-     * @var LoggerInterface
-     */
+    use VersionBridgePlugin;
+
     private $logger;
 
-    /**
-     * Formats a request/response as string.
-     *
-     * @var Formatter
-     */
     private $formatter;
 
-    /**
-     * @param LoggerInterface $logger
-     */
     public function __construct(LoggerInterface $logger, Formatter $formatter = null)
     {
         $this->logger = $logger;
         $this->formatter = $formatter ?: new SimpleFormatter();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handleRequest(RequestInterface $request, callable $next, callable $first)
+    protected function doHandleRequest(RequestInterface $request, callable $next, callable $first)
     {
-        $this->logger->info(sprintf('Emit request: "%s"', $this->formatter->formatRequest($request)), ['request' => $request]);
+        $start = microtime(true);
+        $this->logger->info(sprintf("Sending request:\n%s", $this->formatter->formatRequest($request)), ['request' => $request]);
 
-        return $next($request)->then(function (ResponseInterface $response) use ($request) {
+        return $next($request)->then(function (ResponseInterface $response) use ($request, $start) {
+            $milliseconds = (int) round((microtime(true) - $start) * 1000);
             $this->logger->info(
-                sprintf('Receive response: "%s" for request: "%s"', $this->formatter->formatResponse($response), $this->formatter->formatRequest($request)),
+                sprintf("Received response:\n%s\n\nfor request:\n%s", $this->formatter->formatResponse($response), $this->formatter->formatRequest($request)),
                 [
                     'request' => $request,
                     'response' => $response,
+                    'milliseconds' => $milliseconds,
                 ]
             );
 
             return $response;
-        }, function (Exception $exception) use ($request) {
+        }, function (Exception $exception) use ($request, $start) {
+            $milliseconds = (int) round((microtime(true) - $start) * 1000);
             if ($exception instanceof Exception\HttpException) {
                 $this->logger->error(
-                    sprintf('Error: "%s" with response: "%s" when emitting request: "%s"', $exception->getMessage(), $this->formatter->formatResponse($exception->getResponse()), $this->formatter->formatRequest($request)),
+                    sprintf("Error:\n%s\nwith response:\n%s\n\nwhen sending request:\n%s", $exception->getMessage(), $this->formatter->formatResponse($exception->getResponse()), $this->formatter->formatRequest($request)),
                     [
                         'request' => $request,
                         'response' => $exception->getResponse(),
                         'exception' => $exception,
+                        'milliseconds' => $milliseconds,
                     ]
                 );
             } else {
                 $this->logger->error(
-                    sprintf('Error: "%s" when emitting request: "%s"', $exception->getMessage(), $this->formatter->formatRequest($request)),
+                    sprintf("Error:\n%s\nwhen sending request:\n%s", $exception->getMessage(), $this->formatter->formatRequest($request)),
                     [
                         'request' => $request,
                         'exception' => $exception,
+                        'milliseconds' => $milliseconds,
                     ]
                 );
             }

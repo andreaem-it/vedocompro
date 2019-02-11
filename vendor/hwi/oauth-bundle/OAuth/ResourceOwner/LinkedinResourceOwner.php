@@ -11,7 +11,6 @@
 
 namespace HWI\Bundle\OAuthBundle\OAuth\ResourceOwner;
 
-use Buzz\Message\RequestInterface as HttpRequestInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -28,6 +27,8 @@ class LinkedinResourceOwner extends GenericOAuth2ResourceOwner
     protected $paths = array(
         'identifier' => 'id',
         'nickname' => 'formattedName',
+        'firstname' => 'firstName',
+        'lastname' => 'lastName',
         'realname' => 'formattedName',
         'email' => 'emailAddress',
         'profilepicture' => 'pictureUrl',
@@ -38,7 +39,7 @@ class LinkedinResourceOwner extends GenericOAuth2ResourceOwner
      */
     protected function doGetTokenRequest($url, array $parameters = array())
     {
-        return $this->httpRequest($this->normalizeUrl($url, $parameters), null, array(), HttpRequestInterface::METHOD_POST);
+        return $this->httpRequest($this->normalizeUrl($url, $parameters), null, array(), 'POST');
     }
 
     /**
@@ -58,9 +59,9 @@ class LinkedinResourceOwner extends GenericOAuth2ResourceOwner
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
-            'authorization_url' => 'https://www.linkedin.com/uas/oauth2/authorization',
-            'access_token_url' => 'https://www.linkedin.com/uas/oauth2/accessToken',
-            'infos_url' => 'https://api.linkedin.com/v1/people/~:(id,formatted-name,email-address,picture-url)?format=json',
+            'authorization_url' => 'https://www.linkedin.com/oauth/v2/authorization',
+            'access_token_url' => 'https://www.linkedin.com/oauth/v2/accessToken',
+            'infos_url' => 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,formatted-name,email-address,picture-url)?format=json',
 
             'csrf' => true,
 

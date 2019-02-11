@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,7 +27,7 @@ class RecursiveBlockIterator extends \RecursiveArrayIterator implements \Recursi
      */
     public function __construct($array)
     {
-        if (is_object($array)) {
+        if (\is_object($array)) {
             $array = $array->toArray();
         }
 

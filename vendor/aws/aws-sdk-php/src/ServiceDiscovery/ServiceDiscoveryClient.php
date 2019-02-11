@@ -5,6 +5,8 @@ use Aws\AwsClient;
 
 /**
  * This client is used to interact with the **Amazon Route 53 Auto Naming** service.
+ * @method \Aws\Result createHttpNamespace(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise createHttpNamespaceAsync(array $args = [])
  * @method \Aws\Result createPrivateDnsNamespace(array $args = [])
  * @method \GuzzleHttp\Promise\Promise createPrivateDnsNamespaceAsync(array $args = [])
  * @method \Aws\Result createPublicDnsNamespace(array $args = [])
@@ -17,6 +19,8 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise deleteServiceAsync(array $args = [])
  * @method \Aws\Result deregisterInstance(array $args = [])
  * @method \GuzzleHttp\Promise\Promise deregisterInstanceAsync(array $args = [])
+ * @method \Aws\Result discoverInstances(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise discoverInstancesAsync(array $args = [])
  * @method \Aws\Result getInstance(array $args = [])
  * @method \GuzzleHttp\Promise\Promise getInstanceAsync(array $args = [])
  * @method \Aws\Result getInstancesHealthStatus(array $args = [])
@@ -37,6 +41,8 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise listServicesAsync(array $args = [])
  * @method \Aws\Result registerInstance(array $args = [])
  * @method \GuzzleHttp\Promise\Promise registerInstanceAsync(array $args = [])
+ * @method \Aws\Result updateInstanceCustomHealthStatus(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateInstanceCustomHealthStatusAsync(array $args = [])
  * @method \Aws\Result updateService(array $args = [])
  * @method \GuzzleHttp\Promise\Promise updateServiceAsync(array $args = [])
  */

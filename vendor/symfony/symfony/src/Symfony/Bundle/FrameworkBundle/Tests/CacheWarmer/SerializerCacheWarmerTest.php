@@ -14,6 +14,8 @@ namespace Symfony\Bundle\FrameworkBundle\Tests\CacheWarmer;
 use Symfony\Bundle\FrameworkBundle\CacheWarmer\SerializerCacheWarmer;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\NullAdapter;
+use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
 use Symfony\Component\Serializer\Mapping\Factory\CacheClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\XmlFileLoader;
 use Symfony\Component\Serializer\Mapping\Loader\YamlFileLoader;
@@ -26,10 +28,10 @@ class SerializerCacheWarmerTest extends TestCase
             $this->markTestSkipped('The Serializer default cache warmer has been introduced in the Serializer Component version 3.2.');
         }
 
-        $loaders = array(
+        $loaders = [
             new XmlFileLoader(__DIR__.'/../Fixtures/Serialization/Resources/person.xml'),
             new YamlFileLoader(__DIR__.'/../Fixtures/Serialization/Resources/author.yml'),
-        );
+        ];
 
         $file = sys_get_temp_dir().'/cache-serializer.php';
         @unlink($file);
@@ -37,16 +39,14 @@ class SerializerCacheWarmerTest extends TestCase
         $fallbackPool = new ArrayAdapter();
 
         $warmer = new SerializerCacheWarmer($loaders, $file, $fallbackPool);
-        $warmer->warmUp(dirname($file));
+        $warmer->warmUp(\dirname($file));
 
         $this->assertFileExists($file);
 
-        $values = require $file;
+        $arrayPool = new PhpArrayAdapter($file, new NullAdapter());
 
-        $this->assertInternalType('array', $values);
-        $this->assertCount(2, $values);
-        $this->assertArrayHasKey('Symfony_Bundle_FrameworkBundle_Tests_Fixtures_Serialization_Person', $values);
-        $this->assertArrayHasKey('Symfony_Bundle_FrameworkBundle_Tests_Fixtures_Serialization_Author', $values);
+        $this->assertTrue($arrayPool->getItem('Symfony_Bundle_FrameworkBundle_Tests_Fixtures_Serialization_Person')->isHit());
+        $this->assertTrue($arrayPool->getItem('Symfony_Bundle_FrameworkBundle_Tests_Fixtures_Serialization_Author')->isHit());
 
         $values = $fallbackPool->getValues();
 
@@ -67,15 +67,10 @@ class SerializerCacheWarmerTest extends TestCase
 
         $fallbackPool = new ArrayAdapter();
 
-        $warmer = new SerializerCacheWarmer(array(), $file, $fallbackPool);
-        $warmer->warmUp(dirname($file));
+        $warmer = new SerializerCacheWarmer([], $file, $fallbackPool);
+        $warmer->warmUp(\dirname($file));
 
         $this->assertFileExists($file);
-
-        $values = require $file;
-
-        $this->assertInternalType('array', $values);
-        $this->assertCount(0, $values);
 
         $values = $fallbackPool->getValues();
 

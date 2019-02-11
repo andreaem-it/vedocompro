@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,11 +11,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Form\Type;
+namespace Sonata\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Metadata\MetadataFactoryInterface;
-use Sonata\CoreBundle\Form\EventListener\FixCheckboxDataListener;
+use Sonata\Form\EventListener\FixCheckboxDataListener;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -87,11 +89,11 @@ class BaseDoctrineORMSerializationType extends AbstractType
         foreach ($serializerMetadata->propertyMetadata as $propertyMetadata) {
             $name = $propertyMetadata->name;
 
-            if (in_array($name, $doctrineMetadata->getIdentifierFieldNames(), true) && !$this->identifierOverwrite) {
+            if (\in_array($name, $doctrineMetadata->getIdentifierFieldNames(), true) && !$this->identifierOverwrite) {
                 continue;
             }
 
-            if (!$propertyMetadata->groups || !in_array($this->group, $propertyMetadata->groups, true)) {
+            if (!$propertyMetadata->groups || !\in_array($this->group, $propertyMetadata->groups, true)) {
                 continue;
             }
 
@@ -100,8 +102,8 @@ class BaseDoctrineORMSerializationType extends AbstractType
 
             if (isset($doctrineMetadata->fieldMappings[$name])) {
                 $fieldMetadata = $doctrineMetadata->fieldMappings[$name];
-                $type = isset($fieldMetadata['type']) ? $fieldMetadata['type'] : null;
-                $nullable = isset($fieldMetadata['nullable']) ? $fieldMetadata['nullable'] : false;
+                $type = $fieldMetadata['type'] ?? null;
+                $nullable = $fieldMetadata['nullable'] ?? false;
             } elseif (isset($doctrineMetadata->associationMappings[$name])) {
                 $associationMetadata = $doctrineMetadata->associationMappings[$name];
 

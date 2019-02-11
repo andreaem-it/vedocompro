@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.32.59",
+    "Version": "2.1.44.91",
     "Names": {
         "AC": "Ascension-eyja",
         "AD": "Andorra",
@@ -97,7 +97,7 @@
         "GU": "Gvam",
         "GW": "Gínea-Bissá",
         "GY": "Gvæjana",
-        "HK": "Sjálfstjórnarsvæðið Hong Kong",
+        "HK": "sérstjórnarsvæðið Hong Kong",
         "HN": "Hondúras",
         "HR": "Króatía",
         "HT": "Haítí",
@@ -150,7 +150,7 @@
         "ML": "Malí",
         "MM": "Mjanmar (Búrma)",
         "MN": "Mongólía",
-        "MO": "Sjálfstjórnarsvæðið Makaó",
+        "MO": "sérstjórnarsvæðið Makaó",
         "MP": "Norður-Maríanaeyjar",
         "MQ": "Martiník",
         "MR": "Máritanía",
@@ -236,7 +236,6 @@
         "UA": "Úkraína",
         "UG": "Úganda",
         "UM": "Smáeyjar Bandaríkjanna",
-        "UN": "Sameinuðu þjóðirnar",
         "US": "Bandaríkin",
         "UY": "Úrúgvæ",
         "UZ": "Úsbekistan",

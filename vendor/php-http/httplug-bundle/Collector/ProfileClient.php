@@ -3,9 +3,12 @@
 namespace Http\HttplugBundle\Collector;
 
 use Http\Client\Common\FlexibleHttpClient;
+use Http\Client\Common\VersionBridgeClient;
 use Http\Client\Exception\HttpException;
 use Http\Client\HttpAsyncClient;
 use Http\Client\HttpClient;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\RequestExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -21,6 +24,8 @@ use Symfony\Component\Stopwatch\StopwatchEvent;
  */
 class ProfileClient implements HttpClient, HttpAsyncClient
 {
+    use VersionBridgeClient;
+
     /**
      * @var HttpClient|HttpAsyncClient
      */
@@ -55,7 +60,7 @@ class ProfileClient implements HttpClient, HttpAsyncClient
      */
     public function __construct($client, Collector $collector, Formatter $formatter, Stopwatch $stopwatch)
     {
-        if (!($client instanceof HttpClient && $client instanceof HttpAsyncClient)) {
+        if (!(($client instanceof ClientInterface || $client instanceof HttpClient) && $client instanceof HttpAsyncClient)) {
             $client = new FlexibleHttpClient($client);
         }
 
@@ -86,12 +91,14 @@ class ProfileClient implements HttpClient, HttpAsyncClient
 
         $onFulfilled = function (ResponseInterface $response) use ($event, $stack) {
             $this->collectResponseInformations($response, $event, $stack);
+            $event->stop();
 
             return $response;
         };
 
         $onRejected = function (\Exception $exception) use ($event, $stack) {
             $this->collectExceptionInformations($exception, $event, $stack);
+            $event->stop();
 
             throw $exception;
         };
@@ -100,8 +107,11 @@ class ProfileClient implements HttpClient, HttpAsyncClient
 
         try {
             return $this->client->sendAsyncRequest($request)->then($onFulfilled, $onRejected);
-        } finally {
+        } catch (\Exception $e) {
             $event->stop();
+
+            throw $e;
+        } finally {
             if ($activateStack) {
                 //We only activate the stack when created by the StackPlugin.
                 $this->collector->activateStack($stack);
@@ -109,10 +119,7 @@ class ProfileClient implements HttpClient, HttpAsyncClient
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function sendRequest(RequestInterface $request)
+    protected function doSendRequest(RequestInterface $request)
     {
         $stack = $this->collector->getActiveStack();
         if (null === $stack) {
@@ -176,7 +183,7 @@ class ProfileClient implements HttpClient, HttpAsyncClient
      */
     private function collectExceptionInformations(\Exception $exception, StopwatchEvent $event, Stack $stack)
     {
-        if ($exception instanceof HttpException) {
+        if ($exception instanceof HttpException || $exception instanceof RequestExceptionInterface) {
             $this->collectResponseInformations($exception->getResponse(), $event, $stack);
         }
 

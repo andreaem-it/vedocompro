@@ -12,7 +12,10 @@
 namespace Sonata\DatagridBundle\Pager\Doctrine;
 
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\DatagridBundle\Pager\BasePager;
+use Sonata\DatagridBundle\Pager\PagerInterface;
+use Sonata\DatagridBundle\ProxyQuery\Doctrine\ProxyQuery;
 
 /**
  * Doctrine pager class.
@@ -28,7 +31,7 @@ class Pager extends BasePager
     {
         $countQuery = clone $this->getQuery();
 
-        if (count($this->getParameters()) > 0) {
+        if (\count($this->getParameters()) > 0) {
             $countQuery->setParameters($this->getParameters());
         }
 
@@ -65,7 +68,7 @@ class Pager extends BasePager
         $this->getQuery()->setFirstResult(null);
         $this->getQuery()->setMaxResults(null);
 
-        if (count($this->getParameters()) > 0) {
+        if (\count($this->getParameters()) > 0) {
             $this->getQuery()->setParameters($this->getParameters());
         }
 
@@ -79,5 +82,23 @@ class Pager extends BasePager
             $this->getQuery()->setFirstResult($offset);
             $this->getQuery()->setMaxResults($this->getMaxPerPage());
         }
+    }
+
+    /**
+     * Builds a pager for a given query builder.
+     *
+     * @param int $limit
+     * @param int $page
+     *
+     * @return PagerInterface
+     */
+    public static function create(QueryBuilder $builder, $limit, $page)
+    {
+        $pager = new self($limit);
+        $pager->setQuery(new ProxyQuery($builder));
+        $pager->setPage($page);
+        $pager->init();
+
+        return $pager;
     }
 }

@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.32.59",
+    "Version": "2.1.43.50",
     "Names": {
         "AC": "Otok Ascension",
         "AD": "Andora",
@@ -182,10 +182,10 @@
         "PH": "Filipini",
         "PK": "Pakistan",
         "PL": "Poljska",
-        "PM": "Saint-Pierre-et-Miquelon",
+        "PM": "Sveti Petar i Mikelon",
         "PN": "Otoci Pitcairn",
         "PR": "Portoriko",
-        "PS": "Palestinsko Područje",
+        "PS": "Palestinsko područje",
         "PT": "Portugal",
         "PW": "Palau",
         "PY": "Paragvaj",
@@ -236,7 +236,6 @@
         "UA": "Ukrajina",
         "UG": "Uganda",
         "UM": "Mali udaljeni otoci SAD-a",
-        "UN": "Ujedinjeni narodi",
         "US": "Sjedinjene Američke Države",
         "UY": "Urugvaj",
         "UZ": "Uzbekistan",

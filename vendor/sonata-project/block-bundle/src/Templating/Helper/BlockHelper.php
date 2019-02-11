@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -147,7 +149,7 @@ class BlockHelper extends Helper
      */
     public function includeStylesheets($media, $basePath = '')
     {
-        if (0 === count($this->assets['css'])) {
+        if (0 === \count($this->assets['css'])) {
             return '';
         }
 
@@ -209,7 +211,7 @@ class BlockHelper extends Helper
      * @param mixed $block
      * @param array $options
      *
-     * @return null|string
+     * @return string|null
      */
     public function render($block, array $options = [])
     {
@@ -335,6 +337,20 @@ class BlockHelper extends Helper
             'css' => $service->getStylesheets('all'),
         ];
 
+        if (\count($assets['js']) > 0) {
+            @trigger_error(
+                'Defining javascripts assets inside a block is deprecated since 3.x and will be removed in 4.0',
+                E_USER_DEPRECATED
+            );
+        }
+
+        if (\count($assets['css']) > 0) {
+            @trigger_error(
+                'Defining css assets inside a block is deprecated since 3.x and will be removed in 4.0',
+                E_USER_DEPRECATED
+            );
+        }
+
         if ($blockContext->getBlock()->hasChildren()) {
             $iterator = new \RecursiveIteratorIterator(new RecursiveBlockIterator($blockContext->getBlock()->getChildren()));
 
@@ -438,9 +454,9 @@ class BlockHelper extends Helper
         foreach ($this->eventDispatcher->getListeners($eventName) as $listener) {
             if ($listener instanceof \Closure) {
                 $results[] = '{closure}()';
-            } elseif (is_object($listener[0])) {
-                $results[] = get_class($listener[0]);
-            } elseif (is_string($listener[0])) {
+            } elseif (\is_object($listener[0])) {
+                $results[] = \get_class($listener[0]);
+            } elseif (\is_string($listener[0])) {
                 $results[] = $listener[0];
             } else {
                 $results[] = 'Unknown type!';

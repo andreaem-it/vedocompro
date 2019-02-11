@@ -83,7 +83,7 @@ class AppVariable
         }
 
         $user = $token->getUser();
-        if (is_object($user)) {
+        if (\is_object($user)) {
             return $user;
         }
     }
@@ -144,5 +144,40 @@ class AppVariable
         }
 
         return $this->debug;
+    }
+
+    /**
+     * Returns some or all the existing flash messages:
+     *  * getFlashes() returns all the flash messages
+     *  * getFlashes('notice') returns a simple array with flash messages of that type
+     *  * getFlashes(['notice', 'error']) returns a nested array of type => messages.
+     *
+     * @return array
+     */
+    public function getFlashes($types = null)
+    {
+        try {
+            $session = $this->getSession();
+            if (null === $session) {
+                return [];
+            }
+        } catch (\RuntimeException $e) {
+            return [];
+        }
+
+        if (null === $types || '' === $types || [] === $types) {
+            return $session->getFlashBag()->all();
+        }
+
+        if (\is_string($types)) {
+            return $session->getFlashBag()->get($types);
+        }
+
+        $result = [];
+        foreach ($types as $type) {
+            $result[$type] = $session->getFlashBag()->get($type);
+        }
+
+        return $result;
     }
 }

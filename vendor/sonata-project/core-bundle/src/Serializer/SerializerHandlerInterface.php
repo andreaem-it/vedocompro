@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Serializer;
+namespace Sonata\Serializer;
 
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
 
@@ -23,3 +25,5 @@ interface SerializerHandlerInterface extends SubscribingHandlerInterface
      */
     public static function getType();
 }
+
+interface_exists(\Sonata\CoreBundle\Serializer\SerializerHandlerInterface::class);

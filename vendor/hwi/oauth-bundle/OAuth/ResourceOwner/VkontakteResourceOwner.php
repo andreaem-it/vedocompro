@@ -12,8 +12,9 @@
 namespace HWI\Bundle\OAuthBundle\OAuth\ResourceOwner;
 
 use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * VkontakteResourceOwner.
@@ -28,12 +29,12 @@ class VkontakteResourceOwner extends GenericOAuth2ResourceOwner
      * {@inheritdoc}
      */
     protected $paths = array(
-        'identifier' => 'response.0.uid',
-        'nickname' => 'nickname',
+        'identifier' => 'response.0.id',
+        'nickname' => 'response.0.nickname',
         'firstname' => 'response.0.first_name',
         'lastname' => 'response.0.last_name',
         'realname' => array('response.0.last_name', 'response.0.first_name'),
-        'profilepicture' => 'response.0.photo',
+        'profilepicture' => 'response.0.photo_medium',
         'email' => 'email',
     );
 
@@ -46,24 +47,26 @@ class VkontakteResourceOwner extends GenericOAuth2ResourceOwner
             'access_token' => $accessToken['access_token'],
             'fields' => $this->options['fields'],
             'name_case' => $this->options['name_case'],
+            'v' => $this->options['api_version'],
         ));
 
-        $content = $this->doGetUserInformationRequest($url)->getContent();
+        $content = $this->doGetUserInformationRequest($url);
 
         $response = $this->getUserResponse();
-        $response->setResponse($content);
+        // This will translate string response into array
+        $response->setData($content instanceof ResponseInterface ? (string) $content->getBody() : $content);
         $response->setResourceOwner($this);
         $response->setOAuthToken(new OAuthToken($accessToken));
 
-        $content = $response->getResponse();
+        $content = $response->getData();
         $content['email'] = isset($accessToken['email']) ? $accessToken['email'] : null;
-        if (isset($content['screen_name'])) {
-            $content['nickname'] = $content['screen_name'];
-        } else {
-            $content['nickname'] = isset($content['nickname']) ? $content['nickname'] : null;
-        }
 
-        $response->setResponse($content);
+        $response->setData($content);
+
+        if (!$response->getNickname() && isset($content['response'][0]['screen_name'])) {
+            $content['response'][0]['nickname'] = $content['response'][0]['screen_name'];
+            $response->setData($content);
+        }
 
         return $response;
     }
@@ -79,6 +82,8 @@ class VkontakteResourceOwner extends GenericOAuth2ResourceOwner
             'authorization_url' => 'https://oauth.vk.com/authorize',
             'access_token_url' => 'https://oauth.vk.com/access_token',
             'infos_url' => 'https://api.vk.com/method/users.get',
+
+            'api_version' => '5.73',
 
             'scope' => 'email',
 
@@ -96,13 +101,6 @@ class VkontakteResourceOwner extends GenericOAuth2ResourceOwner
             return is_array($value) ? implode(',', $value) : $value;
         };
 
-        // Symfony <2.6 BC
-        if (method_exists($resolver, 'setNormalizer')) {
-            $resolver->setNormalizer('fields', $fieldsNormalizer);
-        } else {
-            $resolver->setNormalizers(array(
-                'fields' => $fieldsNormalizer,
-            ));
-        }
+        $resolver->setNormalizer('fields', $fieldsNormalizer);
     }
 }

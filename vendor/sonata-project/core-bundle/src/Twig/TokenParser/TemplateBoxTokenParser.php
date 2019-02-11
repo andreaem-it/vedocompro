@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,9 +11,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Twig\TokenParser;
+namespace Sonata\Twig\TokenParser;
 
-use Sonata\CoreBundle\Twig\Node\TemplateBoxNode;
+use Sonata\Twig\Node\TemplateBoxNode;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Token;
@@ -62,3 +64,5 @@ class TemplateBoxTokenParser extends AbstractTokenParser
         return 'sonata_template_box';
     }
 }
+
+class_exists(\Sonata\CoreBundle\Twig\TokenParser\TemplateBoxTokenParser::class);

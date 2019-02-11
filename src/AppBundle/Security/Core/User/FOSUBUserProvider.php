@@ -6,23 +6,16 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\Exception\AccountNotLinkedException;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
-
-
-// Source: https://gist.github.com/danvbe/4476697
 
 class FOSUBUserProvider extends BaseClass {
 
     private $session;
 
-    public function __construct(Session $session, UserManagerInterface $userManager, array $properties)
+    public function __construct(UserManagerInterface $userManager, array $properties)
     {
-        $this->session = $session;
+        $this->session = Session::class;
         parent::__construct($userManager, $properties);
     }
 
@@ -93,18 +86,4 @@ class FOSUBUserProvider extends BaseClass {
 
         return $username. "_" . $serviceName;
     }
-}
-
-class OAuthFailureHandler implements AuthenticationFailureHandlerInterface {
-
-    public function onAuthenticationFailure( Request $request, AuthenticationException $exception) {
-
-        if ( !$exception instanceof AccountNotLinkedException ) {
-            throw $exception;
-        }
-
-        return new RedirectResponse( '/registrati' );
-
-    }
-
 }

@@ -13,7 +13,7 @@
         "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
     "require": {
-        "php": ">=5.6.30",
+        "php": ">=7.2.10",
         "abishekrsrikaanth/aftership-php-sdk": "1.*",
         "amazonwebservices/aws-sdk-for-php": "dev-master",
         "avanzu/admin-theme-bundle": "2.0.0-beta.5",
@@ -24,7 +24,7 @@
         "doctrine/phpcr-odm": "1.4.2",
         "friendsofsymfony/user-bundle": "^2.0",
         "guzzle/guzzle": "3.*",
-        "hwi/oauth-bundle": "^0.5.3",
+        "hwi/oauth-bundle": "^0.6",
         "incenteev/composer-parameter-handler": "^2.0",
         "jackalope/jackalope-doctrine-dbal": "1.2.8",
         "jackalope/jackalope-jackrabbit": "1.*",
@@ -35,19 +35,18 @@
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/httplug-bundle": "^1.7",
         "sensio/distribution-bundle": "^5.0",
-        "sensio/framework-extra-bundle": "^3.0",
+        "sensio/framework-extra-bundle": "3.*",
         "sensio/generator-bundle": "^3.0",
-        "stfalcon/tinymce-bundle": "2.0",
+        "stfalcon/tinymce-bundle": "2.3.0",
         "symfony-cmf/symfony-cmf": "2.0.0",
         "symfony/assetic-bundle": "^2.8",
-        "symfony/event-dispatcher": "2.8.x-dev",
         "symfony/finder": "^3.3",
         "symfony/monolog-bundle": "^3.0.2",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/swiftmailer-bundle": "^2.3.10",
         "symfony/symfony": "3.*",
         "twig/twig": "^1.0||^2.0",
-        "twitter/bootstrap": "4.0.0.0-alpha6"
+        "twitter/bootstrap": "4.2.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -71,7 +70,7 @@
     },
     "config": {
         "platform": {
-            "php": "5.6.30"
+            "php": "7.2.10"
         },
         "sort-packages": true
     },

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Form\EventListener;
+namespace Sonata\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\DataTransformer\BooleanToStringTransformer;
@@ -27,28 +29,7 @@ class FixCheckboxDataListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        // NEXT_MAJOR: change `preBind` to `preSubmit`
-        return [FormEvents::PRE_SUBMIT => 'preBind'];
-    }
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated Since version 2.3, to be renamed in 4.0.
-     *             Use {@link preSubmit} instead
-     */
-    public function preBind(FormEvent $event)
-    {
-        // BC prevention for class extending this one.
-        if (self::class !== get_called_class()) {
-            @trigger_error(
-                __METHOD__.' is deprecated since 2.3 and will be renamed in 4.0.'
-                .' Use '.__CLASS__.'::preSubmit instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        $this->preSubmit($event);
+        return [FormEvents::PRE_SUBMIT => 'preSubmit'];
     }
 
     public function preSubmit(FormEvent $event)
@@ -56,7 +37,7 @@ class FixCheckboxDataListener implements EventSubscriberInterface
         $data = $event->getData();
         $transformers = $event->getForm()->getConfig()->getViewTransformers();
 
-        if (1 === count($transformers) && $transformers[0] instanceof BooleanToStringTransformer && '0' === $data) {
+        if (1 === \count($transformers) && $transformers[0] instanceof BooleanToStringTransformer && '0' === $data) {
             $event->setData(null);
         }
     }

@@ -1,21 +1,9 @@
-{% trans_default_domain 'FOSUserBundle' %}
-{% extends 'base.html.twig' %}
-{% block body %}
-    {% include 'template/header.html.twig' %}
-    <div class="wrapper">
-        <div class="container-fluid scrollbar">
-            <script src='https://www.google.com/recaptcha/api.js'></script>
-            <div class="row">
-                <div class="col-sm-4"></div>
-                <div class="col-sm-4">
-                    <h2>Reset della password</h2>
-                    <br>
-                    {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
-                    <br><br><br><br>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% include 'template/footer.html.twig' %}
+{% extends "@FOSUser/layout.html.twig" %}
 
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+<p>
+{{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
+</p>
 {% endblock %}

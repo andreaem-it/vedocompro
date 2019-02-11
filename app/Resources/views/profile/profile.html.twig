@@ -9,6 +9,7 @@
     {% embed 'modals/profile.message.html.twig' %}{% endembed %}
     <script type="text/javascript" src="{{ asset('js/dropzone.js') }}"></script>
     <link href="{{ asset('css/dropzone.css') }}" rel="stylesheet">
+    {% if app.user.username == user_info.0.username %}
     <div class="modal fade" id="changepic">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -76,7 +77,7 @@
             </div>
         </div>
     </div>
-
+    {% endif %}
     <div class="wrapper">
         <section id="profile-header" style="margin-top:-25px">
             <div class="container">
@@ -87,8 +88,10 @@
                                 <img id="profile-pic" class="card-img-top img-fluid rounded-circle"
                                      src="{{ asset('uploads/profile/' ~ user_info.0.pic ) | imagine_filter('profile_img_filter')}}">
                             </div>
+                            {% if app.user.username == user_info.0.username %}
                             <div class="overlay"></div>
                             <div class="button"><a href="#" data-toggle="modal" data-target="#changepic"> CAMBIA </a></div>
+                            {% endif %}
                         </div>
                     </div>
                     <div id="user_info" class="col-sm-5 mt-5 pt-4 mb-5">
@@ -102,13 +105,12 @@
                             {% if app.user.username is defined %}
                                 {% if app.user.username == user_info.0.name %}
                                     <p>Crediti:
-                                        <small>{{ user_info.0.creditsGold }}</small><img
-                                                    src="{{ asset('img/coins/coin_gold.png') }}"
-                                                    class="profile_coin_left"/> {{ user_info.0.creditsSilver }} <img
-                                                    src="{{ asset('img/coins/coin_silver.png') }}"
-                                                    class="profile_coin_left"/> {{ user_info.0.creditsBronze }} <img
-                                                    src="{{ asset('img/coins/coin_bronze.png') }}"
-                                                    class="profile_coin_left"/>
+                                        <small>{{ user_info.0.creditsGold }}</small>
+                                        <img src="{{ asset('img/coins/coin_gold.png') }}" class="profile_coin_left"/>
+                                        <small>{{ user_info.0.creditsSilver }}</small>
+                                        <img src="{{ asset('img/coins/coin_silver.png') }}" class="profile_coin_left"/>
+                                        <small>{{ user_info.0.creditsBronze }}</small>
+                                        <img src="{{ asset('img/coins/coin_bronze.png') }}" class="profile_coin_left"/>
                                     </p>
                                 {% endif %}
                             {% endif %}

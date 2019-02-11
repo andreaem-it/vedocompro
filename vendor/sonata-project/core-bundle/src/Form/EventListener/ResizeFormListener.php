@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Form\EventListener;
+namespace Sonata\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -69,10 +71,8 @@ class ResizeFormListener implements EventSubscriberInterface
     {
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',
-            // NEXT_MAJOR: change `preBind` to `preSubmit`
-            FormEvents::PRE_SUBMIT => 'preBind',
-            // NEXT_MAJOR: change `onBind` to `onSubmit`
-            FormEvents::SUBMIT => 'onBind',
+            FormEvents::PRE_SUBMIT => 'preSubmit',
+            FormEvents::SUBMIT => 'onSubmit',
         ];
     }
 
@@ -88,7 +88,7 @@ class ResizeFormListener implements EventSubscriberInterface
             $data = [];
         }
 
-        if (!is_array($data) && !$data instanceof \Traversable) {
+        if (!\is_array($data) && !$data instanceof \Traversable) {
             throw new UnexpectedTypeException($data, 'array or \Traversable');
         }
 
@@ -109,26 +109,6 @@ class ResizeFormListener implements EventSubscriberInterface
     }
 
     /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated Since version 2.3, to be renamed in 4.0.
-     *             Use {@link preSubmit} instead
-     */
-    public function preBind(FormEvent $event)
-    {
-        // BC prevention for class extending this one.
-        if (self::class !== get_called_class()) {
-            @trigger_error(
-                __METHOD__.' method is deprecated since 2.3 and will be renamed in 4.0.'
-                .' Use '.__CLASS__.'::preSubmit instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        $this->preSubmit($event);
-    }
-
-    /**
      * @throws UnexpectedTypeException
      */
     public function preSubmit(FormEvent $event)
@@ -144,7 +124,7 @@ class ResizeFormListener implements EventSubscriberInterface
             $data = [];
         }
 
-        if (!is_array($data) && !$data instanceof \Traversable) {
+        if (!\is_array($data) && !$data instanceof \Traversable) {
             throw new UnexpectedTypeException($data, 'array or \Traversable');
         }
 
@@ -161,7 +141,7 @@ class ResizeFormListener implements EventSubscriberInterface
                 ];
 
                 if ($this->preSubmitDataCallback) {
-                    $buildOptions['data'] = call_user_func($this->preSubmitDataCallback, $value);
+                    $buildOptions['data'] = \call_user_func($this->preSubmitDataCallback, $value);
                 }
 
                 $options = array_merge($this->typeOptions, $buildOptions);
@@ -173,26 +153,6 @@ class ResizeFormListener implements EventSubscriberInterface
                 $this->removed[] = $name;
             }
         }
-    }
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated Since version 2.3, to be removed in 4.0.
-     *             Use {@link onSubmit} instead
-     */
-    public function onBind(FormEvent $event)
-    {
-        // BC prevention for class extending this one.
-        if (self::class !== get_called_class()) {
-            @trigger_error(
-                __METHOD__.' is deprecated since 2.3 and will be renamed in 4.0.'
-                .' Use '.__CLASS__.'::onSubmit instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        $this->onSubmit($event);
     }
 
     /**
@@ -211,7 +171,7 @@ class ResizeFormListener implements EventSubscriberInterface
             $data = [];
         }
 
-        if (!is_array($data) && !$data instanceof \Traversable) {
+        if (!\is_array($data) && !$data instanceof \Traversable) {
             throw new UnexpectedTypeException($data, 'array or \Traversable');
         }
 

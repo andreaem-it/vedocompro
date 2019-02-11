@@ -1,21 +1,4 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license. For more information, see
- * <http://www.doctrine-project.org>.
- */
 
 namespace Doctrine\Tests\Common\DataFixtures;
 
@@ -23,6 +6,7 @@ use Doctrine\Common\DataFixtures\ProxyReferenceRepository;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Proxy\Proxy;
+use Doctrine\Tests\Common\DataFixtures\TestEntity\Role;
 
 /**
  * Test ProxyReferenceRepository.
@@ -32,7 +16,7 @@ use Doctrine\ORM\Proxy\Proxy;
  */
 class ProxyReferenceRepositoryTest extends BaseTest
 {
-    const TEST_ENTITY_ROLE = 'Doctrine\Tests\Common\DataFixtures\TestEntity\Role';
+    const TEST_ENTITY_ROLE = Role::class;
 
     public function testReferenceEntry()
     {
@@ -55,17 +39,17 @@ class ProxyReferenceRepositoryTest extends BaseTest
     public function testReferenceIdentityPopulation()
     {
         $em = $this->getMockSqliteEntityManager();
-        $referenceRepository = $this->getMockBuilder('Doctrine\Common\DataFixtures\ProxyReferenceRepository')
-            ->setConstructorArgs(array($em))
+        $referenceRepository = $this->getMockBuilder(ProxyReferenceRepository::class)
+            ->setConstructorArgs([$em])
             ->getMock();
         $em->getEventManager()->addEventSubscriber(
             new ORMReferenceListener($referenceRepository)
         );
         $schemaTool = new SchemaTool($em);
-        $schemaTool->dropSchema(array());
-        $schemaTool->createSchema(array(
+        $schemaTool->dropSchema([]);
+        $schemaTool->createSchema([
             $em->getClassMetadata(self::TEST_ENTITY_ROLE)
-        ));
+        ]);
 
         $referenceRepository->expects($this->once())
             ->method('addReference')
@@ -73,11 +57,11 @@ class ProxyReferenceRepositoryTest extends BaseTest
 
         $referenceRepository->expects($this->once())
             ->method('getReferenceNames')
-            ->will($this->returnValue(array('admin-role')));
+            ->will($this->returnValue(['admin-role']));
 
         $referenceRepository->expects($this->once())
             ->method('setReferenceIdentity')
-            ->with('admin-role', array('id' => 1));
+            ->with('admin-role', ['id' => 1]);
 
         $roleFixture = new TestFixtures\RoleFixture;
         $roleFixture->setReferenceRepository($referenceRepository);
@@ -92,10 +76,10 @@ class ProxyReferenceRepositoryTest extends BaseTest
         $em->getEventManager()->addEventSubscriber($listener);
 
         $schemaTool = new SchemaTool($em);
-        $schemaTool->dropSchema(array());
-        $schemaTool->createSchema(array(
+        $schemaTool->dropSchema([]);
+        $schemaTool->createSchema([
             $em->getClassMetadata(self::TEST_ENTITY_ROLE)
-        ));
+        ]);
         $roleFixture = new TestFixtures\RoleFixture;
         $roleFixture->setReferenceRepository($referenceRepository);
 
@@ -103,7 +87,7 @@ class ProxyReferenceRepositoryTest extends BaseTest
         // first test against managed state
         $ref = $referenceRepository->getReference('admin-role');
 
-        $this->assertNotInstanceOf('Doctrine\ORM\Proxy\Proxy', $ref);
+        $this->assertNotInstanceOf(Proxy::class, $ref);
 
         // test reference reconstruction from serialized data (was managed)
         $serializedData = $referenceRepository->serialize();
@@ -114,14 +98,14 @@ class ProxyReferenceRepositoryTest extends BaseTest
         $ref = $proxyReferenceRepository->getReference('admin-role');
 
         // before clearing, the reference is not yet a proxy
-        $this->assertNotInstanceOf('Doctrine\ORM\Proxy\Proxy', $ref);
-        $this->assertInstanceOf('Doctrine\Tests\Common\DataFixtures\TestEntity\Role', $ref);
+        $this->assertNotInstanceOf(Proxy::class, $ref);
+        $this->assertInstanceOf(self::TEST_ENTITY_ROLE, $ref);
 
         // now test reference reconstruction from identity
         $em->clear();
         $ref = $referenceRepository->getReference('admin-role');
 
-        $this->assertInstanceOf('Doctrine\ORM\Proxy\Proxy', $ref);
+        $this->assertInstanceOf(Proxy::class, $ref);
 
         // test reference reconstruction from serialized data (was identity)
         $serializedData = $referenceRepository->serialize();
@@ -131,7 +115,7 @@ class ProxyReferenceRepositoryTest extends BaseTest
 
         $ref = $proxyReferenceRepository->getReference('admin-role');
 
-        $this->assertInstanceOf('Doctrine\ORM\Proxy\Proxy', $ref);
+        $this->assertInstanceOf(Proxy::class, $ref);
     }
 
     public function testReferenceMultipleEntries()
@@ -140,7 +124,7 @@ class ProxyReferenceRepositoryTest extends BaseTest
         $referenceRepository = new ProxyReferenceRepository($em);
         $em->getEventManager()->addEventSubscriber(new ORMReferenceListener($referenceRepository));
         $schemaTool = new SchemaTool($em);
-        $schemaTool->createSchema(array($em->getClassMetadata(self::TEST_ENTITY_ROLE)));
+        $schemaTool->createSchema([$em->getClassMetadata(self::TEST_ENTITY_ROLE)]);
 
         $role = new TestEntity\Role;
         $role->setName('admin');
@@ -151,7 +135,7 @@ class ProxyReferenceRepositoryTest extends BaseTest
         $em->flush();
         $em->clear();
 
-        $this->assertInstanceOf('Doctrine\ORM\Proxy\Proxy', $referenceRepository->getReference('admin'));
-        $this->assertInstanceOf('Doctrine\ORM\Proxy\Proxy', $referenceRepository->getReference('duplicate'));
+        $this->assertInstanceOf(Proxy::class, $referenceRepository->getReference('admin'));
+        $this->assertInstanceOf(Proxy::class, $referenceRepository->getReference('duplicate'));
     }
 }

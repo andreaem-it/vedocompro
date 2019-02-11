@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Serializer;
+namespace Sonata\Serializer;
 
 use JMS\Serializer\Context;
 use JMS\Serializer\GraphNavigator;
@@ -111,10 +113,12 @@ abstract class BaseSerializerHandler implements SerializerHandlerInterface
      *
      * @param int $data
      *
-     * @return null|object
+     * @return object|null
      */
     public function deserializeObjectFromId(VisitorInterface $visitor, $data, array $type)
     {
         return $this->manager->findOneBy(['id' => $data]);
     }
 }
+
+class_exists(\Sonata\CoreBundle\Serializer\BaseSerializerHandler::class);

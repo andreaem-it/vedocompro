@@ -33,4 +33,43 @@ class TimezoneTypeTest extends BaseTypeTest
     {
         parent::testSubmitNull($expected, $norm, '');
     }
+
+    public function testSubmitNullUsesDefaultEmptyData($emptyData = 'Africa/Kinshasa', $expectedData = 'Africa/Kinshasa')
+    {
+        $form = $this->factory->create(static::TESTED_TYPE, null, [
+            'empty_data' => $emptyData,
+        ]);
+        $form->submit(null);
+
+        $this->assertSame($emptyData, $form->getViewData());
+        $this->assertSame($expectedData, $form->getNormData());
+        $this->assertSame($expectedData, $form->getData());
+    }
+
+    public function testDateTimeZoneInput()
+    {
+        $form = $this->factory->create(static::TESTED_TYPE, new \DateTimeZone('America/New_York'), ['input' => 'datetimezone']);
+
+        $this->assertSame('America/New_York', $form->createView()->vars['value']);
+
+        $form->submit('Europe/Amsterdam');
+
+        $this->assertEquals(new \DateTimeZone('Europe/Amsterdam'), $form->getData());
+
+        $form = $this->factory->create(static::TESTED_TYPE, [new \DateTimeZone('America/New_York')], ['input' => 'datetimezone', 'multiple' => true]);
+
+        $this->assertSame(['America/New_York'], $form->createView()->vars['value']);
+
+        $form->submit(['Europe/Amsterdam', 'Europe/Paris']);
+
+        $this->assertEquals([new \DateTimeZone('Europe/Amsterdam'), new \DateTimeZone('Europe/Paris')], $form->getData());
+    }
+
+    public function testFilterByRegions()
+    {
+        $choices = $this->factory->create(static::TESTED_TYPE, null, ['regions' => \DateTimeZone::EUROPE])
+            ->createView()->vars['choices'];
+
+        $this->assertContains(new ChoiceView('Europe/Amsterdam', 'Europe/Amsterdam', 'Amsterdam'), $choices, '', false, false);
+    }
 }

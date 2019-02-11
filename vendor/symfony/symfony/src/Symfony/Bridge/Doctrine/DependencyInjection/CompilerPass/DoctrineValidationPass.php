@@ -11,9 +11,8 @@
 
 namespace Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Registers additional validators.
@@ -22,11 +21,11 @@ use Symfony\Component\Config\Resource\FileResource;
  */
 class DoctrineValidationPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
     private $managerType;
 
+    /**
+     * @param string $managerType
+     */
     public function __construct($managerType)
     {
         $this->managerType = $managerType;
@@ -60,9 +59,8 @@ class DoctrineValidationPass implements CompilerPassInterface
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
-            if (is_file($file = dirname($reflection->getFileName()).'/'.$validationPath)) {
+            if ($container->fileExists($file = \dirname($reflection->getFileName()).'/'.$validationPath)) {
                 $files[] = $file;
-                $container->addResource(new FileResource($file));
             }
         }
 

@@ -1,21 +1,4 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license. For more information, see
- * <http://www.doctrine-project.org>.
- */
 
 namespace Doctrine\Tests\Common\DataFixtures\Executor;
 
@@ -23,8 +6,8 @@ use Doctrine\Common\DataFixtures\Executor\PHPCRExecutor;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\Tests\Common\DataFixtures\BaseTest;
 use Exception;
-use PHPUnit_Framework_TestCase;
 
 /**
  * Tests for {@see \Doctrine\Common\DataFixtures\Executor\PHPCRExecutor}
@@ -33,7 +16,7 @@ use PHPUnit_Framework_TestCase;
  *
  * @covers \Doctrine\Common\DataFixtures\Executor\PHPCRExecutor
  */
-class PHPCRExecutorTest extends PHPUnit_Framework_TestCase
+class PHPCRExecutorTest extends BaseTest
 {
     public function testExecuteSingleFixtureWithNoPurge()
     {
@@ -50,7 +33,7 @@ class PHPCRExecutorTest extends PHPUnit_Framework_TestCase
                 return $callback($dm);
             }));
 
-        $executor->execute(array($fixture), true);
+        $executor->execute([$fixture], true);
     }
 
     public function testExecuteMultipleFixturesWithNoPurge()
@@ -70,7 +53,7 @@ class PHPCRExecutorTest extends PHPUnit_Framework_TestCase
                 return $callback($dm);
             }));
 
-        $executor->execute(array($fixture1, $fixture2), true);
+        $executor->execute([$fixture1, $fixture2], true);
     }
 
     public function testExecuteFixtureWithPurge()
@@ -90,7 +73,7 @@ class PHPCRExecutorTest extends PHPUnit_Framework_TestCase
             }));
         $purger->expects($this->once())->method('purge');
 
-        $executor->execute(array($fixture), false);
+        $executor->execute([$fixture], false);
     }
 
     public function testExecuteFixtureWithoutPurge()
@@ -110,7 +93,7 @@ class PHPCRExecutorTest extends PHPUnit_Framework_TestCase
             }));
         $purger->expects($this->never())->method('purge');
 
-        $executor->execute(array($fixture), true);
+        $executor->execute([$fixture], true);
     }
 
     public function testFailedTransactionalStopsPurgingAndFixtureLoading()
@@ -126,7 +109,7 @@ class PHPCRExecutorTest extends PHPUnit_Framework_TestCase
         $purger->expects($this->never())->method('purge');
 
         try {
-            $executor->execute(array($fixture), true);
+            $executor->execute([$fixture], true);
         } catch (\Exception $caughtException) {
             $this->assertSame($exception, $caughtException);
         }

@@ -181,7 +181,7 @@ class AdsController extends Controller
      * @Route("/nuovo/", name="nuovo")
      * @Secure(roles="IS_AUTHENTICATED_FULLY")
      */
-    public function addAction(Request $request)
+    public function addAction(Request $request,\Swift_Mailer $mailer)
     {
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
@@ -303,6 +303,13 @@ class AdsController extends Controller
                 /** TODO: Togliere credito se selezionato promuovi  **/
                 $em->flush();
                 //$user = $this->getDoctrine()->getRepository('AppBundle:Users')->find($usr);
+
+                $message = (new \Swift_Message('Nuovo annuncio su VedoCompro'))
+                    ->setFrom('noreply@vedocompro.com')
+                    ->setTo(['alebibio@gmail.com','andreyodj@gmail.com'])
+                    ->setBody('Hey, un nuovo annuncio è stato caricato e deve essere moderato.');
+                $mailer->send($message);
+
 
                 return $this->redirectToRoute('profilo', array('query' => $usrName));
             }

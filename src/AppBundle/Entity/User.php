@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use FOS\UserBundle\Model\User as BaseUser;
-
+use AppBundle\Security\Core\User\OAuthFailureHandler;
 /**
  * @Entity
  * @ORM\Table(name="users")

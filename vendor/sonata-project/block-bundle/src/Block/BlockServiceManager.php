@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -41,7 +43,7 @@ class BlockServiceManager implements BlockServiceManagerInterface
     /**
      * @param ContainerInterface   $container
      * @param mixed                $debug
-     * @param null|LoggerInterface $logger
+     * @param LoggerInterface|null $logger
      */
     public function __construct(ContainerInterface $container, $debug, LoggerInterface $logger = null)
     {
@@ -108,7 +110,7 @@ class BlockServiceManager implements BlockServiceManagerInterface
     public function getServices()
     {
         foreach ($this->services as $name => $id) {
-            if (is_string($id)) {
+            if (\is_string($id)) {
                 $this->load($id);
             }
         }
@@ -130,7 +132,7 @@ class BlockServiceManager implements BlockServiceManagerInterface
         $containers = $this->container->getParameter('sonata.block.container.types');
 
         foreach ($this->contexts[$context] as $name) {
-            if (!$includeContainers && in_array($name, $containers)) {
+            if (!$includeContainers && \in_array($name, $containers)) {
                 continue;
             }
 

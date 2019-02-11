@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,7 +19,7 @@ interface BlockRendererInterface
 {
     /**
      * @param BlockContextInterface $name
-     * @param null|Response         $response
+     * @param Response|null         $response
      *
      * @return Response
      */

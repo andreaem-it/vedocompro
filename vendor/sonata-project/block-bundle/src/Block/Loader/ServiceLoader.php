@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -38,7 +40,7 @@ class ServiceLoader implements BlockLoaderInterface
      */
     public function exists($type)
     {
-        return in_array($type, $this->types, true);
+        return \in_array($type, $this->types, true);
     }
 
     /**
@@ -46,7 +48,7 @@ class ServiceLoader implements BlockLoaderInterface
      */
     public function load($configuration)
     {
-        if (!in_array($configuration['type'], $this->types)) {
+        if (!\in_array($configuration['type'], $this->types)) {
             throw new \RuntimeException(sprintf(
                 'The block type "%s" does not exist',
                 $configuration['type']
@@ -59,7 +61,7 @@ class ServiceLoader implements BlockLoaderInterface
         $block->setEnabled(true);
         $block->setCreatedAt(new \DateTime());
         $block->setUpdatedAt(new \DateTime());
-        $block->setSettings(isset($configuration['settings']) ? $configuration['settings'] : []);
+        $block->setSettings($configuration['settings'] ?? []);
 
         return $block;
     }
@@ -69,7 +71,7 @@ class ServiceLoader implements BlockLoaderInterface
      */
     public function support($configuration)
     {
-        if (!is_array($configuration)) {
+        if (!\is_array($configuration)) {
             return false;
         }
 

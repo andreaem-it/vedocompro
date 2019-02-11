@@ -8,6 +8,7 @@ use Gaufrette\Adapter\AzureBlobStorage\BlobProxyFactoryInterface;
 use MicrosoftAzure\Storage\Blob\Models\Blob;
 use MicrosoftAzure\Storage\Blob\Models\Container;
 use MicrosoftAzure\Storage\Blob\Models\CreateBlobOptions;
+use MicrosoftAzure\Storage\Blob\Models\CreateBlockBlobOptions;
 use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
 use MicrosoftAzure\Storage\Blob\Models\DeleteContainerOptions;
 use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
@@ -21,7 +22,8 @@ use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
  */
 class AzureBlobStorage implements Adapter,
                                   MetadataSupporter,
-                                  SizeCalculator
+                                  SizeCalculator,
+                                  ChecksumCalculator
 
 {
     /**
@@ -187,7 +189,12 @@ class AzureBlobStorage implements Adapter,
         $this->init();
         list($containerName, $key) = $this->tokenizeKey($key);
 
-        $options = new CreateBlobOptions();
+        if (class_exists(CreateBlockBlobOptions::class)) {
+            $options = new CreateBlockBlobOptions();
+        } else {
+            // for microsoft/azure-storage < 1.0
+            $options = new CreateBlobOptions();
+        }
 
         if ($this->detectContentType) {
             $contentType = $this->guessContentType($content);
@@ -326,6 +333,26 @@ class AzureBlobStorage implements Adapter,
             return false;
         }
 
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checksum($key)
+    {
+        $this->init();
+        list($containerName, $key) = $this->tokenizeKey($key);
+
+        try {
+            $properties = $this->blobProxy->getBlobProperties($containerName, $key);
+            $checksumBase64 = $properties->getProperties()->getContentMD5();
+
+            return \bin2hex(\base64_decode($checksumBase64, true));
+        } catch (ServiceException $e) {
+            $this->failIfContainerNotFound($e, sprintf('read content MD5 for key "%s"', $key), $containerName);
+
+            return false;
+        }
     }
 
     /**

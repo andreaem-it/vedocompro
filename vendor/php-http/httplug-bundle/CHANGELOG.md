@@ -2,6 +2,62 @@
 
 The change log describes what is "Added", "Removed", "Changed" or "Fixed" between each release.
 
+## 1.14.0
+
+### Added
+
+- Support for any PSR-18 client. 
+
+### Changed
+
+- Allow version 2 of `php-http/client-common`
+
+### Fixed
+
+- Fix deprecated notice when using symfony/config > 4.2
+- Profiler does not display stack when client name contains dots
+
+## 1.13.1 - 2018-11-28
+
+### Fixed
+
+- Fix wrong duration calculation for asynchronous calls
+
+## 1.13.0 - 2018-11-13
+
+### Added
+
+- Allow to configure the `QueryDefaultsPlugin`
+
+## 1.12.0 - 2018-10-25
+
+### Added
+
+- Add configuration option to allow making client services public if needed
+
+## 1.11.0 - 2018-07-07
+
+### Added
+
+- Add support for QueryParam in the AuthenticationPlugin
+
+### Fixed
+
+- Deprecation warnings on Symfony 4.1
+
+## 1.10.0 - 2018-03-27
+
+### Added
+ 
+- Allow to configure the `AddPathPlugin` per client, under the `add_path` configuration key.
+- Allow to configure clients with a `service` instead of a factory. 
+
+## 1.9.0 - 2018-03-06
+
+### Added
+ 
+- Allow to configure the `BaseUriPlugin` per client, under the `base_uri` configuration key.
+
 ## 1.8.1 - 2017-12-06
 
 ### Fixed

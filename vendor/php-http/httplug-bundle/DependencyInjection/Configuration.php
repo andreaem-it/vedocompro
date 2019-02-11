@@ -49,8 +49,13 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('httplug');
+        $treeBuilder = new TreeBuilder('httplug');
+        // Keep compatibility with symfony/config < 4.2
+        if (!method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->root('httplug');
+        } else {
+            $rootNode = $treeBuilder->getRootNode();
+        }
 
         $this->configureClients($rootNode);
         $this->configureSharedPlugins($rootNode);
@@ -179,11 +184,25 @@ class Configuration implements ConfigurationInterface
                     })
                     ->thenInvalid('If you want to use the "config" key you must also specify a valid "factory".')
                 ->end()
+                ->validate()
+                    ->ifTrue(function ($config) {
+                        return !empty($config['service']) && ('httplug.factory.auto' !== $config['factory'] || !empty($config['config']));
+                    })
+                    ->thenInvalid('If you want to use the "service" key you cannot specify "factory" or "config".')
+                ->end()
                 ->children()
                     ->scalarNode('factory')
                         ->defaultValue('httplug.factory.auto')
                         ->cannotBeEmpty()
                         ->info('The service id of a factory to use when creating the adapter.')
+                    ->end()
+                    ->scalarNode('service')
+                        ->defaultNull()
+                        ->info('The service id of the client to use.')
+                    ->end()
+                    ->booleanNode('public')
+                        ->defaultNull()
+                        ->info('Set to true if you really cannot use dependency injection and need to make the client service public.')
                     ->end()
                     ->booleanNode('flexible_client')
                         ->defaultFalse()
@@ -226,8 +245,13 @@ class Configuration implements ConfigurationInterface
      */
     private function createClientPluginNode()
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('plugins');
+        $treeBuilder = new TreeBuilder('plugins');
+        // Keep compatibility with symfony/config < 4.2
+        if (!method_exists($treeBuilder, 'getRootNode')) {
+            $node = $treeBuilder->root('plugins');
+        } else {
+            $node = $treeBuilder->getRootNode();
+        }
 
         /** @var ArrayNodeDefinition $pluginList */
         $pluginList = $node
@@ -298,6 +322,34 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('add_path')
+                    ->canBeEnabled()
+                    ->addDefaultsIfNotSet()
+                    ->info('Add a base path to the request.')
+                    ->children()
+                        ->scalarNode('path')
+                            ->info('Path to be added, e.g. /api/v1')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('base_uri')
+                    ->canBeEnabled()
+                    ->addDefaultsIfNotSet()
+                    ->info('Set a base URI to the request.')
+                    ->children()
+                        ->scalarNode('uri')
+                            ->info('Base Uri including protocol, optionally the port number and prepend path, e.g. https://api.local:8000/api')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                        ->scalarNode('replace')
+                            ->info('Whether to replace the host if request already specifies one')
+                            ->defaultValue(false)
+                        ->end()
+                    ->end()
+                ->end()
                 ->arrayNode('header_append')
                     ->canBeEnabled()
                     ->info('Append headers to the request. If the header already exists the value will be appended to the current value.')
@@ -348,6 +400,19 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('query_defaults')
+                    ->canBeEnabled()
+                    ->info('Sets query parameters to default value if they are not present in the request.')
+                    ->fixXmlConfig('parameter')
+                    ->children()
+                        ->arrayNode('parameters')
+                            ->info('List of query parameters. Names and values must not be url encoded as the plugin will encode them.')
+                            ->normalizeKeys(false)
+                            ->useAttributeAsKey('name')
+                            ->prototype('scalar')->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
         ->end();
 
@@ -357,7 +422,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Add the definitions for shared plugin configurations.
      *
-     * @param ArrayNodeDefinition $pluginNode The node to add to.
+     * @param ArrayNodeDefinition $pluginNode the node to add to
      * @param bool                $disableAll Some shared plugins are enabled by default. On the client, all are disabled by default.
      */
     private function addSharedPluginNodes(ArrayNodeDefinition $pluginNode, $disableAll = false)
@@ -455,12 +520,18 @@ class Configuration implements ConfigurationInterface
     /**
      * Create configuration for authentication plugin.
      *
-     * @return NodeDefinition Definition for the authentication node in the plugins list.
+     * @return NodeDefinition definition for the authentication node in the plugins list
      */
     private function createAuthenticationPluginNode()
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('authentication');
+        $treeBuilder = new TreeBuilder('authentication');
+        // Keep compatibility with symfony/config < 4.2
+        if (!method_exists($treeBuilder, 'getRootNode')) {
+            $node = $treeBuilder->root('authentication');
+        } else {
+            $node = $treeBuilder->getRootNode();
+        }
+
         $node
             ->useAttributeAsKey('name')
             ->prototype('array')
@@ -484,6 +555,10 @@ class Configuration implements ConfigurationInterface
                                 $this->validateAuthenticationType(['username', 'password'], $config, 'wsse');
 
                                 break;
+                            case 'query_param':
+                                $this->validateAuthenticationType(['params'], $config, 'query_param');
+
+                                break;
                         }
 
                         return $config;
@@ -491,7 +566,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->children()
                     ->enumNode('type')
-                        ->values(['basic', 'bearer', 'wsse', 'service'])
+                        ->values(['basic', 'bearer', 'wsse', 'service', 'query_param'])
                         ->isRequired()
                         ->cannotBeEmpty()
                     ->end()
@@ -499,6 +574,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('password')->end()
                     ->scalarNode('token')->end()
                     ->scalarNode('service')->end()
+                    ->arrayNode('params')->prototype('scalar')->end()
                     ->end()
                 ->end()
             ->end(); // End authentication plugin
@@ -518,6 +594,10 @@ class Configuration implements ConfigurationInterface
     private function validateAuthenticationType(array $expected, array $actual, $authName)
     {
         unset($actual['type']);
+        // Empty array is always provided, even if the config is not filled.
+        if (empty($actual['params'])) {
+            unset($actual['params']);
+        }
         $actual = array_keys($actual);
         sort($actual);
         sort($expected);
@@ -537,13 +617,18 @@ class Configuration implements ConfigurationInterface
     /**
      * Create configuration for cache plugin.
      *
-     * @return NodeDefinition Definition for the cache node in the plugins list.
+     * @return NodeDefinition definition for the cache node in the plugins list
      */
     private function createCachePluginNode()
     {
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder('config');
+        // Keep compatibility with symfony/config < 4.2
+        if (!method_exists($builder, 'getRootNode')) {
+            $config = $builder->root('config');
+        } else {
+            $config = $builder->getRootNode();
+        }
 
-        $config = $builder->root('config');
         $config
             ->fixXmlConfig('method')
             ->fixXmlConfig('respect_response_cache_directive')

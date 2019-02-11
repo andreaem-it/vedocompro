@@ -106,6 +106,10 @@ class Button implements \IteratorAggregate, FormInterface
      */
     public function setParent(FormInterface $parent = null)
     {
+        if ($this->submitted) {
+            throw new AlreadySubmittedException('You cannot set the parent of a submitted button');
+        }
+
         $this->parent = $parent;
     }
 
@@ -128,7 +132,7 @@ class Button implements \IteratorAggregate, FormInterface
      *
      * @throws BadMethodCallException
      */
-    public function add($child, $type = null, array $options = array())
+    public function add($child, $type = null, array $options = [])
     {
         throw new BadMethodCallException('Buttons cannot have children.');
     }
@@ -178,7 +182,7 @@ class Button implements \IteratorAggregate, FormInterface
      */
     public function all()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -186,7 +190,7 @@ class Button implements \IteratorAggregate, FormInterface
      */
     public function getErrors($deep = false, $flatten = true)
     {
-        return new FormErrorIterator($this, array());
+        return new FormErrorIterator($this, []);
     }
 
     /**
@@ -230,7 +234,7 @@ class Button implements \IteratorAggregate, FormInterface
      */
     public function getExtraData()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -272,8 +276,6 @@ class Button implements \IteratorAggregate, FormInterface
 
     /**
      * Unsupported method.
-     *
-     * @param FormError $error
      *
      * @throws BadMethodCallException
      */
@@ -366,12 +368,12 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Submits data to the button.
      *
-     * @param null|string $submittedData The data
+     * @param string|null $submittedData The data
      * @param bool        $clearMissing  Not used
      *
      * @return $this
      *
-     * @throws Exception\AlreadySubmittedException If the button has already been submitted.
+     * @throws Exception\AlreadySubmittedException if the button has already been submitted
      */
     public function submit($submittedData, $clearMissing = true)
     {

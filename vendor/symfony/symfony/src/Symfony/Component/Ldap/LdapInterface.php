@@ -31,7 +31,7 @@ interface LdapInterface
      * @param string $dn       A LDAP dn
      * @param string $password A password
      *
-     * @throws ConnectionException If dn / password could not be bound.
+     * @throws ConnectionException if dn / password could not be bound
      */
     public function bind($dn = null, $password = null);
 
@@ -44,7 +44,7 @@ interface LdapInterface
      *
      * @return QueryInterface
      */
-    public function query($dn, $query, array $options = array());
+    public function query($dn, $query, array $options = []);
 
     /**
      * @return EntryManagerInterface

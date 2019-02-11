@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Twig\Node;
+namespace Sonata\Twig\Node;
 
 use Twig\Compiler;
 use Twig\Node\Expression\AbstractExpression;
@@ -18,16 +20,13 @@ use Twig\Node\Node;
 /**
  * @author Marko Kunic <kunicmarko20@gmail.com>
  */
-final class DeprecatedTemplateNode extends Node
+class DeprecatedTemplateNode extends Node
 {
     public function __construct(AbstractExpression $newTemplate, $line, $tag = null)
     {
         parent::__construct(['newTemplate' => $newTemplate], [], $line, $tag);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compile(Compiler $compiler)
     {
         @trigger_error(sprintf(
@@ -37,3 +36,5 @@ final class DeprecatedTemplateNode extends Node
         ), E_USER_DEPRECATED);
     }
 }
+
+class_exists(\Sonata\CoreBundle\Twig\Node\DeprecatedTemplateNode::class);

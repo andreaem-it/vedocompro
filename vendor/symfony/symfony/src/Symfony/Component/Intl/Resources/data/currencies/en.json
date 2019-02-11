@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.32.59",
+    "Version": "2.1.44.91",
     "Names": {
         "ADP": [
             "ADP",
@@ -260,6 +260,10 @@
         "CLP": [
             "CLP",
             "Chilean Peso"
+        ],
+        "CNH": [
+            "CNH",
+            "Chinese Yuan (offshore)"
         ],
         "CNX": [
             "CNX",
@@ -679,6 +683,10 @@
         ],
         "MRO": [
             "MRO",
+            "Mauritanian Ouguiya (1973–2017)"
+        ],
+        "MRU": [
+            "MRU",
             "Mauritanian Ouguiya"
         ],
         "MTL": [
@@ -791,7 +799,7 @@
         ],
         "PHP": [
             "PHP",
-            "Philippine Peso"
+            "Philippine Piso"
         ],
         "PKR": [
             "PKR",
@@ -911,6 +919,10 @@
         ],
         "STD": [
             "STD",
+            "São Tomé & Príncipe Dobra (1977–2017)"
+        ],
+        "STN": [
+            "STN",
             "São Tomé & Príncipe Dobra"
         ],
         "SUR": [
@@ -1021,6 +1033,10 @@
             "UYU",
             "Uruguayan Peso"
         ],
+        "UYW": [
+            "UYW",
+            "Uruguayan Nominal Wage Index Unit"
+        ],
         "UZS": [
             "UZS",
             "Uzbekistani Som"
@@ -1031,6 +1047,10 @@
         ],
         "VEF": [
             "VEF",
+            "Venezuelan Bolívar (2008–2018)"
+        ],
+        "VES": [
+            "VES",
             "Venezuelan Bolívar"
         ],
         "VND": [

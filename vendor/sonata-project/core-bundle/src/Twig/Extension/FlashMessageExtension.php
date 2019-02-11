@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,9 +11,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Twig\Extension;
+namespace Sonata\Twig\Extension;
 
-use Sonata\CoreBundle\FlashMessage\FlashManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -19,48 +20,16 @@ use Twig\TwigFunction;
  * This is the Sonata core flash message Twig extension.
  *
  * @author Vincent Composieux <composieux@ekino.com>
+ * @author Titouan Galopin <galopintitouan@gmail.com>
  */
 class FlashMessageExtension extends AbstractExtension
 {
-    /**
-     * @var FlashManager
-     */
-    protected $flashManager;
-
-    public function __construct(FlashManager $flashManager)
-    {
-        $this->flashManager = $flashManager;
-    }
-
     public function getFunctions()
     {
         return [
-            new TwigFunction('sonata_flashmessages_get', [$this, 'getFlashMessages']),
-            new TwigFunction('sonata_flashmessages_types', [$this, 'getFlashMessagesTypes']),
+            new TwigFunction('sonata_flashmessages_get', [FlashMessageRuntime::class, 'getFlashMessages']),
+            new TwigFunction('sonata_flashmessages_types', [FlashMessageRuntime::class, 'getFlashMessagesTypes']),
         ];
-    }
-
-    /**
-     * Returns flash messages handled by Sonata core flash manager.
-     *
-     * @param string $type   Type of flash message
-     * @param string $domain Translation domain to use
-     *
-     * @return string
-     */
-    public function getFlashMessages($type, $domain = null)
-    {
-        return $this->flashManager->get($type, $domain);
-    }
-
-    /**
-     * Returns flash messages types handled by Sonata core flash manager.
-     *
-     * @return string
-     */
-    public function getFlashMessagesTypes()
-    {
-        return $this->flashManager->getHandledTypes();
     }
 
     public function getName()

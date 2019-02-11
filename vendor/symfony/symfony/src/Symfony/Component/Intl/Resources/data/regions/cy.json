@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.31.86",
+    "Version": "2.1.44.91",
     "Names": {
         "AC": "Ynys Ascension",
         "AD": "Andorra",
@@ -18,7 +18,7 @@
         "AW": "Aruba",
         "AX": "Ynysoedd Åland",
         "AZ": "Azerbaijan",
-        "BA": "Bosnia a Hercegovina",
+        "BA": "Bosnia & Herzegovina",
         "BB": "Barbados",
         "BD": "Bangladesh",
         "BE": "Gwlad Belg",
@@ -97,7 +97,7 @@
         "GU": "Guam",
         "GW": "Guiné-Bissau",
         "GY": "Guyana",
-        "HK": "Hong Kong RhGA Tsieina",
+        "HK": "Hong Kong SAR Tseina",
         "HN": "Honduras",
         "HR": "Croatia",
         "HT": "Haiti",
@@ -236,7 +236,6 @@
         "UA": "Wcráin",
         "UG": "Uganda",
         "UM": "Ynysoedd Pellennig UDA",
-        "UN": "Cenhedloedd Unedig",
         "US": "Yr Unol Daleithiau",
         "UY": "Uruguay",
         "UZ": "Uzbekistan",

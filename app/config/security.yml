@@ -23,10 +23,9 @@ security:
             form_login:
                 login_path: login
                 check_path: login
-            logout: true
             logout:
                 csrf_parameter:       _csrf_token
-                csrf_token_generator:  ~
+                csrf_token_generator:  security.csrf.token_manager
                 csrf_token_id:        logout
                 path:                 /logout
                 target:               /
@@ -56,7 +55,7 @@ security:
                 # Inject a service that will be created in the step #6
                 oauth_user_provider:
                     service: app.fos_user.oauth_provider
-                failure_handler:     app.oauthfailurehandler
+                failure_handler: app.oauthfailurehandler
         admin:
             pattern:    ^/admin
             http_basic: ~

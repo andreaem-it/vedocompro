@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\CoreBundle\Twig\Node;
+namespace Sonata\Twig\Node;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Compiler;
@@ -32,7 +34,7 @@ class TemplateBoxNode extends Node
      * @param AbstractExpression $message           Node message to display
      * @param AbstractExpression $translationBundle Node translation bundle to use for display
      * @param int                $enabled           Is Symfony debug enabled?
-     * @param null|string        $lineno            Symfony template line number
+     * @param string|null        $lineno            Symfony template line number
      * @param null               $tag               Symfony tag name
      */
     public function __construct(
@@ -89,3 +91,5 @@ CODE;
             ->write("echo $message;");
     }
 }
+
+class_exists(\Sonata\CoreBundle\Twig\Node\TemplateBoxNode::class);

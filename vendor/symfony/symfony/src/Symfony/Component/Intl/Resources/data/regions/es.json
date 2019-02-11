@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.32.59",
+    "Version": "2.1.44.88",
     "Names": {
         "AC": "Isla de la Ascensión",
         "AD": "Andorra",
@@ -18,7 +18,7 @@
         "AW": "Aruba",
         "AX": "Islas Åland",
         "AZ": "Azerbaiyán",
-        "BA": "Bosnia-Herzegovina",
+        "BA": "Bosnia y Herzegovina",
         "BB": "Barbados",
         "BD": "Bangladés",
         "BE": "Bélgica",
@@ -42,7 +42,7 @@
         "CC": "Islas Cocos",
         "CD": "República Democrática del Congo",
         "CF": "República Centroafricana",
-        "CG": "República del Congo",
+        "CG": "Congo",
         "CH": "Suiza",
         "CI": "Côte d’Ivoire",
         "CK": "Islas Cook",
@@ -83,7 +83,7 @@
         "GD": "Granada",
         "GE": "Georgia",
         "GF": "Guayana Francesa",
-        "GG": "Guernesey",
+        "GG": "Guernsey",
         "GH": "Ghana",
         "GI": "Gibraltar",
         "GL": "Groenlandia",

@@ -17,9 +17,23 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
+/**
+ * Controller managing security.
+ *
+ * @author Thibault Duplessis <thibault.duplessis@gmail.com>
+ * @author Christophe Coevoet <stof@notk.org>
+ */
 class SecurityController extends Controller
 {
+    private $tokenManager;
+
+    public function __construct(CsrfTokenManagerInterface $tokenManager = null)
+    {
+        $this->tokenManager = $tokenManager;
+    }
+
     /**
      * @param Request $request
      *
@@ -50,8 +64,8 @@ class SecurityController extends Controller
         // last username entered by the user
         $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
 
-        $csrfToken = $this->has('security.csrf.token_manager')
-            ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
+        $csrfToken = $this->tokenManager
+            ? $this->tokenManager->getToken('authenticate')->getValue()
             : null;
 
         return $this->renderLogin(array(
@@ -59,6 +73,16 @@ class SecurityController extends Controller
             'error' => $error,
             'csrf_token' => $csrfToken,
         ));
+    }
+
+    public function checkAction()
+    {
+        throw new \RuntimeException('You must configure the check path to be handled by the firewall using form_login in your security firewall configuration.');
+    }
+
+    public function logoutAction()
+    {
+        throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
     }
 
     /**
@@ -72,15 +96,5 @@ class SecurityController extends Controller
     protected function renderLogin(array $data)
     {
         return $this->render('@FOSUser/Security/login.html.twig', $data);
-    }
-
-    public function checkAction()
-    {
-        throw new \RuntimeException('You must configure the check path to be handled by the firewall using form_login in your security firewall configuration.');
-    }
-
-    public function logoutAction()
-    {
-        throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
     }
 }

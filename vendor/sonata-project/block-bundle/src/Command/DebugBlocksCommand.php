@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -23,6 +25,8 @@ class DebugBlocksCommand extends BaseCommand
      */
     public function configure()
     {
+        // NEXT_MAJOR: Switch name and alias
+        $this->setAliases(['debug:sonata:block']);
         $this->setName('sonata:block:debug');
         $this->setDescription('Debug all blocks available, show default settings of each block');
 
