@@ -218,14 +218,12 @@ class AdsController extends Controller
                     'empty_data' => null,
                     'required' => true,
                     'label' => 'Categoria',
-                    'class' => 'AppBundle\Entity\Category',
                     'group_by' => 'parentName',
                     'query_builder' => function (EntityRepository $repo) {
                         $qb = $repo->createQueryBuilder('l');
                         $qb->andWhere('l.parent IS NOT NULL');
                         return $qb;
-                    },
-                    'label' => 'Category'))
+                    }))
                 ->add('price', MoneyType::class, array('label' => 'Prezzo'))
                 ->add('objCondition', ChoiceType::class, array(
                     'label' => 'Condizione',
@@ -238,7 +236,9 @@ class AdsController extends Controller
                         'Non Funzionante' => 'Non Funzionante'
                     )
                 ))
-                ->add('location', EntityType::class, array(
+                ->add('location', TextType::class)
+
+                /*EntityType::class, array(
                     'label' => 'Dove si trova',
                     'placeholder' => 'Seleziona Comune',
                     'required' => true,
@@ -250,8 +250,8 @@ class AdsController extends Controller
                         $qb = $repo->createQueryBuilder('r')->orderBy('r.nome', 'ASC');
                         return $qb;
                     },
-                ))
-                ->add('provincia', EntityType::class, array(
+                ))*/
+                ->add('provincia', TextType::Class) /*EntityType::class, array(
                     'label' => 'Provincia',
                     'empty_data' => null,
                     'placeholder' => 'Seleziona Provincia',
@@ -262,8 +262,8 @@ class AdsController extends Controller
                         $qb = $repo->createQueryBuilder('r')->orderBy('r.nome', 'ASC');
                         return $qb;
                     },
-                ))
-                ->add('region', EntityType::class, array(
+                ))*/
+                ->add('region', TextType::class) /*EntityType::class, array(
                     'label' => 'Region',
                     'empty_data' => null,
                     'placeholder' => 'Seleziona Regione',
@@ -274,7 +274,7 @@ class AdsController extends Controller
                         $qb = $repo->createQueryBuilder('r')->orderBy('r.nome', 'ASC');
                         return $qb;
                     },
-                ))
+                ))*/
                 /**->add('option1',TextType::class, array('label' => 'Chilometraggio'))
                  * ->add('option2',TextType::class, array('label' => 'Anno'))
                  * ->add('option3',TextType::class, array('label' => 'Proprietari'))
@@ -301,16 +301,20 @@ class AdsController extends Controller
                 $video->setFilename($newAd->getVideo() ?? '');
                 $video->setUploaded(false);
                 $em->persist($video);
-                /** TODO: Togliere credito se selezionato promuovi  **/
+                if($form->getData()->getObjLevel() != null) {
+                    $user = $this->getDoctrine()->getRepository(User::class)->find($this->getUser()->getId());
+                    if($form->getData()->getObjLevel == 1) { $user->setCoinGold($user->getCoinGold() - 1); }
+                    if($form->getData()->getObjLevel == 2) { $user->setCoinSilver($user->getCoinSilver() - 1); }
+                    if($form->getData()->getObjLevel == 3) { $user->setCoinBronze($user->getCoinBronze() - 1); }
+                    $em->flush();
+                }
                 $em->flush();
-                //$user = $this->getDoctrine()->getRepository('AppBundle:Users')->find($usr);
 
                 $message = (new Swift_Message('Nuovo annuncio su VedoCompro'))
                     ->setFrom(['noreply@vedocompro.com' => 'VedoCompro'])
                     ->setTo(['alebibio@gmail.com','andreyodj@gmail.com'])
                     ->setBody('Hey, un nuovo annuncio è stato caricato e deve essere moderato.');
                 $this->get('mailer')->send($message);
-
 
                 return $this->redirectToRoute('profilo', array('query' => $usrName));
             }
