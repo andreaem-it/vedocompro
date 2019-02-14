@@ -14,7 +14,7 @@
         {% include 'template/header.html.twig' %}
 
     <div class="wrapper">
-        <div class="container-medium">
+        <div class="container-fluid">
             {% if showcase|length < 0 %}
             <div class="row">
                 <div class="col-sm-12">
@@ -44,18 +44,18 @@
             </div> <!-- Sponsorizzati -->
             {% endif %}
             <div class="row mt-5">
-                <div class="col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
+                <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                                <!-- VedoCompro thin -->
-                                                <ins class="adsbygoogle"
-                                                    style="display:inline-block;width:120px;height:600px"
-                                                    data-ad-client="ca-pub-4967985757423249"
-                                                    data-ad-slot="5432794279"></ins>
-                                                <script>
-                                                (adsbygoogle = window.adsbygoogle || []).push({});
-                                                </script>
+                    <!-- VedoCompro thin -->
+                    <ins class="adsbygoogle"
+                        style="display:inline-block;width:120px;height:600px"
+                        data-ad-client="ca-pub-4967985757423249"
+                        data-ad-slot="5432794279"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 </div>
-                <div class="col-sm-10 pl-4 pr-4">
+                <div class="col-10 col-sm-10 pl-4 pr-4">
                     <div class="row">
                         <div class="col-sm-12 ">
                             <h1 class="font-weight-light mb-4 section-title">{% trans %}  Results for {% endtrans %} "{{ query }}" in {{ region }} <small>( {{ results|length }} elementi )</small></h1>
@@ -63,15 +63,15 @@
                         <div class="row ml-4 mr-3 masonry-container">
                         {% for result in results %}
                             {% set slug = search.slugify(result.name) %}
-                            <div class="col-md-2 item mt-3">
+                            <div class="col-md-2 item mt-4">
                                 {% if result.objLevel == 1 %}
-                                    <div class="card result-card" style="border: 4px solid rgb(218, 165, 32);">
+                                    <div class="card h-250 result-card" style="border: 4px solid rgb(218, 165, 32);">
                                 {% elseif result.objLevel == 2 %}
-                                    <div class="card result-card" style="border: 4px solid #ccc;">
+                                    <div class="card h-250 result-card" style="border: 4px solid #ccc;">
                                 {% elseif result.objLevel == 3 %}
-                                    <div class="card result-card" style="border: 4px solid #CD7F32">
+                                    <div class="card h-250 result-card" style="border: 4px solid #CD7F32">
                                 {% else %}
-                                    <div class="card result-card">
+                                    <div class="card h-250 result-card">
                                 {% endif %}
                                     {% set catName = search.slugify(search.convertCategory(result.category)) %}
                                     {% set itemName = search.slugify(result.name) %}
@@ -81,6 +81,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title font-weight-light">
                                             <a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': itemName}) }}">{{ result.name }}</a>
+                                            <small class="fs-35">{{ search.convertCategory(result.category) }}</small>
                                             <p><strong>{{ result.price }}&nbsp;€</strong></p>
                                         </h5>
                                         
@@ -123,12 +124,15 @@
                                  $('.container-medium').removeClass('container-medium').addClass('container-fluid');  
                                  $('.masonry-container').removeClass('ml-4').removeClass('mr-3'); 
                                  $('.mobile-pub-container').addClass('shown').removeClass('hidden');
+                                 $('.card').removeClass('h-250');
+                                 $('.card-title small').removeClass('fs-35');
+                                 $('.card-title strong').addClass('fs-150');
                             }
                         </script>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
+                <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                     <!-- VedoCompro thin -->
                     <ins class="adsbygoogle"
@@ -140,14 +144,10 @@
                     </script>
                 </div>
             </div>
-            <div class="row">
-                
-            </div>
-            
-            
         </div>
     </div>
         {% include 'template/footer.html.twig' %}
+            </div>
     <style>
         .container-medium {
             width: 100%;
@@ -162,6 +162,20 @@
         .card {
             box-shadow: 5px 5px 10px 0px #BBB;
         }
+        .card-body {
+            padding: 1.25rem .50rem;
+        }
+        .card-title p strong {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .card-title small {
+            font-weight: 400;
+            position: absolute;
+            bottom: 13px;
+            left: 10px;
+        }
         .mobile-pub-container {
             min-width:100%;
             min-height: 150px;
@@ -172,6 +186,15 @@
         }
         .shown {
             visibility: visible;
+        }
+        .h-250 {
+            height: 250px!important;
+        }
+        .fs-35 {
+            font-size: 35%!important;
+        }
+        .fs-150 {
+            font-size: 150%!important;
         }
     </style>
 {% endblock %}    

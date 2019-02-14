@@ -133,8 +133,7 @@
                                             }
                                         }
                                     </script>
-                                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMB-P_jemzRYJDvfpwgRn5BV66jjqpDCw&libraries=places&callback=initAutocomplete"
-                                            async defer></script>
+                                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMB-P_jemzRYJDvfpwgRn5BV66jjqpDCw&libraries=places&callback=initAutocomplete" async defer></script>
                                 </div>
                                 <br>
                                 <div class="row">
@@ -202,7 +201,6 @@
                                             console.log(imgName);
                                             $('#form_video').val(imgName);
                                             loaded = true;
-                                            console.log(loaded)
                                         },
                                         error: function (file, response) {
                                             file.previewElement.classList.add("dz-error");
@@ -257,11 +255,13 @@
                                             $(this).removeClass('btn-success').addClass('btn-outline-success').text('Conferma');
                                             $('#confirmBtn').removeClass('btn-outline-success').addClass('btn-outline-secondary');
                                             $('#form_objLevel').val(0);
+                                             $('#hint-1').show();
                                         } else {
                                             e.preventDefault();
                                             $(this).addClass('btn-success').removeClass('btn-outline-success').text('Sponsorizzato!');
                                             $('#confirmBtn').addClass('btn-outline-success').removeClass('btn-outline-secondary');
                                             $('#form_objLevel').val(1);
+                                             $('#hint-1').hide();
                                         }
                                         }
                                     );
@@ -271,11 +271,13 @@
                                             $(this).removeClass('btn-success').addClass('btn-outline-success').text('Conferma');
                                             $('#confirmBtn').removeClass('btn-outline-success').addClass('btn-outline-secondary');
                                             $('#form_objLevel').val(0);
+                                            $('#hint-1').show();
                                         } else {
                                             e.preventDefault();
                                             $(this).addClass('btn-success').removeClass('btn-outline-success').text('Sponsorizzato!');
                                             $('#confirmBtn').addClass('btn-outline-success').removeClass('btn-outline-secondary');
                                             $('#form_objLevel').val('2');
+                                            $('#hint-1').hide();
                                         }}
                                     );
                                     $('#confirmBronze').click(function(e) {
@@ -284,11 +286,13 @@
                                             $(this).removeClass('btn-success').addClass('btn-outline-success').text('Conferma');;
                                             $('#confirmBtn').removeClass('btn-outline-success').addClass('btn-outline-secondary');
                                             $('#form_objLevel').val(0);
+                                            $('#hint-1').show();
                                         } else {
                                             e.preventDefault();
                                             $(this).addClass('btn-success').removeClass('btn-outline-success').text('Sponsorizzato!');
                                             $('#confirmBtn').addClass('btn-outline-success').removeClass('btn-outline-secondary');
                                             $('#form_objLevel').val(3);
+                                            $('#hint-1').hide();
                                         }}
                                     );
                                 </script>
@@ -331,7 +335,7 @@
                                       </div>
                                     </div>
                                 </div>
-                                <div class="row mt-2">
+                                <div class="row mt-2" id="hint-1">
                                     <div class="col-sm-12">
                                         <div class="alert alert-info">
                                             Ti consigliamo di sponsorizzare questo annuncio! Tuttavia, puoi proseguire anche senza effettuare questa operazione
