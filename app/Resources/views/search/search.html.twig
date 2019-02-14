@@ -55,7 +55,7 @@
                     (adsbygoogle = window.adsbygoogle || []).push({});
                     </script>
                 </div>
-                <div class="col-10 col-sm-10 pl-4 pr-4">
+                <div id="resultsRow" class="col-10 col-sm-10 pl-4 pr-4">
                     <div class="row">
                         <div class="col-sm-12 ">
                             <h1 class="font-weight-light mb-4 section-title">{% trans %}  Results for {% endtrans %} "{{ query }}" in {{ region }} <small>( {{ results|length }} elementi )</small></h1>
@@ -127,6 +127,7 @@
                                  $('.card').removeClass('h-250');
                                  $('.card-title small').removeClass('fs-35');
                                  $('.card-title strong').addClass('fs-150');
+                                 $('#resultsRow').removeClass('col-sm-10').addClass('col-sm-12').removeClass('col-10').addClass('col-12');
                             }
                         </script>
                         </div>
