@@ -351,6 +351,9 @@
         color: rgb(67,150,193) !important;
     }
     #video {
+
+    }
+    .video-mobile {
         width: 122%!important;
         left: 0px!important;
         margin-left: -50px!important;
@@ -374,5 +377,8 @@
                 jwplayer().pause();
             }
         });
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            $('#video').addClass('video-mobile');
+        };
     </script>
 {% endblock %}
