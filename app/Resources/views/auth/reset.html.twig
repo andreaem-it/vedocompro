@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
-{% block body %}
+{% extends '@!FOSUserBundle:Resetting:request_content.html.twig' %}
+{% block fos_user_content %}
     {% include 'template/header.html.twig' %}
     <div class="wrapper">
         <div class="container-fluid scrollbar">

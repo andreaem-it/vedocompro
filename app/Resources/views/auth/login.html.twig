@@ -71,19 +71,27 @@
                 <section id="passwReset" class="row mt-5 pt-5" style="display:none">
                     <div class="col-md-4"></div>
                     <div class="col-md-4">
-                        <script src='https://www.google.com/recaptcha/api.js'></script>
+{#                        {{ render(controller('FOSUserBundle:Resetting:requestAction')) }}#}
+{#                        <script src='https://www.google.com/recaptcha/api.js'></script>#}
+{#                        <h3 class="text-center txt-white ">RESET PASSWORD</h3>#}
+{#                        <p class="text-center text-white mt-3 txt-light font-weight-light txt-small">Inserisci#}
+{#                            l'indirizzo e-mail con cui ti sei registrato, se corrisponde, riceverai un'e-mail con un#}
+{#                            link per reimpostare la password </p>#}
+{#                        <input type="email" class="form-control login-control mt-3 text-center" placeholder="e-mail">#}
+{#                        <div class="col-md-8 mt-3 mx-auto">#}
+{#                            <div class="g-recaptcha mx-auto"#}
+{#                                 data-sitekey="6Ldp8i4UAAAAAJLdCJR_zqUA9uUug_6P03qb6W-6"></div>#}
+{#                        </div>#}
+{#                        <div class="row mt-3 justify-content-between">#}
+{#                            <div class="col-sm-5 mx-auto">#}
+{#                                <a href="" class="btn btn-login btn-block">RIPRISTINA</a>#}
+{#                            </div>#}
+{#                        </div>#}
                         <h3 class="text-center txt-white ">RESET PASSWORD</h3>
-                        <p class="text-center text-white mt-3 txt-light font-weight-light txt-small">Inserisci
-                            l'indirizzo e-mail con cui ti sei registrato, se corrisponde, riceverai un'e-mail con un
-                            link per reimpostare la password </p>
-                        <input type="email" class="form-control login-control mt-3 text-center" placeholder="e-mail">
-                        <div class="col-md-8 mt-3 mx-auto">
-                            <div class="g-recaptcha mx-auto"
-                                 data-sitekey="6Ldp8i4UAAAAAJLdCJR_zqUA9uUug_6P03qb6W-6"></div>
-                        </div>
+                        <p class="text-center txt-white">Se hai dimenticato i dati di accesso, attraverso questa procedura, potrai reimpostare la tua password</p>
                         <div class="row mt-3 justify-content-between">
                             <div class="col-sm-5 mx-auto">
-                                <a href="" class="btn btn-login btn-block">RIPRISTINA</a>
+                               <a href="{{ url('fos_user_resetting_request') }}" class="btn btn-login btn-block">RIPRISTINA</a>
                             </div>
                         </div>
                     </div>
@@ -113,7 +121,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-5">
-                                    <a href="{{ path('fos_user_resetting_request') }}" id="lostPwdLink" class="text-light mt-3 ">Password dimenticata?</a>
+                                    <a id="lostPwdLink" class="text-light mt-3 ">Password dimenticata?</a>
                                 </div>
                             </div>
                             <div class="row mt-3 justify-content-between">
@@ -279,12 +287,12 @@
         $('#createAccountLink').attr("href", "");
         $('#passwReset').fadeToggle().hide();
     });
-    /*$('#lostPwdLink').click(function (e) {
+    $('#lostPwdLink').click(function (e) {
         e.preventDefault();
         $('#loginForm').fadeToggle().hide();
         $('#passwReset').fadeToggle();
         $('.circle').addClass("transform-180");
-    });*/
+    });
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         $('.circle').addClass('mt-5').addClass('pt-5').css('top', '-1em');
         $('#navbar').addClass('header-fixed');

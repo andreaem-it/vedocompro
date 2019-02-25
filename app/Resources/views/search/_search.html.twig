@@ -1,0 +1,258 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=0">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{{asset('js/jquery.scrolling-tabs.min.js') }}"></script>
+    <script src="{{ asset('js/masonry.pkgd.min.js') }}"></script>
+    <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}"></script>
+    <link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
+    
+        {% include 'template/header.html.twig' %}
+
+    <div class="wrapper">
+        <div class="container-fluid">
+            {% if showcase|length < 0 %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2 class="font-weight-light mt-5 mb-4 color-light-blue-txt section-title">Sponsorizzati</h2>
+                        {% for item in showcase %}
+                            {% set catName = search.slugify(search.convertCategory(item.category)) %}
+                            {% set itemName = search.slugify(item.name) %}
+                            {% set slug = search.slugify(item.name) %}
+                             <div class="card">
+                                <div class="card-block">
+                                    <div class="card" style=" margin-bottom:10px">
+                                        <div class="card-block" style="padding: 0">
+                                            <div>
+                                                <img src="/uploads/photos/{{ item.id }}-1.jpg" style="float:left; width: 100px; margin-right: 10px">
+                                            </div>
+                                            <div style="margin-top: 5px">
+                                                <h6 class="card-title"><a href="{{ url('vedi_oggetto',  {'category': catName,'item': item.id,'title': slug}) }}">{{ item.name }}</a></h6>
+                                                <p>{{ item.price }} €</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                            
+                    </div>
+            </div> <!-- Sponsorizzati -->
+            {% endif %}
+            <div class="row mt-5">
+                {% if list == 'tile' or list == '' %}
+                <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- VedoCompro thin -->
+                    <ins class="adsbygoogle"
+                        style="display:inline-block;width:120px;height:600px"
+                        data-ad-client="ca-pub-4967985757423249"
+                        data-ad-slot="5432794279"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+                <div id="resultsRow" class="col-10 col-sm-10 pl-4 pr-4">
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            <h1 class="font-weight-light mb-4 section-title">{% trans %}  Results for {% endtrans %} "{{ query }}" in {{ region }} <small>( {{ results|length }} elementi )</small></h1>
+                        </div>
+                        <div class="row ml-4 mr-3 masonry-container">
+                        {% for result in results %}
+                            {% set slug = search.slugify(result.name) %}
+                            <div class="col-md-2 item mt-4">
+                                {% if result.objLevel == 1 %}
+                                    <div class="card h-250 result-card" style="border: 4px solid rgb(218, 165, 32);">
+                                {% elseif result.objLevel == 2 %}
+                                    <div class="card h-250 result-card" style="border: 4px solid #ccc;">
+                                {% elseif result.objLevel == 3 %}
+                                    <div class="card h-250 result-card" style="border: 4px solid #CD7F32">
+                                {% else %}
+                                    <div class="card h-250 result-card">
+                                {% endif %}
+                                    {% set catName = search.slugify(search.convertCategory(result.category)) %}
+                                    {% set itemName = search.slugify(result.name) %}
+                                    <a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': slug}) }}">
+                                        <img class="card-img-top img-fluid" id="imgPreview-{{ result.id }}" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ result.id }}-1.jpg" alt="Card image cap">
+                                    </a>
+                                    <div class="card-body">
+                                        <h5 class="card-title font-weight-light">
+                                            <a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': itemName}) }}">{{ result.name }}</a>
+                                            <small class="fs-35">{{ search.convertCategory(result.category) }}</small>
+                                            <p><strong>{{ result.price }}&nbsp;€</strong></p>
+                                        </h5>
+
+                                    </div>
+                                </div>
+                            </div>
+                                    </div>
+                        {% endfor %}
+                            <div class="mobile-pub-container hidden mt-3 container-fluid" style="width:100%;height:35%">
+                                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                <ins class="adsbygoogle"
+                                    style="display:block"
+                                    data-ad-format="fluid"
+                                    data-ad-layout-key="-8v+36-lu+73+1mm"
+                                    data-ad-client="ca-pub-4967985757423249"
+                                    data-ad-slot="9546588662"></ins>
+                                <script>
+                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                </script>
+                            </div>
+                        <script>
+                            var cycle = function(el) {
+                                var s = el.attr('src');
+                                var root = s.substring(0, s.lastIndexOf('-') + 1);
+                                var count = s.substring(s.lastIndexOf('-') + 1).replace('.jpg', '');
+                                count = (count*1+1)%5;
+                                el.attr('src', root + ((count === 0) ? '5' : count) + '.jpg');
+                            };
+                            $('body').on('mouseenter', '[id^=imgPreview-]', function(e) {
+                                var thisImage = $(this);
+                                var timer;
+                                cycle(thisImage);
+                                timer = setInterval(function() {
+                                    cycle(thisImage);
+                                }, 800);
+                                thisImage.on('mouseleave', function() {
+                                    clearInterval(timer);
+                                });
+                            });
+                            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                                 $('.container-medium').removeClass('container-medium').addClass('container-fluid');
+                                 $('.masonry-container').removeClass('ml-4').removeClass('mr-3');
+                                 $('.mobile-pub-container').addClass('shown').removeClass('hidden');
+                                 $('.card').removeClass('h-250');
+                                 $('.card-title small').removeClass('fs-35');
+                                 $('.card-title strong').addClass('fs-150');
+                                 $('#resultsRow').removeClass('col-sm-10').addClass('col-sm-12').removeClass('col-10').addClass('col-12');
+                            }
+                        </script>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                </div>
+                <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- VedoCompro thin -->
+                    <ins class="adsbygoogle"
+                        style="display:inline-block;width:120px;height:600px"
+                        data-ad-client="ca-pub-4967985757423249"
+                        data-ad-slot="5432794279"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+                {% else %}
+                    <div class="col-2 col-sm-2 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <!-- VedoCompro thin -->
+                        <ins class="adsbygoogle"
+                             style="display:inline-block;width:120px;height:600px"
+                             data-ad-client="ca-pub-4967985757423249"
+                             data-ad-slot="5432794279"></ins>
+                        <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+                    <div id="resultsRow" class="col-8 col-sm-8">
+                        {% for result in results %}
+                            {% set slug = search.slugify(result.name) %}
+                            {% set catName = search.slugify(search.convertCategory(result.category)) %}
+                            {% set itemName = search.slugify(result.name) %}
+                        <div class="list-group-item list-group-item-action list-item-shadow mt-2" style="padding:0!important">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': slug}) }}">
+                                        <img class="card-img-top img-fluid" id="imgPreview-{{ result.id }}" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ result.id }}-1.jpg" alt="Card image cap">
+                                    </a>
+                                    <div class="dash-image-holder image-holder-desktop" style="background-image:url('https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ result.id }}-1.jpg');" class="img-fluid"></div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="row mt-4">
+                                        <a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': itemName}) }}">
+                                            <h3 class="font-weight-light ad-title">{{ result.name }}</h3>
+                                        </a>
+                                        <br/>
+                                        <p><small>{{ search.convertCategory(result.category) }}</small></p>
+                                        <br/>
+                                        <p><strong>{{ result.price }}&nbsp;€</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-2 col-sm-2 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <!-- VedoCompro thin -->
+                        <ins class="adsbygoogle"
+                             style="display:inline-block;width:120px;height:600px"
+                             data-ad-client="ca-pub-4967985757423249"
+                             data-ad-slot="5432794279"></ins>
+                        <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+        {% include 'template/footer.html.twig' %}
+            </div>
+    <style>
+        .container-medium {
+            width: 100%;
+            padding-right: 55px;
+            padding-left: 55px;
+            margin-right: auto;
+            margin-left: auto;
+        } 
+        .section-title {
+            font-size: 28px;
+        }
+        .card {
+            box-shadow: 5px 5px 10px 0px #BBB;
+        }
+        .card-body {
+            padding: 1.25rem .50rem;
+        }
+        .card-title p strong {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .card-title small {
+            font-weight: 400;
+            position: absolute;
+            bottom: 13px;
+            left: 10px;
+        }
+        .mobile-pub-container {
+            min-width:100%;
+            min-height: 150px;
+            box-shadow: 5px 5px 10px 0px #BBB;
+        }
+        .hidden {
+            visibility: hidden;
+        }
+        .shown {
+            visibility: visible;
+        }
+        .h-250 {
+            height: 250px!important;
+        }
+        .fs-35 {
+            font-size: 35%!important;
+        }
+        .fs-150 {
+            font-size: 150%!important;
+        }
+    </style>
+{% endblock %}    

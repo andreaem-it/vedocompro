@@ -1,9 +1,26 @@
-{% extends "@FOSUser/layout.html.twig" %}
 
-{% trans_default_domain 'FOSUserBundle' %}
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="wrapper">
+        <div class="container-fluid scrollbar">
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <div class="form-signin">
+                        <div class="text-center">
+                            <img class="mx-auto mt-5" style="max-width: 100px; max-height: 100px" src="{{ asset('img/animated-check.gif') }}">
+                            <br><br>
+                            <h2 class="form-signin-heading">Ripristino Password</h2>
+                            <br><br>
+                            <p>Una mail è stata inviata all'indirizzo collegato al tuo account.</p>
+                            <p>Clicca sul link fornito per reimpostare la tua password</p>
+                            <a href="{{ url('login') }}">Torna al Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-{% block fos_user_content %}
-<p>
-{{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
-</p>
 {% endblock %}

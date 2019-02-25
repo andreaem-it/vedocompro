@@ -108,7 +108,8 @@ class SearchController extends Controller
             'query' => $q,
             'results' => $searchResults,
             'search' => $this,
-            'showcase' => $showcaseResults
+            'showcase' => $showcaseResults,
+            'list' => $request->query->get('list')
         ]);
     }
 
