@@ -34,7 +34,7 @@ class Ads
     private $price;
     
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $description;
     
@@ -233,7 +233,7 @@ class Ads
     /**
      * Set description
      *
-     * @param string $description
+     * @param text $description
      *
      * @return Ads
      */
@@ -247,7 +247,7 @@ class Ads
     /**
      * Get description
      *
-     * @return string
+     * @return text
      */
     public function getDescription()
     {
