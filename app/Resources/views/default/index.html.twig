@@ -2,327 +2,328 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="{{ asset('css/base.css') }}">-->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <title>
+        VedoCompro.it - Acquista e Vendi con un Video!
+    </title>
+    <meta name="description" content="VedoCompro.it ti permette di vendere e acquistare oggetti in un modo tutto nuovo, con un Video." />
+    <meta name="google" content="notranslate" />
 </head>
 <body style="width:100%;overflow-x:hidden;">
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="jumbotron jumbotron-fluid"
-             style="width:100%;height:100%;background-image:url('{{ asset('img/home/home-bg-2.jpg') }}');background-position:center center;background-size:cover;padding-top:0">
-            <div class="container-fluid">
-                <nav class="navbar navbar-expand-lg navbar-light" id="navbar" style="background-color:transparent;">
-                    <a class="navbar-brand" href="#">
-                        <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-cobalt.png') }}"
-                             class="img-fluid" style="max-width:280px"/>
-                    </a>
-                    <button id="navbar-toggler" class="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse">
-
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item color-000 ">
-                                <a href="{{ url('homepage') }}" class="head-txt-bold">HOME</a>
-                            </li>
-                            {% if app.user %}
-                                <li class="nav-item color-000 dropdown">
-                                    {{ render(controller('AppBundle:Notifications:notifications')) }}
-                                </li>
-                                <li class="nav-item color-000">
-                                    <a href="{{ url('profilo' , {'query': app.user.username }) }}"
-                                       class=" head-txt-bold">PROFILO</a>
-                                </li>
-                                <li class="nav-item color-000">
-                                    <a href="{{ logout_path('main') }}" class="head-txt-bold">ESCI</a>
-                                </li>
-                            {% else %}
-                                <li class="nav-item color-000">
-                                    <a href="{{ url('login') }}" class="nav-link active">ACCEDI</a>
-                                </li>
-                                <li class="nav-item color-000">
-                                    <a href="{{ url('login') }}#registrati" class="nav-link">REGISTRATI </a>
-                                </li>
-                            {% endif %}
-                            <li class="nav-item color-000">
-                                <a href="{{ url('helpdesk') }}" class="nav-link">SUPPORTO</a>
-                            </li>
-                            <a href="{{ url('nuovo') }}"
-                               class="btn btn-lg btn-primary float-right color-light-blue btn-add-ad">
-                                INSERISCI ANNUNCIO
-                                <img src="{{ asset('img/home/camera.svg') }}" class="btn-camera" style="width:32px">
-                            </a>
-
-                        </ul>
-                    </div>
-                </nav>
-                <div class="row">
-                    <div class="col-12 mt-5">
-
-                        <h1 class="display-3 text-center align-middle pt-5 mt-5"
-                            style="color:#FFF; text-shadow: 4px 0px #555;font-weight:300;font-family:Arial">
-                            <br>
-                            <strong>Cosa stai cercando?</strong>
-                        </h1>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3">
-
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card mt-5">
-                            <div class="card-body">
-                                {{ render(controller('AppBundle:Search:formTop')) }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <section id="categories">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12">
-                <h2 class="text-center mt-5">Categorie</h2>
-                <h1 class="text-center color-light-blue-txt mt-5">Vendi e acquista nelle nostre categorie</h1>
-            </div>
-        </div>
-        <div class="container mt-5 pt-3">
-            <div class="row">
-                <div class="col-md-4 mt-4">
-                    <div class="card-container">
-                        <img src="{{ asset('img/home/car.jpg') }}" alt="Avatar" class="card-image img-fluid">
-                        <div class="card-overlay">
-                            <div class="card-text">
-                                <h1>MOTORI</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mt-4">
-                    <div class="card-container">
-                        <img src="{{ asset('img/home/tech.jpg') }}" alt="Avatar" class="card-image img-fluid">
-                        <div class="card-overlay">
-                            <div class="card-text">
-                                <h1>TECNOLOGIA</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mt-4">
-                    <div class="card-container">
-                        <img src="{{ asset('img/home/furniture.jpg') }}" alt="Avatar" class="card-image">
-                        <div class="card-overlay">
-                            <div class="card-text">
-                                <h1>ARREDAMENTO</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mt-4">
-                    <div class="card-container">
-                        <img src="{{ asset('img/home/clothing.jpg') }}" alt="Avatar" class="card-image img-fluid">
-                        <div class="card-overlay">
-                            <div class="card-text">
-                                <h1>ABBIGLIAMENTO</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mt-4">
-                    <div class="card-container">
-                        <img src="{{ asset('img/home/villa.jpg') }}" alt="Avatar" class="card-image img-fluid">
-                        <div class="card-overlay">
-                            <div class="card-text">
-                                <h1>IMMOBILI</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mt-4">
-                    <div class="card-container">
-                        <img src="{{ asset('img/home/sport.jpg') }}" alt="Avatar" class="card-image">
-                        <div class="card-overlay">
-                            <div class="card-text">
-                                <h1>SPORT</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-5 pt-5">
-            <div class="col-md-3"></div>
-            <div class="col-md-3">
-                <a href="" class="btn btn-lg color-light-blue ml-auto mr-1 mx-auto btn-bottom btn-block mb-2"
-                   style="position: relative:color: #FFF!important;">Scopri di più</a>
-            </div>
-            <div class="col-md-3">
-                <a href="" class="btn btn-lg color-light-blue ml-1 mr-auto mx-auto btn-bottom btn-block mb-2"
-                   style="position: relativel;color: #FFF!important;">Ulteriori Info</a>
-            </div>
-        </div>
-</div>
+            <div class="jumbotron jumbotron-fluid"
+                 style="width:100%;height:100%;background-image:url('{{ asset('img/home/home-bg-2.jpg') }}');background-position:center center;background-size:cover;padding-top:0">
+                <div class="container-fluid">
+                    <nav class="navbar navbar-expand-lg navbar-light" id="navbar" style="background-color:transparent;">
+                        <a class="navbar-brand" href="#">
+                            <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-cobalt.png') }}"
+                                 class="img-fluid" style="max-width:280px"/>
+                        </a>
+                        <button id="navbar-toggler" class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
 
-</section>
-<div class="mt-5 pt-5"></div>
-<div class="mt-2 pt-2"></div>
-<div class="cta color-light-blue" style="position:relative;bottom:-50px">
-    <div class="row">
-        <div class="col-12">
-            <div class="container">
-                <h1 class="px-5 pt-5 pb-5 ">
+                        <div class="collapse navbar-collapse">
+
+                            <ul class="navbar-nav ml-auto">
+                                <li class="nav-item color-000 ">
+                                    <a href="{{ url('homepage') }}" class="head-txt-bold">HOME</a>
+                                </li>
+                                {% if app.user %}
+                                    <li class="nav-item color-000 dropdown">
+                                        {{ render(controller('AppBundle:Notifications:notifications')) }}
+                                    </li>
+                                    <li class="nav-item color-000">
+                                        <a href="{{ url('profilo' , {'query': app.user.username }) }}"
+                                           class=" head-txt-bold">PROFILO</a>
+                                    </li>
+                                    <li class="nav-item color-000">
+                                        <a href="{{ logout_path('main') }}" class="head-txt-bold">ESCI</a>
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item color-000">
+                                        <a href="{{ url('login') }}" class="nav-link active">ACCEDI</a>
+                                    </li>
+                                    <li class="nav-item color-000">
+                                        <a href="{{ url('login') }}#registrati" class="nav-link">REGISTRATI </a>
+                                    </li>
+                                {% endif %}
+                                <li class="nav-item color-000">
+                                    <a href="{{ url('helpdesk') }}" class="nav-link">SUPPORTO</a>
+                                </li>
+                                <a href="{{ url('nuovo') }}"
+                                   class="btn btn-lg btn-primary float-right color-light-blue btn-add-ad">
+                                    INSERISCI ANNUNCIO
+                                    <img src="{{ asset('img/home/camera.svg') }}" class="btn-camera" style="width:32px">
+                                </a>
+
+                            </ul>
+                        </div>
+                    </nav>
                     <div class="row">
-                        <div class="col-md-9">
-                            <h1 class="mt-2">La nuova piattaforma per fare affari sicuri!</h1>
+                        <div class="col-12 mt-5">
+
+                            <h1 class="display-3 text-center align-middle pt-5 mt-5"
+                                style="color:#FFF; text-shadow: 4px 0px #555;font-weight:300;font-family:Arial">
+                                <br>
+                                <strong>Cosa stai cercando?</strong>
+                            </h1>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mt-5">
+                                <div class="card-body">
+                                    {{ render(controller('AppBundle:Search:formTop')) }}
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-3">
-                            <a href="{{ url('nuovo') }}"
-                               class="mt-2 btn btn-lg btn-secondary btn-white float-right btn-block">Inizia ora!</a>
+
                         </div>
                     </div>
-                </h1>
+
+                </div>
+            </div>
+        </div>
+        <section id="categories">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2 class="text-center mt-5">Categorie</h2>
+                    <h1 class="text-center color-light-blue-txt mt-5">Vendi e acquista nelle nostre categorie</h1>
+                </div>
+            </div>
+            <div class="container mt-5 pt-3">
+                <div class="row">
+                    <div class="col-md-4 mt-4">
+                        <div class="card-container">
+                            <img src="{{ asset('img/home/car.jpg') }}" alt="Avatar" class="card-image img-fluid">
+                            <div class="card-overlay">
+                                <div class="card-text">
+                                    <h1>MOTORI</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-4">
+                        <div class="card-container">
+                            <img src="{{ asset('img/home/tech.jpg') }}" alt="Avatar" class="card-image img-fluid">
+                            <div class="card-overlay">
+                                <div class="card-text">
+                                    <h1>TECNOLOGIA</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-4">
+                        <div class="card-container">
+                            <img src="{{ asset('img/home/furniture.jpg') }}" alt="Avatar" class="card-image">
+                            <div class="card-overlay">
+                                <div class="card-text">
+                                    <h1>ARREDAMENTO</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mt-4">
+                        <div class="card-container">
+                            <img src="{{ asset('img/home/clothing.jpg') }}" alt="Avatar" class="card-image img-fluid">
+                            <div class="card-overlay">
+                                <div class="card-text">
+                                    <h1>ABBIGLIAMENTO</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-4">
+                        <div class="card-container">
+                            <img src="{{ asset('img/home/villa.jpg') }}" alt="Avatar" class="card-image img-fluid">
+                            <div class="card-overlay">
+                                <div class="card-text">
+                                    <h1>IMMOBILI</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-4">
+                        <div class="card-container">
+                            <img src="{{ asset('img/home/sport.jpg') }}" alt="Avatar" class="card-image">
+                            <div class="card-overlay">
+                                <div class="card-text">
+                                    <h1>SPORT</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5 pt-5">
+                <div class="col-md-3"></div>
+                <div class="col-md-3">
+                    <a href="" class="btn btn-lg color-light-blue ml-auto mr-1 mx-auto btn-bottom btn-block mb-2"
+                       style="position: relative:color: #FFF!important;">Scopri di più</a>
+                </div>
+                <div class="col-md-3">
+                    <a href="" class="btn btn-lg color-light-blue ml-1 mr-auto mx-auto btn-bottom btn-block mb-2"
+                       style="position: relativel;color: #FFF!important;">Ulteriori Info</a>
+                </div>
+            </div>
+    </div>
+
+    </section>
+    <div class="mt-5 pt-5"></div>
+    <div class="mt-2 pt-2"></div>
+    <div class="cta color-light-blue" style="position:relative;bottom:-50px">
+        <div class="row">
+            <div class="col-12">
+                <div class="container">
+                    <h1 class="px-5 pt-5 pb-5 ">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h1 class="mt-2">La nuova piattaforma per fare affari sicuri!</h1>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="{{ url('nuovo') }}"
+                                   class="mt-2 btn btn-lg btn-secondary btn-white float-right btn-block">Inizia ora!</a>
+                            </div>
+                        </div>
+                    </h1>
+                </div>
             </div>
         </div>
     </div>
-</div>
-{{ include('template/footer.html.twig') }}
-<style type="text/css">
-    .header-fixed {
-        position: fixed;
-        width: 100%;
-        background-color: #f8f9fa !important;
-        right: 0px;
-        z-index: 100000;
-    }
+    {{ include('template/footer.html.twig') }}
+    <style type="text/css">
+        .header-fixed {
+            position: fixed;
+            width: 100%;
+            background-color: #f8f9fa !important;
+            right: 0px;
+            z-index: 100000;
+        }
 
-    .display3-space {
-        margin-top: 7.95rem !important;
-    }
+        .display3-space {
+            margin-top: 7.95rem !important;
+        }
 
-    form {
-        margin-bottom: 0px;
-    }
-</style>
-<script>
-    $(window).on('load', function () {
-        $.get("https://api.ipdata.co", function (response) {
-            switch (response.region) {
-                case 'Valle d\'Aosta':
-                    var region = 2;
-                    break;
-                case 'Piemonte':
-                    var region = 3;
-                    break;
-                case 'Liguria':
-                    var region = 4;
-                    break;
-                case 'Lombardia':
-                    var region = 5;
-                    break;
-                case 'Trentino Alto Adige':
-                    var region = 6;
-                    break;
-                case 'Veneto':
-                    var region = 7;
-                    break;
-                case 'Friuli Venezia Giuli':
-                    var region = 8;
-                    break;
-                case 'Emilia Romagna':
-                    var region = 9;
-                    break;
-                case 'Toscana':
-                    var region = 10;
-                    break;
-                case 'Umbria':
-                    var region = 11;
-                    break;
-                case 'Lazio':
-                    var region = 12;
-                    break;
-                case 'Marche':
-                    var region = 13;
-                    break;
-                case 'Abruzzo':
-                    var region = 14;
-                    break;
-                case 'Molise':
-                    var region = 15;
-                    break;
-                case 'Campania':
-                    var region = 16;
-                    break;
-                case 'Puglia':
-                    var region = 17;
-                    break;
-                case 'Basilicata':
-                    var region = 18;
-                    break;
-                case 'Calabria':
-                    var region = 19;
-                    break;
-                case 'Sardegna':
-                    var region = 20;
-                    break;
-                case 'Sicilia':
-                    var region = 21;
-                    break;
-                default:
-                    var region = 1;
-                    break;
-            }
-            $('select[name="form[region]"]:first').val(region);
-        }, "jsonp");
+        form {
+            margin-bottom: 0px;
+        }
+    </style>
+    <script>
+        $(window).on('load', function () {
+            $.get("https://api.ipdata.co", function (response) {
+                switch (response.region) {
+                    case 'Valle d\'Aosta':
+                        var region = 2;
+                        break;
+                    case 'Piemonte':
+                        var region = 3;
+                        break;
+                    case 'Liguria':
+                        var region = 4;
+                        break;
+                    case 'Lombardia':
+                        var region = 5;
+                        break;
+                    case 'Trentino Alto Adige':
+                        var region = 6;
+                        break;
+                    case 'Veneto':
+                        var region = 7;
+                        break;
+                    case 'Friuli Venezia Giuli':
+                        var region = 8;
+                        break;
+                    case 'Emilia Romagna':
+                        var region = 9;
+                        break;
+                    case 'Toscana':
+                        var region = 10;
+                        break;
+                    case 'Umbria':
+                        var region = 11;
+                        break;
+                    case 'Lazio':
+                        var region = 12;
+                        break;
+                    case 'Marche':
+                        var region = 13;
+                        break;
+                    case 'Abruzzo':
+                        var region = 14;
+                        break;
+                    case 'Molise':
+                        var region = 15;
+                        break;
+                    case 'Campania':
+                        var region = 16;
+                        break;
+                    case 'Puglia':
+                        var region = 17;
+                        break;
+                    case 'Basilicata':
+                        var region = 18;
+                        break;
+                    case 'Calabria':
+                        var region = 19;
+                        break;
+                    case 'Sardegna':
+                        var region = 20;
+                        break;
+                    case 'Sicilia':
+                        var region = 21;
+                        break;
+                    default:
+                        var region = 1;
+                        break;
+                }
+                $('select[name="form[region]"]:first').val(region);
+            }, "jsonp");
 
-    });
-
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        $('#navbar').addClass('header-fixed');
-        $('#form_submit').addClass('mt-2');
-    } else {
-        $(window).scroll(function () {
-            var sticky = $('#navbar'),
-                display3 = $('.display-3'),
-                scroll = $(window).scrollTop();
-
-            if (scroll >= 1) {
-                sticky.addClass('header-fixed');
-                display3.addClass('display3-space');
-            }
-            else {
-                sticky.removeClass('header-fixed');
-                display3.removeClass('display3-space');
-            }
         });
-    }
-    ;
-    $('#navbar-toggler').click(function () {
-        //$('.navbar-collapse').toggleClass('collapse');
-        $('.navbar-collapse').slideToggle(300)
-    })
-</script>
-</div>
+
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            $('#navbar').addClass('header-fixed');
+            $('#form_submit').addClass('mt-2');
+        } else {
+            $(window).scroll(function () {
+                var sticky = $('#navbar'),
+                    display3 = $('.display-3'),
+                    scroll = $(window).scrollTop();
+
+                if (scroll >= 1) {
+                    sticky.addClass('header-fixed');
+                    display3.addClass('display3-space');
+                }
+                else {
+                    sticky.removeClass('header-fixed');
+                    display3.removeClass('display3-space');
+                }
+            });
+        }
+        ;
+        $('#navbar-toggler').click(function () {
+            //$('.navbar-collapse').toggleClass('collapse');
+            $('.navbar-collapse').slideToggle(300)
+        })
+    </script>
+    </div>
 
 </body>
 </html>
