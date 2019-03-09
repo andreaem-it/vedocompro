@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -224,7 +225,7 @@ class AdsController extends Controller
                         $qb->andWhere('l.parent IS NOT NULL');
                         return $qb;
                     }))
-                ->add('price', MoneyType::class, array('label' => 'Prezzo'))
+                ->add('price', IntegerType::class, array('label' => 'Prezzo'))
                 ->add('objCondition', ChoiceType::class, array(
                     'label' => 'Condizione',
                     'placeholder' => 'Seleziona Condizione',

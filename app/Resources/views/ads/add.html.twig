@@ -31,15 +31,15 @@
                             <div class="col-lg-9" id="form1">
                                 <label for="form_name">Nome Oggetto</label>
                                 {{ form_widget(form.name) }}
-                                <small class="hidden-md-up form-text text-muted">Scegli un titolo per l'inserzione, cerca di essere più preciso possibile</small>
+                                <small class="d-sm-block  d-md-none form-text text-muted">Scegli un titolo per l'inserzione, cerca di essere più preciso possibile</small>
                                 <br>
                                 <label for="form_description">Descrizione Oggetto</label>
                                 {{ form_widget(form.description) }}
-                                <small class="hidden-md-up form-text text-muted">Descrivi il tuo prodotto, elencane pregi e difetti, caratteristiche tecniche e quant'altro ti venga in mente. Se dimentichi qualcosa non preoccuparti, potrai sempre modificare l'inserzione dopo, oppure rispondere alle domande degli utenti</small>
+                                <small class="d-sm-block  d-md-none form-text text-muted">Descrivi il tuo prodotto, elencane pregi e difetti, caratteristiche tecniche e quant'altro ti venga in mente. Se dimentichi qualcosa non preoccuparti, potrai sempre modificare l'inserzione dopo, oppure rispondere alle domande degli utenti</small>
                                 <br>
                                 <label for="form_cateogry">Categoria</label>
                                 {{ form_widget(form.category) }}
-                                <small class="hidden-md-up form-text text-muted">Scegli la categoria del prodotto, fai attenzione a scegliere quella giusta, gli utenti potrebbero non trovare la tua inserzione e potrebbe essere eliminata.</small>
+                                <small class="d-sm-block  d-md-none form-text text-muted">Scegli la categoria del prodotto, fai attenzione a scegliere quella giusta, gli utenti potrebbero non trovare la tua inserzione e potrebbe essere eliminata.</small>
                             </div>
                         </div>
 
@@ -53,25 +53,30 @@
                                 <br><br>
                                 <small>Specifica la condizione dell'oggetto, evita di vendere come nuovo un'oggetto usato</small>
                                 <br><br>
-                                <small>Dove si trova l'oggetto, questi campi vengono normalmente riempiti con i tuoi recapiti forniti nelle impostazioni del profilo. Tuttavia, puoi modificarli nel caso vendi un'oggetto che si trova in un'altra città (es: una casa vacanze)</small>
+                                <small>Dove si trova l'oggetto, fornisci una posizione indicativa, evita di fornire troppi dati, sarà tua premura specificarli nel caso di un contatto telefonico</small>
                             </div>
                             <div class="col-lg-9" id="form2">
                                 <label for="form_price">Prezzo</label>
-                                {{ form_widget(form.price) }}
-                                <small class="hidden-md-up form-text text-muted">Dai un prezzo all'oggetto, cerca di essere realista, un prezzo troppo alto non vende.</small>
+                                <div class="input-group mb-3">
+                                    {{ form_widget(form.price) }}
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2">€</span>
+                                    </div>
+                                </div>
+                                <small class="d-sm-block  d-md-none form-text text-muted">Dai un prezzo all'oggetto, cerca di essere realista, un prezzo troppo alto non vende.</small>
                                 <br>
                                 <label for="form_condition">Condizione</label>
                                 {{ form_widget(form.objCondition) }}
-                                <small class="hidden-md-up form-text text-muted">Specifica la condizione dell'oggetto, evita di vendere come nuovo un'oggetto usato</small>
+                                <small class="d-sm-block  d-md-none form-text text-muted">Specifica la condizione dell'oggetto, evita di vendere come nuovo un'oggetto usato</small>
                                 <br>
                                 <div class="row">
-
                                     <div class="col" id="locationField">
                                         <label for="autocomplete">
                                             Indirizzo o Città
                                         </label>
                                         <input class="form-control" id="autocomplete" placeholder="Inserisci il tuo indirizzo" onFocus="geolocate()" type="text"/>
                                     </div>
+                                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMB-P_jemzRYJDvfpwgRn5BV66jjqpDCw&libraries=places&callback=initAutocomplete" async defer></script>
                                     <script>
 
                                         var placeSearch, autocomplete;
@@ -133,7 +138,6 @@
                                             }
                                         }
                                     </script>
-                                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMB-P_jemzRYJDvfpwgRn5BV66jjqpDCw&libraries=places&callback=initAutocomplete" async defer></script>
                                 </div>
                                 <br>
                                 <div class="row">
@@ -150,7 +154,7 @@
                                         {{ form_widget(form.location) }}
                                     </div>
                                 </div>
-                                <small class="hidden-md-up form-text text-muted">Dove si trova l'oggetto, questi campi vengono normalmente riempiti con i tuoi recapiti forniti nelle impostazioni del profilo. Tuttavia, puoi modificarli nel caso vendi un'oggetto che si trova in un'altra città (es: una casa vacanze)</small>
+                                <small class="d-sm-block  d-md-none form-text text-muted">Dove si trova l'oggetto, fornisci una posizione indicativa, evita di fornire troppi dati, sarà tua premura specificarli nel caso di un contatto telefonico</small>
                             </div>
                         </div>
                     </section>
@@ -174,13 +178,13 @@
                                         Carica un video cliccando qui o trascinandolo sopra
                                     </div>
                                 </div>
-                                
+
                                 <div class="checkbox mt-3">
                                     <label><input name="accepttos" type="checkbox" value="tosAccept" required />&nbsp; Accetto i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a></label>
                                 </div>
-                                <small class="hidden-md-up form-text text-muted">Inserisci il video del prodotto, gira un video esponendo i pregi e difetti di ciò che stai vendendo, massimo 200 MB, in formato AVI, MOV, MP4 o M4V. <br><strong>ATTENZIONE:</strong>Carica un video con <u>orientamento orizzontale</u>, eventuali video orientati in verticale verranno bocciati. <br> Assicurati di rispettare i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a>.</small>
+                                <small class="d-sm-block  d-md-none form-text text-muted">Inserisci il video del prodotto, gira un video esponendo i pregi e difetti di ciò che stai vendendo, massimo 200 MB, in formato AVI, MOV, MP4 o M4V. <br><strong>ATTENZIONE:</strong>Carica un video con <u>orientamento orizzontale</u>, eventuali video orientati in verticale verranno bocciati. <br> Assicurati di rispettare i <a href="{{  url('terms-of-service') }}">Termini di Servizio</a>.</small>
                                 <br>
-                                <small class="hidden-md-up form-text text-muted">Un consiglio, leggi le nostre <a href="{{ url('guidelines') }}" target="_blank">Linee Giuda</a> per un video di successo!</small>
+                                <small class="d-sm-block d-md-none form-text text-muted">Un consiglio, leggi le nostre <a href="{{ url('guidelines') }}" target="_blank">Linee Giuda</a> per un video di successo!</small>
                                 <script src="{{ asset('js/dropzone.js') }}"></script>
                                 <script>
                                     var loaded = false;
