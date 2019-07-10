@@ -1,0 +1,79 @@
+{% extends ':business/dashboard/template:base.html.twig' %}
+
+{% block body %}
+    {% form_theme form 'jquery.collection.html.twig' %}
+
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">
+                    <em class="fa fa-home"></em>
+                </a></li>
+            <li class="active">Annunci</li>
+            <li>Aggiungi</li>
+        </ol>
+    </div><!--/.row-->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Annunci <small>Aggiungi</small></h1>
+        </div>
+    </div><!--/.row-->
+
+    <div class="panel">
+        <div class="panel-body">
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ form_row(form.video) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    {{ form_row(form.name) }}
+                </div>
+                <div class="col-sm-2">
+                    {{ form_row(form.price) }}
+                </div>
+                <div class="col-sm-3">
+                    {{ form_row(form.category) }}
+                </div>
+                <div class="col-sm-2">
+                    {{ form_row(form.objCondition) }}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ form_row(form.description) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    {{ form_row(form.region) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_row(form.location) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_row(form.provincia) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_row(form.fields) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_row(form.vals) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <script src="{{ asset('js/jquery-2.1.1.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.collection.js') }}"></script>
+
+        <script type="text/javascript">
+            $('.form_fields').collection();
+            $('.form_vals').collection();
+        </script>
+    </div>
+{% endblock %}

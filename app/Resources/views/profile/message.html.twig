@@ -17,34 +17,38 @@
     <div class="container-fluid scrollbar">
         <div class="container">
             <br>
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-sm-12">
                     <a class="btn btn-outline-primary" onClick="showMessages()">< Torna a Messaggi</a>
                 </div>
             </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="card" style="width:100%">
-                <div class="card-block">
-                    <h4 class="card-title">Messaggio da {{ user.getMessageFromUser(message.fromUID) }}</h4>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ user.convertAds(message.object) }}</h6>
-                    <small class="card-subtitle">{{ message.datetime|date('d-m-Y H:i:s') }}</small>
-                    <br><br>
-                    <p class="card-text">{{ message.message }}</p>
-                    - {{ user.getMessageFromUser(message.fromUID) }}
-                    <br>
-                    <hr>
-                    <form action="{{ url('nuovo_message', {to: message.fromUID}) }}" method="post">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="list-group-item list-group-item-action list-item-shadow" style="width:100%">
+                        <div class="card-block">
+                            <h4 class="card-title">Messaggio da {{ user.getMessageFromUser(message.fromUID) }}</h4>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ user.convertAds(message.object) }}</h6>
+                            <small class="card-subtitle">{{ message.datetime|date('d-m-Y H:i:s') }}</small>
+                            <br><br>
+                            <p class="card-text">{{ message.message }}</p>
+                            - {{ user.getMessageFromUser(message.fromUID) }}
+                            <br>
+                            <hr>
+                            <form action="{{ url('nuovo_message', {to: message.fromUID}) }}" method="post">
                             <textarea class="form-control" id="message" name="message"
                                       placeholder="Inserisci messaggio..."></textarea>
-                        <br>
-                        <input type="submit" class="card-link btn btn-outline-success" value="Rispondi"/>
-                        <a href="#" class="card-link btn btn-outline-danger" data-toggle="modal"
-                           data-target="#deleteMessage">Elimina</a>
-                    </form>
+                                <br>
+                                <input type="submit" class="card-link btn btn-outline-primary" value="Rispondi"/>
+                                <a href="#" class="card-link btn btn-outline-danger" data-toggle="modal"
+                                   data-target="#deleteMessage">Elimina</a>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
+        <br>
+
     </div>
 {% endblock %}

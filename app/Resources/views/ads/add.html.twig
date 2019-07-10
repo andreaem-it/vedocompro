@@ -98,7 +98,7 @@
 
                                             // Avoid paying for data that you don't need by restricting the set of
                                             // place fields that are returned to just the address components.
-                                            autocomplete.setFields('address_components');
+                                            autocomplete.setFields(['address_components']);
 
                                             // When the user selects an address from the drop-down, populate the
                                             // address fields in the form.
@@ -517,8 +517,12 @@
         .wizard .content .body {
             width: 100%!important;
         }
+
+        .section-title {
+            padding: 20px 0;
+        }
     </style>
-    <script src='{{ asset('js/jquery.steps.min.js') }}' type="text/javascript"></script>
+{#    <script src='{{ asset('js/jquery.steps.min.js') }}' type="text/javascript"></script>#}
     <script src="{{ asset('js/bloodhound.min.js') }}" type="text/javascript"></script> 
     <script src="{{ asset('js/typeahead.jquery.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery.scrolling-tabs.min.js') }}"></script>

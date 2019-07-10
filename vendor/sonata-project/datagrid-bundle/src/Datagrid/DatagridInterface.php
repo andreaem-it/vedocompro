@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -35,8 +37,6 @@ interface DatagridInterface
     public function buildPager();
 
     /**
-     * @param FilterInterface $filter
-     *
      * @return FilterInterface
      */
     public function addFilter(FilterInterface $filter);

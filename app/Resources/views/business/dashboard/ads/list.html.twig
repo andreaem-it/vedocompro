@@ -1,0 +1,61 @@
+{% extends ':business/dashboard/template:base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">
+                    <em class="fa fa-home"></em>
+                </a></li>
+            <li class="active">Annunci</li>
+            <li>Lista</li>
+        </ol>
+    </div><!--/.row-->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Annunci <small>Lista</small></h1>
+        </div>
+    </div><!--/.row-->
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Data Inserimento</th>
+                <th scope="col">Visualizzazioni</th>
+                <th scope="col">Stato</th>
+                <th scope="col" style="width:150px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ad in ads %}
+                <tr>
+                    <th scope="row" class="align-middle">{{ ad.id }}</th>
+                    <td class="align-middle">{{ ad.name }}</td>
+                    <td class="align-middle">{{ fun.convertCategory(ad.category) }}</td>
+                    <td class="align-middle">{{ ad.creationtime|date("d-m-Y") }}</td>
+                    <td class="align-middle">{{ ad.views }}</td>
+                    <td class="align-middle">{% if ad.published == 1 %}
+                            <i class="indicator label-success"></i>
+                        {% elseif ad.published == 0 %}
+                            <i class="indicator label-danger"></i>
+                        {% endif %}
+                    </td>
+                    <td class="align-middle">
+                        <a href="{{ url('business_dashboard_annunci_vedi', {'id': ad.id}) }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                        <a href="{{ url('business_dashboard_annunci_modifica', {'id': ad.id}) }}" class="btn btn-warning btn-sm">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="" class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

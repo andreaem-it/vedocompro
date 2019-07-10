@@ -8,24 +8,24 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
 {
     public static $files = array (
         '92c8763cd6170fce6fcfe7e26b4e8c10' => __DIR__ . '/..' . '/symfony/phpunit-bridge/bootstrap.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
-        'ddc0a4d7e61c0286f0f8593b1903e894' => __DIR__ . '/..' . '/clue/stream-filter/src/functions.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
-        '8cff32064859f4559445b89279f3199c' => __DIR__ . '/..' . '/php-http/message/src/filters.php',
+        'ddc0a4d7e61c0286f0f8593b1903e894' => __DIR__ . '/..' . '/clue/stream-filter/src/functions.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
+        '8cff32064859f4559445b89279f3199c' => __DIR__ . '/..' . '/php-http/message/src/filters.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'd11dcc0191a380951885e568af488540' => __DIR__ . '/..' . '/sonata-project/block-bundle/src/Resources/stubs/symfony2.php',
-        '023d27dca8066ef29e6739335ea73bad' => __DIR__ . '/..' . '/symfony/polyfill-php70/bootstrap.php',
-        'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
-        '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
         'ce89ac35a6c330c55f4710717db9ff78' => __DIR__ . '/..' . '/kriswallsmith/assetic/src/functions.php',
         '32dcc8afd4335739640db7d200c1971d' => __DIR__ . '/..' . '/symfony/polyfill-apcu/bootstrap.php',
+        '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
+        'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
+        '023d27dca8066ef29e6739335ea73bad' => __DIR__ . '/..' . '/symfony/polyfill-php70/bootstrap.php',
         '719971e375036615a0685b6fb054583d' => __DIR__ . '/..' . '/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php',
     );
 
@@ -54,6 +54,7 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
             'Symfony\\Cmf\\Bundle\\BlockBundle\\' => 31,
             'Symfony\\Bundle\\SwiftmailerBundle\\' => 33,
             'Symfony\\Bundle\\MonologBundle\\' => 29,
+            'Symfony\\Bundle\\MakerBundle\\' => 27,
             'Symfony\\Bundle\\AsseticBundle\\' => 29,
             'Symfony\\Bundle\\' => 15,
             'Symfony\\Bridge\\Twig\\' => 20,
@@ -82,6 +83,7 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
+            'PhpParser\\' => 10,
             'Petkopara\\MultiSearchBundle\\' => 28,
         ),
         'M' => 
@@ -140,6 +142,7 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
             'Doctrine\\DBAL\\' => 14,
             'Doctrine\\Common\\Inflector\\' => 26,
             'Doctrine\\Common\\DataFixtures\\' => 29,
+            'Doctrine\\Common\\Collections\\' => 28,
             'Doctrine\\Common\\Cache\\' => 22,
             'Doctrine\\Common\\Annotations\\' => 28,
             'Doctrine\\Common\\' => 16,
@@ -237,6 +240,10 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
         'Symfony\\Bundle\\MonologBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/monolog-bundle',
+        ),
+        'Symfony\\Bundle\\MakerBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/maker-bundle/src',
         ),
         'Symfony\\Bundle\\AsseticBundle\\' => 
         array (
@@ -338,6 +345,10 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
+        'PhpParser\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+        ),
         'Petkopara\\MultiSearchBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/petkopara/multi-search-bundle',
@@ -388,12 +399,12 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
         ),
         'Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/php-http/message-factory/src',
-            1 => __DIR__ . '/..' . '/php-http/message/src',
+            0 => __DIR__ . '/..' . '/php-http/message/src',
+            1 => __DIR__ . '/..' . '/php-http/message-factory/src',
         ),
         'Http\\HttplugBundle\\' => 
         array (
-            0 => __DIR__ . '/..' . '/php-http/httplug-bundle',
+            0 => __DIR__ . '/..' . '/php-http/httplug-bundle/src',
         ),
         'Http\\Discovery\\' => 
         array (
@@ -401,9 +412,8 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
         ),
         'Http\\Client\\Common\\Plugin\\' => 
         array (
-            0 => __DIR__ . '/..' . '/php-http/stopwatch-plugin/src',
-            1 => __DIR__ . '/..' . '/php-http/logger-plugin/src',
-            2 => __DIR__ . '/..' . '/php-http/cache-plugin/src',
+            0 => __DIR__ . '/..' . '/php-http/logger-plugin/src',
+            1 => __DIR__ . '/..' . '/php-http/stopwatch-plugin/src',
         ),
         'Http\\Client\\Common\\' => 
         array (
@@ -465,6 +475,10 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
         array (
             0 => __DIR__ . '/..' . '/doctrine/data-fixtures/lib/Doctrine/Common/DataFixtures',
         ),
+        'Doctrine\\Common\\Collections\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/collections/lib/Doctrine/Common/Collections',
+        ),
         'Doctrine\\Common\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
@@ -475,10 +489,10 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
         ),
         'Doctrine\\Common\\' => 
         array (
-            0 => __DIR__ . '/..' . '/doctrine/reflection/lib/Doctrine/Common',
+            0 => __DIR__ . '/..' . '/doctrine/common/lib/Doctrine/Common',
             1 => __DIR__ . '/..' . '/doctrine/event-manager/lib/Doctrine/Common',
             2 => __DIR__ . '/..' . '/doctrine/persistence/lib/Doctrine/Common',
-            3 => __DIR__ . '/..' . '/doctrine/common/lib/Doctrine/Common',
+            3 => __DIR__ . '/..' . '/doctrine/reflection/lib/Doctrine/Common',
         ),
         'Doctrine\\Bundle\\PHPCRBundle\\' => 
         array (
@@ -568,8 +582,8 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
             'Jackalope\\' => 
             array (
                 0 => __DIR__ . '/..' . '/jackalope/jackalope/src',
-                1 => __DIR__ . '/..' . '/jackalope/jackalope-jackrabbit/src',
-                2 => __DIR__ . '/..' . '/jackalope/jackalope-doctrine-dbal/src',
+                1 => __DIR__ . '/..' . '/jackalope/jackalope-doctrine-dbal/src',
+                2 => __DIR__ . '/..' . '/jackalope/jackalope-jackrabbit/src',
             ),
             'JMS\\' => 
             array (
@@ -603,10 +617,6 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
             'Doctrine\\Common\\Lexer\\' => 
             array (
                 0 => __DIR__ . '/..' . '/doctrine/lexer/lib',
-            ),
-            'Doctrine\\Common\\Collections\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/doctrine/collections/lib',
             ),
         ),
         'C' => 
@@ -717,6 +727,7 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
         'ElastiCache_Exception' => __DIR__ . '/..' . '/amazonwebservices/aws-sdk-for-php/services/elasticache.class.php',
         'ElasticBeanstalk_Exception' => __DIR__ . '/..' . '/amazonwebservices/aws-sdk-for-php/services/elasticbeanstalk.class.php',
         'Error' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/Error.php',
+        'Fuz\\Symfony\\Collection\\ScriptHandler' => __DIR__ . '/..' . '/ninsuo/symfony-collection/ScriptHandler.php',
         'IAM_Exception' => __DIR__ . '/..' . '/amazonwebservices/aws-sdk-for-php/services/iam.class.php',
         'ICacheCore' => __DIR__ . '/..' . '/amazonwebservices/aws-sdk-for-php/lib/cachecore/icachecore.interface.php',
         'ImportExport_Exception' => __DIR__ . '/..' . '/amazonwebservices/aws-sdk-for-php/services/importexport.class.php',

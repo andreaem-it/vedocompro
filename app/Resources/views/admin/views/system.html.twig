@@ -75,6 +75,11 @@
                         <a class="btn btn-danger pull-left" id="resetVideoDir">Reset Video Temp Directory</a>
                         <strong class="result1 text-success" style="float:left; margin: 6px;"></strong>
                         <br><br>
+                        <strong class="pull-left" style="margin:6px">Cache Directory Size:</strong>&nbsp;<p class="Dsize pull-left" style="margin:6px"></p>
+                        <a class="btn btn-info pull-left" id="updateCacheDir" style="margin-right: 5px">Update Directory Size</a>
+                        <a class="btn btn-danger pull-left" id="resetCacheDir">Clear Cache</a>
+                        <strong class="result1 text-success" style="float:left; margin: 6px;"></strong>
+                        <br><br>
                     </div>
                 </div>
             </div>
@@ -94,9 +99,22 @@
                 $('.result1').text('Error!')
             });
         });
+        $('#updateCacheDir').click(function() {
+            getSizeAjax();
+        });
+        $('#resetVideoDir').click(function() {
+            $.ajax({
+                url: '../../ajax/admin/admin.clearTemp.php'
+            }).done( function() {
+                $('.result1').text('Done!')
+                getSizeAjax();
+            }).fail( function () {
+                $('.result1').text('Error!')
+            });
+        });
         $('#updateVideoDir').click(function() {
             getSizeAjax();
-        })
+        });
         window.setTimeout(getSizeAjax(),1000);
         function getSizeAjax() {
             $.ajax({

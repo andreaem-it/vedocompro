@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="wrapper">
+        <div class="container-fluid scrollbar">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-title">
+                        <h3 class="text-center py-3">Scopri i vantaggi del pacchetto Business di VedoCompro</h3>
+                        <small class="text-center info-text">Grazie al pacchetto business, la tua azienda guadagnerà più visibilità all'interno di VedoCompro. Il tasso di conversione è assicurato!</small>
+                    </div>
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-title">
+                        <div class="price-holder">
+                            <span class="price-big">19.99</span>/mese
+                            <br>
+                            <small>Pagamento Mensile</small>
+                        </div>
+                        <div class="eco-choice">
+                            Scelta Economica
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="">
+                            <ul>
+                                <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Annunci <strong>Illimitati</strong></li>
+                                <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Il tuo <strong>Logo</strong> negli annunci</li>
+                                <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Badge Utente <strong>Verificato</strong></li>
+                                <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Box con <strong>informazioni Azienda</strong></li>
+                                <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Assistenza <strong>telefonica</strong></li>
+                                <li class="custom-list">&nbsp;</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <span class="button-holder card-footer">
+                        <a href="{{ url('business_package', {'package': 'mensile'}) }}" class="btn btn-lg btn-outline-primary btn-block">ACQUISTA</a>
+                        <p class="text-center"><small>Carta di credito non richiesta</small></p>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-title">
+                        <div class="price-holder">
+                            <span class="price-big">199.99</span>/anno
+                            <br>
+                            <small>Pagamento Annuale</small>
+                        </div>
+                        <div class="best-choice">
+                            Scelta Migliore
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="">
+                            <ul>
+                                <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Annunci <strong>Illimitati</strong></li>
+                                <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Il tuo <strong>Logo</strong> negli annunci</li>
+                                <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Badge Utente <strong>Verificato</strong></li>
+                                <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Box con <strong>informazioni Azienda</strong></li>
+                                <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Assistenza <strong>telefonica</strong></li>
+                                <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Statistiche <strong>analitiche</strong></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <span class="button-holder card-footer">
+                        <a href="{{ url('business_package', {'package': 'annuale'}) }}" class="btn btn-lg btn-outline-primary btn-block">ACQUISTA</a>
+                        <p class="text-center"><small>Carta di credito non richiesta</small></p>
+                    </span>
+                </div>
+            </div>
+        </div>
+            <div class="row">
+                <!-- Info pacchetti -->
+                <div class="col-sm-12">
+                    <p class="small-info text-center">
+                        <small>
+                            <strong>Attenzione:</strong> É richiesta la verifica della vs. attività tramite fornitura della Partita IVA e di un documento di identità del titolare e/o socio dell'azienda.
+                        </small>
+                    </p>
+                </div>
+            </div>
+    </div>
+        <style>
+            .page-title {
+                text-align: center;
+                padding-bottom: 50px;
+            }
+            .info-text {
+                font-weight: 100;
+            }
+            .card-title {
+                background-color: rgb(67,150,193);
+            }
+            .price-holder {
+                text-align: center;
+                color: #FFF;
+                padding: 30px;
+            }
+            .price-big {
+                font-size: 70px;
+            }
+            .button-holder {
+                text-align: center;
+            }
+            .custom-list {
+                list-style: none;
+                margin: 10px auto;
+            }
+            .best-choice {
+                padding: 15px auto;
+                font-weight: 900;
+                background-color: lightcoral;
+                text-align: center;
+                color: #FFF;
+            }
+            .eco-choice {
+                padding: 15px auto;
+                font-weight: 900;
+                background-color: lightblue;
+                text-align: center;
+                color: #FFF;
+            }
+            .small-info {
+                text-align: center;
+                font-size: 14px;
+                margin-top: 30px;
+            }
+        </style>
+    </div>
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

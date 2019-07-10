@@ -93,6 +93,7 @@ return array(
     'ElastiCache_Exception' => $vendorDir . '/amazonwebservices/aws-sdk-for-php/services/elasticache.class.php',
     'ElasticBeanstalk_Exception' => $vendorDir . '/amazonwebservices/aws-sdk-for-php/services/elasticbeanstalk.class.php',
     'Error' => $vendorDir . '/symfony/polyfill-php70/Resources/stubs/Error.php',
+    'Fuz\\Symfony\\Collection\\ScriptHandler' => $vendorDir . '/ninsuo/symfony-collection/ScriptHandler.php',
     'IAM_Exception' => $vendorDir . '/amazonwebservices/aws-sdk-for-php/services/iam.class.php',
     'ICacheCore' => $vendorDir . '/amazonwebservices/aws-sdk-for-php/lib/cachecore/icachecore.interface.php',
     'ImportExport_Exception' => $vendorDir . '/amazonwebservices/aws-sdk-for-php/services/importexport.class.php',

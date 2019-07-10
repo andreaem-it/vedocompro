@@ -1,0 +1,273 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=0">
+<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="{{asset('js/jquery.scrolling-tabs.min.js') }}"></script>
+<script src="{{ asset('js/masonry.pkgd.min.js') }}"></script>
+<script src="{{ asset('js/imagesloaded.pkgd.min.js') }}"></script>
+<script src="{{ asset('js/jquery.sticky.js') }}"></script>
+<link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
+
+{% include 'template/header.html.twig' %}
+
+<div class="wrapper">
+    <div class="container-fluid">
+        {% if showcase|length > 0 %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2 class="font-weight-light mt-5 mb-4 color-light-blue-txt section-title">Sponsorizzati</h2>
+                    {% for item in showcase %}
+                        {% set catName = search.slugify(search.convertCategory(item.category)) %}
+                        {% set itemName = search.slugify(item.name) %}
+                        {% set slug = search.slugify(item.name) %}
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="card" style=" margin-bottom:10px">
+                                    <div class="card-block" style="padding: 0">
+                                        <div>
+                                            <img class="lozad" data-src="/uploads/photos/{{ item.id }}-1.jpg" style="float:left; width: 100px; margin-right: 10px">
+                                        </div>
+                                        <div style="margin-top: 5px">
+                                            <h6 class="card-title"><a href="{{ url('vedi_oggetto',  {'category': catName,'item': item.id,'title': slug}) }}">{{ item.name }}</a></h6>
+                                            <p>{{ item.price }} €</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div> <!-- Sponsorizzati -->
+        {% endif %}
+        <div class="row mt-5">
+            <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
+                {% include('template/ads.html.twig') %}
+            </div>
+            <div id="resultsRow" class="col-10 col-sm-10 pl-4 pr-4">
+                <div class="row">
+                    <div class="col-sm-12 ">
+                        <h1 class="font-weight-light mb-4 section-title">Risultati della ricerca {% if query != 'Tutto' %}per "{{ query }}"{% endif %} in {{ region }} {% if category != 0 %} nella categoria {{ search.convertCategory(category) }} {% endif %}<small>( {{ results|length }} element{% if results|length > 1 %}i{% else %}o{% endif %} ) </small></h1>
+                        <span class="pull-right" style="margin-top:-35px">
+                            Ordina per: &nbsp;
+                            <a href="{{ app.request.uri }}&view=list" class="btn btn-sm"><i class="fa fa-th-list"></i></a>
+                            <a href="{{ app.request.uri }}&view=card" class="btn btn-sm"><i class="fa fa-id-card"></i></a>
+                        </span>
+                    </div>
+                    <div class="row ml-4 mr-3 masonry-container">
+                        <div class="col-md-3 mt-4">
+                            <div class="card result-card sticky">
+                                <div class="card-body">
+                                    <h6 class="card-title panel-title">
+                                        <a class="collapse-title" data-toggle="collapse" data-parent="#accordion" href="#searchCollapse" aria-expanded="true" aria-controls="collapseOne">
+                                            Ricerca Avanzata
+                                        </a>
+                                    </h6>
+                                    <div id="searchCollapse" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne">
+                                        <form action="{{ url('search') }}">
+                                            <input name="q" class="form-control" placeholder="Cosa cerchi?" {% if query != "Tutto" %}value="{{ query }}"{% endif %}>
+                                            <select name="regione" class="form-control mt-1">
+                                                {% for regioni in regions %}
+                                                    {% if regioni.name == region  %}
+                                                    <option value="{{ regioni.name }}" selected>{{ regioni.name }}</option>
+                                                    {% else %}
+                                                    <option value="{{ regioni.name }}">{{ regioni.name }}</option>
+                                                    {% endif  %}
+                                                {% endfor %}
+                                            </select>
+                                            <select name="categoria" class="form-control mt-1">
+                                                {% for cat in categories %}
+                                                    {% if cat.id == category %}
+                                                        <option value="{{ cat.id }}" selected>{{ cat.name }}</option>
+                                                    {% else %}
+                                                        <option value="{{ cat.id }}">{{ cat.name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                            {% for field in advFields %}
+                                                <label class="mt-1">{{ field.name }}</label>
+                                                <input name="form_{{ field.name|lower }}" type="range" min="{{ field.min }}" max="{{ field.max }}" step="{{ field.step }}" value="{{ field.default }}" class="form-control slider"/>
+{#                                                    {% for values in field.values %}#}
+{#                                                        <option value="{{ values.0 }}">{{ values.0 }}</option>#}
+{#                                                    {% endfor %}#}
+                                                <div class="range">
+                                                    <small class="min pull-left">Min</small>
+                                                    <small class="max pull-right">Max</small>
+                                                </div>
+                                                <br>
+                                            {% endfor %}
+                                            <script src="{{ asset('js/rangeslider.js') }}"></script>
+                                            <link rel="stylesheet" href="{{ asset('css/rangeslider.css') }}">
+                                            <link rel="stylesheet" href="{{ asset('css/rangeslider.custom.css') }}">
+                                            <script>
+                                                $('input[name="form_chilometraggio"]').rangeslider({polyfill:false});
+                                                $('input[name="form_anno"]').rangeslider({polyfill:false});
+                                                $('input[name="form_alimentazione"]').rangeslider({polyfill:false});
+                                                $('input[name="form_cilindrata"]').rangeslider({polyfill:false});
+                                                $('input[name="form_cavalli"]').rangeslider({polyfill:false});
+                                            </script>
+                                            <input type="submit" class="btn btn-block btn-primary mt-1 color-light-blue" value="Filtra"/>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                                $(document).ready(function () {
+                                    $(".sticky").sticky({topSpacing: 100});
+                                });
+                            }
+                        </script>
+                        <div class="col-md-9">
+                        {% for result in results %}
+                        {% set slug = search.slugify(result.name) %}
+                        <div class="row">
+                            <div class="col-md-12 item mt-4">
+                            {% if result.objLevel == 1 %}
+                            <div class="card result-card" style="border: 4px solid rgb(218, 165, 32);">
+                                {% elseif result.objLevel == 2 %}
+                                <div class="card result-card" style="border: 4px solid #ccc;">
+                                    {% elseif result.objLevel == 3 %}
+                                    <div class="card result-card" style="border: 4px solid #CD7F32">
+                                        {% else %}
+                                        <div class="card result-card">
+                                            {% endif %}
+                                            {% set catName = search.slugify(search.convertCategory(result.category)) %}
+                                            {% set itemName = search.slugify(result.name) %}
+                                            <div class="card-body my-0 py-0 ">
+                                                <div class="row">
+                                                    <div class="col-md-3 px-0 py-0 pl-1">
+                                                        <a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': slug}) }}">
+                                                            <img class="lozad card-img-top img-fluid" id="imgPreview-{{ result.id }}" data-src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ result.id }}-1.jpg" alt="{{ result.name }}">
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-9 my-2">
+                                                        <h5 class="card-title font-weight-light">
+                                                            <a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': itemName}) }}">{{ result.name }}</a>
+                                                            <p><small>{{ search.convertCategory(result.category) }}</small></p>
+                                                            <p><strong>{{ result.price }}&nbsp;€</strong></p>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    {% endfor %}
+                                <script>
+                                    const observer = lozad();
+                                    observer.observe();
+                                </script>
+                                    <div class="mobile-pub-container hidden mt-3 container-fluid" style="width:100%;height:35%">
+
+                                    </div>
+                                    <script>
+                                        var cycle = function(el) {
+                                            var s = el.attr('src');
+                                            var root = s.substring(0, s.lastIndexOf('-') + 1);
+                                            var count = s.substring(s.lastIndexOf('-') + 1).replace('.jpg', '');
+                                            count = (count*1+1)%5;
+                                            el.attr('src', root + ((count === 0) ? '5' : count) + '.jpg');
+                                        };
+                                        $('body').on('mouseenter', '[id^=imgPreview-]', function(e) {
+                                            var thisImage = $(this);
+                                            var timer;
+                                            cycle(thisImage);
+                                            timer = setInterval(function() {
+                                                cycle(thisImage);
+                                            }, 800);
+                                            thisImage.on('mouseleave', function() {
+                                                clearInterval(timer);
+                                            });
+                                        });
+                                        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                                            $('.container-medium').removeClass('container-medium').addClass('container-fluid');
+                                            $('.masonry-container').removeClass('ml-4').removeClass('mr-3');
+                                            $('.mobile-pub-container').addClass('shown').removeClass('hidden');
+                                            $('.card').removeClass('h-250');
+                                            $('.card-title small').removeClass('fs-35');
+                                            $('.card-title strong').addClass('fs-150');
+                                            $('#resultsRow').removeClass('col-sm-10').addClass('col-sm-12').removeClass('col-10').addClass('col-12');
+                                            $('#searchCollapse').removeClass('show');
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block pl-0">
+                            {% include('template/ads.html.twig') %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% include 'template/footer.html.twig' %}
+        </div>
+        <style>
+            .container-medium {
+                width: 100%;
+                padding-right: 55px;
+                padding-left: 55px;
+                margin-right: auto;
+                margin-left: auto;
+            }
+            .section-title {
+                font-size: 28px;
+            }
+            .card {
+                box-shadow: 5px 5px 10px 0px #BBB;
+            }
+            .card-body {
+                padding: 1.25rem .50rem;
+            }
+            .card-title p strong {
+            }
+            .card-title small {
+                font-weight: 400;
+                font-size: 0.7em;
+            }
+            .mobile-pub-container {
+                min-width:100%;
+                min-height: 150px;
+                box-shadow: 5px 5px 10px 0px #BBB;
+            }
+            .hidden {
+                visibility: hidden;
+            }
+            .shown {
+                visibility: visible;
+            }
+            .h-250 {
+                height: 250px!important;
+            }
+            .fs-35 {
+                font-size: 35%!important;
+            }
+            .fs-150 {
+                font-size: 150%!important;
+            }
+            .panel-title a:after {
+                font-family:Fontawesome;
+                content:'\f077';
+                float:right;
+                font-size:10px;
+                font-weight:300;
+            }
+            .panel-title a.collapsed:after {
+                font-family:Fontawesome;
+                content:'\f078';
+            }
+            .collapse-title {
+                color: #000!important;
+                text-decoration: none!important;
+            }
+        </style>
+        {% endblock %}

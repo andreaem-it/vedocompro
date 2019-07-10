@@ -81,6 +81,19 @@
     <div class="wrapper">
         <section id="profile-header" style="margin-top:-25px">
             <div class="container">
+                <div class="row pt-3">
+                    <div class="col-md-12">
+                        {% if user_info.0.isCompany == 0 %}
+                            <div class="alert alert-info">
+                                <i class="badge badge-danger">NEW!</i> Sei un'azienda? <a href="{{ url('business_scopri') }}">Converti il tuo profilo</a> in Business, avrai tante funzionalità in più.
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <i class="badge badge-success">GRANDE!</i> Hai attivato il profilo business! <a href="{{ url('business_dashboard') }}">Accedi</a> alla dashboard!
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
                 <div class="row">
                     <div id="profile_image" class="col-sm-3 mt-5 mb-5 pb-1">
                         <div class="profile-image">
@@ -121,6 +134,13 @@
                             {% if app.user.username is defined %}
                                 {% if app.user.username == user_info.0.name %}
                                     <a id="btn-profile-actions" class="btn btn-white" href="{{ url('upgrade') }}">Upgrade</a>
+                                    <br><br>
+                                    {% if user_info.0.isCompany == 0 %}
+                                        <a id="btn-profile-actions" class="btn btn-white" href="{{ url('business_scopri') }}">Business</a>
+                                    {% else %}
+                                        <a id="btn-profile-actions" class="btn btn-white" href="{{ url('business_dashboard') }}">Business</a>
+                                    {% endif %}
+
                                 {% else %}
                                     <a id="btn-profile-actions" class="btn btn-white" href="" data-toggle="modal"
                                        data-target="#send_message">Contatta</a>
@@ -131,23 +151,24 @@
                 </div>
                 <div class="row">
                     <ul class="nav nav-tabs ml-auto" id="profileTab" role="tablist">
+                        <li role="presentation" class="nav-item pr-2">
+                            <a class="nav-link link-annunci  active"
+                               id="annunci-tab" data-toggle="tab" href="#annunci" role="tab" aria-controls="annunci"
+                               aria-selected="false">ANNUNCI</a>
+                        </li>
                         {% if app.user.username is defined %}
                             {% if app.user.username == user_info.0.name %}
-                                <li role="presentation" class="nav-item pr-2">
+                                <!--<li role="presentation" class="nav-item pr-2">
                                     <a class="nav-link active link-home" id="home-tab" data-toggle="tab" href="#home"
                                        role="tab" aria-controls="home" aria-selected="true">BACHECA</a>
-                                </li>
+                                </li>-->
                                 <li role="presentation" class="nav-item pr-2">
                                     <a class="nav-link link-messaggi" id="messaggi-tab" data-toggle="tab"
                                        href="#messaggi" role="tab" aria-controls="messaggi" aria-selected="false">MESSAGGI</a>
                                 </li>
                             {% endif %}
                         {% endif %}
-                        <li role="presentation" class="nav-item pr-2">
-                            <a class="nav-link link-annunci {% if app.user.username != user_info.0.name %} active {% endif %}"
-                               id="annunci-tab" data-toggle="tab" href="#annunci" role="tab" aria-controls="annunci"
-                               aria-selected="false">ANNUNCI</a>
-                        </li>
+
                         <li role="presentation" class="nav-item pr-2">
                             <a class="nav-link link-feedback" id="feedback-tab" data-toggle="tab" href="#feedback"
                                role="tab" aria-controls="feedback" aria-selected="false">FEEDBACK</a>
@@ -166,20 +187,21 @@
             </div>
         </section>
         <div class="tab-content mx-4" id="myTabContent">
+            <div class="tab-pane fade  show active"
+                 id="annunci" role="tabpanel" aria-labelledby="annunci-tab">
+                <div id="annunciContainer" class="mb-5"></div>
+            </div>
             {% if app.user.username is defined %}
                 {% if app.user.username == user_info.0.name %}
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <!--<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div id="dashboardContainer" class="mb-5"></div>
-                    </div>
+                    </div>-->
                     <div class="tab-pane fade" id="messaggi" role="tabpanel" aria-labelledby="messaggi-tab">
                         <div id="messagesContainer" class="mb-5"></div>
                     </div>
                 {% endif %}
             {% endif %}
-            <div class="tab-pane fade {% if app.user.username != user_info.0.name %} show active {% endif %}"
-                 id="annunci" role="tabpanel" aria-labelledby="annunci-tab">
-                <div id="annunciContainer" class="mb-5"></div>
-            </div>
+
             <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
                 <div id="feedbackContainer" class="mb-5"></div>
             </div>
@@ -208,7 +230,7 @@
             }).done(function (html) {
                 $('#dashboardContainer').html(html);
             })
-        };
+        }
 
         function showMessages() {
             $.ajax({
@@ -282,13 +304,14 @@
             })
         };
         $(document).ready(function () {
-            showDashboard();
+            showAds();
             $('messagesContainer a').each(function (e) {
                 e.preventDefault;
             });
             if ('{{ app.user.username }}' != '{{ user_info.0.name }}') {
                 showAds();
             }
+            $("data-toggle[tooltip]").tooltip();
         });
         $('#messaggi-tab').click(function () {
             showMessages();

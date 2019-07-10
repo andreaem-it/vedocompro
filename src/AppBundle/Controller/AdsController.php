@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\BusinessStats;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Videos;
@@ -24,6 +25,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use AppBundle\Entity\Ads;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Response;
+
 //TODO: Sistemare immagine di default
 
 class AdsController extends Controller
@@ -164,6 +167,25 @@ class AdsController extends Controller
                 ->getQuery()
                 ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
+            $thisAd = $this->getDoctrine()
+                ->getRepository('AppBundle:Ads')
+                ->find($item);
+            $adsUsr = $this->getDoctrine()->getRepository(User::class)->find($thisAd->getUname())->getIsCompany();
+
+            if ($adsUsr == 1) {
+                $stat = new BusinessStats();
+
+                $stat->setDatetime(new \DateTime());
+                $stat->setAdid($thisAd->getId());
+                $stat->setUid($thisAd->getUname());
+                $stat->setType(1);
+
+                $em = $this->getDoctrine()->getManager();
+
+                $em->persist($stat);
+                $em->flush();
+            }
+
             return $this->render('ads/view.html.twig', [
                 'ad_info' => $ad,
                 'video' => $video,
@@ -203,6 +225,8 @@ class AdsController extends Controller
             $newAd->setOption3('');
             $newAd->setOption4('');
             $newAd->setOption5('');
+            $newAd->setFields([]);
+            $newAd->setVals([]);
 
             $newAd->setShowcase(0);
             $newAd->setSold(0);
@@ -276,11 +300,6 @@ class AdsController extends Controller
                         return $qb;
                     },
                 ))*/
-                /**->add('option1',TextType::class, array('label' => 'Chilometraggio'))
-                 * ->add('option2',TextType::class, array('label' => 'Anno'))
-                 * ->add('option3',TextType::class, array('label' => 'Proprietari'))
-                 * ->add('option4',TextType::class, array('label' => 'Targa'))
-                 * ->add('option5',TextType::class)**/
                 ->add('video', HiddenType::class)
                 ->add('objLevel', HiddenType::class)
                 ->add('save', SubmitType::class, array('label' => 'Aggiungi Inserzione'))
@@ -561,6 +580,28 @@ class AdsController extends Controller
         }
     }
 
+    /**
+     * @Route("/ajax/stats/callClick/{type}/{id}", name="ajax_stats_call_click")
+     */
+    public function storeCallActionStat($type,$id) {
+        $ad = $this->getDoctrine()->getRepository(Ads::class)->find($id);
+
+        if ($type == 'call') {
+            $ad->setCallClicks($ad->getCallClicks() + 1);
+        } elseif ($type == 'message') {
+            $ad->setMessageClicks($ad->getMessageClicks() + 1);
+        }
+
+        $mnrg = $this->getDoctrine()->getManager();
+
+        $mnrg->flush();
+
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_OK);
+
+        return $response->setContent('Ok');
+    }
+
     public function getCategoriesName()
     {
         $category = $this->getDoctrine()
@@ -627,5 +668,7 @@ class AdsController extends Controller
         }
         return $text;
     }
+
+
 
 }

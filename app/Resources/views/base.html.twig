@@ -21,14 +21,7 @@
         <script>jwplayer.key="ABCdeFG123456SeVenABCdeFG123456SeVen=="</script>
         <script async src="{{ asset('js/affix.js') }}"></script>
         <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
-        <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
-        <!--<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({
-                google_ad_client: "ca-pub-4905894837137742",
-                enable_page_level_ads: true
-            });
-        </script>-->
+{#        <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>#}
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({
@@ -36,31 +29,46 @@
                 enable_page_level_ads: true
             });
         </script>
-        <script>
-            window.addEventListener("load", function(){
-                window.cookieconsent.initialise({
-                    "palette": {
-                        "popup": {
-                            "background": "#edeff5",
-                            "text": "#838391"
-                        },
-                        "button": {
-                            "background": "#5b94d6",
-                            "text": "#ffffff"
-                        }
-                    },
-                    "theme": "edgeless",
-                    "content": {
-                        "message": "Questa Applicazione usa i Cookies per assicurarti una migliore esperienza di navigazione.",
-                        "dismiss": "Accetto",
-                        "link": "Ulteriori informazioni",
-                        "href": "/privacy-policy"
-                    }
-                })});
+        <script type="text/javascript">
+            var _iub = _iub || [];
+            _iub.csConfiguration = {"reloadOnConsent":true,"enableRemoteConsent":true,"lang":"it","siteId":1498554,"cookiePolicyUrl":"https://www.vedocompro.it/privacy-policy","consentOnDocument":true,"cookiePolicyId":25597115, "banner":{ "position":"bottom" } };
+        </script><script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async> </script>
+
+        <script type="text/javascript">
+            document.addEventListener('gdprCookiesEnabled', function (e) {
+                console.log(e);
+                if(e.detail.marketing) {
+                    console.log('marketing cookies are enabled');
+                }
+            });
         </script>
         {% block head %}
 
         {% endblock %}
+        <!-- WhatsHelp.io widget -->
+        <script type="text/javascript">
+            (function () {
+                var options = {
+                    whatsapp: "+393518181127",
+                    //call: "+393518181127",
+                    telegram: "vedocompro-bot",
+                    email: "helpdesk@vedocompro.it",
+                    facebook: "1069683136499195",
+                    call_to_action: "Hai bisogno di Aiuto?",
+                    button_color: "#129BF4",
+                    position: "right",
+                    order: "whatsapp,telegram,facebook,email,call",
+                    company_logo_url: "https://randomuser.me/api/portraits/women/95.jpg",
+                    greeting_message: "Ciao sono Giulia, come posso aiutarti?", // Text of greeting message
+                    key: "",
+                };
+                var proto = document.location.protocol, host = "whatshelp.io", url = proto + "//static." + host;
+                var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = url + '/widget-send-button/js/init.js';
+                s.onload = function () { WhWidgetSendButton.init(host, proto, options); };
+                var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);
+            })();
+        </script>
+        <!-- /WhatsHelp.io widget -->
     </head>
     <body style="padding-right:0px!important">
         {% block body %}
@@ -84,7 +92,7 @@
             gtag('config', 'UA-69743962-4');
             
               $(document).ready(function(){
-                $('.modal').on('show.bs.modal', function () {
+                  $('.modal').on('show.bs.modal', function () {
                   if ($(document).height() > $(window).height()) {
                     // no-scroll
                     $('body').addClass("modal-open-noscroll");

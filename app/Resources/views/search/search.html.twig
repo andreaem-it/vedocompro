@@ -44,23 +44,20 @@
             </div> <!-- Sponsorizzati -->
         {% endif %}
         <div class="row mt-5">
-            <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- VedoCompro thin -->
-                <ins class="adsbygoogle"
-                     style="display:inline-block;width:120px;height:600px"
-                     data-ad-client="ca-pub-4967985757423249"
-                     data-ad-slot="5432794279"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
+            <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block px-0">
+                {% include('template/ads.html.twig') %}
             </div>
-            <div id="resultsRow" class="col-10 col-sm-10 pl-4 pr-4">
+            <div id="resultsRow" class="col-10 col-sm-10 pl-2 pr-2">
                 <div class="row">
                     <div class="col-sm-12 ">
                         <h1 class="font-weight-light mb-4 section-title">{% trans %}  Results for {% endtrans %} "{{ query }}" in {{ region }} <small>( {{ results|length }} elementi )</small></h1>
+                        <span class="pull-right" style="margin-top:-35px">
+                            Ordina per: &nbsp;
+                            <a href="{{ app.request.uri }}&view=list" class="btn btn-sm"><i class="fa fa-th-list"></i></a>
+                            <a href="{{ app.request.uri }}&view=card" class="btn btn-sm"><i class="fa fa-id-card"></i></a>
+                        </span>
                     </div>
-                    <div class="row ml-4 mr-3 masonry-container">
+                    <div class="row masonry-container">
                         {% for result in results %}
                         {% set slug = search.slugify(result.name) %}
                         <div class="col-md-2 item mt-4">
@@ -90,16 +87,7 @@
                                     </div>
                                     {% endfor %}
                                     <div class="mobile-pub-container hidden mt-3 container-fluid" style="width:100%;height:35%">
-                                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                        <ins class="adsbygoogle"
-                                             style="display:block"
-                                             data-ad-format="fluid"
-                                             data-ad-layout-key="-8v+36-lu+73+1mm"
-                                             data-ad-client="ca-pub-4967985757423249"
-                                             data-ad-slot="9546588662"></ins>
-                                        <script>
-                                            (adsbygoogle = window.adsbygoogle || []).push({});
-                                        </script>
+
                                     </div>
                                     <script>
                                         var cycle = function(el) {
@@ -133,16 +121,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
-                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <!-- VedoCompro thin -->
-                            <ins class="adsbygoogle"
-                                 style="display:inline-block;width:120px;height:600px"
-                                 data-ad-client="ca-pub-4967985757423249"
-                                 data-ad-slot="5432794279"></ins>
-                            <script>
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                            </script>
+                        <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block px-0">
+                            {% include('template/ads.html.twig') %}
                         </div>
                     </div>
                 </div>
@@ -189,7 +169,7 @@
                 visibility: visible;
             }
             .h-250 {
-                height: 250px!important;
+                height: 300px!important;
             }
             .fs-35 {
                 font-size: 35%!important;

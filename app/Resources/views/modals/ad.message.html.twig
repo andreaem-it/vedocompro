@@ -19,7 +19,7 @@
                     <input type="hidden" id="object" name="object" value="{{ ad_info.0.id }}"/>
                     <textarea id="message" class="form-control" name="message" placeholder="Inserisci messaggio..."></textarea>
                     <div class="modal-footer">
-                        <input type="submit" class="btn btn-primary" value="Invia"/>
+                        <input id="messageBtn" type="submit" class="btn btn-primary" value="Invia"/>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
                     </div>
                 </form>
@@ -27,3 +27,14 @@
         </div>
     </div>
 </div>
+<script>
+    $('#messageBtn').click(function() {
+        $.ajax({
+            method: 'POST',
+            url: "{{ url('ajax_stats_call_click', {'type' : 'message','id' : ad_info.0.id}) }}",
+            success: function() {
+                console.log('Clicked send message.');
+            }
+        })
+    })
+</script>

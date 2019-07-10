@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -11,15 +13,11 @@
 
 namespace Sonata\DatagridBundle\Filter;
 
-/**
- * Interface FilterFactoryInterface.
- */
 interface FilterFactoryInterface
 {
     /**
      * @param string $name
      * @param string $type
-     * @param array  $options
      *
      * @return mixed
      */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -14,8 +16,6 @@ namespace Sonata\DatagridBundle\Pager;
 use Sonata\DatagridBundle\ProxyQuery\ProxyQueryInterface;
 
 /**
- * Pager class.
- *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -135,7 +135,7 @@ abstract class BasePager implements \Iterator, \Countable, \Serializable, PagerI
      */
     public function getLinks($nbLinks = null)
     {
-        if (null == $nbLinks) {
+        if (null === $nbLinks) {
             $nbLinks = $this->getMaxPageLinks();
         }
         $links = [];
@@ -251,7 +251,7 @@ abstract class BasePager implements \Iterator, \Countable, \Serializable, PagerI
      */
     public function getFirstIndice()
     {
-        if (0 == $this->page) {
+        if (0 === $this->page) {
             return 1;
         }
 
@@ -265,7 +265,7 @@ abstract class BasePager implements \Iterator, \Countable, \Serializable, PagerI
      */
     public function getLastIndice()
     {
-        if (0 == $this->page) {
+        if (0 === $this->page) {
             return $this->nbResults;
         }
         if ($this->page * $this->maxPerPage >= $this->nbResults) {
@@ -363,16 +363,16 @@ abstract class BasePager implements \Iterator, \Countable, \Serializable, PagerI
     {
         if ($max > 0) {
             $this->maxPerPage = $max;
-            if (0 == $this->page) {
+            if (0 === $this->page) {
                 $this->page = 1;
             }
         } else {
-            if (0 == $max) {
+            if (0 === $max) {
                 $this->maxPerPage = 0;
                 $this->page = 0;
             } else {
                 $this->maxPerPage = 1;
-                if (0 == $this->page) {
+                if (0 === $this->page) {
                     $this->page = 1;
                 }
             }
@@ -406,7 +406,7 @@ abstract class BasePager implements \Iterator, \Countable, \Serializable, PagerI
      */
     public function isFirstPage()
     {
-        return 1 == $this->page;
+        return 1 === $this->page;
     }
 
     /**
@@ -416,7 +416,7 @@ abstract class BasePager implements \Iterator, \Countable, \Serializable, PagerI
      */
     public function isLastPage()
     {
-        return $this->page == $this->lastPage;
+        return $this->page === $this->lastPage;
     }
 
     /**

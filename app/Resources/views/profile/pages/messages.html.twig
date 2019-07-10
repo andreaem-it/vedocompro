@@ -115,9 +115,9 @@
     </div>
 </div>
 <script>
-    $("#checkAll").click(function () {  //"select all" change
-        var checkBoxes = $(".msg-rec-checkbox");
-        checkBoxes.prop('checked', !checkBoxes.prop("checked"));
+
+    $("#checkAll").click(function(){
+        $('.msg-checkbox').prop('checked', this.checked);
     });
 
     $("#come_letti").click(function () {
@@ -146,3 +146,8 @@
         });
     });
 </script>
+<style>
+    .list-group-item {
+        cursor: pointer;
+    }
+</style>

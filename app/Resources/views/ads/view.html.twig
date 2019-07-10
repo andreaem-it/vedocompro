@@ -20,13 +20,16 @@
     <script src="{{asset('js/jquery.scrolling-tabs.min.js') }}"></script>
     <link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
     <script src="https://use.fontawesome.com/bdc514bb6a.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//kenwheeler.github.io/slick/slick/slick-theme.css"/>
 {% endblock %}
 {% block body %}
-    
-    
+
+
         {% include 'template/header.html.twig' %}
 
-    <!-- Modal Photos carousel -->
+    {#<!-- Modal Photos carousel -->
     <div class="modal fade" id="video-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content modal-video">
@@ -55,23 +58,20 @@
             </div>
         </div>
       </div>
-    </div>
-
-
+    </div>#}
     <!-- Page -->
     <div class="wrapper">
         <div class="container-fluid pl-5 pr-5">
-            <!--<div class="row mt-5 mb-5">
-                <div class="search ml-auto ">
-                    <input class="form-control float-right" type="text" placeholder="Ricerca">
-                </div>
-            </div>-->
             <div class="row mt-5">
-                <div class="col-sm-10">
+                <div class="col-sm-12">
                     <div class="row">
                         <div class="col-sm-4">
-                            {% if video.accepted == 1 %}<div id="video"></div>{% endif %}
-                            <div class="row no-gutters">
+                            {% if video.accepted == 1 %}
+                                <div id="video"></div>
+                            {% else %}
+                                <img src="https://via.placeholder.com/507x285?text=Annuncio%20non%20ancora%20accettato">
+                            {% endif %}
+                            {#<div class="row no-gutters">
                                 {% for i in range(1,5) %}
                                     {% if loop.length == 1 %}
                                         <div class="col">
@@ -83,142 +83,222 @@
                                         </div>
                                     {% endif %}
                                 {% endfor %}
-                            </div>
+                            </div>#}
+
+                            {% set count = 0 %}
+                            {% if ad_info.0.fields is empty %}
+                                {% else %}
+                            <ul class="list-group">
+                                {% for field in ad_info.0.fields %}
+                                    {% set count = count + 1 %}
+                                <li class="list-group-item">
+                                    <span class="float-left"><strong>{{ field }}</strong></span>
+                                    <span class="float-right">
+                                        {% if field == "Classe Energetica" %}
+                                            <img src="{{ asset('img/ape-icons/' ~ ad_info.0.vals[count -1] ~ '.gif') }}" style="width: 40px;position:relative;top:-10px">
+                                        {% else %}
+                                            {{ ad_info.0.vals[count -1]  }}
+                                        {% endif %}
+                                    </span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
                             <p class="font-weight-light mt-3">
                                 Visualizzato <span class="text-blue">{{ ad_info.0.views }} </span>volte
                             </p>
                         </div>
 
+                        <style>
+                            .list-group {
+                                border: 1px solid rgba(0,0,0,.125);
+                                border-radius: 5px;
+                                margin-bottom: 15px;
+                            }
+                            .list-group-item {
+                                border: none!important;
+                            }
+                        </style>
                         <div class="col-sm-8">
                             <div class="row">
-                                <div class="col-sm-8">
-                                    <h1 class="font-weight-light">{{ ad_info.0.name }}</h1>
-                                </div>
-                                <div class="col-sm-4 float-right">
-                                    <div class="row mt-2 float-right">
-                                        <div class="col-xs-2 mr-1">
-                                            <div data-network="facebook" class="btn btn-outline-secondary button share-button st-custom-button facebook-share-button btn-round">
-                                                <i class="fa fa-facebook" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-2 mr-1">
-                                            <div data-network="twitter" class="btn btn-outline-secondary button share-button st-custom-button twitter-share-button btn-round">
-                                                <i class="fa fa-twitter" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-2 mr-1">
-                                            <div data-network="pinterest" class="btn btn-outline-secondary button share-button st-custom-button pinterest-share-button btn-round">
-                                                <i class="fa fa-pinterest" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-2 mr-1">
-                                            <div data-network="whatsapp" class="btn btn-outline-secondary button share-button st-custom-button whatsapp-share-button btn-round">
-                                                <i class="fa fa-whatsapp" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-2 mr-1">
-                                            <div data-network="sharethis" class="btn btn-outline-secondary button share-button st-custom-button sharethis-share-button btn-round">
-                                                <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=596a2951191e1a0012335487&product=custom-share-buttons"></script>
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-12">
-                                    <h5 class="font-weight-light">
-                                        Venduto da: &nbsp;<a href="{{ path('profilo', {'query': user_info.0.name}) }}">{{user_info.0.name }}</a>&nbsp; ({{user_info.0.points}}) - {{ feed_percent }}% positivi
-                                    </h5>
-                                    <h1 class="font-weight-normal mb-4">
-                                        <strong>
-                                            {{ ad_info.0.price }} €
-                                        </strong>
-                                    </h1>
-                                    <p class="font-weight-light">
-                                        {{ ad_info.0.description }}
-                                    </p>
-                                    <p class="font-weight-light">
-                                        Condizione: <span class="text-blue">{{ ad_info.0.objCondition }}</span>
-                                    </p>
-                                    <p class="font-weight-light">
-                                        Località: <span class="text-blue">{{ ad_info.0.location }} ({{ ad_info.0.region }})</span>
-                                    </p>
-
-                                    <div class="row mt-4 mb-4">
-                                        <div class="col-xs-3 ml-3 mr-4">
-                                            <a href="" data-toggle="modal" data-target="#call" class="btn btn-block btn-outline-success">Chiama</a>
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <h1 class="font-weight-light">{{ ad_info.0.name }}</h1>
                                         </div>
-                                        <div class="col-xs-3">
-                                            <a href="" data-toggle="modal" data-target="#send_message" class="btn btn-block btn-outline-success">Messaggio</a>
+                                        <div class="col-sm-3 float-right">
+                                            <div class="row mt-2 float-right mx-auto">
+                                                <div class="col-xs-2 mr-1">
+                                                    <div data-network="facebook" class="btn btn-outline-secondary button share-button st-custom-button facebook-share-button btn-round">
+                                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-2 mr-1">
+                                                    <div data-network="twitter" class="btn btn-outline-secondary button share-button st-custom-button twitter-share-button btn-round">
+                                                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-2 mr-1">
+                                                    <div data-network="pinterest" class="btn btn-outline-secondary button share-button st-custom-button pinterest-share-button btn-round">
+                                                        <i class="fa fa-pinterest" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-2 mr-1">
+                                                    <div data-network="whatsapp" class="btn btn-outline-secondary button share-button st-custom-button whatsapp-share-button btn-round">
+                                                        <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-2 mr-1">
+                                                    <div data-network="sharethis" class="btn btn-outline-secondary button share-button st-custom-button sharethis-share-button btn-round">
+                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=596a2951191e1a0012335487&product=custom-share-buttons"></script>
                                         </div>
                                     </div>
-                                    <p class="font-weight-light">
-                                        Categoria: <span class="text-blue">{{ ads.convertCategory(ad_info.0.category|capitalize) }}</span>
-                                    </p>
+                                    <div class="row">
+                                        <div class="col-sm-10">
+                                            <div class="row mt-3">
+                                                <div class="col-sm-8">
+                                                    <h5 class="font-weight-light">
+                                                        Venduto da: &nbsp;
+                                                        <a href="{{ path('profilo', {'query': user_info.0.name}) }}">
+                                                            {{user_info.0.name }}
+                                                        </a>&nbsp;
+                                                        {% if user_info.0.isCompany == 1 %}
+                                                            <img src="{{ asset('img/vedocompro-verified-icon.jpg') }}" style="height:24px" data-toggle="tooltip" data-placement="top" title="Venditore verificato">
+                                                        {% endif %}
+                                                        ({{user_info.0.points}}) - {{ feed_percent }}% positivi
+                                                    </h5>
+                                                    <h1 class="font-weight-normal mb-4">
+                                                        <strong>
+                                                            {{ ad_info.0.price }} €
+                                                        </strong>
+                                                    </h1>
+
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="row">
+                                                        {% if user_info.0.isCompany == 1 %}
+                                                            <div class="companyBox ml-3 text-center mx-auto">
+                                                                <a href="{{ user_info.0.companyWebsite }}" data-toggle="tooltip" data-placement="top" title="Visita il sito dell'azienda">
+                                                                    <img src="{{ user_info.0.companyLogo }}" class="img-fluid">
+                                                                </a>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <p class="font-weight-light">
+                                                        {{ ad_info.0.description }}
+                                                    </p>
+                                                    <p class="font-weight-light">
+                                                        Condizione: <span class="text-blue">{{ ad_info.0.objCondition }}</span>
+                                                    </p>
+                                                    <p class="font-weight-light">
+                                                        Località: <span class="text-blue">{{ ad_info.0.location }} ({{ ad_info.0.region }})</span>
+                                                    </p>
+
+                                                    <div class="row mt-4 mb-4">
+                                                        <div class="col-xs-3 ml-3 mr-4">
+                                                            <a href="" data-toggle="modal" data-target="#call" class="btn btn-block btn-outline-success">Chiama</a>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <a href="" data-toggle="modal" data-target="#send_message" class="btn btn-block btn-outline-success">Messaggio</a>
+                                                        </div>
+                                                    </div>
+                                                    <p class="font-weight-light">
+                                                        Categoria: <span class="text-blue">{{ ads.convertCategory(ad_info.0.category|capitalize) }}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2 text-center">
+                                            {% include('template/ads.html.twig') %}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <hr>
+                    {% if user_info.0.isCompany == 1 %}
                     <div class="row">
-                        <h4 class="mb-4 mt-4 font-weight-light">Inserzioni simili</h4>
-                            <hr>
-                        {% if similar|length == 1 %}
-                            </div>
-                        {% endif %}
-                            {% for similars in similar %}
-
-                            {% if  loop.index % 6 == 1 or loop.first %}
+                        <!-- Box Business -->
+                        <!-- COMING SOON -->
+                    </div>
+                    {% endif %}
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4 class="mb-4 mt-4 font-weight-light">Inserzioni nella categoria {{ ads.convertCategory(ad_info.0.category|capitalize) }}</h4>
                             <br>
-                            <div class="row">
-                                {% endif %}
-                                <div class="col-md-2" >
-                                    {% if similars.objLevel == 1 %}
-                                    <div class="card result-card" style="border: 4px solid rgb(218, 165, 32);">
-                                        {% elseif similars.objLevel == 2 %}
-                                        <div class="card result-card" style="border: 4px solid #ccc;">
-                                            {% elseif similars.objLevel == 3 %}
-                                            <div class="card result-card" style="border: 4px solid #CD7F32">
-                                                {% else %}
-                                                <div class="card result-card">
-                                                    {% endif %}
-                                                    {% set category = (ads.slugify(ads.convertCategory(similars.category))) %}
-                                                    <a href="{{ url('vedi_oggetto', {'category': category, 'item': similars.id, 'title': ads.slugify(similars.name) }) }}">
+                        </div>
+                    <div class="row">
+                        {% if similar|length == 1 %}
+                    </div>
+                        {% endif %}
+                        <div class="col-sm-12">
+                            <div id="similarCarousel">
+                                <div class="row autoplay">
+                                    {% for similars in similar %}
+                                        <div style="width:200px!important; margin: 0 20px">
+                                            <div class="card result-card ">
+                                                {% set category = (ads.slugify(ads.convertCategory(similars.category))) %}
+                                                <a href="{{ url('vedi_oggetto', {'category': category, 'item': similars.id, 'title': ads.slugify(similars.name) }) }}">
                                                     <img class="card-img-top img-fluid" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ similars.id }}-1.jpg"></a>
-                                                    <div class="card-body">
-                                                        <h5 class="card-title font-weight-light">
-                                                            <a href="{{ url('vedi_oggetto', {'category': category, 'item': similars.id, 'title': ads.slugify(similars.name) }) }}">{{ similars.name }}</a>
-                                                            <p><strong>{{ similars.price }}&nbsp;€</strong></p>
-                                                        </h5>
-                                                    </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title font-weight-light">
+                                                        <a href="{{ url('vedi_oggetto', {'category': category, 'item': similars.id, 'title': ads.slugify(similars.name) }) }}">{{ similars.name }}</a>
+                                                        <p><strong>{{ similars.price }}&nbsp;€</strong></p>
+                                                    </h5>
                                                 </div>
                                             </div>
-                                            {% if  loop.index % 6 == 0 or loop.last %}
                                         </div>
-                                    {% elseif loop.last %}
-                                        <p></p>
+                                    {% endfor %}
+                                    {% if similar|length <= 6 %}
+                                        {% set totals = (5 - similar|length) %}
+                                        {% for i in 0..totals %}
+                                            <div style="width:250px!important; margin: 0 20px"></div>
+                                        {% endfor %}
                                     {% endif %}
-
-                                {% endfor %}
+                                </div>
                             </div>
                         </div>
-                <div class="col-sm-2 text-center">
-                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- VedoCompro -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:160px;height:600px"
-     data-ad-client="ca-pub-4967985757423249"
-     data-ad-slot="7771954836"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+                    </div>
                 </div>
+                    <script>
+                        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                            $('.autoplay').slick({
+                                adaptiveHeight: true,
+                                focusOnSelect: true,
+                                slidesToShow: 1,
+                                slidesToScroll: 1,
+                                autoplay: true,
+                                autoplaySpeed: 2000,
+                            });
+                        } else {
+                            $('.autoplay').slick({
+                                adaptiveHeight: true,
+                                focusOnSelect: true,
+                                slidesToShow: 6,
+                                slidesToScroll: 1,
+                                autoplay: true,
+                                autoplaySpeed: 2000,
+                            });
+                        }
+
+                        $(document).ready(function () {
+                            $('#similarCarousel').css('max-width',
+                                $('.col-sm-12').width()
+                            ).css('padding','0 15px');
+                        })
+                    </script>
             </div>
         </div>
     </div>
-
 
     {% if app.user %}
         {% embed 'modals/ad.message.html.twig' %}
@@ -244,7 +324,8 @@
 {% endembed %}
 {% embed 'template/footer.html.twig' %}
 {% endembed %}
-<style>
+
+            <style>
     .modal {
         text-align: center;
         padding: 0!important;
@@ -358,6 +439,14 @@
         left: 0px!important;
         margin-left: -50px!important;
         margin-top: -21px!important;
+    }
+    .company-header {
+        float: right;
+        position: relative;
+        top: 15px;
+        left: 5px;
+        color: #FFF;
+        font-weight: 100;
     }
 </style>
     <script type="text/JavaScript">

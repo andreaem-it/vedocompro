@@ -19,7 +19,6 @@
         "php": "^5.5 || ^7.0",
         "php-http/client-common": "^1.9 || ^2.0",
         "php-http/client-implementation": "^1.0",
-        "php-http/cache-plugin": "^1.6",
         "php-http/discovery": "^1.0",
         "php-http/httplug": "^1.0 || ^2.0",
         "php-http/logger-plugin": "^1.1",
@@ -31,13 +30,13 @@
         "symfony/dependency-injection": "^2.8.49 || ^3.0.9 || ^3.1.10 || ^3.2.14 || ^3.3.18 || ^3.4.20 || ^4.0.15 || ^4.1.9 || ^4.2.1",
         "symfony/event-dispatcher": "^2.8.49 || ^3.0.9 || ^3.1.10 || ^3.2.14 || ^3.3.18 || ^3.4.20 || ^4.0.15 || ^4.1.9 || ^4.2.1",
         "symfony/http-kernel": "^2.8.49 || ^3.0.9 || ^3.1.10 || ^3.2.14 || ^3.3.18 || ^3.4.20 || ^4.0.15 || ^4.1.9 || ^4.2.1",
-        "symfony/options-resolver": "^2.8.49 || ^3.0.9 || ^3.1.10 || ^3.2.14 || ^3.3.18 || ^3.4.20 || ^4.0.15 || ^4.1.9 || ^4.2.1",
-        "twig/twig": "^1.36 || ^2.6"
+        "symfony/options-resolver": "^2.8.49 || ^3.0.9 || ^3.1.10 || ^3.2.14 || ^3.3.18 || ^3.4.20 || ^4.0.15 || ^4.1.9 || ^4.2.1"
     },
     "require-dev": {
         "guzzlehttp/psr7": "^1.0",
         "matthiasnoback/symfony-dependency-injection-test": "^1.1 || ^2.3",
         "nyholm/nsa": "^1.1",
+        "php-http/cache-plugin": "^1.6",
         "php-http/guzzle6-adapter": "^1.1.1 || ^2.0.1",
         "php-http/promise": "^1.0",
         "php-http/mock-client": "^1.2",
@@ -50,25 +49,31 @@
         "symfony/phpunit-bridge": "^3.4 || ^4.2",
         "symfony/stopwatch": "^2.8.49 || ^3.0.9 || ^3.1.10 || ^3.2.14 || ^3.3.18 || ^3.4.20 || ^4.0.15 || ^4.1.9 || ^4.2.1",
         "symfony/twig-bundle": "^2.8.49 || ^3.0.9 || ^3.1.10 || ^3.2.14 || ^3.3.18 || ^3.4.20 || ^4.0.15 || ^4.1.9 || ^4.2.1",
-        "symfony/web-profiler-bundle": "^2.8.49 || ^3.0.9 || ^3.1.10 || ^3.2.14 || ^3.3.18 || ^3.4.20 || ^4.0.15 || ^4.1.9 || ^4.2.1"
+        "symfony/web-profiler-bundle": "^2.8.49 || ^3.0.9 || ^3.1.10 || ^3.2.14 || ^3.3.18 || ^3.4.20 || ^4.0.15 || ^4.1.9 || ^4.2.1",
+        "twig/twig": "^1.36 || ^2.6"
     },
     "conflict": {
         "php-http/guzzle6-adapter": "<1.1"
     },
     "suggest": {
+        "twig/twig": "Add this to your require-dev section when using the WebProfilerBundle",
+        "php-http/cache-plugin": "To configure clients that cache responses",
         "php-http/mock-client": "Add this to your require-dev section to mock HTTP responses easily"
     },
     "autoload": {
         "psr-4": {
-            "Http\\HttplugBundle\\": ""
+            "Http\\HttplugBundle\\": "src/"
         },
         "exclude-from-classmap": [
             "/Tests/Resources/MyPsr18TestClient.php"
         ]
     },
     "autoload-dev": {
+        "psr-4": {
+            "Http\\HttplugBundle\\Tests\\": "tests/"
+        },
         "classmap": [
-            "Tests/Resources/app/AppKernel.php"
+            "tests/Resources/app/AppKernel.php"
         ]
     },
     "scripts": {

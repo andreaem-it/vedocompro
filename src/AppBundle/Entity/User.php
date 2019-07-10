@@ -104,6 +104,21 @@ class User extends BaseUser
     private $pic;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $isCompany;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $companyLogo;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $companyWebsite;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     protected $plainPassword;
@@ -520,5 +535,77 @@ class User extends BaseUser
     public function getPic()
     {
         return $this->pic;
+    }
+
+    /**
+     * Set isCompany.
+     *
+     * @param int|null $isCompany
+     *
+     * @return User
+     */
+    public function setIsCompany($isCompany = null)
+    {
+        $this->isCompany = $isCompany;
+
+        return $this;
+    }
+
+    /**
+     * Get isCompany.
+     *
+     * @return int|null
+     */
+    public function getIsCompany()
+    {
+        return $this->isCompany;
+    }
+
+    /**
+     * Set companyLogo.
+     *
+     * @param string|null $companyLogo
+     *
+     * @return User
+     */
+    public function setCompanyLogo($companyLogo = null)
+    {
+        $this->companyLogo = $companyLogo;
+
+        return $this;
+    }
+
+    /**
+     * Get companyLogo.
+     *
+     * @return string|null
+     */
+    public function getCompanyLogo()
+    {
+        return $this->companyLogo;
+    }
+
+    /**
+     * Set companyWebsite.
+     *
+     * @param string|null $companyWebsite
+     *
+     * @return User
+     */
+    public function setCompanyWebsite($companyWebsite = null)
+    {
+        $this->companyWebsite = $companyWebsite;
+
+        return $this;
+    }
+
+    /**
+     * Get companyWebsite.
+     *
+     * @return string|null
+     */
+    public function getCompanyWebsite()
+    {
+        return $this->companyWebsite;
     }
 }

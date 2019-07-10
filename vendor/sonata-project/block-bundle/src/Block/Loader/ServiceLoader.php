@@ -48,7 +48,7 @@ class ServiceLoader implements BlockLoaderInterface
      */
     public function load($configuration)
     {
-        if (!\in_array($configuration['type'], $this->types)) {
+        if (!\in_array($configuration['type'], $this->types, true)) {
             throw new \RuntimeException(sprintf(
                 'The block type "%s" does not exist',
                 $configuration['type']
@@ -56,7 +56,7 @@ class ServiceLoader implements BlockLoaderInterface
         }
 
         $block = new Block();
-        $block->setId(uniqid());
+        $block->setId(uniqid('', true));
         $block->setType($configuration['type']);
         $block->setEnabled(true);
         $block->setCreatedAt(new \DateTime());

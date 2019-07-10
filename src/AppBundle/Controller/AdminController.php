@@ -3,15 +3,22 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\AdminActions;
+use AppBundle\Entity\Ads;
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Messages;
 use AppBundle\Entity\Notifications;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Videos;
+use AppBundle\Form\AdsType;
 use AppBundle\Repository\AdminDefaultMailsRepository;
+use Doctrine\DBAL\Types\FloatType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,6 +26,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\User;
+use Symfony\Component\Validator\Constraints\Choice;
 
 class AdminController extends Controller
 {
@@ -248,6 +256,70 @@ class AdminController extends Controller
             'admin_info' => $this->getAdminInfos(),
             'ad' => $ad,
             'video' => $video,
+            'tools' => $this
+        ));
+    }
+
+    /**
+     * @Route("/admin/inserzioni/modifica/{id}", name="admin_modifica_inserzioni")
+     */
+    public function adsEditAction($id, Request $request)
+    {
+        $this->denyAccessUnlessGranted('ROLE_SUPPORT', null, 'Unable to access this page!');
+        $ad = $this->getDoctrine()
+            ->getRepository('AppBundle:Ads')
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->where('e.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+        $ad = $this->getDoctrine()->getRepository(Ads::class)->find($id);
+
+        $video = $this->getDoctrine()
+            ->getRepository('AppBundle:Videos')
+            ->findOneBy(['aid' => $id]);
+
+        $form = $this->createForm(AdsType::class,$ad);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $category = $form->getData()->getCategory();
+            $usr = $form->getData()->getUname();
+
+            $ad->setCategory($category->getId());
+            $ad->setUname($usr->getId());
+
+            $em->flush();
+
+            $now = $time = new \DateTime();
+
+            $action = new AdminActions();
+            $action->setLinedate($now);
+            $action->setType(12);
+            $action->setUid($this->get('security.token_storage')->getToken()->getUser()->getID());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($action);
+            $em->flush();
+
+            return $this->redirectToRoute('admin_vedi_inserzioni', array(
+                'id' => $ad->getId(),
+                'admin_info' => $this->getAdminInfos(),
+                'ad' => $ad,
+                'video' => $video,
+                'tools' => $this
+            ));
+        }
+
+        return $this->render('admin/views/ads.edit.html.twig', array(
+            'admin_info' => $this->getAdminInfos(),
+            'ad' => $ad,
+            'video' => $video,
+            'form' => $form->createView(),
             'tools' => $this
         ));
     }
@@ -529,7 +601,7 @@ class AdminController extends Controller
     /**
      * @Route("/admin/utenti/{id}", name="admin_utenti_vedi")
      */
-    public function usersViewAction($id)
+    public function usersViewAction(Request $request,$id)
     {
         $user = $this->getDoctrine()
             ->getRepository('AppBundle:User')
@@ -540,8 +612,49 @@ class AdminController extends Controller
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
+        $userAds = $this->getDoctrine()
+            ->getRepository(Ads::class)
+            ->findBy(['uname' => $user[0]['id']]);
+
+        $userEdit = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($id)
+;
+        $form = $this->createFormBuilder($userEdit)
+            ->add('isCompany',ChoiceType::class, [
+                'choices' => [
+                    'Disattivo' => '0',
+                    'Attivo' => '1'
+                ],
+                'label' => 'Business Attivo'
+            ])
+            ->add('companyLogo', TextType::class,[
+                'label' => 'Logo'
+            ])
+            ->add('companyWebsite', TextType::class, [
+                'label' => 'URL Sito Web'
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Applica'
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isValid() && $form->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->redirectToRoute('admin_utenti_vedi', [
+                'id' => $id
+            ]);
+        }
+
         return $this->render(':admin/views:users.view.html.twig', array(
             'user' => $user,
+            'user_ads' => $userAds,
+            'tools' => $this,
+            'form' => $form->createView(),
             'admin_info' => $this->getAdminInfos()));
     }
 

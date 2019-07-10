@@ -17,6 +17,7 @@ security:
             security: false
 
         main:
+            switch_user: true
             pattern: ^/
             http_basic: ~
             anonymous: ~

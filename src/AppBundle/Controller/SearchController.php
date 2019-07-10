@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Category;
+use AppBundle\Entity\Regions;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,6 +23,7 @@ class SearchController extends Controller
      * @Route("cerca", name="search")
      * @param $request
      * @return Response
+     * @throws \Exception
      */
     public function searchAction(Request $request)
     {
@@ -79,6 +82,7 @@ class SearchController extends Controller
 
             // TODO - change to actually get category name
             $region = ucfirst($request->query->get('regione'));
+            //$region = $this->getDoctrine()->getRepository(Regions::class)->find($region);
         } else {
             $region = "Tutta Italia";
         }
@@ -95,6 +99,9 @@ class SearchController extends Controller
             $q = 'Tutto';
         }
 
+        $regions = $this->getDoctrine()->getRepository(Regions::class)->findAll();
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+
         $searchResults = $searchQuery
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
@@ -102,15 +109,88 @@ class SearchController extends Controller
             ->getQuery()
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-        return $this->render('search/search.html.twig', [
-            'region' => $region,
-            'category' => $category,
-            'query' => $q,
-            'results' => $searchResults,
-            'search' => $this,
-            'showcase' => $showcaseResults,
-            'list' => $request->query->get('list')
-        ]);
+        switch($category) {
+            case 2:
+                $advFields = [
+                    0 => [
+                        'name' => 'Chilometraggio',
+                        'default' => '0',
+                        'min' => '0',
+                        'max' => '1000000',
+                        'step' => '1000',
+                    ],
+                    1 => [
+                        'name' => 'Anno',
+                        'default' => '2018',
+                        'values' => [],
+                        'min' => '1900',
+                        'max' => '2019',
+                        'step' => '1',
+                    ],
+                    2 => [
+                        'name' => 'Alimentazione',
+                        'default' => 'Diesel',
+                        'values' => [
+                            0 => ['Benzina'],
+                            1 => ['Diesel'],
+                            2 => ['Elettrico'],
+                            3 => ['Metano'],
+                            4 => ['GPL']
+                        ],
+                        'min' => '1',
+                        'max' => '5',
+                        'step' => '1',
+                    ],
+                    3 => [
+                        'name' => 'Cilindrata',
+                        'default' => '1000',
+                        'min' => '1000',
+                        'max' => '8000',
+                        'step' => '200',
+                    ],
+                    4 => [
+                        'name' => 'Cavalli',
+                        'default' => '50',
+                        'min' => '0',
+                        'max' => '500',
+                        'step' => '20',
+                    ]
+                ];
+                $k = 0;
+                for($i= 1900;$i <= 2019; $i++ ) {
+                    $k = $k+1;
+                    array_push($advFields[1]['values'], [(string)$i] );
+                }
+                break;
+            default:
+                $advFields = [];
+        }
+
+        if ($request->query->get('view') && $request->query->get('view') != "list" ) {
+            return $this->render('search/search.html.twig', [
+                'region' => $region,
+                'category' => $category,
+                'query' => $q,
+                'results' => $searchResults,
+                'search' => $this,
+                'showcase' => $showcaseResults,
+                'list' => $request->query->get('list')
+
+            ]);
+        } else {
+            return $this->render('search/search.horizontal.html.twig', [
+                'region' => $region,
+                'regions' => $regions,
+                'category' => $category,
+                'categories' => $categories,
+                'query' => $q,
+                'results' => $searchResults,
+                'search' => $this,
+                'showcase' => $showcaseResults,
+                'list' => $request->query->get('list'),
+                'advFields' => $advFields
+            ]);
+        }
     }
 
     static public function slugify($text)

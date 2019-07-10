@@ -1,0 +1,17 @@
+<div class="google-ads-container">
+    {% if app.environment == 'dev' %}
+        <img src="https://via.placeholder.com/120x600&text=Banner">
+    {% else %}
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- vedocompro -->
+    <ins class="adsbygoogle"
+     style="display:inline-block;height:600px;width:160px"
+     data-ad-client="ca-pub-4967985757423249"
+     data-ad-slot="1131672247"
+     data-full-width-responsive="true"
+    ></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    {% endif %}
+</div>

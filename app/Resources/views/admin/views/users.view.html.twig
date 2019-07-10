@@ -18,7 +18,7 @@
 
     <section class="content container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-9">
                 <div class="box">
                     <div class="box-body">
                         <div class="row">
@@ -28,7 +28,13 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-3">
-                                <img class="img-responsive" src="../../../uploads/profile/{{ user.0.pic }}">
+                                <img class="img-responsive" src="{{ asset('uploads/profile/' ~ user.0.pic ) | imagine_filter('profile_img_filter')}}">
+                                <br>
+                                <ul class="list-group">
+                                    <li class="list-group-item"><strong>Crediti Oro:</strong>&nbsp;{{ user.0.credits_gold }}</li>
+                                    <li class="list-group-item"><strong>Crediti Argento:</strong>&nbsp;{{ user.0.credits_silver }}</li>
+                                    <li class="list-group-item"><strong>Crediti Bronzo:</strong>&nbsp;{{ user.0.credits_bronze }}</li>
+                                </ul>
                             </div>
                             <div class="col-sm-9">
                                 <ul class="list-group">
@@ -50,6 +56,7 @@
                                         <a href="" class="pull-left" id="username_change_save" style="margin-left: 5px">Salva</a>
                                         <a href="" class="pull-left" id="username_change_cancel" style="margin-left: 5px">Annulla</a>
                                     </li>
+                                    <li class="list-group-item"><strong>Tipo:</strong> {% if user.0.isCompany == 1 %}<span class="text-success">Business</span>{% else %}Utente{% endif %}</li>
                                     <li class="list-group-item"><strong>Email:</strong>&nbsp;{{ user.0.email }}</li>
                                     <li class="list-group-item"><strong>Data registrazione:</strong>&nbsp;{{ user.0.datejoin|date('d-m-Y') }}</li>
                                     <li class="list-group-item"><strong>Indirizzo:</strong>&nbsp;{{ user.0.address }}</li>
@@ -59,7 +66,11 @@
                                     <li class="list-group-item">
                                         <strong class="pull-left">Ruolo:</strong>&nbsp;
                                         <a href="" id="role_change_activate">
-                                            {#{{ user.0.roles }}#}
+                                            {% if user.0.roles %}
+                                                {{ user.0.roles.0 }}
+                                            {% else %}
+                                                ROLE_USER
+                                            {% endif %}
                                         </a>
                                         <select id="role_change_select" class="form-control pull-left" style="width: 30%; margin-left: 5px; margin-top:-6px">
                                             {% if user.0.roles %}
@@ -103,12 +114,60 @@
                                         {% endif %}
                                     </li>
                                     <br>
-                                    <li class="list-group-item"><strong>Crediti Oro:</strong>&nbsp;{{ user.0.credits_gold }}</li>
-                                    <li class="list-group-item"><strong>Crediti Argento:</strong>&nbsp;{{ user.0.credits_silver }}</li>
-                                    <li class="list-group-item"><strong>Crediti Bronzo:</strong>&nbsp;{{ user.0.credits_bronze }}</li>
                                 </ul>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="box">
+                    <div class="box-body">
+                        {% if user.0.isCompany == 1 %}
+                            <h3>BUSINESS: <span class="text-success">ATTIVO</span></h3>
+                            <img src="{{ user.0.companyLogo }}" class="img-responsive">
+                        {% else %}
+                            <h3>BUSINESS: <span class="text-danger">NON ATTIVO</span></h3>
+                        {% endif %}
+                        {{ form_start(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-body">
+                        <div class="box-header">
+                            <h3>Annunci utente</h3>
+                        </div>
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Categoria</th>
+                                <th>Regione</th>
+                                <th>Aggiunta</th>
+                                <th>Visualizzazioni</th>
+                                <th>Livello</th>
+                                <th>Stato</th>
+                            </tr>
+                            {% for ad in user_ads %}
+                                <tr>
+                                    <td>{{ ad.id }}</td>
+                                    <td><a href="{{ url('admin_vedi_inserzioni',{'id':ad.id} ) }}">{{ ad.name }}</a></td>
+                                    <td>{{ tools.convertCategory(ad.category) }}</td>
+                                    <td>{{ ad.region }}</td>
+                                    <td>{{ ad.creationtime|date('d-m-Y H:m') }}</td>
+                                    <td>{{ ad.views }}</td>
+                                    <td>{% if ad.objLevel == 1 %}<span class="badge bg-gold">{% elseif ad.objLevel == 2 %}<span class="badge bg-silver">{% elseif ad.objLevel == 3 %}<span class="badge bg-bronze">{% else %}<span class="badge">{% endif %}{{ tools.convertLevel(ad.objLevel) }}</span></td>
+                                    <td>{% if ad.published == 0 %}<img src="{{ asset('img/circle-red.png') }}">{% else %}<img src="{{ asset('img/circle-green.png') }}">{% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

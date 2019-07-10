@@ -25,6 +25,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Username</th>
+                                <th>Tipo</th>
                                 <th>E-Mail</th>
                                 <th>Data Registrazione</th>
                                 <th>Indirizzo</th>
@@ -38,6 +39,10 @@
                                 <tr>
                                     <td>{{ user.id }}</td>
                                     <td><a href="{{ url('admin_utenti_vedi',{'id':user.id} ) }}">{{ user.name }}</a></td>
+                                    <td>{% if user.isCompany == 1  %}
+                                            <img src="{{ asset('img/business_icon.png') }}" style="width:20px;height:20px">
+                                        {% endif %}
+                                    </td>
                                     <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
                                     <td>{{ user.datejoin|date('d-m-Y H:m') }}</td>
                                     <td>{{ user.address }}</td>

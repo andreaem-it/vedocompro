@@ -149,6 +149,36 @@ class Ads
     private $published;
 
     /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $fields;
+
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $vals;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $callClicks;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $messageClicks;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $hasMap;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $mapCoords;
+
+    /**
      * Get id
      *
      * @return integer
@@ -780,5 +810,149 @@ class Ads
     public function getBronzePromotionEndDate()
     {
         return $this->bronzePromotionEndDate;
+    }
+
+    /**
+     * Set fields.
+     *
+     * @param array $fields
+     *
+     * @return Ads
+     */
+    public function setFields($fields)
+    {
+        $this->fields = $fields;
+
+        return $this;
+    }
+
+    /**
+     * Get fields.
+     *
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * Set values.
+     *
+     * @param array $vals
+     *
+     * @return Ads
+     */
+    public function setVals($vals)
+    {
+        $this->vals = $vals;
+
+        return $this;
+    }
+
+    /**
+     * Get values.
+     *
+     * @return array
+     */
+    public function getVals()
+    {
+        return $this->vals;
+    }
+
+    /**
+     * Set callClicks.
+     *
+     * @param int|null $callClicks
+     *
+     * @return Ads
+     */
+    public function setCallClicks($callClicks = null)
+    {
+        $this->callClicks = $callClicks;
+
+        return $this;
+    }
+
+    /**
+     * Get callClicks.
+     *
+     * @return int|null
+     */
+    public function getCallClicks()
+    {
+        return $this->callClicks;
+    }
+
+    /**
+     * Set messageClicks.
+     *
+     * @param int|null $messageClicks
+     *
+     * @return Ads
+     */
+    public function setMessageClicks($messageClicks = null)
+    {
+        $this->messageClicks = $messageClicks;
+
+        return $this;
+    }
+
+    /**
+     * Get messageClicks.
+     *
+     * @return int|null
+     */
+    public function getMessageClicks()
+    {
+        return $this->messageClicks;
+    }
+
+    /**
+     * Set hasMap.
+     *
+     * @param bool|null $hasMap
+     *
+     * @return Ads
+     */
+    public function setHasMap($hasMap = null)
+    {
+        $this->hasMap = $hasMap;
+
+        return $this;
+    }
+
+    /**
+     * Get hasMap.
+     *
+     * @return bool|null
+     */
+    public function getHasMap()
+    {
+        return $this->hasMap;
+    }
+
+    /**
+     * Set mapCoords.
+     *
+     * @param string|null $mapCoords
+     *
+     * @return Ads
+     */
+    public function setMapCoords($mapCoords = null)
+    {
+        $this->mapCoords = $mapCoords;
+
+        return $this;
+    }
+
+    /**
+     * Get mapCoords.
+     *
+     * @return string|null
+     */
+    public function getMapCoords()
+    {
+        return $this->mapCoords;
     }
 }

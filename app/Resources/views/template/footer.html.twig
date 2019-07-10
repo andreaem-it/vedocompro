@@ -362,3 +362,24 @@
         <img src="{{ asset('img/home/logo-vedocompro.png') }}" class="img-fluid mb-5 mt-4"/>
     </div>
 </div>
+<style>
+.anniversary {
+position: fixed;
+bottom: 25px;
+left: 10px;
+top: 87%;
+height: 200px;
+width: 100px;
+}
+.anniversary img {
+z-index:9999;
+}
+</style>
+<div class="anniversary">
+    <img src="{{ asset('img/2year.png') }}" class="img-fluid" style="width:200px" data-toggle="tooltip" data-placement="right" title="VedoCompro compie 2 Anni! Ringraziamo tutti i nostri utenti che ogni giorno fanno affari su VedoCompro!">
+</div>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>

@@ -18,14 +18,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-use Symfony\Component\Form\Extension\Core\Type\PhoneType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 
@@ -257,7 +260,7 @@ class UserController extends Controller
     /**
      * @Route("/api/settings/{uid}", name="apiSettings")
      */
-    public function apiSettings($uid)
+    public function apiSettings(Request $request,$uid)
     {
         $entity = $this->getDoctrine()->getRepository('AppBundle:User')->find($uid);
 
@@ -266,17 +269,72 @@ class UserController extends Controller
             ->findBy(array('id' => $uid));
 
         $settingsForm = $this->createFormBuilder($entity)
-            ->add('email', TextType::class)
-            ->add('plainpassword', PasswordType::class)
-            ->add('realname', TextType::class)
-            ->add('address', TextType::class)
-            ->add('city', TextType::class)
-            ->add('cap', TextType::class)
-            ->add('phone', PhoneType::class);
+            ->add('email', TextType::class, [
+                'label' => 'Indirizzo e-Mail',
+                'attr' => [
+                    'class' => 'list-group-item-action list-item-shadow'
+                ],
+                'help' => 'L\' indirizzo e-mail non verrà mostrato ad altri.'
+            ])
+            ->add('plain_password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Le due password devono essere uguali.',
+                'options' => ['attr' => ['class' => 'list-group-item-action list-item-shadow']],
+                'required' => false,
+                'first_options'  => ['label' => 'Password'],
+                'second_options' => ['label' => 'Ripeti Password'],
+            ])
+            ->add('realname', TextType::class, [
+                'label' => 'Nome Completo',
+                'attr' => [
+                    'class' => 'list-group-item-action list-item-shadow'
+                ]
+            ])
+            ->add('address', TextType::class, [
+                'label' => 'Indirizzo',
+                'attr' => [
+                    'class' => 'list-group-item-action list-item-shadow'
+                ]
+            ])
+            ->add('city', TextType::class, [
+                'label' => 'Città',
+                'attr' => [
+                    'class' => 'list-group-item-action list-item-shadow'
+                ]
+            ])
+            ->add('cap', TextType::class, [
+                'label' => 'CAP',
+                'attr' => [
+                    'class' => 'list-group-item-action list-item-shadow'
+                ]
+            ])
+            ->add('phone', TelType::class, [
+                'label' => 'Telefono',
+                'attr' => [
+                    'class' => 'list-group-item-action list-item-shadow'
+                ]
+            ])
+            ->add('submit', SubmitType::class,[
+                'label' => 'Aggiorna',
+                'attr' => [
+                    'class' => 'btn btn-outline-primary'
+                ]
+            ])
+            ->getForm();
+
+        $settingsForm->handleRequest($request);
+
+        if($settingsForm->isSubmitted() && $settingsForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $em->flush();
+
+            return $this->redirectToRoute('apiSettings' + '#settings');
+        }
 
         return $this->render('profile/pages/settings.html.twig', [
             'user_info' => $user,
-            'settingsForm' => $settingsForm
+            'settingsForm' => $settingsForm->createView()
         ]);
     }
 

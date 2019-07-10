@@ -15,14 +15,15 @@ namespace Sonata\CoreBundle\DependencyInjection;
 
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
 use Sonata\CoreBundle\Form\FormHelper;
-use Sonata\CoreBundle\Form\Type\BooleanType;
-use Sonata\CoreBundle\Form\Type\CollectionType;
-use Sonata\CoreBundle\Form\Type\DateRangeType;
-use Sonata\CoreBundle\Form\Type\DateTimeRangeType;
-use Sonata\CoreBundle\Form\Type\EqualType;
-use Sonata\CoreBundle\Form\Type\ImmutableArrayType;
 use Sonata\CoreBundle\Form\Type\TranslatableChoiceType;
-use Sonata\CoreBundle\Serializer\BaseSerializerHandler;
+use Sonata\Doctrine\Bridge\Symfony\Bundle\SonataDoctrineBundle;
+use Sonata\Form\Type\BooleanType;
+use Sonata\Form\Type\CollectionType;
+use Sonata\Form\Type\DateRangeType;
+use Sonata\Form\Type\DateTimeRangeType;
+use Sonata\Form\Type\EqualType;
+use Sonata\Form\Type\ImmutableArrayType;
+use Sonata\Serializer\BaseSerializerHandler;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\FormPass;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
@@ -73,6 +74,20 @@ EOT
             }
         }
         $config = $processor->processConfiguration($configuration, $configs);
+
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (!isset($bundles['SonataDoctrineBundle'])) {
+            // NEXT_MAJOR remove the alias, throw an exception
+            @trigger_error(sprintf(
+                'Not registering bundle "%s" is deprecated since 3.12.0, registering it will be mandatory in 4.0',
+                SonataDoctrineBundle::class
+            ), E_USER_DEPRECATED);
+            $container->setAlias(
+                'sonata.doctrine.model.adapter.chain',
+                'sonata.core.model.adapter.chain'
+            );
+        }
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('date.xml');
@@ -165,7 +180,7 @@ EOT
 
         foreach ($mergedConfig as $typeKey => $typeConfig) {
             $types[$typeKey] = $typeConfig['types'];
-            $cssClasses[$typeKey] = array_key_exists('css_class', $typeConfig) ? $typeConfig['css_class'] : $typeKey;
+            $cssClasses[$typeKey] = \array_key_exists('css_class', $typeConfig) ? $typeConfig['css_class'] : $typeKey;
         }
 
         $identifier = 'sonata.core.flashmessage.manager';

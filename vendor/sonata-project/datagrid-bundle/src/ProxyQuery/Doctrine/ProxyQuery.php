@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -47,8 +49,6 @@ class ProxyQuery extends BaseProxyQuery
     /**
      * Generates new QueryBuilder for Postgresql or Oracle if necessary.
      *
-     * @param $queryBuilder QueryBuilder
-     *
      * @return QueryBuilder
      */
     public function preserveSqlOrdering(QueryBuilder $queryBuilder)
@@ -90,8 +90,6 @@ class ProxyQuery extends BaseProxyQuery
     /**
      * This method alters the query to return a clean set of object with a working
      * set of Object.
-     *
-     * @param QueryBuilder $queryBuilder
      *
      * @return QueryBuilder
      */

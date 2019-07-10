@@ -1,0 +1,80 @@
+{% extends ':business/dashboard/template:base.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="#">
+                <em class="fa fa-home"></em>
+            </a></li>
+        <li class="active">Annunci</li>
+        <li>Vedi</li>
+    </ol>
+</div><!--/.row-->
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Annunci <small>Vedi</small></h1>
+
+    </div>
+</div><!--/.row-->
+
+<div class="row">
+    <div class="col-lg-4">
+        <div class="panel">
+            <div class="panel-body">
+                <img id="imgPreview" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad.id }}-1.jpg" class="img-responsive">
+                <br>
+                <a href="{{ url('business_dashboard_annunci_modifica', {'id' : ad.id}) }}" class="btn btn-success btn-block">Modifica</a>
+                <a href="" class="btn btn-danger btn-block">Elimina</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="panel">
+            <div class="panel-body">
+                <strong>Nome</strong><span class="pull-right">{{ ad.name }}</span>
+                <br><br>
+                <strong>Categoria</strong><span class="pull-right">{{ fun.convertCategory(ad.category) }}</span>
+                <br><br>
+                <strong>Prezzo</strong><span class="pull-right">{{ ad.price }} €</span>
+                <br><br>
+                <strong>Data Aggiunta</strong><span class="pull-right">{{ ad.creationtime|date("d-m-Y") }}</span>
+                <br><br>
+                <strong>Condizione</strong><span class="pull-right">{{ ad.objCondition }}</span>
+                <br><br>
+                <strong>Promozione</strong><span class="pull-right">
+                    {% if ad.objLevel != 0 %}
+                        No
+                    {% else %}
+                        {{ ad.objLevel }}
+                    {% endif %}
+                </span>
+                <br><br>
+                <strong>Descrizione</strong><span class="pull-right">{{ ad.description }}</span>
+
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="{{ asset('js/jquery-2.1.1.min.js') }}"></script>
+    <script>
+        var cycle = function(el) {
+            var s = el.attr('src');
+            var root = s.substring(0, s.lastIndexOf('-') + 1);
+            var count = s.substring(s.lastIndexOf('-') + 1).replace('.jpg', '');
+            count = (count*1+1)%5;
+            el.attr('src', root + ((count === 0) ? '5' : count) + '.jpg');
+        };
+        $(document).ready( function(e) {
+            var thisImage = $('#imgPreview');
+            var timer;
+            cycle(thisImage);
+            timer = setInterval(function() {
+                cycle(thisImage);
+            }, 800);
+            thisImage.on('mouseleave', function() {
+                clearInterval(timer);
+            });
+        });
+    </script>
+{% endblock %}

@@ -92,6 +92,7 @@ class AuthController extends Controller
         $user->setEmail($email);
         $user->setRealname($realname);
         $user->setName($email);
+        $user->setIsCompany(0);
         if (in_array($resource, ['google', 'facebook'])) {
             $form = $this->createForm(OAuthUserType::class, $user, array(
                 'action' => '/registrati',

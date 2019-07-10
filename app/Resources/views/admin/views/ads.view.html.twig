@@ -38,6 +38,14 @@
                                         {% if video and video.accepted == 0 %}<img src="{{ asset('img/circle-green.png') }}">&nbsp;<a href="{{ url("admin_video_accept",{'adID':ad.0.id}) }}" class="float-right btn btn-success">Approva</a><img src="{{ asset('img/circle-red.png') }}"> <a href="{{ url("admin_video_unaccept",{'adID':ad.0.id}) }}" class="float-right btn btn-warning">Boccia</a>{% endif %}
                                     </div>
                                 </div>
+                                {% if ad.0.published == 0 %}
+                                    <a href="{{ url("admin_ad_activate",{'adID':ad.0.id}) }}" class="float-right btn btn-success btn-block">Approva</a>
+                                    <a href="{{ url("admin_ad_deactivate",{'adID':ad.0.id}) }}" class="float-right btn btn-warning btn-block">Boccia</a>
+                                {% else %}
+                                    <a href="{{ url("admin_ad_deactivate",{'adID':ad.0.id}) }}" class="float-right btn btn-warning btn-block">Boccia</a>
+                                {% endif %}
+                                <a href="{{ url('admin_modifica_inserzioni',{'id':ad.0.id}) }}" class="btn btn-success btn-block">Modifica</a>
+                                <a href="{{ url("admin_ad_delete",{'id':ad.0.id}) }}" class="float-right btn btn-danger btn-block">Elimina</a>
                             </div>
                             <div class="col-sm-9">
                                 <ul class="list-group">
@@ -52,37 +60,51 @@
                                     <li class="list-group-item"><strong>Stato:</strong>
                                         {% if ad.0.published == 0 %}
                                             <img src="{{ asset('img/circle-red.png') }}"><br>
-                                            <a href="{{ url("admin_ad_activate",{'adID':ad.0.id}) }}" class="float-right btn btn-success">Approva</a>
-                                            <a href="{{ url("admin_ad_deactivate",{'adID':ad.0.id}) }}" class="float-right btn btn-warning">Boccia</a>
+
                                         {% else %}
                                             <img src="{{ asset('img/circle-green.png') }}"><br>
-                                            <a href="{{ url("admin_ad_deactivate",{'adID':ad.0.id}) }}" class="float-right btn btn-warning">Boccia</a>
-                                        {% endif %}</li>
-                                    <li class="list-group-item"><strong>Elimina:</strong>&nbsp;<a href="{{ url("admin_ad_delete",{'id':ad.0.id}) }}" class="float-right btn btn-success">Elimina</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <div class="box-body table-responsive no-padding">
-                                            <table class="table table-hover">
-                                                <tbody>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Nome File</th>
-                                                    <th>Tipo</th>
-                                                    <th>Stato</th>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        {% endif %}
                                     </li>
                                 </ul>
-
+                                <ul class="list-group">
+                                    <li class="list-group-item"><strong>Click su Chiama:</strong>&nbsp;
+                                        {% if ad.0.callClicks == null %}
+                                            0
+                                        {% else %}
+                                            {{ ad.0.callClicks }}
+                                        {% endif %}
+                                    </li>
+                                    <li class="list-group-item"><strong>Click su Messaggio:</strong>&nbsp;
+                                        {% if ad.0.messageClicks == null %}
+                                            0
+                                        {% else %}
+                                            {{ ad.0.messageClicks }}
+                                        {% endif %}
+                                    </li>
+                                </ul>
                             </div>
                         </div>
+{#                        <div class="row">#}
+{#                            <div class="col-sm-12">#}
+{#                                <ul class="list-group">#}
+{#                                    <li class="list-group-item">#}
+{#                                        <div class="box-body table-responsive no-padding">#}
+{#                                            <table class="table table-hover">#}
+{#                                                <tbody>#}
+{#                                                <tr>#}
+{#                                                    <th>ID</th>#}
+{#                                                    <th>Nome File</th>#}
+{#                                                    <th>Tipo</th>#}
+{#                                                    <th>Stato</th>#}
+{#                                                </tr>#}
+{#                                                </tbody>#}
+{#                                            </table>#}
+{#                                        </div>#}
+{#                                    </li>#}
+{#                                </ul>#}
+
+{#                            </div>#}
+{#                        </div>#}
                     </div>
                 </div>
             </div>

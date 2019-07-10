@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=0">
+        <title>VedoCompro - Business Dashboard </title>
+        <link href="{{ asset('business_assets/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('business_assets/css/font-awesome.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('business_assets/css/datepicker.css') }}" rel="stylesheet">
+        <link href="{{ asset('business_assets/css/styles.css') }}" rel="stylesheet">
+
+        <!--Custom Font-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="{{ asset('business_assets/js/html5shiv.js') }}"></script>
+        <script src="{{ asset('business_assets/js/respond.min.js') }}"></script>
+        <![endif]-->
+    </head>
+    <body>
+    {% include 'business/dashboard/template/navbar.html.twig' %}
+    {% include 'business/dashboard/template/sidebar.html.twig' %}
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        {% block body %}{% endblock %}
+    </div>
+    <script src="{{ asset('js/jquery-2.1.1.min.js') }}"></script>
+    <script src="{{ asset('business_assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('business_assets/js/chart.min.js') }}"></script>
+    <script src="{{ asset('business_assets/js/chart-data.js') }}"></script>
+    <script src="{{ asset('business_assets/js/easypiechart.js') }}"></script>
+    <script src="{{ asset('business_assets/js/easypiechart-data.js') }}"></script>
+    <script src="{{ asset('business_assets/js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('business_assets/js/custom.js') }}"></script>
+    {% block javascripts %}
+    {% endblock %}
+    </body>
+</html>

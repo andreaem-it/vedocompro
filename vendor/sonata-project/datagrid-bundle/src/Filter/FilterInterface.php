@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -13,22 +15,18 @@ namespace Sonata\DatagridBundle\Filter;
 
 use Sonata\DatagridBundle\ProxyQuery\ProxyQueryInterface;
 
-/**
- * Interface FilterInterface.
- */
 interface FilterInterface
 {
-    const CONDITION_OR = 'OR';
+    public const CONDITION_OR = 'OR';
 
-    const CONDITION_AND = 'AND';
+    public const CONDITION_AND = 'AND';
 
     /**
      * Apply the filter to the QueryBuilder instance.
      *
-     * @param ProxyQueryInterface $queryBuilder
-     * @param string              $alias
-     * @param string              $field
-     * @param string              $value
+     * @param string $alias
+     * @param string $field
+     * @param string $value
      */
     public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value);
 
@@ -71,7 +69,6 @@ interface FilterInterface
 
     /**
      * @param string $name
-     * @param null   $default
      *
      * @return mixed
      */
@@ -85,7 +82,6 @@ interface FilterInterface
 
     /**
      * @param string $name
-     * @param array  $options
      */
     public function initialize($name, array $options = []);
 

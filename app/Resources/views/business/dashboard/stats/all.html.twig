@@ -1,0 +1,70 @@
+{% extends ':business/dashboard/template:base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">
+                    <em class="fa fa-home"></em>
+                </a></li>
+            <li class="active">Statistiche</li>
+            <li>Tutti gli Annunci</li>
+        </ol>
+    </div><!--/.row-->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Statistiche <small>Tutti gli Annunci</small></h1>
+        </div>
+    </div><!--/.row-->
+    {{ dump(stats) }}
+    <div class="panel">
+        <div class="panel-body">
+            <div class="canvas-wrapper">
+                <canvas class="main-chart" id="line-chart" height="200" width="600"></canvas>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+<script>
+    var lineChartData = {
+        labels : ["January","February","March","April","May","June","July"],
+        datasets : [
+            {
+                label: "My First dataset",
+                fillColor : "rgba(220,220,220,0.2)",
+                strokeColor : "rgba(220,220,220,1)",
+                pointColor : "rgba(220,220,220,1)",
+                pointStrokeColor : "#fff",
+                pointHighlightFill : "#fff",
+                pointHighlightStroke : "rgba(220,220,220,1)",
+                data : [
+
+                ]
+            },
+            {
+                label: "My Second dataset",
+                fillColor : "rgba(48, 164, 255, 0.2)",
+                strokeColor : "rgba(48, 164, 255, 1)",
+                pointColor : "rgba(48, 164, 255, 1)",
+                pointStrokeColor : "#fff",
+                pointHighlightFill : "#fff",
+                pointHighlightStroke : "rgba(48, 164, 255, 1)",
+                data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+            }
+        ]
+
+    }
+
+    window.onload = function () {
+        var chart1 = document.getElementById("line-chart").getContext("2d");
+        window.myLine = new Chart(chart1).Line(lineChartData, {
+            responsive: true,
+            scaleLineColor: "rgba(0,0,0,.2)",
+            scaleGridLineColor: "rgba(0,0,0,.05)",
+            scaleFontColor: "#c5c7cc"
+        });
+    };
+</script>
+{% endblock %}

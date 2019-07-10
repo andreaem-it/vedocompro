@@ -86,7 +86,7 @@ class BlockServiceManager implements BlockServiceManagerInterface
         $this->services[$name] = $service;
 
         foreach ($contexts as $context) {
-            if (!array_key_exists($context, $this->contexts)) {
+            if (!\array_key_exists($context, $this->contexts)) {
                 $this->contexts[$context] = [];
             }
 
@@ -123,7 +123,7 @@ class BlockServiceManager implements BlockServiceManagerInterface
      */
     public function getServicesByContext($context, $includeContainers = true)
     {
-        if (!array_key_exists($context, $this->contexts)) {
+        if (!\array_key_exists($context, $this->contexts)) {
             return [];
         }
 
@@ -132,7 +132,7 @@ class BlockServiceManager implements BlockServiceManagerInterface
         $containers = $this->container->getParameter('sonata.block.container.types');
 
         foreach ($this->contexts[$context] as $name) {
-            if (!$includeContainers && \in_array($name, $containers)) {
+            if (!$includeContainers && \in_array($name, $containers, true)) {
                 continue;
             }
 
@@ -219,7 +219,7 @@ class BlockServiceManager implements BlockServiceManagerInterface
     private function sortServices($services)
     {
         uasort($services, function ($a, $b) {
-            if ($a->getName() == $b->getName()) {
+            if ($a->getName() === $b->getName()) {
                 return 0;
             }
 

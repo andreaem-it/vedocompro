@@ -1,0 +1,350 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <script src="//cdn.rawgit.com/saribe/eModal/1.2.67/dist/eModal.min.js"></script>
+    <div class="wrapper">
+        <div class="container-fluid scrollbar">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-title">
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="col-sm-12">
+                        <h4>Pacchetto Business</h4>
+                        <p>VedoCompro Business aggiunge molte funzionalità su misura per la tua azienda</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            {{ form_start(form) }}
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h6>Fornisci le informazioni di fatturazione addizionali</h6>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            {{ form_row(form.legalName) }}
+                                        </div>
+                                        <div class="col-sm-6">
+                                            {{ form_row(form.vatNumber) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            {{ form_row(form.contactName) }}
+                                        </div>
+                                        <div class="col-sm-6">
+                                            {{ form_row(form.contactSurname) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            {{ form_row(form.contactPhone) }}
+                                        </div>
+                                        <div class="col-sm-6">
+                                            {{ form_row(form.contactEmail) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h6>Aggiungi funzionalità al tuo pacchetto Business</h6>
+                                    <br>
+                                    {{ form_widget(form.opt1) }}
+                                    {{ form_widget(form.opt2) }}
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="button-container text-right">
+                                        <a id="saveForm" class="btn btn-outline-primary pull-right">Applica</a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {% if package == 'mensile' %}
+                    {% set pkgType = 1 %}
+                    <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="price-holder">
+                                {% set price = 19.99 %}
+                                <span class="price-big">{{ price }}</span>/mese
+                                <br>
+                                <small>Pagamento Mensile</small>
+                            </div>
+                            <div class="eco-choice">
+                                Scelta Economica
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="">
+                                <ul>
+                                    <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Annunci <strong>Illimitati</strong></li>
+                                    <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Il tuo <strong>Logo</strong> negli annunci</li>
+                                    <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Badge Utente <strong>Verificato</strong></li>
+                                    <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Box con <strong>informazioni Azienda</strong></li>
+                                    <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Assistenza <strong>telefonica</strong></li>
+                                    <li class="custom-list">&nbsp;</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <span class="button-holder card-footer">
+                            <form name="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                                <input type="hidden" name="cmd" value="_xclick">
+                                <input type="hidden" name="business" value="pagamenti@vedocompro.it">
+                                <input id="apply" type="submit" class="btn btn-lg btn-outline-primary btn-block" value="ACQUISTA"/>
+                                <img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
+                                <input type="hidden" name="billing_period" value="Month">
+                                <input type="hidden" name="item_name" value="VedoCompro Business Mensile">
+                                <input type="hidden" name="item_number" value="Business_Mensile:{{ app.user.username}}">
+                                <input type="hidden" name="amount" value="19.99">
+                                <input type="hidden" name="currency_code" value="EUR">
+                                <input type="hidden" name="no_shipping" value="1">
+                                <input type="hidden" name="notify_url" value="https://www.vedocompro.it{{ path("paypalnotify") }}">
+                            </form>
+                        <p class="text-center"><small>Carta di credito non richiesta</small></p>
+                    </span>
+                    </div>
+                </div>
+                {% elseif package == 'annuale' %}
+                    {% set pkgType = 2 %}
+                    <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="price-holder">
+                                <span class="price-big">199.99</span>/anno
+                                <br>
+                                <small>Pagamento Annuale</small>
+                            </div>
+                            <div class="best-choice">
+                                Scelta Migliore
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="">
+                                <ul>
+                                    <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Annunci <strong>Illimitati</strong></li>
+                                    <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Il tuo <strong>Logo</strong> negli annunci</li>
+                                    <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Badge Utente <strong>Verificato</strong></li>
+                                    <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Box con <strong>informazioni Azienda</strong></li>
+                                    <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Assistenza <strong>telefonica</strong></li>
+                                    <li class="custom-list"><i class="fa fa-check text-success pr-2"></i>Statistiche <strong>analitiche</strong></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <span class="button-holder card-footer">
+                        <form name="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                            <input type="hidden" name="cmd" value="_xclick">
+                            <input type="hidden" name="business" value="pagamenti@vedocompro.it">
+                            <input id="apply" type="submit" class="btn btn-lg btn-outline-primary btn-block" value="ACQUISTA"/>
+                            <img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
+                            <input type="hidden" name="sandbox" value="true">
+                            <input type="hidden" name="billing_period" value="Annual">
+                            <input type="hidden" name="item_name" value="VedoCompro Business Annuale">
+                            <input type="hidden" name="item_number" value="Business_Annuale:{{ app.user.username}}">
+                            <input type="hidden" name="amount" value="199.99">
+                            <input type="hidden" name="currency_code" value="EUR">
+                            <input type="hidden" name="no_shipping" value="1">
+                            <input type="hidden" name="notify_url" value="https://www.vedocompro.it{{ path("paypalnotify") }}">
+                        </form>
+                        <p class="text-center"><small>Carta di credito non richiesta</small></p>
+                    </span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="row">
+                <!-- Info pacchetti -->
+                <div class="col-sm-12">
+                    <p class="small-info text-center">
+                        <small>
+                            <strong>Attenzione:</strong> É richiesta la verifica della vs. attività tramite Partita IVA, la procedura di acquisto viene validata manualmente dopo la verifica dei dati forniti.
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <style>
+            .page-title {
+                text-align: center;
+                padding-bottom: 50px;
+            }
+            .info-text {
+                font-weight: 100;
+            }
+            .card-title {
+                background-color: rgb(67,150,193);
+            }
+            .price-holder {
+                text-align: center;
+                color: #FFF;
+                padding: 30px;
+            }
+            .price-big {
+                font-size: 70px;
+            }
+            .button-holder {
+                text-align: center;
+            }
+            .custom-list {
+                list-style: none;
+                margin: 10px auto;
+            }
+            .best-choice {
+                padding: 15px auto;
+                font-weight: 900;
+                background-color: lightcoral;
+                text-align: center;
+                color: #FFF;
+            }
+            .eco-choice {
+                padding: 15px auto;
+                font-weight: 900;
+                background-color: lightblue;
+                text-align: center;
+                color: #FFF;
+            }
+            .small-info {
+                text-align: center;
+                font-size: 14px;
+                margin-top: 30px;
+            }
+            .custom-checkbox{
+                width: 16px;
+                height: 16px;
+                display: inline-block;
+                position: relative;
+                z-index: 1;
+                top: 3px;
+                background: url("{{ asset('img/checkbox.png') }}") no-repeat;
+            }
+            .custom-checkbox:hover{
+                background: url("{{ asset('img/checkbox-hover.png') }}") no-repeat;
+            }
+            .custom-checkbox.selected{
+                background: url("{{ asset('img/checkbox-selected.png') }}") no-repeat;
+            }
+            .custom-checkbox input[type="checkbox"]{
+                margin: 0;
+                position: absolute;
+                z-index: 2;
+                cursor: pointer;
+                outline: none;
+                opacity: 0;
+                /* CSS hacks for older browsers */
+                _noFocusLine: expression(this.hideFocus=true);
+                -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+                filter: alpha(opacity=0);
+                -khtml-opacity: 0;
+                -moz-opacity: 0;
+            }
+        </style>
+
+        <script type="text/javascript">
+            function customCheckbox(checkboxName){
+                var checkBox = $('input[name="'+ checkboxName +'"]');
+                $(checkBox).each(function(){
+                    $(this).wrap( "<span class='custom-checkbox'></span>" );
+                    if($(this).is(':checked')){
+                        $(this).parent().addClass("selected");
+                    }
+                });
+                $(checkBox).click(function(){
+                    $(this).parent().toggleClass("selected");
+                });
+            }
+            $(document).ready(function (){
+                customCheckbox("form[opt1]");
+                customCheckbox("form[opt2]");
+                var sel1 = 0;
+                var sel2 = 0;
+            });
+            {% if pkgType == 1 %}
+                {% set price_opt1 = 5 %}
+                {% set price_opt2 = 10 %}
+            {% else %}
+                {% set price_opt1 = (5 * 12) %}
+                {% set price_opt2 = (10 * 12) %}
+            {% endif %}
+            var pkgType = {{ pkgType }}
+            if (pkgType == 1) {
+                var price = 19;
+            } else {
+                var price = 199;
+            }
+            var price_opt1 = {{ price_opt1 }};
+            var price_opt2 = {{ price_opt2 }};
+            $('input[name="form[opt1]"]').addClass('selected').click( function () {
+                if ($(this).hasClass('selected')) {
+                    price = Math.ceil(price + price_opt1);
+                    $('.price-big').fadeOut(function() {
+                        $(this).text(price + '.99').fadeIn();
+                    });
+                    $(this).removeClass('selected');
+                    price = Math.ceil(price + price_opt1);
+                    $('input[name="amount"]').val(price);
+                } else {
+                    price = Math.ceil(price - price_opt1);
+                    $('.price-big').fadeOut(function() {
+                        $(this).text((price) + '.99').fadeIn();
+                    });
+                    $(this).addClass('selected');
+                    price = Math.ceil(price - price_opt1);
+                    $('input[name="amount"]').val(price);
+                }
+            });
+            $('input[name="form[opt2]"]').addClass('selected').click( function () {
+                if ($(this).hasClass('selected')) {
+                    price = Math.ceil(price + price_opt2,2);
+                    $('.price-big').fadeOut(function() {
+                        $(this).text((price) + '.99').fadeIn();
+                    });
+                    $(this).removeClass('selected');
+                    price = price + price_opt2;
+                    $('input[name="amount"]').val(price);
+                } else {
+                    price = Math.ceil(price - price_opt2,2);
+                    $('.price-big').fadeOut(function() {
+                        $(this).text((price) + '.99').fadeIn();
+                    });
+                    $(this).addClass('selected');
+                    price = price - price_opt2;
+                    $('input[name="amount"]').val(price);
+                }
+            });
+            $('#apply').click(function (e) {
+                e.preventDefault();
+                $('form[name="form"]').submit();
+                $('form[name="paypal"]').submit();
+                //eModal.alert('Funzionalità in via di sviluppo', 'Info')
+            });
+            $('#saveForm').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url('business_ajax_apply') }}',
+                    data: $('form[name="form"]').serialize(),
+                    beforeSend: function() {
+                        console.log('sending');
+                        $('#saveForm').fadeOut();
+                        $('.button-container').html('<i class="fa fa-spin fa-spinner fa-3x fa-fw"></i>').fadeIn();
+                    }
+                }).done( function() {
+                    $('.button-container').fadeOut( function() {
+                        $(this).html('Grazie! Informazioni salvate nel tuo profilo, ora puoi procedere all\'acquisto.').fadeIn();
+                    })
+                })
+            })
+        </script>
+    </div>
+    {% include 'template/footer.html.twig' %}
+{% endblock %}
