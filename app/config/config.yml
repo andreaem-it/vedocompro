@@ -33,7 +33,7 @@ framework:
     assets: ~
     php_errors:
         log: true
-    translator:      { fallback: %locale% }
+    translator:      { fallback: '%locale%' }
 
 # Twig Configuration
 twig:
@@ -66,7 +66,10 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
-
+        dql:
+            string_functions:
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                YEAR: DoctrineExtensions\Query\Mysql\Year
 # Swiftmailer Configuration
 swiftmailer:
     transport: '%mailer_transport%'
@@ -93,33 +96,33 @@ assetic:
     assets:
         bootstrap_js:
             inputs:
-                - %kernel.root_dir%/../vendor/twitter/bootstrap/dist/js/bootstrap.js
+                - '%kernel.root_dir%/../vendor/twitter/bootstrap/dist/js/bootstrap.js'
         bootstrap_css:
             inputs:
-                - %kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap.css
-                - %kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap-theme.css
+                - '%kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap.css'
+                - '%kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap-theme.css'
             filters: [cssrewrite]
 
         bootstrap_glyphicons_ttf:
             inputs:
-                - %kernel.root_dir%/../vendor/twitter/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf
+                - '%kernel.root_dir%/../vendor/twitter/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf'
             output: "fonts/glyphicons-halflings-regular.ttf"
         bootstrap_glyphicons_eot:
             inputs:
-                - %kernel.root_dir%/../vendor/twitter/bootstrap/dist/fonts/glyphicons-halflings-regular.eot
+                - '%kernel.root_dir%/../vendor/twitter/bootstrap/dist/fonts/glyphicons-halflings-regular.eot'
             output: "fonts/glyphicons-halflings-regular.eot"
         bootstrap_glyphicons_svg:
             inputs:
-                - %kernel.root_dir%/../vendor/twitter/bootstrap/dist/fonts/glyphicons-halflings-regular.svg
+                - '%kernel.root_dir%/../vendor/twitter/bootstrap/dist/fonts/glyphicons-halflings-regular.svg'
             output: "fonts/glyphicons-halflings-regular.svg"
         bootstrap_glyphicons_woff:
             inputs:
-                - %kernel.root_dir%/../vendor/twitter/bootstrap/dist/fonts/glyphicons-halflings-regular.woff
+                - '%kernel.root_dir%/../vendor/twitter/bootstrap/dist/fonts/glyphicons-halflings-regular.woff'
             output: "fonts/glyphicons-halflings-regular.woff"
 
         jquery:
             inputs:
-                - %kernel.root_dir%/../vendor/components/jquery/jquery.js
+                - '%kernel.root_dir%/../vendor/components/jquery/jquery.js'
 knp_gaufrette:
     adapters:
         video_storage:

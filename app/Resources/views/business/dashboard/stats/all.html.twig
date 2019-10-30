@@ -16,7 +16,6 @@
             <h1 class="page-header">Statistiche <small>Tutti gli Annunci</small></h1>
         </div>
     </div><!--/.row-->
-    {{ dump(stats) }}
     <div class="panel">
         <div class="panel-body">
             <div class="canvas-wrapper">
@@ -24,38 +23,60 @@
             </div>
         </div>
     </div>
+    <div class="panel">
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Visualizzazioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% dump(ads) %}
+                    {% for item in ads %}
+                        <tr>
+                            <td scope="row" class="align-middle">{{ item.name }}</td>
+                            <td class="align-middle">{{ fun.convertCategory(item.category) }}</td>
+                            <td class="align-middle">{{ item.views }}</td>
+                        </tr>
+
+                    {% endfor %}
+                </tbody>
+        </div>
+    </div>
 
 {% endblock %}
 {% block javascripts %}
 <script>
+    var months = [ "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre" ];
+
+
+
     var lineChartData = {
-        labels : ["January","February","March","April","May","June","July"],
+        labels : [
+            {% for entry in stats %}
+                months[{{ entry.sMonth }}],
+            {% endfor %}
+        ],
         datasets : [
             {
-                label: "My First dataset",
-                fillColor : "rgba(220,220,220,0.2)",
-                strokeColor : "rgba(220,220,220,1)",
-                pointColor : "rgba(220,220,220,1)",
-                pointStrokeColor : "#fff",
-                pointHighlightFill : "#fff",
-                pointHighlightStroke : "rgba(220,220,220,1)",
-                data : [
-
-                ]
-            },
-            {
-                label: "My Second dataset",
+                label: "Tutti gli annunci",
                 fillColor : "rgba(48, 164, 255, 0.2)",
                 strokeColor : "rgba(48, 164, 255, 1)",
                 pointColor : "rgba(48, 164, 255, 1)",
                 pointStrokeColor : "#fff",
                 pointHighlightFill : "#fff",
                 pointHighlightStroke : "rgba(48, 164, 255, 1)",
-                data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+                data : [
+                    {% for entry in stats %}
+                    "{{ entry.1 }}",
+                    {% endfor %}
+                ]
             }
         ]
-
-    }
+    };
 
     window.onload = function () {
         var chart1 = document.getElementById("line-chart").getContext("2d");

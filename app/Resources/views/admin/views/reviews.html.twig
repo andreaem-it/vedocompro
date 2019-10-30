@@ -1,0 +1,90 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}VedoCompro.it - ADMIN - Recensioni{% endblock %}
+
+{% block body %}
+    <!-- Content Wrapper. Contains page content -->
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Recensioni
+            <small>Lista</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li class="active"><a href="#"><i class="fa fa-dashboard"></i> Recensioni</a></li>
+        </ol>
+        <small>ATTENZIONE: L'eliminazione di una recensione è immediata e non richiede conferma</small>
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <div class="alert alert-success" role="alert">
+                        {{ flashMessage }}
+                        <br>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th>ID</th>
+                                <th>Data</th>
+                                <th>Articolo</th>
+                                <th>Utente</th>
+                                <th>Voto</th>
+                                <th>Commento</th>
+                                <th>Stato</th>
+                            </tr>
+                                {% for item in reviews %}
+                                    <tr>
+                                        <td class="align-middle">{{ item.id }}</td>
+                                        <td class="align-middle">{{ item.datetime|date("d-m-Y h:i:s") }}</td>
+                                        <td class="align-middle">
+                                            <a href="{{ url('admin_vedi_inserzioni', {'id' : item.aid}) }}">{{ tools.convertAds(item.aid) }}</a>
+                                        </td>
+                                        <td class="align-middle">
+                                            <a href="{{ url('admin_utenti_vedi' , {'id': item.uid}) }}">{{ tools.convertUser(item.uid) }}</a>
+                                        </td>
+                                        <td class="align-middle">{{ item.rating }}</td>
+                                        <td class="align-middle" style="max-width:500px">{{ item.comment }}</td>
+                                        <td class="align-middle">
+                                            {% if item.isPublished == 0 %}
+                                                <img src="{{ asset('img/circle-red.png') }}"> Non pubblicato
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{{ url('admin_reviews_set_published', {'id': item.id}) }}" class="btn btn-success"><i class="fa fa-check"></i></a>
+                                            <a href="{{ url('admin_reviews_delete', {'id': item.id}) }}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+    <!-- /.content-wrapper -->
+    <style>
+        .bg-gold {
+            background-color: #CFB53B;
+        }
+        .bg-silver {
+            background-color: #C0C0C0;
+        }
+        .bg-bronze {
+            background-color: #cd7f32;
+        }
+    </style>
+{% endblock %}

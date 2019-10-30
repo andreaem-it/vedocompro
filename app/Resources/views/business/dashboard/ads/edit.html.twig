@@ -19,6 +19,14 @@
         </div>
     </div><!--/.row-->
 
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     <div class="panel">
         <div class="panel-body">
             {{ form_start(form) }}
@@ -45,14 +53,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-3">
+                    {{ form_row(form.country) }}
+                </div>
+                <div class="col-sm-3">
                     {{ form_row(form.region) }}
                 </div>
-                <div class="col-sm-4">
-                    {{ form_row(form.location) }}
-                </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     {{ form_row(form.provincia) }}
+                </div>
+                <div class="col-sm-3">
+                    {{ form_row(form.location) }}
                 </div>
             </div>
             <div class="row">
@@ -63,6 +74,10 @@
                     {{ form_row(form.vals) }}
                 </div>
             </div>
+            <div class="alert alert-info">
+                <p><strong>Info:</strong> Campi opzionali è una funzionalità beta, il suo funzionamento è subordinato al rispetto di vincoli prestabiliti, prestare attenzione alle istruzioni fornite.</p>
+                <small>Per definire campi opzionali, che verranno visualizzati nella tabella sotto al video, inseriscili in un unica riga, distanziati da una virgola, esegui la stessa operazione con i valori (Es: Chilometri,Anno,Alimentazione e 10000,2002,Diesel). <strong>Attenzione:</strong> Nel caso il campo debba contenere dei campi con virgola, si prega di evitarla. (Es: Caricabatteria,Scatola dovrebbe essere Caricabatteria Scatola.</small>
+            </div>
             {{ form_end(form) }}
         </div>
         <script src="{{ asset('js/jquery-2.1.1.min.js') }}"></script>
@@ -71,6 +86,38 @@
         <script type="text/javascript">
             $('.form_fields').collection();
             $('.form_vals').collection();
+        </script>
+        <script>
+            $('#appbundle_ads_region').change(function () {
+                var citySelector = $(this);
+
+                // Request the neighborhoods of the selected city.
+                $.ajax({
+                    url: "{{ path('utils_json_listcomuni') }}",
+                    type: "GET",
+                    dataType: "JSON",
+                    data: {
+                        cityid: citySelector.val()
+                    },
+                    success: function (neighborhoods) {
+                        var neighborhoodSelect = $("#appbundle_ads_location");
+
+                        // Remove current options
+                        neighborhoodSelect.html('');
+
+                        // Empty value ...
+                        neighborhoodSelect.append('<option value> Seleziona città in ' + citySelector.find("option:selected").text() + ' ...</option>');
+
+
+                        $.each(neighborhoods, function (key, neighborhood) {
+                            neighborhoodSelect.append('<option value="' + neighborhood.name + '">' + neighborhood.name + '</option>');
+                        });
+                    },
+                    error: function (err) {
+                        alert("An error ocurred while loading data ...");
+                    }
+                });
+            });
         </script>
     </div>
 {% endblock %}

@@ -4,8 +4,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\BusinessStats;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Reviews;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Videos;
+use AppBundle\Form\AdsUserType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -37,7 +39,7 @@ class AdsController extends Controller
      * @param $item
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction($category, $item)
+    public function showAction($category, $item, Request $request)
     {
 
         $ad = $this->getDoctrine()
@@ -143,7 +145,12 @@ class AdsController extends Controller
                 ->getSingleScalarResult();
 
             $adID = $item;
-            $viewsVal = $current + 1;
+
+            if ( $this->getParameter('kernel.environment') == "prod" ) {
+                $viewsVal = $current + 1;
+            } else {
+                $viewsVal = $current;
+            }
 
             $em = $this->getDoctrine()->getManager();
             $conn = $em->getConnection();
@@ -186,6 +193,51 @@ class AdsController extends Controller
                 $em->flush();
             }
 
+            $thisAd = $this->getDoctrine()->getRepository(Ads::class)->find($item);
+
+            if ($thisAd->getHasReviews() == 1) {
+                $reviews = $this->getDoctrine()->getRepository(Reviews::class)->findBy(['aid' => $thisAd->getId(), 'isPublished' => true]);
+            } else {
+                $reviews = [];
+            }
+
+            $reviewsForm = $this->createFormBuilder(new Reviews)
+                ->add('comment', TextAreaType::class, [
+                    'label' => 'Commento',
+                    'attr' => [
+                        'cols' => 5
+                    ],
+                    'label_attr' => [
+                        'class' => 'mt-2'
+                    ]
+                ])
+                ->add('submit', SubmitType::class, [
+                    'attr' => [
+                        'class' => 'btn btn-primary mt-3 hidden',
+                        'name' => 'formReview[submit]',
+                        'id' => 'form_review_submit'
+                    ],
+                    'label' => 'Recensisci'
+                ])
+                ->getForm();
+
+            $reviewsForm->handleRequest($request);
+
+            if($reviewsForm->isSubmitted() && $reviewsForm->isValid() && $request->request->has('appbundle_reviews')) {
+                $em = $this->getDoctrine()->getManager();
+
+                $review = new Reviews;
+
+                $review->setUid($this->getUser()->getId());
+                $review->setAid($item);
+                $review->setDatetime(new \DateTime());
+                $review->setIsPublished(0);
+
+                $em->persist($review);
+                $em->flush();
+
+            }
+
             return $this->render('ads/view.html.twig', [
                 'ad_info' => $ad,
                 'video' => $video,
@@ -194,6 +246,8 @@ class AdsController extends Controller
                 'feed_percent' => $feedPercent ?? 0,
                 'is_wish' => $isWhish,
                 'similar' => $similar,
+                'reviews' => $reviews,
+                'reviewsForm' => $reviewsForm->createView(),
                 'ads' => $this
             ]);
         } else {
@@ -346,6 +400,35 @@ class AdsController extends Controller
             return $this->redirectToRoute('login');
         }
     }
+
+    /**
+     * @Route("/modifica/{id}", name="edit")
+     * @Secure(roles="IS_AUTHENTICATED_FULLY")
+     */
+    public function editAction(Request $request,$id) {
+
+        $ad = $this->getDoctrine()->getRepository(Ads::class)->find($id);
+
+        $form = $this->createForm(AdsUserType::class, $ad);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $mnrg = $this->getDoctrine()->getManager();
+            $data = $request->request->all();
+
+            $ad->setCategory($data['appbundle_ads']['category']);
+
+            $mnrg->flush();
+
+            $this->addFlash('success','Articolo aggiornato con successo');
+        }
+
+        return $this->render('ads/edit.html.twig',[
+            'form' => $form->createView()
+        ]);
+    }
+
 
     /**
      * @Route("/promuovi/{id}", name="promote")
@@ -506,34 +589,34 @@ class AdsController extends Controller
 
     }
 
-    /**
-     * @Route("/acquista/{id}", name="acquista_id")
-     */
-    public function buyAction($id)
-    {
-        $ads = $this->getDoctrine()
-            ->getRepository('AppBundle:Ads')
-            ->createQueryBuilder('e')
-            ->select('e')
-            ->where('e.id = :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-
-
-        return $this->render('ads/buy.html.twig', array(
-            'ad' => $ads
-        ));
-    }
-
-    /**
-     * @Route("/acquista/{id}/conferma", name="acquista_conferma_id")
-     */
-    public function confirmBuyAction()
-    {
-        return $this->render('ads/buy.confirm.html.twig');
-    }
-
+//    /**
+//     * @Route("/acquista/{id}", name="acquista_id")
+//     */
+//    public function buyAction($id)
+//    {
+//        $ads = $this->getDoctrine()
+//            ->getRepository('AppBundle:Ads')
+//            ->createQueryBuilder('e')
+//            ->select('e')
+//            ->where('e.id = :id')
+//            ->setParameter('id', $id)
+//            ->getQuery()
+//            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+//
+//
+//        return $this->render('ads/buy.html.twig', array(
+//            'ad' => $ads
+//        ));
+//    }
+//
+//    /**
+//     * @Route("/acquista/{id}/conferma", name="acquista_conferma_id")
+//     */
+//    public function confirmBuyAction()
+//    {
+//        return $this->render('ads/buy.confirm.html.twig');
+//    }
+//
     public function convertCategory($catID)
     {
         $catName = $this->getDoctrine()
@@ -648,6 +731,19 @@ class AdsController extends Controller
             ->getQuery()
             ->getResult(Query::HYDRATE_ARRAY);
         return $uname[0]['name'];
+    }
+
+    public function getUserPic($userID)
+    {
+        $uname = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->createQueryBuilder('e')
+            ->select('e.pic')
+            ->where('e.id = :id')
+            ->setParameter('id', $userID)
+            ->getQuery()
+            ->getResult(Query::HYDRATE_ARRAY);
+        return $uname[0]['pic'];
     }
 
     public function undash($string)

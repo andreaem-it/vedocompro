@@ -88,7 +88,7 @@
                             {% set count = 0 %}
                             {% if ad_info.0.fields is empty %}
                                 {% else %}
-                            <ul class="list-group">
+                            <ul id="extraFields" class="list-group">
                                 {% for field in ad_info.0.fields %}
                                     {% set count = count + 1 %}
                                 <li class="list-group-item">
@@ -104,18 +104,38 @@
                                 {% endfor %}
                             </ul>
                             {% endif %}
+                            {% if ad_info.0.isHotel == 1 %}
+                                <div id="hotelServices" class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Servizi</h5>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    {% for itm in ad_info.0.services %}
+                                                        <div class="col-6">
+                                                            <span class="fa fa-check"></span>&nbsp;{{ itm }}
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
                             <p class="font-weight-light mt-3">
                                 Visualizzato <span class="text-blue">{{ ad_info.0.views }} </span>volte
                             </p>
+
                         </div>
 
+
                         <style>
-                            .list-group {
+                            #extraFields {
                                 border: 1px solid rgba(0,0,0,.125);
                                 border-radius: 5px;
                                 margin-bottom: 15px;
                             }
-                            .list-group-item {
+                            #extraFields .list-group-item {
                                 border: none!important;
                             }
                         </style>
@@ -162,7 +182,7 @@
                                             <div class="row mt-3">
                                                 <div class="col-sm-8">
                                                     <h5 class="font-weight-light">
-                                                        Venduto da: &nbsp;
+                                                        Inserito da: &nbsp;
                                                         <a href="{{ path('profilo', {'query': user_info.0.name}) }}">
                                                             {{user_info.0.name }}
                                                         </a>&nbsp;
@@ -171,12 +191,34 @@
                                                         {% endif %}
                                                         ({{user_info.0.points}}) - {{ feed_percent }}% positivi
                                                     </h5>
-                                                    <h1 class="font-weight-normal mb-4">
+                                                    <div class="mb-4">
                                                         <strong>
-                                                            {{ ad_info.0.price }} €
+                                                            <h1>
+                                                            {% if ad_info.0.isHotel == 1 %}
+                                                                <small class="font-weight-normal">Camere a partire da </small><br>
+                                                            {% endif %}
+                                                            {{ ad_info.0.price }} € {% if ad_info.0.isHotel == 1 %} * {% endif %}
+                                                            </h1>
+                                                            {% if ad_info.0.isHotel == 1 %}
+                                                                <small>* I prezzi potrebbero variare a seconda della stagione, contatta per saperne di più</small>
+                                                            {% endif %}
                                                         </strong>
-                                                    </h1>
-
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-4 mt-2">
+                                                            <a href="" data-toggle="modal" data-target="#call" class="btn btn-block btn-outline-success"><i class="fa fa-phone"></i> Chiama</a>
+                                                        </div>
+                                                        <div class="col-4 mt-2">
+                                                            <a href="" data-toggle="modal" data-target="#send_message" class="btn btn-block btn-outline-success"><i class="fa fa-envelope"></i> Messaggio</a>
+                                                        </div>
+                                                        {% if user_info.0.isCompany == 1 %}
+                                                            {% if ad_info.0.hasMap == 1 %}
+                                                                <div class="col-4 mt-2">
+                                                                    <a href="https://www.google.com/maps/place/@{{ ad_info.0.mapCoords }},143m/" class="btn btn-block btn-outline-success"><i class="fa fa-map"></i> Indicazioni</a>
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </div>
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <div class="row">
@@ -190,7 +232,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
+
+                                            <div id="bottomBox" class="row">
                                                 <div class="col-sm-12">
                                                     <p class="font-weight-light">
                                                         {{ ad_info.0.description }}
@@ -202,19 +245,91 @@
                                                         Località: <span class="text-blue">{{ ad_info.0.location }} ({{ ad_info.0.region }})</span>
                                                     </p>
 
-                                                    <div class="row mt-4 mb-4">
-                                                        <div class="col-xs-3 ml-3 mr-4">
-                                                            <a href="" data-toggle="modal" data-target="#call" class="btn btn-block btn-outline-success">Chiama</a>
-                                                        </div>
-                                                        <div class="col-xs-3">
-                                                            <a href="" data-toggle="modal" data-target="#send_message" class="btn btn-block btn-outline-success">Messaggio</a>
-                                                        </div>
-                                                    </div>
+
                                                     <p class="font-weight-light">
                                                         Categoria: <span class="text-blue">{{ ads.convertCategory(ad_info.0.category|capitalize) }}</span>
                                                     </p>
                                                 </div>
                                             </div>
+                                            {% if user_info.0.isCompany == 1 %}
+                                                {% if ad_info.0.hasReviews == 1 %}
+                                                    <hr>
+                                                    <h4>Recensioni</h4>
+                                                    {% if reviews is empty %}
+                                                        <div class="row mb-2">
+                                                            <div class="col-sm-12">
+                                                                <div class="text-center">
+                                                                    Non ci sono ancora recensioni per questo luogo, sii tu il primo a dirci cosa ne pensi.
+                                                                    <br>
+                                                                    {% if app.user == null %}
+                                                                        <a href="{{ url('login') }}">Accedi per recensire</a>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% else %}
+                                                        {% for item in reviews %}
+                                                            <div class="row mb-2">
+                                                                <div class="col-sm-12">
+                                                                    <div class="media border p-3">
+                                                                        <img class="rounded-circle user-pic" src="{{ asset('uploads/profile/' ~ ads.getUserPic(item.uid) ) | imagine_filter('profile_img_filter')}}">
+                                                                        <div class="media-body ml-2">
+                                                                            <h6><strong><a href="{{ path('profilo', {'query': item.uid}) }}">{{ ads.convertUName(item.uid) }}</a></strong> <small><i>{{ item.datetime|date("d M Y") }}</i></small></h6>
+                                                                            <p><img class="star-rating" src="{{ asset('img/reviews-stars/' ~  item.rating ~ '.png') }}"> <small>({{ item.rating }} / 5)</small></p>
+                                                                            <p>{{ item.comment }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    {% if app.user != null %}
+                                                        <div class="row mb-2">
+                                                            <div class="col-sm-12 mt-3">
+                                                                <div class="card card-body reviewCard">
+                                                                    {% for item in reviews %}
+                                                                        {% if item.uid == app.user.id %}
+                                                                            <p class="text-center">Hai recensito questo luogo, se non vedi il tuo commento, potrebbe essere ancora in fase di moderazione.</p>
+                                                                        {% else %}
+                                                                            {{ include('forms/formReviews.html.twig') }}
+                                                                        {% endif %}
+                                                                    {% endfor %}
+
+                                                                    <small class="text-center">Accesso effettuato come <span class="text-blue">{{ app.user.username }}</span>, non sei tu? Effettua il <a href="{{ url('logout') }}">Logout</a></small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endif %}
+{#                                            {% if user_info.0.isCompany == 1 %}#}
+{#                                                {% if ad_info.0.hasMap == 2 %}#}
+{#                                                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGrm47JrTTAp5n5fF7Q2ymGl-iMB69O8g"></script>#}
+{#                                                    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>#}
+{#                                                    <script src="https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js"></script>#}
+{#                                                    <div class="row">#}
+{#                                                        <div class="col-sm-12">#}
+{#                                                            <div class="map" style="height:300px"></div>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                    <script>#}
+{#                                                        $('.map')#}
+{#                                                            .gmap3({#}
+{#                                                                center:[{{ ad_info.0.mapCoords }}],#}
+{#                                                                zoom:14,#}
+{#                                                                streetViewControl: true,#}
+{#                                                                mapTypeId: google.maps.MapTypeId.STREETS,#}
+{#                                                                mapTypeControl: true,#}
+{#                                                                navigationControl: true,#}
+{#                                                                scrollwheel: true,#}
+{#                                                            })#}
+{#                                                            .marker([#}
+{#                                                                {position:[{{ ad_info.0.mapCoords }}]},#}
+{#                                                                ])#}
+{#                                                            ;#}
+{#                                                    </script>#}
+{#                                                {% endif  %}#}
+{#                                            {% endif  %}#}
                                         </div>
                                         <div class="col-sm-2 text-center">
                                             {% include('template/ads.html.twig') %}
@@ -231,12 +346,14 @@
                         <!-- COMING SOON -->
                     </div>
                     {% endif %}
+                    {% if similar|length == 1 %}
                     <div class="row">
                         <div class="col-sm-12">
                             <h4 class="mb-4 mt-4 font-weight-light">Inserzioni nella categoria {{ ads.convertCategory(ad_info.0.category|capitalize) }}</h4>
                             <br>
                         </div>
                     <div class="row">
+                        {% endif %}
                         {% if similar|length == 1 %}
                     </div>
                         {% endif %}
@@ -248,7 +365,7 @@
                                             <div class="card result-card ">
                                                 {% set category = (ads.slugify(ads.convertCategory(similars.category))) %}
                                                 <a href="{{ url('vedi_oggetto', {'category': category, 'item': similars.id, 'title': ads.slugify(similars.name) }) }}">
-                                                    <img class="card-img-top img-fluid" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ similars.id }}-1.jpg"></a>
+                                                    <img class="card-img-top img-fluid mr-2" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ similars.id }}-1.jpg"></a>
                                                 <div class="card-body">
                                                     <h5 class="card-title font-weight-light">
                                                         <a href="{{ url('vedi_oggetto', {'category': category, 'item': similars.id, 'title': ads.slugify(similars.name) }) }}">{{ similars.name }}</a>
@@ -279,6 +396,11 @@
                                 autoplay: true,
                                 autoplaySpeed: 2000,
                             });
+                            $('#bottomBox').append($('#extraFields'));
+                            $('#extraFields').addClass('col-sm-12');
+                            $('#bottomBox').append($('#hotelServices'));
+                            $('.companyBox').addClass('mt-2').addClass('mb-2');
+                            $('.google-ads-container').hide();
                         } else {
                             $('.autoplay').slick({
                                 adaptiveHeight: true,
@@ -448,6 +570,89 @@
         color: #FFF;
         font-weight: 100;
     }
+    .star-rating {
+        width: 100px;
+        margin-top: -3px;
+    }
+    .user-pic {
+        width: 50px;
+        height: 50px;
+    }
+    .rating {
+        display: inline-block;
+        position: relative;
+        height: 20px;
+        line-height: 20px;
+        font-size: 20px;
+    }
+
+    .rating label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .rating label:last-child {
+        position: static;
+    }
+
+    .rating label:nth-child(1) {
+        z-index: 5;
+    }
+
+    .rating label:nth-child(2) {
+        z-index: 4;
+    }
+
+    .rating label:nth-child(3) {
+        z-index: 3;
+    }
+
+    .rating label:nth-child(4) {
+        z-index: 2;
+    }
+
+    .rating label:nth-child(5) {
+        z-index: 1;
+    }
+
+    .rating label input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+
+    .rating label .icon {
+        float: left;
+        color: transparent;
+    }
+
+    .rating label:last-child .icon {
+        color: #BBB;
+    }
+
+    .rating:not(:hover) label input:checked ~ .icon,
+    .rating:hover label:hover input ~ .icon {
+        color: #09f;
+    }
+
+    .rating label input:focus:not(:checked) ~ .icon:last-child {
+        color: #BBB;
+        text-shadow: 0 0 5px #09f;
+    }
+    .ratingLbl {
+        line-height:20px;
+        vertical-align: text-bottom;
+        position: relative;
+        top: -4px;
+        margin-right: 10px;
+    }
+    .wh-widget-send-button-get-button {
+        display: none;
+    }
 </style>
     <script type="text/JavaScript">
         var playerInstance = jwplayer("video");
@@ -468,6 +673,9 @@
         });
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
             $('#video').addClass('video-mobile');
-        };
+        }
+        $('#wh-widget-send-button').hover(function() {
+            $('.wh-widget-send-button-get-button').css('display','none');
+        })
     </script>
 {% endblock %}

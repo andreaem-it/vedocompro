@@ -1,0 +1,40 @@
+{% extends ':business/dashboard/template:base.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="#">
+                <em class="fa fa-home"></em>
+            </a></li>
+        <li class="active">Sottoscrizione</li>
+        <li>Dettagli</li>
+    </ol>
+</div><!--/.row-->
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Sottoscrizione <small>Dettagli</small></h1>
+
+    </div>
+</div><!--/.row-->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-body">
+                <p>Hai il pacchetto <strong>Business Basic</strong>, la tua sottoscrizione è valida fino al <strong>{{ user.businessEnd|date("d-m-Y") }}</strong>.</p>
+                <p>Rimangono {% set difference = date(user.businessEnd).diff(date(date("now"))) %}
+                    {% set leftDays = difference.days %}
+                    {% if leftDays == 1 %}
+                        1 giorno
+                    {% else %}
+                        {{ leftDays }} giorni
+                    {% endif %}</p>
+                <br>
+                <a href="" class="btn btn-success">Upgrade</a>
+                <a href="" class="btn btn-primary">Rinnova / Estendi</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

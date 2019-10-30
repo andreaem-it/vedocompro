@@ -37,6 +37,7 @@
                 <li class="{% if app.request.attributes.get('_route') == 'admin_utenti' %}active{% endif %}"><a href="{{ url('admin_utenti') }}"><i class="fa fa-users"></i> <span>Utenti</span></a></li>
                 <li class="{% if app.request.attributes.get('_route') == 'admin_video' %}active{% endif %}"><a href="{{ url('admin_video') }}"><i class="fa fa-video-camera"></i> <span>Video</span></a></li>
                 <li class="{% if app.request.attributes.get('_route') == 'admin_mail' %}active{% endif %}"><a href="{{ url('admin_mail') }}"><i class="fa fa-envelope"></i> <span>Mail</span></a></li>
+                <li class="{% if app.request.attributes.get('_route') == 'admin_reviews' %}active{% endif %}"><a href="{{ url('admin_reviews') }}"><i class="fa fa-comments"></i> <span>Recensioni</span></a></li>
             {% endif %}
             {% if is_granted('ROLE_SUPPORT') %}
                 <li class="{% if app.request.attributes.get('_route') == 'admin_coupons' %}active{% endif %}"><a href="{{ url('admin_coupons') }}"><i class="fa fa-ticket"></i> <span>Coupons</span></a></li>

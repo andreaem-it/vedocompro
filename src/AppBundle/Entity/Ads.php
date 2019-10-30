@@ -179,6 +179,26 @@ class Ads
     private $mapCoords;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $hasReviews;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isHotel;
+
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $services;
+
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $rooms;
+
+    /**
      * Get id
      *
      * @return integer
@@ -954,5 +974,101 @@ class Ads
     public function getMapCoords()
     {
         return $this->mapCoords;
+    }
+
+    /**
+     * Set hasReviews.
+     *
+     * @param bool|null $hasReviews
+     *
+     * @return Ads
+     */
+    public function setHasReviews($hasReviews = null)
+    {
+        $this->hasReviews = $hasReviews;
+
+        return $this;
+    }
+
+    /**
+     * Get hasReviews.
+     *
+     * @return bool|null
+     */
+    public function getHasReviews()
+    {
+        return $this->hasReviews;
+    }
+
+    /**
+     * Set isHotel.
+     *
+     * @param bool|null $isHotel
+     *
+     * @return Ads
+     */
+    public function setIsHotel($isHotel = null)
+    {
+        $this->isHotel = $isHotel;
+
+        return $this;
+    }
+
+    /**
+     * Get isHotel.
+     *
+     * @return bool|null
+     */
+    public function getIsHotel()
+    {
+        return $this->isHotel;
+    }
+
+    /**
+     * Set services.
+     *
+     * @param array|null $services
+     *
+     * @return Ads
+     */
+    public function setServices($services = null)
+    {
+        $this->services = $services;
+
+        return $this;
+    }
+
+    /**
+     * Get services.
+     *
+     * @return array|null
+     */
+    public function getServices()
+    {
+        return $this->services;
+    }
+
+    /**
+     * Set rooms.
+     *
+     * @param array|null $rooms
+     *
+     * @return Ads
+     */
+    public function setRooms($rooms = null)
+    {
+        $this->rooms = $rooms;
+
+        return $this;
+    }
+
+    /**
+     * Get rooms.
+     *
+     * @return array|null
+     */
+    public function getRooms()
+    {
+        return $this->rooms;
     }
 }

@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+        <div class="container-fluid scrollbar">
+            <div class="container">
+                <div class="row mt-5 pt-5">
+                    <div class="col-12">
+                        <h2>Modifica Inserzione</h2>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-4">
+                        {{ form_row(form.name) }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{ form_row(form.category) }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ form_row(form.objCondition) }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{ form_row(form.price) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ form_row(form.description) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        {{ form_row(form.country) }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{ form_row(form.region) }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{ form_row(form.provincia) }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{ form_row(form.location) }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-12 text-center">
+                        {{ form_row(form.submit) }}
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+
+        </div>
+    {% include 'template/footer.html.twig' %}
+    <style>
+        .list-item-shadow {
+            margin-bottom: .5em;
+            border-radius: 0px;
+            border-right: 10px solid rgb(67, 150, 193);
+            box-shadow: 5px 5px 10px 0px #BBB;
+            font-size: 16px;
+        }
+        .input-group-addon {
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1;
+            color: #555;
+            text-align: center;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding-top: 10px;
+            padding-right: 20px;
+        }
+        .input-group-addon, .input-group-btn {
+            width: 1%;
+            white-space: nowrap;
+            vertical-align: middle;
+            display: table-cell;
+        }
+    </style>
+{% endblock body %}

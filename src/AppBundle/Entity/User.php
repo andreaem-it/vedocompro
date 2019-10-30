@@ -123,6 +123,11 @@ class User extends BaseUser
      */
     protected $plainPassword;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $businessEnd;
+
     public function __construct()
     {
         parent::__construct();
@@ -607,5 +612,29 @@ class User extends BaseUser
     public function getCompanyWebsite()
     {
         return $this->companyWebsite;
+    }
+
+    /**
+     * Set businessEnd.
+     *
+     * @param \DateTime|null $businessEnd
+     *
+     * @return User
+     */
+    public function setBusinessEnd($businessEnd = null)
+    {
+        $this->businessEnd = $businessEnd;
+
+        return $this;
+    }
+
+    /**
+     * Get businessEnd.
+     *
+     * @return \DateTime|null
+     */
+    public function getBusinessEnd()
+    {
+        return $this->businessEnd;
     }
 }

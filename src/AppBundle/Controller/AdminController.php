@@ -8,6 +8,7 @@ use AppBundle\Entity\Category;
 use AppBundle\Entity\Messages;
 use AppBundle\Entity\Notifications;
 use AppBundle\Entity\Product;
+use AppBundle\Entity\Reviews;
 use AppBundle\Entity\Videos;
 use AppBundle\Form\AdsType;
 use AppBundle\Repository\AdminDefaultMailsRepository;
@@ -78,6 +79,14 @@ class AdminController extends Controller
             ->getQuery()
             ->getSingleScalarResult();
 
+        $reviewsToModerateCount = $this->getDoctrine()
+            ->getRepository('AppBundle:Reviews')
+            ->createQueryBuilder('e')
+            ->select('count(e)')
+            ->where('e.isPublished = 0')
+            ->getQuery()
+            ->getSingleScalarResult();
+
         $ticketsOpen = $this->getDoctrine()->getRepository('AppBundle:HelpDesk')
             ->createQueryBuilder('e')->select('e')->where('e.closed = 0')->andWhere('e.parent_m = 0')
             ->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
@@ -107,6 +116,7 @@ class AdminController extends Controller
             'videosToModerateCount' => $videosToModerateCount ?? 0,
             'activeUsersCount' => $activeUsersCount,
             'ticketsOpenCount' => $ticketsOpenCount,
+            'reviewsToModerateCount' => $reviewsToModerateCount ?? 0,
             'tools' => $this
         ));
     }
@@ -967,6 +977,51 @@ class AdminController extends Controller
         return $this->render(':admin/views:system.html.twig', array(
             'admin_info' => $this->getAdminInfos(),
             'info' => $info));
+    }
+
+    /**
+     * @Route("/admin/reviews", name="admin_reviews")
+     */
+    public function reviewsAction() {
+        $reviews = $this->getDoctrine()->getRepository(Reviews::class)->findBy(['isPublished' => false]);
+
+        return $this->render('admin/views/reviews.html.twig', [
+            'reviews' => $reviews,
+            'tools' => $this
+        ]);
+    }
+
+    /**
+     * @Route("/admin/reviews/setPublished/{id}", name="admin_reviews_set_published")
+     */
+    public function reviewsSetPublishedAction($id) {
+        $mnrg = $this->getDoctrine()->getManager();
+
+        $review = $mnrg->getRepository(Reviews::class)->find($id);
+        $review->setIsPublished(true);
+
+        $mnrg->flush();
+
+        return $this->redirectToRoute('admin_reviews');
+    }
+
+    /**
+     * @Route("/admin/reviews/delete/{id}", name="admin_reviews_delete")
+     */
+    public function reviewsDeleteAction($id) {
+        $mnrg = $this->getDoctrine()->getManager();
+
+        $review = $mnrg->getRepository(Reviews::class)->find($id);
+
+        $mnrg->remove($review);
+        $mnrg->flush();
+
+        $this->addFlash(
+            'notice',
+            sprintf("Recensione ID %s eliminata", $id)
+        );
+
+        return $this->redirectToRoute('admin_reviews');
     }
 
     /**

@@ -3,12 +3,15 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Category;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,17 +25,42 @@ class AdsBusinessType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $category = new Category;
         $builder
             ->add('name', TextType::class, [
                 'required' => false,
                 'label' => 'Nome Oggetto'
             ])
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
+            ->add('category', EntityType::class, array(
+                'class' => 'AppBundle:Category',
+                'placeholder' => 'Scegli Categoria',
+                'empty_data' => null,
+                'required' => true,
                 'label' => 'Categoria',
-                'data' => Category::class
-            ])
-            ->add('price', TextType::class, [
+                'group_by' => 'parentName',
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'query_builder' => function (EntityRepository $repo) {
+                    $qb = $repo->createQueryBuilder('l');
+                    $qb->andWhere('l.parent IS NOT NULL');
+                    return $qb;
+                },
+                'help' => 'Selezionare nuovamente la categoria',
+                ))
+//            ->add('category', EntityType::class, array(
+//                'class' => Category::class,
+//                'group_by' => 'parentName',
+//                'data' => function (EntityRepository $repo) {
+//                    $qb = $repo->createQueryBuilder('l');
+//                    return $qb;
+//                },
+//                'query_builder' => function (EntityRepository $repo) {
+//                    $qb = $repo->createQueryBuilder('l');
+//                    $qb->andWhere('l.parent IS NOT NULL');
+//                    return $qb;
+//                },
+//                'label' => 'Categoria'))
+            ->add('price', MoneyType::class, [
                 'required' => false,
                 'label' => 'Prezzo'
             ])
@@ -40,17 +68,47 @@ class AdsBusinessType extends AbstractType
                 'attr' => ['rows'=> '10'],
                 'required' => false, 'label' => 'Descrizione'
             ])
-            ->add('region', TextType::class, [
-                'required' => false,
-                'label' => 'Regione'
-            ])
+            ->add('region', ChoiceType::class, array(
+                'choices' => [
+                    'Tutta Italia' => 'Tutta Italia',
+                    'Valle d\'Aosta' => 'Valle d\'Aosta',
+                    'Piemonte' => 'Piemonte',
+                    'Liguria' => 'Liguria',
+                    'Lombardia' => 'Lombardia',
+                    'Trentino Alto Adige' => 'Trentino Alto Adige',
+                    'Veneto' => 'Veneto',
+                    'Friuli Venezia Giulia' => 'Friuli Venezia Giulia',
+                    'Emilia Romagna' => 'Emili Romagna',
+                    'Toscana' => 'Toscana',
+                    'Umbria' => 'Umbria',
+                    'Lazio' => 'Lazio',
+                    'Marche' => 'Marche',
+                    'Abruzzo' => 'Abruzzo',
+                    'Molise' => 'Molise',
+                    'Campania' => 'Campania',
+                    'Puglia' => 'Puglia',
+                    'Basilicata' => 'Basilicata',
+                    'Calabria' => 'Calabria',
+                    'Sardegna' => 'Sardegna',
+                    'Sicilia' => 'Sicilia'
+
+                ],
+                'label' => 'Regione'))
             ->add('location', TextType::class, [
-                'required' => false,
+                //'placeholder' => 'Seleziona Regione',
+                'required' => true,
+                //'choices' => [],
                 'label' => 'Città'
             ])
             ->add('provincia', TextType::class, [
-                'required' => false,
+                'required' => true,
                 'label' => 'Provincia'
+            ])
+            ->add('country', CountryType::class, [
+                'required' => false,
+                'mapped' => false,
+                'placeholder' => 'Italia',
+                'label' => 'Paese'
             ])
             ->add('objCondition', ChoiceType::class, [
                 'choices' => [
@@ -74,7 +132,7 @@ class AdsBusinessType extends AbstractType
                 'entry_type' => TextType::class,
                 'required' => false,
                 'entry_options' => ['label' => false],
-                'label' => 'Campi Opzionali'
+                'label' => 'Campi Opzionali',
             ])
             ->add('vals', CollectionType::class, [
                 'entry_type' => TextType::class,
@@ -85,6 +143,8 @@ class AdsBusinessType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Salva'
             ]);
+
+
     }/**
      * {@inheritdoc}
      */

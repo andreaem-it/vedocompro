@@ -20,7 +20,7 @@
         <li class="parent ">
             <a data-toggle="collapse" href="#sub-item-1"><em class="fa fa-calendar">&nbsp;</em> Annunci</a>
             <ul class="children collapse {% if app.request.attributes.get('_route') == 'business_dashboard_annunci_lista'  or app.request.attributes.get('_route') == 'business_dashboard_annunci_modifica' or app.request.attributes.get('_route') == 'business_dashboard_annunci_vedi'%}in{% endif %}" id="sub-item-1" aria-expanded="{% if app.request.attributes.get('_route') == 'business_dashboard_annunci_lista'  or app.request.attributes.get('_route') == 'business_dashboard_annunci_modifica' or app.request.attributes.get('_route') == 'business_dashboard_annunci_vedi'%}true{% else %}false{% endif %}" style="">
-                <li><a class="{% if app.request.attributes.get('_route') == 'business_dashboard_annunci_lista'%} active {% endif %}" href="{{ url('business_dashboard_annunci_aggiungi') }}">
+                <li><a class="{% if app.request.attributes.get('_route') == 'business_dashboard_annunci_aggiungi'%} active {% endif %}" href="{{ url('business_dashboard_annunci_aggiungi') }}">
                         <span class="fa fa-arrow-right">&nbsp;</span> Nuovo
                     </a>
                 </li>
@@ -30,8 +30,14 @@
                 </li>
             </ul>
         </li>
+        <li class="{% if app.request.attributes.get('_route') == 'business_dashboard_recensioni' %}active{% endif %}">
+            <a href="{{ url('business_dashboard') }}"><em class="fa fa-comments">&nbsp;</em> Recensioni</a>
+        </li>
         <li class="{% if app.request.attributes.get('_route') == 'business_dashboard_statistiche' %}active{% endif %}">
             <a href="{{ url('business_dashboard_statistiche') }}"><em class="fa fa-bar-chart">&nbsp;</em> Statistiche</a>
+        </li>
+        <li class="{% if app.request.attributes.get('_route') == 'business_dashboard_subscription' %}active{% endif %}">
+            <a href="{{ url('business_dashboard_subscription') }}"><em class="fa fa-ticket">&nbsp;</em> Sottoscrizione</a>
         </li>
 
         <li><a href="{{ url('logout') }}"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
