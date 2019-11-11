@@ -21,6 +21,8 @@ use Symfony\Component\Templating\EngineInterface;
 /**
  * This renderer uses a template to display an error message at the block position with extensive debug information.
  *
+ * @final since sonata-project/block-bundle 3.0
+ *
  * @author Olivier Paradis <paradis.olivier@gmail.com>
  */
 class InlineDebugRenderer implements RendererInterface
@@ -59,9 +61,6 @@ class InlineDebugRenderer implements RendererInterface
         $this->forceStyle = $forceStyle;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function render(\Exception $exception, BlockInterface $block, Response $response = null)
     {
         $response = $response ?: new Response();

@@ -405,3 +405,19 @@ Stack trace:
 [06-Feb-2018 17:55:43 UTC] PHP  10. spl_autoload_call() /home/ubuntu/workspace/var/cache/dev/classes.php:3798
 [06-Feb-2018 17:55:43 UTC] PHP  11. Symfony\Component\Debug\DebugClassLoader->loadClass() /home/ubuntu/workspace/var/cache/dev/classes.php:3798
 >>>>>>> 6d95c65f7fea27694db0f5b4e6b76f70c89a765e
+[31-Oct-2019 21:19:52 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[01-Nov-2019 20:09:12 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[01-Nov-2019 20:09:12 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[01-Nov-2019 20:09:12 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[01-Nov-2019 20:09:12 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0

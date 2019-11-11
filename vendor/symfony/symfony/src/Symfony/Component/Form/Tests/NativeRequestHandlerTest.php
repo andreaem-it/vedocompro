@@ -48,11 +48,9 @@ class NativeRequestHandlerTest extends AbstractRequestHandlerTest
         $_SERVER = self::$serverBackup;
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\UnexpectedTypeException
-     */
     public function testRequestShouldBeNull()
     {
+        $this->expectException('Symfony\Component\Form\Exception\UnexpectedTypeException');
         $this->requestHandler->handleRequest($this->createForm('name', 'GET'), 'request');
     }
 
@@ -273,6 +271,17 @@ class NativeRequestHandlerTest extends AbstractRequestHandlerTest
             'tmp_name' => 'owfdskjasdfsa',
             'error' => '0',
             'size' => '100',
+        ];
+    }
+
+    protected function getFailedUploadedFile($errorCode)
+    {
+        return [
+            'name' => 'upload.txt',
+            'type' => 'text/plain',
+            'tmp_name' => 'owfdskjasdfsa',
+            'error' => $errorCode,
+            'size' => 100,
         ];
     }
 }

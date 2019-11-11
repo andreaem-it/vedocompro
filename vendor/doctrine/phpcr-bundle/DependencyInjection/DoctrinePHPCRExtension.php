@@ -44,10 +44,14 @@ use Symfony\Component\DependencyInjection\Reference;
 class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 {
     private $defaultSession;
+
     private $sessions = array();
+
     private $bundleDirs = array();
+
     /** @var XmlFileLoader */
     private $loader;
+
     private $disableProxyWarmer = false;
 
     /**
@@ -153,6 +157,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     }
                     $this->loadJackalopeSession($session, $container, $type);
                     $this->loadJackalopeSession($session, $container, $type, true);
+
                     break;
                 default:
                     throw new InvalidArgumentException(sprintf('You set an unsupported transport type "%s" for session "%s"', $type, $name));
@@ -193,18 +198,30 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 $connectionAliasName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.%s_connection', $serviceNamePrefix, $session['name']);
                 $container->setAlias($connectionAliasName, $connectionService);
 
+                // If default connection does not exist set the first doctrine_dbal connection as default
+                $defaultConnectionName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.default_connection', $serviceNamePrefix);
+                if (!$container->hasAlias($defaultConnectionName)) {
+                    $container->setAlias($defaultConnectionName, $connectionAliasName);
+                }
+
                 if (!$this->dbalSchemaListenerLoaded) {
                     $this->loader->load('jackalope_doctrine_dbal.xml');
                     $this->dbalSchemaListenerLoaded = true;
                 }
-                $container
-                    ->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener')
-                    ->addTag('doctrine.event_listener', array(
-                        'connection' => $connectionName,
-                        'event' => 'postGenerateSchema',
-                        'lazy' => true,
-                    ))
-                ;
+
+                $schemaListenerDefinition = $container->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener');
+
+                $eventListenerOptions = array(
+                    'connection' => $connectionName,
+                    'event' => 'postGenerateSchema',
+                    'lazy' => true,
+                );
+
+                $schemaListenerTags = $schemaListenerDefinition->getTag('doctrine.event_listener');
+
+                if (!in_array($eventListenerOptions, $schemaListenerTags)) {
+                    $schemaListenerDefinition->addTag('doctrine.event_listener', $eventListenerOptions);
+                }
 
                 $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionAliasName);
                 if (false === $admin && isset($session['backend']['caches'])) {
@@ -212,12 +229,15 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                         $backendParameters['jackalope.data_caches'][$key] = new Reference($cache);
                     }
                 }
+
                 break;
             case 'prismic':
                 $backendParameters['jackalope.prismic_uri'] = $session['backend']['url'];
+
                 break;
             case 'jackrabbit':
                 $backendParameters['jackalope.jackrabbit_uri'] = $session['backend']['url'];
+
                 break;
         }
 

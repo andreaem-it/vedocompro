@@ -2,6 +2,34 @@
 
 The change log describes what is "Added", "Removed", "Changed" or "Fixed" between each release.
 
+## 1.16.0 - 2019-06-05
+
+### Changed
+
+- Dropped support for PHP < 7.1
+- Dropped support for Symfony versions that do not receive bugfixes
+
+### Added
+
+- Integration for VCR Plugin
+
+### Fixed
+
+- Fix compatibility with curl-client `2.*`. The `CurlFactory` now builds the
+  client using PSR-17 factories. Marked a conflict for curl-client `1.*`.
+
+## 1.15.2 - 2019-04-18
+
+### Fixed
+
+- Fix to pass only allowed options to the `ContentTypePlugin`.
+
+## 1.15.1 - 2019-04-12
+
+### Fixed
+
+- Fix undefined `$serviceId` when a client is named "default".
+
 ## 1.15.0 - 2019-03-29
 
 ### Added
@@ -11,7 +39,7 @@ The change log describes what is "Added", "Removed", "Changed" or "Fixed" betwee
   (Only available with Httplug 2)
 - Configuration for the content_type plugin
 - Support for namespaced Twig classes.
-- Configuration option default_client_autowiring that you can set to false 
+- Configuration option default_client_autowiring that you can set to false
   to prevent autowiring the HttpClient and HttpAsyncClient
 
 ### Changed
@@ -35,7 +63,7 @@ The change log describes what is "Added", "Removed", "Changed" or "Fixed" betwee
 
 ### Added
 
-- Support for any PSR-18 client. 
+- Support for any PSR-18 client.
 
 ### Changed
 
@@ -77,14 +105,14 @@ The change log describes what is "Added", "Removed", "Changed" or "Fixed" betwee
 ## 1.10.0 - 2018-03-27
 
 ### Added
- 
+
 - Allow to configure the `AddPathPlugin` per client, under the `add_path` configuration key.
-- Allow to configure clients with a `service` instead of a factory. 
+- Allow to configure clients with a `service` instead of a factory.
 
 ## 1.9.0 - 2018-03-06
 
 ### Added
- 
+
 - Allow to configure the `BaseUriPlugin` per client, under the `base_uri` configuration key.
 
 ## 1.8.1 - 2017-12-06
@@ -97,7 +125,7 @@ The change log describes what is "Added", "Removed", "Changed" or "Fixed" betwee
 
 ### Added
 
-- Symfony 4 support. 
+- Symfony 4 support.
 - Support autowiring of `Http\Client\Common\PluginClientFactory`.
 - Any third party library using `Http\Client\Common\PluginClientFactory` to create `Http\Client\Common\PluginClient`
 instances now gets zero config profiling.
@@ -147,8 +175,8 @@ services aliases for autowiring in Symfony 3.3.
 
 ### Changed
 
-- We do collect profiler data after the request is processed by a plugin. With this change we 
-will for example see the changes of `HeaderAppendPlugin` at that plugin instead of the next one. 
+- We do collect profiler data after the request is processed by a plugin. With this change we
+will for example see the changes of `HeaderAppendPlugin` at that plugin instead of the next one.
 
 ## 1.5.0 - 2017-05-05
 

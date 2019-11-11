@@ -21,19 +21,15 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class HttpFoundationRequestHandlerTest extends AbstractRequestHandlerTest
 {
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\UnexpectedTypeException
-     */
     public function testRequestShouldNotBeNull()
     {
+        $this->expectException('Symfony\Component\Form\Exception\UnexpectedTypeException');
         $this->requestHandler->handleRequest($this->createForm('name', 'GET'));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\UnexpectedTypeException
-     */
     public function testRequestShouldBeInstanceOfRequest()
     {
+        $this->expectException('Symfony\Component\Form\Exception\UnexpectedTypeException');
         $this->requestHandler->handleRequest($this->createForm('name', 'GET'), new \stdClass());
     }
 
@@ -55,5 +51,10 @@ class HttpFoundationRequestHandlerTest extends AbstractRequestHandlerTest
     protected function getInvalidFile()
     {
         return 'file:///etc/passwd';
+    }
+
+    protected function getFailedUploadedFile($errorCode)
+    {
+        return new UploadedFile(__DIR__.'/../../Fixtures/foo', 'foo', null, null, $errorCode, true);
     }
 }

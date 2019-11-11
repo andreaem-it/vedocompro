@@ -8,7 +8,7 @@ Provides a [Gaufrette][gaufrette-homepage] integration for your Symfony projects
 About Gaufrette
 ===============
 
-Gaufrette is a PHP 5.6+ library providing a filesystem abstraction layer.
+Gaufrette is a PHP library providing a filesystem abstraction layer.
 This abstraction layer allows you to develop applications without needing to know where all their media files will be stored or how.
 
 Documentation is available the [official page of Gaufrette][gaufrette-homepage].
@@ -20,13 +20,13 @@ Installation
 
 As this bundle is an integration for Symfony of the [Gaufrette][gaufrette-homepage] library, it requires you to first install [Gaufrette][gaufrette-homepage] in your project.
 
-Note that, you need to install separately the adapters you want to use. You can find more details about these packages [here](https://github.com/KnpLabs/Gaufrette#metapackages-for-adapters), 
+Note that, you need to install separately the adapters you want to use. You can find more details about these packages [here](https://github.com/KnpLabs/Gaufrette#metapackages-for-adapters),
 and the full list adapters [on packagist](https://packagist.org/packages/gaufrette/).
 
 ## With composer
 
 ```bash
-composer require knplabs/knp-gaufrette-bundle:~0.5
+composer require knplabs/knp-gaufrette-bundle
 ```
 
 ## Register the bundle
@@ -36,19 +36,10 @@ You must register the bundle in your kernel:
 ``` php
 <?php
 
-// app/AppKernel.php
-
-public function registerBundles()
-{
-    $bundles = array(
-
-        // ...
-
-        new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle()
-    );
-
+return [
     // ...
-}
+    Knp\Bundle\GaufretteBundle\KnpGaufretteBundle::class                       => ['all' => true],
+];
 ```
 
 Configuration
@@ -62,7 +53,7 @@ The configuration of the Gaufrette bundle is divided into two parts: the `adapte
 ## Configuring the Adapters
 
 ``` yaml
-# app/config/config.yml
+# config/packages/knp_gaufrette.yaml
 knp_gaufrette:
     adapters:
         foo:
@@ -84,8 +75,7 @@ You can use on of these adapters:
 * [Sftp](Resources/docs/adapters/sftp.md)
 * [Phpseclib Sftp](Resources/docs/adapters/phpseclib_sftp.md)
 * [Apc](Resources/docs/adapters/apc.md)
-* [Amazon S3](Resources/docs/adapters/amazon_s3.md)
-* [AwsS3](Resources/docs/adapters/awss3.md)
+* [AWS S3](Resources/docs/adapters/awss3.md)
 * [Open Cloud](Resources/docs/adapters/opencloud.md)
 * [GoogleCloudStorage](Resources/docs/adapters/googlecloud.md)
 * [Cache](Resources/docs/adapters/cache.md)
@@ -96,7 +86,7 @@ You can use on of these adapters:
 ## Configuring the Filesystems
 
 ``` yaml
-# app/config/config.yml
+# config/packages/knp_gaufrette.yaml
 knp_gaufrette:
     adapters:
         # ...

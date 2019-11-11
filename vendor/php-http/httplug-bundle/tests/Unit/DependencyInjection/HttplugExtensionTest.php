@@ -3,11 +3,13 @@
 namespace Http\HttplugBundle\Tests\Unit\DependencyInjection;
 
 use Http\Client\HttpClient;
+use Http\Client\Plugin\Vcr\Recorder\InMemoryRecorder;
 use Http\HttplugBundle\Collector\PluginClientFactoryListener;
 use Http\HttplugBundle\DependencyInjection\HttplugExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Kernel;
+use Http\Adapter\Guzzle6\Client;
 
 /**
  * @author David Buchmann <mail@davidbu.ch>
@@ -42,11 +44,11 @@ class HttplugExtensionTest extends AbstractExtensionTestCase
     {
         $this->load([
             'classes' => [
-                'client' => 'Http\Adapter\Guzzle6\Client',
+                'client' => Client::class,
             ],
         ]);
 
-        $this->assertContainerBuilderHasService('httplug.client.default', 'Http\Adapter\Guzzle6\Client');
+        $this->assertContainerBuilderHasService('httplug.client.default', Client::class);
     }
 
     public function testConfigLoadService()
@@ -254,6 +256,32 @@ class HttplugExtensionTest extends AbstractExtensionTestCase
         $this->assertSame('header_cache_key_generator', (string) $config['cache_key_generator']);
     }
 
+    public function testContentTypePluginAllowedOptions()
+    {
+        $this->load([
+            'clients' => [
+                'acme' => [
+                    'plugins' => [
+                        [
+                            'content_type' => [
+                                'skip_detection' => true,
+                                'size_limit' => 200000,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $cachePlugin = $this->container->findDefinition('httplug.client.acme.plugin.content_type');
+
+        $config = $cachePlugin->getArgument(0);
+        $this->assertEquals([
+            'skip_detection' => true,
+            'size_limit' => 200000,
+        ], $config);
+    }
+
     public function testUsingServiceKeyForClients()
     {
         $this->load([
@@ -422,5 +450,76 @@ class HttplugExtensionTest extends AbstractExtensionTestCase
             // Symfony made services private by default starting from 3.4
             $this->assertFalse($this->container->getDefinition('httplug.client.acme.batch_client')->isPrivate());
         }
+    }
+
+    /**
+     * @dataProvider provideVcrPluginConfig
+     * @group vcr-plugin
+     */
+    public function testVcrPluginConfiguration(array $config, array $services, array $arguments = [])
+    {
+        if (!class_exists(InMemoryRecorder::class)) {
+            $this->markTestSkipped('VCR plugin is not installed.');
+        }
+
+        $prefix = 'httplug.client.acme.vcr';
+        $this->load(['clients' => ['acme' => ['plugins' => [['vcr' => $config]]]]]);
+        $this->assertContainerBuilderHasService('httplug.plugin.vcr.recorder.in_memory', InMemoryRecorder::class);
+
+        foreach ($services as $service) {
+            $this->assertContainerBuilderHasService($prefix.'.'.$service);
+        }
+
+        foreach ($arguments as $id => $args) {
+            foreach ($args as $index => $value) {
+                $this->assertContainerBuilderHasServiceDefinitionWithArgument($prefix.'.'.$id, $index, $value);
+            }
+        }
+    }
+
+    /**
+     * @group vcr-plugin
+     */
+    public function testIsNotLoadedUnlessNeeded()
+    {
+        if (!class_exists(InMemoryRecorder::class)) {
+            $this->markTestSkipped('VCR plugin is not installed.');
+        }
+
+        $this->load(['clients' => ['acme' => ['plugins' => []]]]);
+        $this->assertContainerBuilderNotHasService('httplug.plugin.vcr.recorder.in_memory');
+    }
+
+    public function provideVcrPluginConfig()
+    {
+        $config = [
+            'mode' => 'record',
+            'recorder' => 'in_memory',
+            'naming_strategy' => 'app.naming_strategy',
+        ];
+        yield [$config, ['record']];
+
+        $config['mode'] = 'replay';
+        yield [$config, ['replay']];
+
+        $config['mode'] = 'replay_or_record';
+        yield [$config, ['replay', 'record']];
+
+        $config['recorder'] = 'filesystem';
+        $config['fixtures_directory'] = __DIR__;
+        unset($config['naming_strategy']);
+
+        yield [$config, ['replay', 'record', 'recorder', 'naming_strategy'], ['replay' => [2 => false]]];
+
+        $config['naming_strategy_options'] = [
+            'hash_headers' => ['X-FOO'],
+            'hash_body_methods' => ['PATCH'],
+        ];
+
+        yield [
+            $config,
+            ['replay', 'record', 'recorder', 'naming_strategy'],
+            ['naming_strategy' => [$config['naming_strategy_options']]],
+        ];
     }
 }

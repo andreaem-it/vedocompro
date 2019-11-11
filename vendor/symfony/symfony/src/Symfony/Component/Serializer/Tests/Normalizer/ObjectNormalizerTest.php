@@ -65,7 +65,7 @@ class ObjectNormalizerTest extends TestCase
             ->expects($this->once())
             ->method('normalize')
             ->with($object, 'any')
-            ->will($this->returnValue('string_object'))
+            ->willReturn('string_object')
         ;
 
         $this->assertEquals(
@@ -182,12 +182,10 @@ class ObjectNormalizerTest extends TestCase
         $this->assertEquals('rab', $obj->getInner()->bar);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Serializer\Exception\RuntimeException
-     * @expectedExceptionMessage Could not determine the class of the parameter "unknown".
-     */
     public function testConstructorWithUnknownObjectTypeHintDenormalize()
     {
+        $this->expectException('Symfony\Component\Serializer\Exception\RuntimeException');
+        $this->expectExceptionMessage('Could not determine the class of the parameter "unknown".');
         $data = [
             'id' => 10,
             'unknown' => [
@@ -315,6 +313,30 @@ class ObjectNormalizerTest extends TestCase
         );
     }
 
+    public function testObjectToPopulateNoMatch()
+    {
+        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
+        $this->normalizer = new ObjectNormalizer($classMetadataFactory, null, null, new PhpDocExtractor());
+        new Serializer([$this->normalizer]);
+
+        $objectToPopulate = new ObjectInner();
+        $objectToPopulate->foo = 'foo';
+
+        $outer = $this->normalizer->denormalize([
+            'foo' => 'foo',
+            'inner' => [
+                'bar' => 'bar',
+            ],
+        ], ObjectOuter::class, null, [ObjectNormalizer::OBJECT_TO_POPULATE => $objectToPopulate]);
+
+        $this->assertInstanceOf(ObjectOuter::class, $outer);
+        $inner = $outer->getInner();
+        $this->assertInstanceOf(ObjectInner::class, $inner);
+        $this->assertNotSame($objectToPopulate, $inner);
+        $this->assertSame('bar', $inner->bar);
+        $this->assertNull($inner->foo);
+    }
+
     /**
      * @dataProvider provideCallbacks
      */
@@ -331,11 +353,9 @@ class ObjectNormalizerTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testUncallableCallbacks()
     {
+        $this->expectException('InvalidArgumentException');
         $this->normalizer->setCallbacks(['bar' => null]);
 
         $obj = new ObjectConstructorDummy('baz', 'quux', true);
@@ -354,6 +374,16 @@ class ObjectNormalizerTest extends TestCase
 
         $this->assertEquals(
             ['fooBar' => 'foobar'],
+            $this->normalizer->normalize($obj, 'any')
+        );
+
+        $this->normalizer->setIgnoredAttributes(['foo', 'baz', 'camelCase', 'object']);
+
+        $this->assertEquals(
+            [
+                'fooBar' => 'foobar',
+                'bar' => 'bar',
+            ],
             $this->normalizer->normalize($obj, 'any')
         );
     }
@@ -432,12 +462,10 @@ class ObjectNormalizerTest extends TestCase
         ];
     }
 
-    /**
-     * @expectedException \Symfony\Component\Serializer\Exception\LogicException
-     * @expectedExceptionMessage Cannot normalize attribute "object" because the injected serializer is not a normalizer
-     */
     public function testUnableToNormalizeObjectAttribute()
     {
+        $this->expectException('Symfony\Component\Serializer\Exception\LogicException');
+        $this->expectExceptionMessage('Cannot normalize attribute "object" because the injected serializer is not a normalizer');
         $serializer = $this->getMockBuilder('Symfony\Component\Serializer\SerializerInterface')->getMock();
         $this->normalizer->setSerializer($serializer);
 
@@ -448,11 +476,9 @@ class ObjectNormalizerTest extends TestCase
         $this->normalizer->normalize($obj, 'any');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Serializer\Exception\CircularReferenceException
-     */
     public function testUnableToNormalizeCircularReference()
     {
+        $this->expectException('Symfony\Component\Serializer\Exception\CircularReferenceException');
         $serializer = new Serializer([$this->normalizer]);
         $this->normalizer->setSerializer($serializer);
         $this->normalizer->setCircularReferenceLimit(2);
@@ -566,11 +592,9 @@ class ObjectNormalizerTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Serializer\Exception\UnexpectedValueException
-     */
     public function testThrowUnexpectedValueException()
     {
+        $this->expectException('Symfony\Component\Serializer\Exception\UnexpectedValueException');
         $this->normalizer->denormalize(['foo' => 'bar'], ObjectTypeHinted::class);
     }
 
@@ -603,24 +627,20 @@ class ObjectNormalizerTest extends TestCase
         $this->assertSame(10.0, $serializer->denormalize(['number' => 10], JsonNumber::class, 'jsonld')->number);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Serializer\Exception\UnexpectedValueException
-     * @expectedExceptionMessage The type of the "date" attribute for class "Symfony\Component\Serializer\Tests\Normalizer\ObjectOuter" must be one of "DateTimeInterface" ("string" given).
-     */
     public function testRejectInvalidType()
     {
+        $this->expectException('Symfony\Component\Serializer\Exception\UnexpectedValueException');
+        $this->expectExceptionMessage('The type of the "date" attribute for class "Symfony\Component\Serializer\Tests\Normalizer\ObjectOuter" must be one of "DateTimeInterface" ("string" given).');
         $normalizer = new ObjectNormalizer(null, null, null, new ReflectionExtractor());
         $serializer = new Serializer([$normalizer]);
 
         $serializer->denormalize(['date' => 'foo'], ObjectOuter::class);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Serializer\Exception\UnexpectedValueException
-     * @expectedExceptionMessage The type of the key "a" must be "int" ("string" given).
-     */
     public function testRejectInvalidKey()
     {
+        $this->expectException('Symfony\Component\Serializer\Exception\UnexpectedValueException');
+        $this->expectExceptionMessage('The type of the key "a" must be "int" ("string" given).');
         $extractor = new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]);
         $normalizer = new ObjectNormalizer(null, null, null, $extractor);
         $serializer = new Serializer([new ArrayDenormalizer(), new DateTimeNormalizer(), $normalizer]);
@@ -936,6 +956,9 @@ class ObjectOuter
 {
     public $foo;
     public $bar;
+    /**
+     * @var ObjectInner
+     */
     private $inner;
     private $date;
 

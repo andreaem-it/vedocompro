@@ -28,13 +28,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Render children pages.
  *
+ * @final since sonata-project/block-bundle 3.0
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ContainerBlockService extends AbstractAdminBlockService
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildEditForm(FormMapper $formMapper, BlockInterface $block)
     {
         $formMapper->add('enabled');
@@ -67,9 +66,6 @@ class ContainerBlockService extends AbstractAdminBlockService
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         return $this->renderResponse($blockContext->getTemplate(), [
@@ -79,9 +75,6 @@ class ContainerBlockService extends AbstractAdminBlockService
         ], $response);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -92,9 +85,6 @@ class ContainerBlockService extends AbstractAdminBlockService
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockMetadata($code = null)
     {
         return new Metadata($this->getName(), (null !== $code ? $code : $this->getName()), false, 'SonataBlockBundle', [

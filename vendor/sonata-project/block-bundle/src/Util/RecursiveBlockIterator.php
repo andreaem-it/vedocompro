@@ -18,6 +18,8 @@ use Doctrine\Common\Collections\Collection;
 /**
  * RecursiveBlockIterator.
  *
+ * @final since sonata-project/block-bundle 3.0
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class RecursiveBlockIterator extends \RecursiveArrayIterator implements \RecursiveIterator
@@ -34,17 +36,11 @@ class RecursiveBlockIterator extends \RecursiveArrayIterator implements \Recursi
         parent::__construct($array);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getChildren()
     {
         return new self($this->current()->getChildren());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasChildren()
     {
         return $this->current()->hasChildren();

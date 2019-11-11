@@ -34,3 +34,5 @@ monolog:
 #    delivery_addresses: ['me@example.com']
 assetic:
     use_controller: false
+maker:
+    root_namespace: AppBundle

@@ -1,4 +1,5 @@
 <?php
+
 namespace Knp\Bundle\MenuBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
@@ -21,12 +22,12 @@ class AddProvidersPass implements CompilerPassInterface
             return;
         }
 
-        $providers = array();
+        $providers = [];
         foreach ($container->findTaggedServiceIds('knp_menu.provider') as $id => $tags) {
             $providers[] = new Reference($id);
         }
 
-        if (1 === count($providers)) {
+        if (1 === \count($providers)) {
             // Use an alias instead of wrapping it in the ChainProvider for performances
             // when using only one (the default case as the bundle defines one provider)
             $container->setAlias('knp_menu.menu_provider', (string) reset($providers));

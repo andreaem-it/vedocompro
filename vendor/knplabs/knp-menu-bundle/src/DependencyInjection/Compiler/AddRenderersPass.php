@@ -1,4 +1,5 @@
 <?php
+
 namespace Knp\Bundle\MenuBundle\DependencyInjection\Compiler;
 
 use Knp\Menu\Renderer\PsrProvider;
@@ -22,8 +23,8 @@ class AddRenderersPass implements CompilerPassInterface
             return;
         }
 
-        $renderers = array();
-        $rendererReferences = array();
+        $renderers = [];
+        $rendererReferences = [];
 
         foreach ($container->findTaggedServiceIds('knp_menu.renderer', true) as $id => $tags) {
             foreach ($tags as $attributes) {

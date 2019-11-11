@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace Sonata\BlockBundle\Templating\Helper;
 
 use Doctrine\Common\Util\ClassUtils;
+use Psr\Cache\CacheItemPoolInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\BlockContextManagerInterface;
 use Sonata\BlockBundle\Block\BlockRendererInterface;
+use Sonata\BlockBundle\Block\BlockServiceInterface;
 use Sonata\BlockBundle\Block\BlockServiceManagerInterface;
 use Sonata\BlockBundle\Cache\HttpCacheHandlerInterface;
 use Sonata\BlockBundle\Event\BlockEvent;
@@ -42,7 +44,12 @@ class BlockHelper extends Helper
     private $cacheManager;
 
     /**
-     * @var array
+     * @var CacheItemPoolInterface|null
+     */
+    private $cachePool;
+
+    /**
+     * @var array<string, mixed>
      */
     private $cacheBlocks;
 
@@ -85,24 +92,41 @@ class BlockHelper extends Helper
     private $stopwatch;
 
     /**
-     * @param BlockServiceManagerInterface $blockServiceManager
-     * @param array                        $cacheBlocks
-     * @param BlockRendererInterface       $blockRenderer
-     * @param BlockContextManagerInterface $blockContextManager
-     * @param EventDispatcherInterface     $eventDispatcher
-     * @param CacheManagerInterface        $cacheManager
-     * @param HttpCacheHandlerInterface    $cacheHandler
-     * @param Stopwatch                    $stopwatch
+     * @param CacheManagerInterface|CacheItemPoolInterface|null $cacheManagerOrCachePool
+     * @param array<string, mixed>                              $cacheBlocks
      */
-    public function __construct(BlockServiceManagerInterface $blockServiceManager, array $cacheBlocks, BlockRendererInterface $blockRenderer,
-                                BlockContextManagerInterface $blockContextManager, EventDispatcherInterface $eventDispatcher,
-                                CacheManagerInterface $cacheManager = null, HttpCacheHandlerInterface $cacheHandler = null, Stopwatch $stopwatch = null)
-    {
+    public function __construct(
+        BlockServiceManagerInterface $blockServiceManager,
+        array $cacheBlocks,
+        BlockRendererInterface $blockRenderer,
+        BlockContextManagerInterface $blockContextManager,
+        EventDispatcherInterface $eventDispatcher,
+        $cacheManagerOrCachePool = null,
+        HttpCacheHandlerInterface $cacheHandler = null,
+        Stopwatch $stopwatch = null
+    ) {
         $this->blockServiceManager = $blockServiceManager;
         $this->cacheBlocks = $cacheBlocks;
         $this->blockRenderer = $blockRenderer;
         $this->eventDispatcher = $eventDispatcher;
-        $this->cacheManager = $cacheManager;
+
+        if ($cacheManagerOrCachePool instanceof CacheManagerInterface) {
+            @trigger_error(
+                sprintf(
+                    'Passing %s as argument 6 to %s::%s() is deprecated since sonata-project/block-bundle 3.18 and will throw a \TypeError as of 4.0. You must pass an instance of %s instead.',
+                    CacheManagerInterface::class,
+                    static::class,
+                    __FUNCTION__,
+                    CacheItemPoolInterface::class
+                ),
+                E_USER_DEPRECATED
+            );
+
+            $this->cacheManager = $cacheManagerOrCachePool;
+        } elseif ($cacheManagerOrCachePool instanceof CacheItemPoolInterface) {
+            $this->cachePool = $cacheManagerOrCachePool;
+        }
+
         $this->blockContextManager = $blockContextManager;
         $this->cacheHandler = $cacheHandler;
         $this->stopwatch = $stopwatch;
@@ -117,9 +141,6 @@ class BlockHelper extends Helper
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'sonata_block';
@@ -166,7 +187,6 @@ class BlockHelper extends Helper
 
     /**
      * @param string $name
-     * @param array  $options
      *
      * @return string
      */
@@ -174,8 +194,16 @@ class BlockHelper extends Helper
     {
         $eventName = sprintf('sonata.block.event.%s', $name);
 
-        /** @var BlockEvent $event */
-        $event = $this->eventDispatcher->dispatch($eventName, new BlockEvent($options));
+        // NEXT_MAJOR: remove this when dropping support for symfony/event-dispatcher 3.x
+        $reflectionMethod = new \ReflectionMethod($this->eventDispatcher, 'dispatch');
+        $param2 = $reflectionMethod->getParameters()[1] ?? null;
+
+        /* @var BlockEvent $event */
+        if (null === $param2 || !$param2->hasType() || $param2->getType()->isBuiltin()) {
+            $event = $this->eventDispatcher->dispatch(new BlockEvent($options), $eventName);
+        } else {
+            $event = $this->eventDispatcher->dispatch($eventName, new BlockEvent($options));
+        }
 
         $content = '';
 
@@ -208,8 +236,7 @@ class BlockHelper extends Helper
     }
 
     /**
-     * @param mixed $block
-     * @param array $options
+     * @param BlockInterface|array $block
      *
      * @return string|null
      */
@@ -233,38 +260,14 @@ class BlockHelper extends Helper
 
         $useCache = $blockContext->getSetting('use_cache');
 
-        $cacheKeys = $response = false;
-        $cacheService = $useCache ? $this->getCacheService($blockContext->getBlock(), $stats) : false;
-        if ($cacheService) {
-            $cacheKeys = array_merge(
-                $service->getCacheKeys($blockContext->getBlock()),
-                $blockContext->getSetting('extra_cache_keys')
+        $response = null;
+
+        if ($useCache) {
+            $response = $this->getCachedBlock(
+                $blockContext,
+                $service,
+                $stats
             );
-
-            if ($this->stopwatch) {
-                $stats['cache']['keys'] = $cacheKeys;
-            }
-
-            // Please note, some cache handler will always return true (js for instance)
-            // This will allows to have a non cacheable block, but the global page can still be cached by
-            // a reverse proxy, as the generated page will never get the generated Response from the block.
-            if ($cacheService->has($cacheKeys)) {
-                $cacheElement = $cacheService->get($cacheKeys);
-
-                if ($this->stopwatch) {
-                    $stats['cache']['from_cache'] = false;
-                }
-
-                if (!$cacheElement->isExpired() && $cacheElement->getData() instanceof Response) {
-                    /* @var Response $response */
-
-                    if ($this->stopwatch) {
-                        $stats['cache']['from_cache'] = true;
-                    }
-
-                    $response = $cacheElement->getData();
-                }
-            }
         }
 
         if (!$response) {
@@ -285,13 +288,14 @@ class BlockHelper extends Helper
                 $stats['cache']['contextual_keys'] = $contextualKeys;
             }
 
-            if ($response->isCacheable() && $cacheKeys && $cacheService) {
-                $cacheService->set($cacheKeys, $response, (int) $response->getTtl(), $contextualKeys);
+            if ($useCache) {
+                $this->saveCache($blockContext, $service, $response, $contextualKeys);
             }
         }
 
         if ($this->stopwatch) {
-            $stats['cache']['created_at'] = $response->getDate();
+            // avoid \DateTime because of serialize/unserialize issue in PHP7.3 (https://bugs.php.net/bug.php?id=77302)
+            $stats['cache']['created_at'] = null === $response->getDate() ? null : $response->getDate()->getTimestamp();
             $stats['cache']['ttl'] = $response->getTtl() ?: 0;
             $stats['cache']['age'] = $response->getAge();
         }
@@ -320,9 +324,6 @@ class BlockHelper extends Helper
 
     /**
      * Traverse the parent block and its children to retrieve the correct list css and javascript only for main block.
-     *
-     * @param BlockContextInterface $blockContext
-     * @param array                 $stats
      */
     protected function computeAssets(BlockContextInterface $blockContext, array &$stats = null)
     {
@@ -373,9 +374,9 @@ class BlockHelper extends Helper
     }
 
     /**
-     * @param BlockInterface $block
-     *
      * @return array
+     *
+     * @internal since sonata-project/block-bundle 3.16
      */
     protected function startTracing(BlockInterface $block)
     {
@@ -410,8 +411,7 @@ class BlockHelper extends Helper
     }
 
     /**
-     * @param BlockInterface $block
-     * @param array          $stats
+     * @internal since sonata-project/block-bundle 3.16
      */
     protected function stopTracing(BlockInterface $block, array $stats)
     {
@@ -427,9 +427,9 @@ class BlockHelper extends Helper
     }
 
     /**
-     * @param BlockEvent $event
-     *
      * @return array
+     *
+     * @internal since sonata-project/block-bundle 3.16
      */
     protected function getEventBlocks(BlockEvent $event)
     {
@@ -446,6 +446,8 @@ class BlockHelper extends Helper
      * @param string $eventName
      *
      * @return array
+     *
+     * @internal since sonata-project/block-bundle 3.16
      */
     protected function getEventListeners($eventName)
     {
@@ -467,10 +469,9 @@ class BlockHelper extends Helper
     }
 
     /**
-     * @param BlockInterface $block
-     * @param array          $stats
-     *
      * @return CacheAdapterInterface|false
+     *
+     * @internal since sonata-project/block-bundle 3.16
      */
     protected function getCacheService(BlockInterface $block, array &$stats = null)
     {
@@ -496,5 +497,87 @@ class BlockHelper extends Helper
         }
 
         return $this->cacheManager->getCacheService($cacheServiceId);
+    }
+
+    /**
+     * @param array<string, mixed> $stats
+     */
+    private function getCachedBlock(BlockContextInterface $blockContext, BlockServiceInterface $service, array &$stats): ?Response
+    {
+        $cacheKeys = $this->getCacheKey($service, $blockContext);
+
+        if (null !== $this->cachePool) {
+            $item = $this->cachePool->getItem(json_encode($cacheKeys));
+
+            return $item->get();
+        }
+
+        $cacheService = $this->getCacheService($blockContext->getBlock(), $stats);
+
+        if (!$cacheService) {
+            return null;
+        }
+
+        if ($this->stopwatch) {
+            $stats['cache']['keys'] = $cacheKeys;
+        }
+
+        // Please note, some cache handler will always return true (js for instance)
+        // This will allows to have a non cacheable block, but the global page can still be cached by
+        // a reverse proxy, as the generated page will never get the generated Response from the block.
+        if ($cacheService->has($cacheKeys)) {
+            $cacheElement = $cacheService->get($cacheKeys);
+
+            if ($this->stopwatch) {
+                $stats['cache']['from_cache'] = false;
+            }
+
+            if (!$cacheElement->isExpired() && $cacheElement->getData() instanceof Response) {
+                /* @var Response $response */
+
+                if ($this->stopwatch) {
+                    $stats['cache']['from_cache'] = true;
+                }
+
+                return $cacheElement->getData();
+            }
+        }
+
+        return null;
+    }
+
+    private function saveCache(BlockContextInterface $blockContext, BlockServiceInterface $service, Response $response, array $contextualKeys): void
+    {
+        if (!$response->isCacheable()) {
+            return;
+        }
+
+        $cacheKeys = $this->getCacheKey($service, $blockContext);
+
+        if (null !== $this->cachePool) {
+            $item = $this->cachePool->getItem(json_encode($cacheKeys));
+            $item->set($response);
+            $item->expiresAfter((int) $response->getTtl());
+
+            $this->cachePool->save($item);
+
+            return;
+        }
+
+        $cacheService = $this->getCacheService($blockContext->getBlock(), $stats);
+
+        if (!$cacheService) {
+            return;
+        }
+
+        $cacheService->set($cacheKeys, $response, (int) $response->getTtl(), $contextualKeys);
+    }
+
+    private function getCacheKey(BlockServiceInterface $service, BlockContextInterface $blockContext): array
+    {
+        return array_merge(
+            $service->getCacheKeys($blockContext->getBlock()),
+            $blockContext->getSetting('extra_cache_keys')
+        );
     }
 }

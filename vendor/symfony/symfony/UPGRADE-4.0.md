@@ -297,19 +297,17 @@ Form
    `ArrayAccess` in `ResizeFormListener::preSubmit` method has been removed.
 
  * Using callable strings as choice options in ChoiceType is not supported
-   anymore in favor of passing PropertyPath instances.
+   anymore.
 
    Before:
 
    ```php
-   'choice_value' => new PropertyPath('range'),
    'choice_label' => 'strtoupper',
    ```
 
    After:
 
    ```php
-   'choice_value' => 'range',
    'choice_label' => function ($choice) {
        return strtoupper($choice);
    },
@@ -926,7 +924,7 @@ Validator
 VarDumper
 ---------
 
- * The `VarDumperTestTrait::assertDumpEquals()` method expects a 3rd `$context = null`
+ * The `VarDumperTestTrait::assertDumpEquals()` method expects a 3rd `$filter = 0`
    argument and moves `$message = ''` argument at 4th position.
 
    Before:
@@ -941,7 +939,7 @@ VarDumper
    VarDumperTestTrait::assertDumpEquals($dump, $data, $filter = 0, $message = '');
    ```
 
- * The `VarDumperTestTrait::assertDumpMatchesFormat()` method expects a 3rd `$context = null`
+ * The `VarDumperTestTrait::assertDumpMatchesFormat()` method expects a 3rd `$filter = 0`
    argument and moves `$message = ''` argument at 4th position.
 
    Before:

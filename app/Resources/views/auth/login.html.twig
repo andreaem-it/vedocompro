@@ -1,319 +1,428 @@
-{% extends 'base.html.twig' %}
-{% block body %}
+    <!DOCTYPE html>
+    <!-- Developed by AndreaEM (www.andreaem.com) for VedoCompro.it -  All Rights Reserved - Conding, Graphics Idea Convertion and Functionality made by Andrea Emili (info@andreaem.it)-->
+    <html prefix="og: http://ogp.me/ns#">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-              integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
-              crossorigin="anonymous">
-        <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-                integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-                crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-                integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-                crossorigin="anonymous"></script>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=0.7, maximum-scale=0.7" />
+        <title>{% block title %}VedoCompro.it - Acquista e Vendi con un video!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+        <link rel="scss" href="{{ asset('css/player.vedocompro.scss') }}">
+        <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
+        <link href="{{asset('css/video-js.css')}}" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto|Ubuntu" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet">
+        <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+        <script async src="{{asset('js/jquery-ui.min.js')}}"></script>
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+        <link href="{{ asset('css/scrollbar.css') }}" rel="stylesheet" type="text/css" >
+        <script src="https://content.jwplatform.com/libraries/7P3qGamK.js"></script>
+        <script>jwplayer.key="ABCdeFG123456SeVenABCdeFG123456SeVen=="</script>
+        <script async src="{{ asset('js/affix.js') }}"></script>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-4967985757423249",
+                enable_page_level_ads: true
+            });
+        </script>
+        {% if app.environment == 'prod' %}
+            <script type="text/javascript">
+                var _iub = _iub || [];
+                _iub.csConfiguration = {"reloadOnConsent":true,"enableRemoteConsent":true,"lang":"it","siteId":1498554,"cookiePolicyUrl":"https://www.vedocompro.it/privacy-policy","consentOnDocument":true,"cookiePolicyId":25597115, "banner":{ "position":"bottom" } };
+            </script><script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async> </script>
+
+            <script type="text/javascript">
+                document.addEventListener('gdprCookiesEnabled', function (e) {
+                    console.log(e);
+                    if(e.detail.marketing) {
+                        console.log('marketing cookies are enabled');
+                    }
+                });
+            </script>
+        {% endif %}
+        {% block head %}
+
+        {% endblock %}
+        <!-- WhatsHelp.io widget -->
+        <script type="text/javascript">
+            (function () {
+                var options = {
+                    whatsapp: "+393518181127",
+                    //call: "+393518181127",
+                    telegram: "vedocompro-bot",
+                    email: "helpdesk@vedocompro.it",
+                    facebook: "1069683136499195",
+                    call_to_action: "Hai bisogno di Aiuto?",
+                    button_color: "#129BF4",
+                    position: "right",
+                    order: "whatsapp,telegram,facebook,email,call",
+                    company_logo_url: "https://randomuser.me/api/portraits/women/95.jpg",
+                    greeting_message: "Ciao sono Giulia, come posso aiutarti?", // Text of greeting message
+                    key: "",
+                };
+                var proto = document.location.protocol, host = "whatshelp.io", url = proto + "//static." + host;
+                var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = url + '/widget-send-button/js/init.js';
+                s.onload = function () { WhWidgetSendButton.init(host, proto, options); };
+                var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);
+            })();
+        </script>
+        <!-- /WhatsHelp.io widget -->
     </head>
     <body style="width:100%;overflow-x:hidden;">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="jumbotron jumbotron-fluid"
+                 style="width:100%;height:100%;background-image:url('{{ asset('img/auth/login-bg.png') }}');background-position:center center;background-size:cover;padding-top:0">
+                <div class="container-fluid">
+                    <nav class="navbar navbar-expand-lg navbar-light" id="navbar" style="background-color:transparent;">
+                        <a class="navbar-brand" href="#">
+                            <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-cobalt.png') }}"
+                                 class="img-fluid inverse-logo" style="max-width:280px"/>
+                        </a>
+                        <button id="navbar-toggler" class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="jumbotron jumbotron-fluid"
-             style="width:100%;height:100%;background-image:url('{{ asset('img/auth/login-bg.png') }}');background-position:center center;background-size:cover;padding-top:0">
-            <div class="container-fluid">
-                <nav class="navbar navbar-expand-lg navbar-light" id="navbar" style="background-color:transparent;">
-                    <a class="navbar-brand" href="#">
-                        <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-cobalt.png') }}"
-                             class="img-fluid inverse-logo" style="max-width:280px"/>
-                    </a>
-                    <button id="navbar-toggler" class="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                        <div class="collapse navbar-collapse">
 
-                    <div class="collapse navbar-collapse">
+                            <ul class="navbar-nav ml-auto">
+                                <li class="nav-item">
+                                    <a href="{{ url('homepage') }}" class=" head-txt-bold txt-light">HOME</a>
+                                </li>
+                                {% if app.user %}
+                                    {{ render(controller('AppBundle:Notifications:Notification')) }}
+                                    <li class="nav-item">
+                                        <a href="{{ url('profilo' , {'query': app.user.username }) }}"
+                                           class=" head-txt-bold txt-light">PROFILO</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ logout_path('main') }}" class="head-txt-bold txt-light">ESCI</a>
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item">
+                                        <a href="{{ url('login') }}" class="nav-link active txt-light">ACCEDI</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('login') }}#registrati" class="nav-link txt-light">REGISTRATI</a>
+                                    </li>
+                                {% endif %}
+                                <li class="nav-item">
+                                    <a href="" class="nav-link txt-light">SUPPORTO</a>
+                                </li>
+                                <a href="{{ url('nuovo') }}"
+                                   class="btn btn-lg btn-primary float-right color-light-blue btn-add-ad">
+                                    INSERISCI ANNUNCIO
+                                    <img src="{{ asset('img/home/camera.svg') }}" class="btn-camera" style="width:32px">
+                                </a>
 
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item">
-                                <a href="{{ url('homepage') }}" class=" head-txt-bold txt-light">HOME</a>
-                            </li>
-                            {% if app.user %}
-                                {{ render(controller('AppBundle:Notifications:Notification')) }}
-                                <li class="nav-item">
-                                    <a href="{{ url('profilo' , {'query': app.user.username }) }}"
-                                       class=" head-txt-bold txt-light">PROFILO</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ logout_path('main') }}" class="head-txt-bold txt-light">ESCI</a>
-                                </li>
-                            {% else %}
-                                <li class="nav-item">
-                                    <a href="{{ url('login') }}" class="nav-link active txt-light">ACCEDI</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('login') }}#registrati" class="nav-link txt-light">REGISTRATI</a>
-                                </li>
-                            {% endif %}
-                            <li class="nav-item">
-                                <a href="" class="nav-link txt-light">SUPPORTO</a>
-                            </li>
-                            <a href="{{ url('nuovo') }}"
-                               class="btn btn-lg btn-primary float-right color-light-blue btn-add-ad">
-                                INSERISCI ANNUNCIO
-                                <img src="{{ asset('img/home/camera.svg') }}" class="btn-camera" style="width:32px">
-                            </a>
-
-                        </ul>
-                    </div>
-                </nav>
-                <section id="passwReset" class="row mt-5 pt-5" style="display:none">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4">
-{#                        {{ render(controller('FOSUserBundle:Resetting:requestAction')) }}#}
-{#                        <script src='https://www.google.com/recaptcha/api.js'></script>#}
-{#                        <h3 class="text-center txt-white ">RESET PASSWORD</h3>#}
-{#                        <p class="text-center text-white mt-3 txt-light font-weight-light txt-small">Inserisci#}
-{#                            l'indirizzo e-mail con cui ti sei registrato, se corrisponde, riceverai un'e-mail con un#}
-{#                            link per reimpostare la password </p>#}
-{#                        <input type="email" class="form-control login-control mt-3 text-center" placeholder="e-mail">#}
-{#                        <div class="col-md-8 mt-3 mx-auto">#}
-{#                            <div class="g-recaptcha mx-auto"#}
-{#                                 data-sitekey="6Ldp8i4UAAAAAJLdCJR_zqUA9uUug_6P03qb6W-6"></div>#}
-{#                        </div>#}
-{#                        <div class="row mt-3 justify-content-between">#}
-{#                            <div class="col-sm-5 mx-auto">#}
-{#                                <a href="" class="btn btn-login btn-block">RIPRISTINA</a>#}
-{#                            </div>#}
-{#                        </div>#}
-                        <h3 class="text-center txt-white ">RESET PASSWORD</h3>
-                        <p class="text-center txt-white">Se hai dimenticato i dati di accesso, attraverso questa procedura, potrai reimpostare la tua password</p>
-                        <div class="row mt-3 justify-content-between">
-                            <div class="col-sm-5 mx-auto">
-                               <a href="{{ url('fos_user_resetting_request') }}" class="btn btn-login btn-block">RIPRISTINA</a>
+                            </ul>
+                        </div>
+                    </nav>
+                    <section id="passwReset" class="row mt-5 pt-5" style="display:none">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            {#                        {{ render(controller('FOSUserBundle:Resetting:requestAction')) }}#}
+                            {#                        <script src='https://www.google.com/recaptcha/api.js'></script>#}
+                            {#                        <h3 class="text-center txt-white ">RESET PASSWORD</h3>#}
+                            {#                        <p class="text-center text-white mt-3 txt-light font-weight-light txt-small">Inserisci#}
+                            {#                            l'indirizzo e-mail con cui ti sei registrato, se corrisponde, riceverai un'e-mail con un#}
+                            {#                            link per reimpostare la password </p>#}
+                            {#                        <input type="email" class="form-control login-control mt-3 text-center" placeholder="e-mail">#}
+                            {#                        <div class="col-md-8 mt-3 mx-auto">#}
+                            {#                            <div class="g-recaptcha mx-auto"#}
+                            {#                                 data-sitekey="6Ldp8i4UAAAAAJLdCJR_zqUA9uUug_6P03qb6W-6"></div>#}
+                            {#                        </div>#}
+                            {#                        <div class="row mt-3 justify-content-between">#}
+                            {#                            <div class="col-sm-5 mx-auto">#}
+                            {#                                <a href="" class="btn btn-login btn-block">RIPRISTINA</a>#}
+                            {#                            </div>#}
+                            {#                        </div>#}
+                            <h3 class="text-center txt-white ">RESET PASSWORD</h3>
+                            <p class="text-center txt-white">Se hai dimenticato i dati di accesso, attraverso questa procedura, potrai reimpostare la tua password</p>
+                            <div class="row mt-3 justify-content-between">
+                                <div class="col-sm-5 mx-auto">
+                                    <a href="{{ url('fos_user_resetting_request') }}" class="btn btn-login btn-block">RIPRISTINA</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-                <section id="loginForm" class="row mt-5 pt-5">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4">
-                        <h3 class="text-center txt-white mb-2">LOGIN</h3>
-                        {% if error is defined and error is not null %}
-                            <div class="alert alert-danger mt-3">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                        {% endif %}
-                        <form class="form-signin" action="{{ path('login') }}" method="post">
-                            <input type="text" id="username" name="_username" value="{{ last_username is defined ? last_username : '' }}"
-                                   class="form-control login-control mt-3 text-center" required="" autofocus=""
-                                   placeholder="username">
-                            <input type="password" id="password" name="_password"
-                                   class="form-control login-control mt-3 text-center" required=""
-                                   placeholder="password">
-                            <div class="row mt-3">
-                                <div class="col-sm-7">
-                                    <div class="form-check ml-4">
-                                        <input type="checkbox" id="rememberme" class="form-check-input text-left"
-                                               value="remember-me" id="remember_me" name="_remember_me"
-                                               autocomplete="off">
-                                        <label for="rememberme" class="form-check-label text-light">Ricordami su questo
-                                            dispositivo</label>
+                    </section>
+                    <section id="loginForm" class="row mt-5 pt-5">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <h3 class="text-center txt-white mb-2">LOGIN</h3>
+                            {% if error is defined and error is not null %}
+                                <div class="alert alert-danger mt-3">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
+                            <form class="form-signin" action="{{ path('login') }}" method="post">
+                                <input type="text" id="username" name="_username" value="{{ last_username is defined ? last_username : '' }}"
+                                       class="form-control login-control mt-3 text-center" required="" autofocus=""
+                                       placeholder="username">
+                                <input type="password" id="password" name="_password"
+                                       class="form-control login-control mt-3 text-center" required=""
+                                       placeholder="password">
+                                <div class="row mt-3">
+                                    <div class="col-sm-7">
+                                        <div class="form-check ml-4">
+                                            <input type="checkbox" id="rememberme" class="form-check-input text-left"
+                                                   value="remember-me" id="remember_me" name="_remember_me"
+                                                   autocomplete="off">
+                                            <label for="rememberme" class="form-check-label text-light">Ricordami su questo
+                                                dispositivo</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <a id="lostPwdLink" class="text-light mt-3 ">Password dimenticata?</a>
                                     </div>
                                 </div>
-                                <div class="col-sm-5">
-                                    <a id="lostPwdLink" class="text-light mt-3 ">Password dimenticata?</a>
+                                <div class="row mt-3 justify-content-between">
+                                    <div class="col-sm-4 mx-auto">
+                                        <button type="submit" class="btn btn-login btn-block"
+                                                style="background-color:transparent">ACCEDI
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mt-3 justify-content-between">
-                                <div class="col-sm-4 mx-auto">
-                                    <button type="submit" class="btn btn-login btn-block"
-                                            style="background-color:transparent">ACCEDI
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </section>
-                <section style="height:0px">
-                    <div class="circle mx-auto mt-5 pt-5"></div>
-                </section>
+                            </form>
+                        </div>
+                    </section>
+                    <section style="height:0px">
+                        <div class="circle mx-auto mt-5 pt-5"></div>
+                    </section>
+                </div>
             </div>
-        </div>
-        <div class="container">
-            <div id="social-row" class="row mt-5 pt-5">
-                <div id="social-column" class="col-sm-4 mx-auto">
-                    <div id="login-social">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <a href="/connect/facebook" class="btn btn-facebook btn-block">Login con Facebook</a>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-sm-12">
-                                <a href="/connect/google" class="btn btn-google btn-block pt-2">Login con Google</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-5 mb-5 pb-5">
-                        <div class="col-sm-12">
-                            <h3 class="text-center">
-                                <a id="createAccountLink" href="" class="acc-create-link mt-5 mx-auto">Crea un
-                                    Account</a>
-                            </h3>
-                            <hr class="mt-4 mb-4">
-                            <div id="registrationForm" style="display:none">
-                                {{ render(controller('AppBundle:Auth:register')) }}
-                            </div>
-                            <div class="row" id="bottom-links">
+            <div class="container">
+                <div id="social-row" class="row mt-5 pt-5">
+                    <div id="social-column" class="col-sm-4 mx-auto">
+                        <div id="login-social">
+                            <div class="row">
                                 <div class="col-sm-12">
-                                    <p class="text-center">
-                                        <a href="" class="acc-create-link">ABOUT</a> | <a class="acc-create-link"
-                                                                                          href="">CONTATTI</a>
-                                    </p>
+                                    <a href="/connect/facebook" class="btn btn-facebook btn-block">Login con Facebook</a>
                                 </div>
                             </div>
+                            <div class="row mt-3">
+                                <div class="col-sm-12">
+                                    <a href="/connect/google" class="btn btn-google btn-block pt-2">Login con Google</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-5 mb-5 pb-5">
+                            <div class="col-sm-12">
+                                <h3 class="text-center">
+                                    <a id="createAccountLink" href="" class="acc-create-link mt-5 mx-auto">Crea un
+                                        Account</a>
+                                </h3>
+                                <hr class="mt-4 mb-4">
+                                <div id="registrationForm" style="display:none">
+                                    {{ render(controller('AppBundle:Auth:register')) }}
+                                </div>
+                                <div class="row" id="bottom-links">
+                                    <div class="col-sm-12">
+                                        <p class="text-center">
+                                            <a href="" class="acc-create-link">ABOUT</a> | <a class="acc-create-link"
+                                                                                              href="">CONTATTI</a>
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
 
                         </div>
-
+                        <br>
                     </div>
-                    <br>
                 </div>
             </div>
         </div>
     </div>
-</div>
-{% embed 'template/footer.html.twig' %} {% endembed %}
-<style>
-    .btn-facebook {
-        color: #FFFFFF !important;
-        background-color: #4266b2 !important;
-        border-color: #3b5998 !important;
-        padding: 12px 40px;
-        border-radius: 12px;
-        font-size: 18px;
-    }
-
-    .btn-facebook:hover {
-        background-color: #4266b2 !important;
-        color: #FFFFFF !important;
-    }
-
-    .btn-google {
-        color: #D34836 !important;
-        border-color: #D34836 !important;
-        padding: 12px 40px;
-        border-radius: 12px;
-        font-size: 18px;
-    }
-
-    .btn-google:hover {
-        background-color: #D34836 !important;
-        color: #FFFFFF !important;
-    }
-
-    .header-fixed {
-        position: fixed;
-        width: 100%;
-        background-color: #f8f9fa !important;
-        right: 0px;
-        z-index: 100000;
-        top: 0px;
-        min-height: 60px;
-    }
-
-    .display3-space {
-        margin-top: 7.95rem !important;
-    }
-
-    #vedocompro_logo {
-        position: absolute;
-        float: left;
-        left: 20px;
-    }
-
-    #navbar-toggler {
-        position: absolute;
-        right: 10px;
-        margin: 3px;
-    }
-
-    .navbar-collapse {
-        /*margin-top: 40px;*/
-    }
-</style>
-<script>
-    $(window).on('load', function (e) {
-        var opened = 1;
-        var url = window.location.href;
-        if (url.indexOf("#registrati") !== -1) {
-            openCreateAccountPage(e)
+    {% embed 'template/footer.html.twig' %} {% endembed %}
+    <style>
+        .btn-facebook {
+            color: #FFFFFF !important;
+            background-color: #4266b2 !important;
+            border-color: #3b5998 !important;
+            padding: 12px 40px;
+            border-radius: 12px;
+            font-size: 18px;
         }
-    });
-    $('#navbar-toggler').click(function () {
-        $('.navbar-collapse').slideToggle(300)
-    });
-    $('a:contains("REGISTRATI")').click(function() {
-        openCreateAccountPage();
-    });
-    function openCreateAccountPage () {
+
+        .btn-facebook:hover {
+            background-color: #4266b2 !important;
+            color: #FFFFFF !important;
+        }
+
+        .btn-google {
+            color: #D34836 !important;
+            border-color: #D34836 !important;
+            padding: 12px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+        }
+
+        .btn-google:hover {
+            background-color: #D34836 !important;
+            color: #FFFFFF !important;
+        }
+
+        .header-fixed {
+            position: fixed;
+            width: 100%;
+            background-color: #f8f9fa !important;
+            right: 0px;
+            z-index: 100000;
+            top: 0px;
+            min-height: 60px;
+        }
+
+        .display3-space {
+            margin-top: 7.95rem !important;
+        }
+
+        #vedocompro_logo {
+            position: absolute;
+            float: left;
+            left: 20px;
+        }
+
+        #navbar-toggler {
+            position: absolute;
+            right: 10px;
+            margin: 3px;
+        }
+
+        .navbar-collapse {
+            /*margin-top: 40px;*/
+        }
+    </style>
+    <script>
+        $(window).on('load', function (e) {
+            var opened = 1;
+            var url = window.location.href;
+            if (url.indexOf("#registrati") !== -1) {
+                openCreateAccountPage(e)
+            }
+        });
+        $('#navbar-toggler').click(function () {
+            $('.navbar-collapse').slideToggle(300)
+        });
+        $('a:contains("REGISTRATI")').click(function() {
+            openCreateAccountPage();
+        });
+        function openCreateAccountPage () {
 //        e.preventDefault();
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            $('.circle').addClass("transform-180").addClass('pt-5').removeClass('mt-5').addClass('circle-top-margin');
-            $('#createAccountLink').addClass('mb-5').addClass('pb-5');
-            $('#bottom-links').addClass('mt-5');
-        } else {
-            $('.circle').removeClass('mt-5').removeClass('pt-5').addClass("transform-180");
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.circle').addClass("transform-180").addClass('pt-5').removeClass('mt-5').addClass('circle-top-margin');
+                $('#createAccountLink').addClass('mb-5').addClass('pb-5');
+                $('#bottom-links').addClass('mt-5');
+            } else {
+                $('.circle').removeClass('mt-5').removeClass('pt-5').addClass("transform-180");
+            }
+            $('#login-social').hide();
+            $('#loginForm').slideUp();
+            $('#social-column').removeClass('col-md-4').addClass('col-md-12');
+            $('#social-row').removeClass('mt-5').removeClass('pt-5');
+
+            $('#registrationForm').show();
+            $('html, body').animate({scrollTop: 0}, 800);
+            $(this).removeAttr("href");
+            $('#passwReset').fadeToggle().hide();
         }
-        $('#login-social').hide();
-        $('#loginForm').slideUp();
-        $('#social-column').removeClass('col-md-4').addClass('col-md-12');
-        $('#social-row').removeClass('mt-5').removeClass('pt-5');
+        $('#createAccountLink').click(openCreateAccountPage);
+        $('.circle').click(function (e) {
+            e.preventDefault();
+            $('#login-social').show();
+            $('#loginForm').slideDown();
+            $('#social-column').removeClass('col-md-12').addClass('col-md-4');
+            $('#social-row').addClass('mt-5').addClass('pt-5');
+            $('.circle').addClass('mt-5').addClass('pt-5').removeClass("transform-180").addClass("transform-0");
+            $('#registrationForm').hide();
+            $('html, body').animate({scrollTop: 0}, 800);
+            $('#createAccountLink').attr("href", "");
+            $('#passwReset').fadeToggle().hide();
+        });
+        $('#lostPwdLink').click(function (e) {
+            e.preventDefault();
+            $('#loginForm').fadeToggle().hide();
+            $('#passwReset').fadeToggle();
+            $('.circle').addClass("transform-180");
+        });
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            $('.circle').addClass('mt-5').addClass('pt-5').css('top', '-1em');
+            $('#navbar').addClass('header-fixed');
+            $('#vedocompro_logo').removeClass('inverse-logo');
+            $('#form_submit').addClass('mt-2');
+        } else {
+            /*$(window).scroll(function(){
+              var sticky = $('#navbar'),
+                  display3 = $('.display-3'),
+                  scroll = $(window).scrollTop();
 
-        $('#registrationForm').show();
-        $('html, body').animate({scrollTop: 0}, 800);
-        $(this).removeAttr("href");
-        $('#passwReset').fadeToggle().hide();
-    }
-    $('#createAccountLink').click(openCreateAccountPage);
-    $('.circle').click(function (e) {
-        e.preventDefault();
-        $('#login-social').show();
-        $('#loginForm').slideDown();
-        $('#social-column').removeClass('col-md-12').addClass('col-md-4');
-        $('#social-row').addClass('mt-5').addClass('pt-5');
-        $('.circle').addClass('mt-5').addClass('pt-5').removeClass("transform-180").addClass("transform-0");
-        $('#registrationForm').hide();
-        $('html, body').animate({scrollTop: 0}, 800);
-        $('#createAccountLink').attr("href", "");
-        $('#passwReset').fadeToggle().hide();
-    });
-    $('#lostPwdLink').click(function (e) {
-        e.preventDefault();
-        $('#loginForm').fadeToggle().hide();
-        $('#passwReset').fadeToggle();
-        $('.circle').addClass("transform-180");
-    });
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        $('.circle').addClass('mt-5').addClass('pt-5').css('top', '-1em');
-        $('#navbar').addClass('header-fixed');
-        $('#vedocompro_logo').removeClass('inverse-logo');
-        $('#form_submit').addClass('mt-2');
-    } else {
-        /*$(window).scroll(function(){
-          var sticky = $('#navbar'),
-              display3 = $('.display-3'),
-              scroll = $(window).scrollTop();
+              if (scroll >= 1) {
+                  sticky.addClass('header-fixed');
+                  display3.addClass('display3-space');
+              }
+              else {
+                  sticky.removeClass('header-fixed');
+                  display3.removeClass('display3-space');
+              }
+            });*/
+        }
+        ;
+    </script>
+    <script src="{{ asset("js/popper.min.js") }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script async src="{{ asset("js/bootstrap-select.min.js") }}"></script>
+    <script async src="{{asset('js/tether.min.js')}}"></script>
+    <script async src="{{asset('js/pace.min.js')}}"></script>
+    <script async src="{{asset('js/fastclick.min.js')}}"></script>
+    <script async src="{{asset('js/jquery.form.js')}}"></script>
+    <script async src="{{ asset('js/jquery.preload.min.js') }}"></script>
+    <script async src="{{ asset('js/base.js') }}"></script>
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-69743962-4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments)};
+        gtag('js', new Date());
 
-          if (scroll >= 1) {
-              sticky.addClass('header-fixed');
-              display3.addClass('display3-space');
-          }
-          else {
-              sticky.removeClass('header-fixed');
-              display3.removeClass('display3-space');
-          }
-        });*/
-    }
-    ;
-</script>
-{% endblock %}
+        gtag('config', 'UA-69743962-4');
+
+        $(document).ready(function(){
+            $('.modal').on('show.bs.modal', function () {
+                if ($(document).height() > $(window).height()) {
+                    // no-scroll
+                    $('body').addClass("modal-open-noscroll");
+                    $('.navbar').addClass("navbar-no-padding");
+                    $('#searchModal').addClass("modal-open-noscroll");
+                }
+                else {
+                    $('body').removeClass("modal-open-noscroll");
+                }
+            })
+            $('.modal').on('hide.bs.modal', function () {
+
+            })
+        })
+    </script>
+    <style>
+        .cc-color-override--1943300103.cc-window {
+            max-width: 100%;
+            bottom: 0px!important;
+        }
+        .modal-open-noscroll {
+            padding-right: 0!important;
+            overflow: hidden;
+        }
+        .navbar-no-padding {
+            padding-right: 16px!important;
+        }
+        .modal-open-noscroll .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
+            padding-right: 0!important;
+        }
+    </style>
+    </body>
+    </html>
+
+

@@ -19,45 +19,33 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @final since sonata-project/block-bundle 3.0
+ */
 class ServiceListType extends AbstractType
 {
     protected $manager;
 
-    /**
-     * @param BlockServiceManagerInterface $manager
-     */
     public function __construct(BlockServiceManagerInterface $manager)
     {
         $this->manager = $manager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'sonata_block_service_choice';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $manager = $this->manager;
@@ -69,7 +57,7 @@ class ServiceListType extends AbstractType
         $resolver->setDefaults([
             'multiple' => false,
             'expanded' => false,
-            'choices' => function (Options $options, $previousValue) use ($manager) {
+            'choices' => static function (Options $options, $previousValue) use ($manager) {
                 $types = [];
                 foreach ($manager->getServicesByContext($options['context'], $options['include_containers']) as $code => $service) {
                     $types[$code] = sprintf('%s - %s', $service->getName(), $code);
@@ -78,13 +66,13 @@ class ServiceListType extends AbstractType
                 return $types;
             },
             'preferred_choices' => [],
-            'empty_data' => function (Options $options) {
+            'empty_data' => static function (Options $options) {
                 $multiple = isset($options['multiple']) && $options['multiple'];
                 $expanded = isset($options['expanded']) && $options['expanded'];
 
                 return $multiple || $expanded ? [] : '';
             },
-            'empty_value' => function (Options $options, $previousValue) {
+            'empty_value' => static function (Options $options, $previousValue) {
                 $multiple = isset($options['multiple']) && $options['multiple'];
                 $expanded = isset($options['expanded']) && $options['expanded'];
 

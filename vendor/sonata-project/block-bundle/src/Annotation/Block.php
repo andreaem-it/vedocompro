@@ -20,8 +20,12 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * Use annotations to define block classes.
  *
+ * @final since sonata-project/block-bundle 3.0
+ *
  * @Annotation
  * @Target("CLASS")
+ *
+ * @deprecated since sonata-project/block-bundle 3.16, to be removed in 4.0.
  */
 class Block implements MetadataProcessorInterface
 {
@@ -32,9 +36,6 @@ class Block implements MetadataProcessorInterface
      */
     public $id;
 
-    /**
-     * @param ClassMetadata $metadata
-     */
     public function processMetadata(ClassMetadata $metadata)
     {
         if (!empty($this->id)) {

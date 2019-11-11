@@ -1,0 +1,75 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}VedoCompro.it - ADMIN - Shop{% endblock %}
+
+{% block body %}
+    <!-- Content Wrapper. Contains page content -->
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header mb-3 mt-">
+        <h1>
+            Shop
+            <small>Prodotti</small>
+        </h1>
+        <ol class="breadcrumb p-0">
+            <a href="" class="btn btn-primary ml-5">
+                <i class="fa fa-plus-circle"></i> Nuovo Prodotto
+            </a>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-1 col-lg-offset-10">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Categoria</th>
+                                <th>Prezzo</th>
+                                <th></th>
+                            </tr>
+                            {% for itm in items %}
+                                <tr>
+                                    <td>{{ itm.id }}</td>
+                                    <td><a href="{{ url('admin_vedi_inserzioni',{'id':itm.id} ) }}">{{ itm.name }}</a></td>
+                                    <td><a href="{{ url('admin_utenti_vedi' , {'id': itm.id}) }}">{{ itm.father }}</a></td>
+                                    <td>{{ itm.price }}</td>
+                                    <td>
+                                        <a href="" class="btn btn-outline-primary">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- /.content -->
+    <!-- /.content-wrapper -->
+    <style>
+        .bg-gold {
+            background-color: #CFB53B;
+        }
+        .bg-silver {
+            background-color: #C0C0C0;
+        }
+        .bg-bronze {
+            background-color: #cd7f32;
+        }
+    </style>
+{% endblock %}

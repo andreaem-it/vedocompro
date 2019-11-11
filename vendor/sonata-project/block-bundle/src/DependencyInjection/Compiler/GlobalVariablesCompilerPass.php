@@ -20,13 +20,12 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * GlobalVariablesCompilerPass.
  *
+ * @final since sonata-project/block-bundle 3.0
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GlobalVariablesCompilerPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         $container->getDefinition('twig')

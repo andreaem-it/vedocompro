@@ -23,15 +23,17 @@ use Sonata\BlockBundle\Meta\Metadata;
 use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\CoreBundle\Validator\ErrorElement;
 use Sonata\Form\Type\ImmutableArrayType;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Templating\EngineInterface;
 
 /**
+ * @final since sonata-project/block-bundle 3.0
+ *
  * @author Hugo Briand <briand@ekino.com>
  */
 class MenuBlockService extends AbstractAdminBlockService
@@ -57,8 +59,6 @@ class MenuBlockService extends AbstractAdminBlockService
 
     /**
      * @param string                     $name
-     * @param EngineInterface            $templating
-     * @param MenuProviderInterface      $menuProvider
      * @param MenuRegistryInterface|null $menuRegistry
      */
     public function __construct($name, EngineInterface $templating, MenuProviderInterface $menuProvider, $menuRegistry = null)
@@ -88,9 +88,6 @@ class MenuBlockService extends AbstractAdminBlockService
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         $responseSettings = [
@@ -107,9 +104,6 @@ class MenuBlockService extends AbstractAdminBlockService
         return $this->renderResponse($blockContext->getTemplate(), $responseSettings, $response);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildEditForm(FormMapper $form, BlockInterface $block)
     {
         $form->add('settings', ImmutableArrayType::class, [
@@ -118,9 +112,6 @@ class MenuBlockService extends AbstractAdminBlockService
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validateBlock(ErrorElement $errorElement, BlockInterface $block)
     {
         if (($name = $block->getSetting('menu_name')) && '' !== $name && !$this->menuProvider->has($name)) {
@@ -131,9 +122,6 @@ class MenuBlockService extends AbstractAdminBlockService
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -152,9 +140,6 @@ class MenuBlockService extends AbstractAdminBlockService
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockMetadata($code = null)
     {
         return new Metadata($this->getName(), (null !== $code ? $code : $this->getName()), false, 'SonataBlockBundle', [
@@ -224,7 +209,6 @@ class MenuBlockService extends AbstractAdminBlockService
     /**
      * Gets the menu to render.
      *
-     * @param BlockContextInterface $blockContext
      *
      * @return ItemInterface|string
      */
@@ -238,7 +222,6 @@ class MenuBlockService extends AbstractAdminBlockService
     /**
      * Replaces setting keys with knp menu item options keys.
      *
-     * @param array $settings
      *
      * @return array
      */

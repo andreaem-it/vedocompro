@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% set categories = [
+    'Abbigliamento',
+    'Accessori Moda',
+    'Elettronica',
+    'Informatica'
+    ]
+%}
+
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="container-fluid scrollbar">
+        <div class="container">
+            <div class="row mt-5 pt-5">
+                <div class="col-12">
+                    <h2>Shop</h2>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="mb-3">Categorie</h6>
+                            {% for cat in categories %}
+                                <a href="" class="page-link border-0">{{ cat }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

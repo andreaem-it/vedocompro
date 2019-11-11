@@ -11,6 +11,7 @@
 
 namespace Symfony\Bundle\MakerBundle\Maker;
 
+use Symfony\Bundle\FrameworkBundle\Test\WebTestAssertionsTrait;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;
@@ -20,6 +21,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\CssSelector\CssSelectorConverter;
+use Symfony\Component\Panther\PantherTestCaseTrait;
 
 /**
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
@@ -52,7 +54,10 @@ class MakeFunctionalTest extends AbstractMaker
         $generator->generateClass(
             $testClassNameDetails->getFullName(),
             'test/Functional.tpl.php',
-            []
+            [
+                'web_assertions_are_available' => trait_exists(WebTestAssertionsTrait::class),
+                'panther_is_available' => trait_exists(PantherTestCaseTrait::class),
+            ]
         );
 
         $generator->writeChanges();
@@ -77,6 +82,12 @@ class MakeFunctionalTest extends AbstractMaker
             CssSelectorConverter::class,
             'css-selector',
             true,
+            true
+        );
+        $dependencies->addClassDependency(
+            PantherTestCaseTrait::class,
+            'panther',
+            false,
             true
         );
     }

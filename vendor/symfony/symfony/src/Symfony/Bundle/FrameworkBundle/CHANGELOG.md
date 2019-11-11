@@ -19,17 +19,17 @@ CHANGELOG
  * Deprecated the `KernelTestCase::getPhpUnitXmlDir()` and `KernelTestCase::getPhpUnitCliConfigArgument()` methods.
  * Deprecated `AddCacheClearerPass`, use tagged iterator arguments instead.
  * Deprecated `AddCacheWarmerPass`, use tagged iterator arguments instead.
- * Deprecated `TranslationDumperPass`, use 
+ * Deprecated `TranslationDumperPass`, use
    `Symfony\Component\Translation\DependencyInjection\TranslationDumperPass` instead
- * Deprecated `TranslationExtractorPass`, use 
+ * Deprecated `TranslationExtractorPass`, use
    `Symfony\Component\Translation\DependencyInjection\TranslationExtractorPass` instead
- * Deprecated `TranslatorPass`, use 
+ * Deprecated `TranslatorPass`, use
    `Symfony\Component\Translation\DependencyInjection\TranslatorPass` instead
  * Added `command` attribute to the `console.command` tag which takes the command
    name as value, using it makes the command lazy
  * Added `cache:pool:prune` command to allow manual stale cache item pruning of supported PSR-6 and PSR-16 cache pool
    implementations
- * Deprecated `Symfony\Bundle\FrameworkBundle\Translation\TranslationLoader`, use 
+ * Deprecated `Symfony\Bundle\FrameworkBundle\Translation\TranslationLoader`, use
    `Symfony\Component\Translation\Reader\TranslationReader` instead
  * Deprecated `translation.loader` service, use `translation.reader` instead
  * `AssetsInstallCommand::__construct()` now takes an instance of
@@ -70,7 +70,7 @@ CHANGELOG
    The default value will be `state_machine` in Symfony 4.0.
  * Deprecated the `CompilerDebugDumpPass` class
  * Deprecated the "framework.trusted_proxies" configuration option and the corresponding "kernel.trusted_proxies" parameter
- * Added a new new version strategy option called json_manifest_path
+ * Added a new version strategy option called "json_manifest_path"
    that allows you to use the `JsonManifestVersionStrategy`.
  * Added `Symfony\Bundle\FrameworkBundle\Controller\AbstractController`. It provides
    the same helpers as the `Controller` class, but does not allow accessing the dependency
