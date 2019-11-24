@@ -13,52 +13,19 @@
     <meta property="og:video:secure_url" content="https://s3.eu-west-2.amazonaws.com/vedocompro/video/{{ ad_info.0.id }}.mp4"> <!-- required for users whom use SSL (actually Facebook forces everyone to use SSL so you're required to use og:video:secure_url) so get a one -->
     <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=0 ">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="{{asset('js/jquery.scrolling-tabs.min.js') }}"></script>
     <link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
     <script src="https://use.fontawesome.com/bdc514bb6a.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="//kenwheeler.github.io/slick/slick/slick-theme.css"/>
+    <link href="{{ asset('css/video-js.css') }}" rel="stylesheet" type="text/css">
+    <script src="{{ asset('js/video-js.skin.js') }}"></script>
 {% endblock %}
 {% block body %}
 
 
         {% include 'template/header.html.twig' %}
-
-    {#<!-- Modal Photos carousel -->
-    <div class="modal fade" id="video-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content modal-video">
-          <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-              <ol class="carousel-indicators">
-                  {% for i in range(1,5) %}
-                      {% if loop.first %}
-                          <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}" class="active"></li>
-                      {% else %}
-                          <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}"></li>
-                      {% endif %}
-                  {% endfor %}
-              </ol>
-              {% for i in range(1,5) %}
-                    {% if loop.first %}
-                        <div class="carousel-item active">
-                            <img class="img-fluid" style="max-height:400px" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}-{{ i }}.jpg">
-                        </div>
-                    {% else %}
-                        <div class="carousel-item">
-                            <img class="img-fluid" style="max-height:400px" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}-{{ i }}.jpg">
-                        </div>
-                    {% endif %}
-                {% endfor %}
-              </div>
-            </div>
-        </div>
-      </div>
-    </div>#}
     <!-- Page -->
     <div class="wrapper">
         <div class="container-fluid pl-5 pr-5">
@@ -67,24 +34,18 @@
                     <div class="row">
                         <div class="col-sm-4">
                             {% if video.accepted == 1 %}
-                                <div id="video"></div>
+                                <!--<div id="video"></div>-->
+                                <video id='video' class='video-js vjs-vedocompro-skin' controls preload='auto' width='100%'
+                                       poster='https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}-1.jpg' data-setup='{}'>
+                                    <source src='{{ video.filename }}' type='video/mp4'>
+                                    <p class='vjs-no-js'>
+                                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                                        <a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
+                                    </p>
+                                </video>
                             {% else %}
                                 <img src="https://via.placeholder.com/507x285?text=Annuncio%20non%20ancora%20accettato">
                             {% endif %}
-                            {#<div class="row no-gutters">
-                                {% for i in range(1,5) %}
-                                    {% if loop.length == 1 %}
-                                        <div class="col">
-                                            <a href="" data-toggle="modal" data-target="#video-modal"><img style="max-width:120px" class="img-responsive img-thumbnail" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}-{{ i }}.jpg"/></a>
-                                        </div>
-                                    {% else %}
-                                        <div class="col" style="margin-top:5px;{% if loop.last %}{% else %}margin-right:5px{% endif %}">
-                                            <a href="" data-toggle="modal" data-target="#video-modal"><img class="img-responsive img-thumbnail" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ ad_info.0.id }}-{{ i }}.jpg"/></a>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>#}
-
                             {% set count = 0 %}
                             {% if ad_info.0.fields is empty %}
                                 {% else %}
@@ -147,7 +108,7 @@
                                             <h1 class="font-weight-light">{{ ad_info.0.name }}</h1>
                                         </div>
                                         <div class="col-sm-3 float-right">
-                                            <div class="row mt-2 float-right mx-auto">
+                                            <div class="row mt-2  m-auto">
                                                 <div class="col-xs-2 mr-1">
                                                     <div data-network="facebook" class="btn btn-outline-secondary button share-button st-custom-button facebook-share-button btn-round">
                                                         <i class="fa fa-facebook" aria-hidden="true"></i>
@@ -362,7 +323,7 @@
                                 <div class="row autoplay">
                                     {% for similars in similar %}
                                         <div style="width:200px!important; margin: 0 20px">
-                                            <div class="card result-card ">
+                                            <div class="card">
                                                 {% set category = (ads.slugify(ads.convertCategory(similars.category))) %}
                                                 <a href="{{ url('vedi_oggetto', {'category': category, 'item': similars.id, 'title': ads.slugify(similars.name) }) }}">
                                                     <img class="card-img-top img-fluid mr-2" src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ similars.id }}-1.jpg"></a>
@@ -653,24 +614,28 @@
     .wh-widget-send-button-get-button {
         display: none;
     }
+    .card:hover {
+        transform:none!important;
+    }
 </style>
     <script type="text/JavaScript">
-        var playerInstance = jwplayer("video");
-        playerInstance.setup({
-            file: "{{ video.filename }}",
-            type: "mp4",
-        });
-        setTimeout(function() {
-            jwplayer().pause();
-            jwplayer().setMute(true);
-            jwplayer().setControls(true);
-        },3000);
+        {#var playerInstance = jwplayer("video");#}
+        {#playerInstance.setup({#}
+        {#    file: "{{ video.filename }}",#}
+        {#    type: "mp4",#}
+        {#});#}
+        {#setTimeout(function() {#}
+        {#    jwplayer().pause();#}
+        {#    jwplayer().setMute(true);#}
+        {#    jwplayer().setControls(true);#}
+        {#},3000);#}
 
-        jwplayer().onTime(function(object) {
-            if (object.position > object.duration - 1) {
-                jwplayer().pause();
-            }
-        });
+        {#jwplayer().onTime(function(object) {#}
+        {#    if (object.position > object.duration - 1) {#}
+        {#        jwplayer().pause();#}
+        {#    }#}
+        {#});#}
+        videojs('video');
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
             $('#video').addClass('video-mobile');
         }

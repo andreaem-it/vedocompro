@@ -17,25 +17,19 @@ use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
+/**
+ * @final since sonata-project/block-bundle 3.0
+ */
 class NoopHttpCacheHandler implements HttpCacheHandlerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function alterResponse(Response $response)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata(Response $response, BlockContextInterface $blockContext = null)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onKernelResponse(FilterResponseEvent $event)
     {
     }

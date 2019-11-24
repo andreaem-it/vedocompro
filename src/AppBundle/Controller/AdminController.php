@@ -9,8 +9,11 @@ use AppBundle\Entity\Messages;
 use AppBundle\Entity\Notifications;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Reviews;
+use AppBundle\Entity\ShopCategories;
+use AppBundle\Entity\ShopProducts;
 use AppBundle\Entity\Videos;
 use AppBundle\Form\AdsType;
+use AppBundle\Form\ShopCategoriesType;
 use AppBundle\Repository\AdminDefaultMailsRepository;
 use Doctrine\DBAL\Types\FloatType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -1035,6 +1038,54 @@ class AdminController extends Controller
             'tools' => $this
         ));
     }
+
+    /**
+     * @Route("/admin/shop", name="admin_shop")
+     */
+    public function shopAction()
+    {
+        return $this->render('');
+    }
+
+    /**
+     * @Route("/admin/shop/categories", name="admin_shop_categories")
+     */
+    public function shopCategoriesAction(Request $request)
+    {
+        $categories = $this->getDoctrine()->getRepository(ShopCategories::class)->findAll();
+        $entity = new ShopCategories();
+        $form = $this->createForm(ShopCategoriesType::class);
+
+        $form->handleRequest($request);
+
+        if($form->isValid() && $form->isSubmitted()) {
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($form->getData());
+            $em->flush();
+
+            $this->redirectToRoute('admin_shop_categories');
+        }
+
+        return $this->render('admin/views/shop.categories.html.twig',[
+            'categories' => $categories,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/shop/products", name="admin_shop_products")
+     */
+    public function shopProducts()
+    {
+        $items = $this->getDoctrine()->getRepository(ShopProducts::class)->findAll();
+
+        return $this->render('admin/views/shop.products.html.twig',[
+            'items' => $items
+        ]);
+    }
+
 
     public function getAdminInfos()
     {

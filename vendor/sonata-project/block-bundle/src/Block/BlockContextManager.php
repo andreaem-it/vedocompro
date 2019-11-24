@@ -20,6 +20,9 @@ use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * @final since sonata-project/block-bundle 3.0
+ */
 class BlockContextManager implements BlockContextManagerInterface
 {
     /**
@@ -60,12 +63,6 @@ class BlockContextManager implements BlockContextManagerInterface
      */
     private $reflectionCache;
 
-    /**
-     * @param BlockLoaderInterface         $blockLoader
-     * @param BlockServiceManagerInterface $blockService
-     * @param array                        $cacheBlocks
-     * @param LoggerInterface|null         $logger
-     */
     public function __construct(BlockLoaderInterface $blockLoader, BlockServiceManagerInterface $blockService,
         array $cacheBlocks = [], LoggerInterface $logger = null
     ) {
@@ -76,9 +73,6 @@ class BlockContextManager implements BlockContextManagerInterface
         $this->reflectionCache = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addSettingsByType($type, array $settings, $replace = false)
     {
         $typeSettings = isset($this->settingsByType[$type]) ? $this->settingsByType[$type] : [];
@@ -89,9 +83,6 @@ class BlockContextManager implements BlockContextManagerInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addSettingsByClass($class, array $settings, $replace = false)
     {
         $classSettings = isset($this->settingsByClass[$class]) ? $this->settingsByClass[$class] : [];
@@ -114,9 +105,6 @@ class BlockContextManager implements BlockContextManagerInterface
         return $this->blockLoader->exists($type);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($meta, array $settings = [])
     {
         if (!$meta instanceof BlockInterface) {
@@ -160,8 +148,6 @@ class BlockContextManager implements BlockContextManagerInterface
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @param OptionsResolverInterface $optionsResolver
-     * @param BlockInterface           $block
      *
      * @deprecated since version 2.3, to be renamed in 4.0.
      *             Use the method configureSettings instead
@@ -207,9 +193,6 @@ class BlockContextManager implements BlockContextManagerInterface
     /**
      * Adds context settings, to be able to rebuild a block context, to the
      * extra_cache_keys.
-     *
-     * @param BlockContextInterface $blockContext
-     * @param array                 $settings
      */
     protected function setDefaultExtraCacheKeys(BlockContextInterface $blockContext, array $settings)
     {
@@ -246,8 +229,7 @@ class BlockContextManager implements BlockContextManagerInterface
     }
 
     /**
-     * @param BlockInterface $block
-     * @param array          $settings
+     * @param array $settings
      *
      * @return array
      */

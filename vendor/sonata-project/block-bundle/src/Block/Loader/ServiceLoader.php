@@ -16,6 +16,9 @@ namespace Sonata\BlockBundle\Block\Loader;
 use Sonata\BlockBundle\Block\BlockLoaderInterface;
 use Sonata\BlockBundle\Model\Block;
 
+/**
+ * @final since sonata-project/block-bundle 3.0
+ */
 class ServiceLoader implements BlockLoaderInterface
 {
     /**
@@ -43,9 +46,6 @@ class ServiceLoader implements BlockLoaderInterface
         return \in_array($type, $this->types, true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($configuration)
     {
         if (!\in_array($configuration['type'], $this->types, true)) {
@@ -66,9 +66,6 @@ class ServiceLoader implements BlockLoaderInterface
         return $block;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function support($configuration)
     {
         if (!\is_array($configuration)) {

@@ -19,7 +19,6 @@ return array(
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
     'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
     'Gaufrette' => array($vendorDir . '/knplabs/gaufrette/src'),
-    'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
     'CG\\' => array($vendorDir . '/jms/cg/src'),
     'Assetic' => array($vendorDir . '/kriswallsmith/assetic/src'),
     'AfterShip' => array($vendorDir . '/abishekrsrikaanth/aftership-php-sdk/src'),

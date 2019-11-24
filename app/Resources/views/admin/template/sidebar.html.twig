@@ -14,24 +14,26 @@
             </div>
         </div>
 
-        <!-- search form (Optional) -->
-        <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Search...">
-                <span class="input-group-btn">
-              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-              </button>
-            </span>
-            </div>
-        </form>
-        <!-- /.search form -->
-
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">Menù</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="{% if app.request.attributes.get('_route') == 'admin' %}active{% endif %}"><a href="{{ url('admin') }}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
             {% if is_granted('ROLE_MODERATOR') %}
+                <li class="{% if app.request.attributes.get('_route') == 'admin_shop' %}active{% endif %}treeview active menu-open">
+                    <a href="{{ url('admin_shop') }}"><i class="fa fa-cart-plus"></i> <span>Shop</span></a>
+                    <ul class="treeview-menu">
+                        <li class="">
+                            <a href="{{ url('admin_shop') }}">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('admin_shop_products') }}">Prodotti</a>
+                        </li>
+                        <li class="">
+                            <a href="{{ url('admin_shop_categories') }}">Categorie</a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="{% if app.request.attributes.get('_route') == 'admin_inserzioni' %}active{% endif %}"><a href="{{ url('admin_inserzioni') }}"><i class="fa fa-shopping-cart"></i> <span>Inserzioni</span></a></li>
                 <li class="{% if app.request.attributes.get('_route') == 'admin_payments' %}active{% endif %}"><a href="{{ url('admin_payments') }}"><i class="fa fa-credit-card"></i> <span>Pagamenti</span></a></li>
                 <li class="{% if app.request.attributes.get('_route') == 'admin_utenti' %}active{% endif %}"><a href="{{ url('admin_utenti') }}"><i class="fa fa-users"></i> <span>Utenti</span></a></li>

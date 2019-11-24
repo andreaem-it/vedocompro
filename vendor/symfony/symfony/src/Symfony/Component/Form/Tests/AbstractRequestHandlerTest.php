@@ -312,10 +312,10 @@ abstract class AbstractRequestHandlerTest extends TestCase
     {
         $this->serverParams->expects($this->once())
             ->method('getContentLength')
-            ->will($this->returnValue($contentLength));
+            ->willReturn($contentLength);
         $this->serverParams->expects($this->any())
             ->method('getNormalizedIniPostMaxSize')
-            ->will($this->returnValue($iniMax));
+            ->willReturn($iniMax);
 
         $options = ['post_max_size_message' => 'Max {{ max }}!'];
         $form = $this->factory->createNamed('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', null, $options);
@@ -346,7 +346,7 @@ abstract class AbstractRequestHandlerTest extends TestCase
             [1024, '1K', false],
             [null, '1K', false],
             [1024, '', false],
-            [1024, 0, false],
+            [1024, '0', false],
         ];
     }
 
@@ -360,6 +360,28 @@ abstract class AbstractRequestHandlerTest extends TestCase
         $this->assertFalse($this->requestHandler->isFileUpload($this->getInvalidFile()));
     }
 
+    /**
+     * @dataProvider uploadFileErrorCodes
+     */
+    public function testFailedFileUploadIsTurnedIntoFormError($errorCode, $expectedErrorCode)
+    {
+        $this->assertSame($expectedErrorCode, $this->requestHandler->getUploadFileError($this->getFailedUploadedFile($errorCode)));
+    }
+
+    public function uploadFileErrorCodes()
+    {
+        return [
+            'no error' => [UPLOAD_ERR_OK, null],
+            'upload_max_filesize ini directive' => [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_INI_SIZE],
+            'MAX_FILE_SIZE from form' => [UPLOAD_ERR_FORM_SIZE, UPLOAD_ERR_FORM_SIZE],
+            'partially uploaded' => [UPLOAD_ERR_PARTIAL, UPLOAD_ERR_PARTIAL],
+            'no file upload' => [UPLOAD_ERR_NO_FILE, UPLOAD_ERR_NO_FILE],
+            'missing temporary directory' => [UPLOAD_ERR_NO_TMP_DIR, UPLOAD_ERR_NO_TMP_DIR],
+            'write failure' => [UPLOAD_ERR_CANT_WRITE, UPLOAD_ERR_CANT_WRITE],
+            'stopped by extension' => [UPLOAD_ERR_EXTENSION, UPLOAD_ERR_EXTENSION],
+        ];
+    }
+
     abstract protected function setRequestData($method, $data, $files = []);
 
     abstract protected function getRequestHandler();
@@ -367,6 +389,8 @@ abstract class AbstractRequestHandlerTest extends TestCase
     abstract protected function getUploadedFile($suffix = '');
 
     abstract protected function getInvalidFile();
+
+    abstract protected function getFailedUploadedFile($errorCode);
 
     protected function createForm($name, $method = null, $compound = false)
     {

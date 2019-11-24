@@ -6,7 +6,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This class contains the configuration information for the bundle
+ * This class contains the configuration information for the bundle.
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
@@ -19,8 +19,14 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('knp_menu');
+        $treeBuilder = new TreeBuilder('knp_menu');
+
+        // Keep compatibility with symfony/config < 4.2
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            $rootNode = $treeBuilder->root('knp_menu');
+        }
 
         $rootNode
             ->children()
@@ -28,8 +34,8 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('builder_alias')->defaultTrue()->end()
-                        ->booleanNode('container_aware')->defaultTrue()->end()
-                        ->booleanNode('builder_service')->defaultTrue()->end()
+                        ->booleanNode('container_aware')->setDeprecated('The "%node%" option is deprecated and will be removed in version 3.')->defaultTrue()->end()
+                        ->booleanNode('builder_service')->setDeprecated('The "%node%" option is deprecated and will be removed in version 3.')->defaultTrue()->end()
                     ->end()
                 ->end()
                 ->arrayNode('twig')

@@ -84,7 +84,6 @@ assetic:
     debug:          "%kernel.debug%"
     use_controller: false
     bundles:        ['AppBundle']
-
     # java: '/usr/bin/java'
     filters:
         yui_css:
@@ -92,7 +91,9 @@ assetic:
         yui_js:
             jar: '%kernel.root_dir%/Resources/java/yuicompressor.jar'
         cssrewrite: ~
-
+        scssphp:
+            formatter: 'Leafo\ScssPhp\Formatter\Compressed'
+        jsqueeze: ~
     assets:
         bootstrap_js:
             inputs:
