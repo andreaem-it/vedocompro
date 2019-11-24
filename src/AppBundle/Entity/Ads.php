@@ -199,6 +199,11 @@ class Ads
     private $rooms;
 
     /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $tags;
+
+    /**
      * Get id
      *
      * @return integer
@@ -1070,5 +1075,29 @@ class Ads
     public function getRooms()
     {
         return $this->rooms;
+    }
+
+    /**
+     * Set tags.
+     *
+     * @param array|null $tags
+     *
+     * @return Ads
+     */
+    public function setTags($tags = null)
+    {
+        $this->rooms = $tags;
+
+        return $this;
+    }
+
+    /**
+     * Get tags.
+     *
+     * @return array|null
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

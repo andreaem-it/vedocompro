@@ -1,0 +1,413 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <link href="https://vjs.zencdn.net/7.5.5/video-js.css" rel="stylesheet" />
+    <div class="container" style="margin-top:130px; min-height: 700px">
+        <div class="row" style="min-height: 100%;">
+            <video id="bg-video" class="video-js vjs-default-skin" style="position:absolute;top:0;left:0;overflow:hidden;z-index:-998;" height="100%" width="100%" loop autoplay>
+                <source src="http://thenewcode.com/assets/videos/lake.mp4" type="video/mp4">
+            </video>
+            <div class="col-12 text-center my-auto mx-auto">
+                <h1 class="text-info stroke">Un video accattivante vende di più</h1>
+                <h4 class="text-white">Entra anche tu a far parte del network di vendita usato con più possibilità di vendita</h4>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid parallax mt-5">
+        <div class="container text-white pt-5">
+            <div class="row pt-5">
+                <div class="col-12 mb-5">
+                    <h4>I nostri Servizi</h4>
+                    <p>Offriamo una vasta gamma di servizi dedicati ai nostri iscritti per creare inserzioni accattivanti e funzionali, pensiamo a tutto noi, dalla ripresa, il montaggio al caricamento dell'inserzione, sviluppando una descrizione accurata e proponendo un prezzo basato sulle caratteristiche del prodotto. <br> Un'inserzione prodotta da VedoCompro, acquisisce il badge "Verificato da VedoCompro", che aggiunge validità e certezza alla vendita. Più sicuro di così, non si può!</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 mt-2">
+                    <div class="card result-card card-bg">
+                        <div class="card-body">
+                            <div class="card-heading mb-2">
+                                <h5 class="text-info">Realizzazione Video per l'immobile</h5>
+                            </div>
+                            <ul class="fa-ul mt-2">
+                                <li><i class="fa fa-li fa-check-circle-o text-success mr-3"></i>Video con Drone Esterni</li>
+                                <li><i class="fa fa-li fa-check-circle-o text-success mr-3"></i>Video HD Professionale</li>
+                                <li><i class="fa fa-li fa-check-circle-o text-success mr-3"></i>Montaggio con Logo Agenzia *</li>
+                                <li><i class="fa fa-li fa-check-circle-o text-success mr-3"></i>Video VR 360 **</li>
+                                <li><i class="fa fa-li fa-check-circle-o text-success mr-3"></i>Badge VedoCompro</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-2">
+                    <div class="card result-card card-bg">
+                        <div class="card-body">
+                            <div class="card-heading mb-2">
+                                <h5 class="text-info">Realizzazione Video Auto/Moto</h5>
+                            </div>
+                            <ul class="fa-ul mt-2">
+                                <li><i class="fa fa-li fa-check-circle-o text-success mr-3"></i>Video HD Professionale</li>
+                                <li><i class="fa fa-li fa-check-circle-o text-success mr-3"></i>Prova su Strada</li>
+                                <li><i class="fa fa-li fa-check-circle-o text-success mr-3"></i>Audio Professionale</li>
+                                <li><i class="fa fa-li fa-check-circle-o text-success mr-3"></i>Montaggio con Logo Concessionaria *</li>
+                                <li><i class="fa fa-li fa-check-circle-o text-success mr-3"></i>Badge VedoCompro</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mt-5">
+                        <small>
+                            <p class="text-center">* Opzionale, gratuito. &nbsp;&nbsp; ** Opzionale, prevede un sovrapprezzo.</p>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid bg-info">
+        <div class="p-5">
+            <div class="row mt-5">
+                <div class="col-3"></div>
+                <div class="col-lg-6">
+                    <a href="" class="btn btn-outline-primary btn-block">Contattaci per saperne di più</a>
+                    <p class="text-center text-white mt-2">Senza alcun Impegno</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 m-0 p-0">
+                <div class="bg-outer">
+                    <div class="text-center text-white bg-1 p-5 h-100">
+                        <h3 class="mb-3">
+                            Qualità
+                        </h3>
+                        <p>I tuoi video verranno girati da personale specializzato, mettendo in evidenza qualsiasi pregio del prodotto.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 m-0 p-0">
+                <div class="bg-outer">
+                    <div class="text-center text-white bg-2 p-5 h-100">
+                        <h3 class="mb-3">
+                            Professionalità
+                        </h3>
+                        <p>Il tuo prodotto verrà descritto nei minimi particolari con professionalità e dedizione.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 m-0 p-0">
+                <div class="bg-outer">
+                    <div class="text-center text-white bg-3 p-5 h-100">
+                        <h3 class="mb-3">
+                            Efficienza
+                        </h3>
+                        <p>Le inserzioni create dallo staff vendono di più, verranno ottimizzate per i motori di ricerca ed appariranno più facilmente nei motori di ricerca.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row" style="background-color: #f6f6f6">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <img src="{{ asset('landing/vc_people.png') }}" class="img-fluid m-5 mx-auto">
+                    </div>
+                    <div class="col-md-3 mt-5 pt-5">
+                        <h5 class="mt-2 mb-2 mx-3">Un team di esperti a tua disposizione:</h5>
+                        <ul class="fa-ul mt-3">
+                            <li>
+                                <i class="fa fa-li fa-check-circle-o text-success mr-3 lh-3"></i>
+                                <span class="lh-3">VideoMaker</span>
+                            </li>
+                            <li>
+                                <i class="fa fa-li fa-check-circle-o text-success mr-3 lh-3"></i>
+                                <span class="lh-3">Esperto SEO</span>
+                            </li>
+                            <li>
+                                <i class="fa fa-li fa-check-circle-o text-success mr-3 lh-3"></i>
+                                <span class="lh-3">Copywriter</span>
+                            </li>
+                            <li>
+                                <i class="fa fa-li fa-check-circle-o text-success mr-3 lh-3"></i>
+                                <span class="lh-3">Markering Specialists</span>
+                            </li>
+                            <li>
+                                <i class="fa fa-li fa-check-circle-o text-success mr-3 lh-3"></i>
+                                <span class="lh-3">Certified Sellers</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="container">
+            <h3 class="my-5 text-center">Perchè scegliere i servizi VedoCompro</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Avere visibilità sul web è importante per le aziende di oggi, la concorrenza già è online, e te? Se non hai nemmeno un sito web, figuriamoci uno shop online.</p>
+                    <p>Vendere online ti permette di raggiungere una clientela su scala mondiale, noi di VedoCompro, ci siamo stancati di annunci tutti uguali, con foto di scarsa qualità e descrizioni posticce.</p>
+                    <p>Per questo abbiamo creato questa fantastica piattaforma che ti permette di vendere, con un Video!</p>
+                    <p>Siamo certi che un video possa mettere in evidenza pregi e difetti di qualsiasi oggetto, un buon venditore su VedoCompro poi, sà descrivere a parole sue tutte le peculiarità.</p>
+                </div>
+                <div class="col-md-6">
+                    <img src="{{ asset('landing/why-choose-1.png') }}" class="img-fluid">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{{ asset('landing/why-choose-2.png') }}" class="img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <p>VedoCompro diventa dunque un canale di vendita eccellente, che ti permette di raggiungere un potenziale di vendita incredibile. Basta perdere tempo nel publicizzarti online, ci pensiamo noi! Grazie al nostro posizionamento, appariamo tra i primi risultati nei motori di ricerca!</p>
+                    <p>Tutto questo ti sembra molto dispendioso in termini di tempo? Ci pensiamo noi! Ecco perchè nasce VedoCompro Servizi!</p>
+                    <p>Veniamo da te, filmiamo noi il prodotto, scriviamo una descrizione in accordo con le tue idee, gli diamo insieme un prezzo e lo mettiamo in vendita! Niente di più facile vero? Contattaci subito per un preventivo personalizzato senza impegno.</p>
+                </div>
+            </div>
+
+        </div><x></x>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.js"></script>
+
+    <div class="container">
+        <h3 class="mt-5 mb-5 text-center">Ci hanno già scelto</h3>
+        <section class="customer-logos slider">
+            <div class="slide">
+                <img src="https://www.vedocompro.it/media/cache/profile_img_filter/uploads/profile/313d213fef03dbf5f44e5df7fc3af302.jpeg">
+            </div>
+            <div class="slide">
+                <img src="https://www.vedocompro.it/business/156.jpg">
+            </div>
+            <div class="slide">
+                <img src="https://www.vedocompro.it/media/cache/profile_img_filter/uploads/profile/4e43102e02930e39dd088ac6eb2599f2.jpeg">
+            </div>
+            <div class="slide">
+                <img src="https://www.vedocompro.it/media/cache/profile_img_filter/uploads/profile/4f93729062482f9d0bcaa6e89f8e75e7.jpeg">
+            </div>
+            <div class="slide">
+                <img src="https://www.vedocompro.it/business/137.jpg">
+            </div>
+            <div class="slide">
+                <img src="https://scontent-mxp1-1.xx.fbcdn.net/v/t1.0-9/999669_1375047319377722_966712419_n.jpg?_nc_cat=101&_nc_oc=AQkKQBBdz3bQ9otono4TUuTBT57Ch9G_i3rBEqDnDS9MxFoEuetlXvWSKICvJp1BqQE&_nc_ht=scontent-mxp1-1.xx&oh=8a89042391bcc1a76a8ed1928cd5ba5a&oe=5E4CC5D3">
+            </div>
+        </section>
+    </div>
+    <script src="https://vjs.zencdn.net/7.5.5/video.js"></script>
+    <script src="{{asset('js/videojs.background.min.js')}}"></script>
+    <script>
+        // fire up the plugin
+        videojs('bg-video').Background({
+            volume: '0',
+            autoPlay: true,
+            mediaType: 'html5'
+        });
+        $(document).ready(function(){
+            $('.customer-logos').slick({
+                slidesToShow: 6,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 1500,
+                arrows: false,
+                dots: false,
+                pauseOnHover: false,
+                responsive: [{
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 4
+                    }
+                }, {
+                    breakpoint: 520,
+                    settings: {
+                        slidesToShow: 3
+                    }
+                }]
+            });
+        });
+    </script>
+    <style>
+        .stroke {
+            font-weight: 900;
+            -webkit-text-stroke-width: 2px;
+            -webkit-text-stroke-color: white;
+        }
+        .text-white {
+            color: #FFF!important;
+        }
+        #bg-video {
+
+        }
+        .bg-outer {
+            overflow: hidden;
+            height:100%;
+        }
+        .bg-1 {
+            background: url('{{ asset('landing/texture-small-1.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            transition: all 0.5s ease;
+        }
+        .bg-1:hover {
+            transform: scale(1.2);
+        }
+        .bg-2 {
+            background: url('{{ asset('landing/texture-small-2.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            transition: all 0.5s ease;
+        }
+        .bg-2:hover {
+            transform: scale(1.2);
+        }
+        .bg-3 {
+            background: url('{{ asset('landing/texture-small-3.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            transition: all 0.5s ease;
+        }
+        .bg-3:hover {
+            transform: scale(1.2);
+        }
+        .parallax {
+            background-image: url("{{asset('landing/parallax_bg.jpg')}}");
+            height: 100%;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .card-bg {
+            background-color: rgba(255,255,255,0.1)!important;
+        }
+        /* Slider */
+
+        .slick-slide {
+            margin: 0px 20px;
+        }
+
+        .slick-slide img {
+            width: 100%;
+        }
+
+        .slick-slider
+        {
+            position: relative;
+            display: block;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            -khtml-user-select: none;
+            -ms-touch-action: pan-y;
+            touch-action: pan-y;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .slick-list
+        {
+            position: relative;
+            display: block;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        .slick-list:focus
+        {
+            outline: none;
+        }
+        .slick-list.dragging
+        {
+            cursor: pointer;
+            cursor: hand;
+        }
+
+        .slick-slider .slick-track,
+        .slick-slider .slick-list
+        {
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+            -o-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+
+        .slick-track
+        {
+            position: relative;
+            top: 0;
+            left: 0;
+            display: block;
+        }
+        .slick-track:before,
+        .slick-track:after
+        {
+            display: table;
+            content: '';
+        }
+        .slick-track:after
+        {
+            clear: both;
+        }
+        .slick-loading .slick-track
+        {
+            visibility: hidden;
+        }
+
+        .slick-slide
+        {
+            display: none;
+            float: left;
+            height: 100%;
+            min-height: 1px;
+        }
+        [dir='rtl'] .slick-slide
+        {
+            float: right;
+        }
+        .slick-slide img
+        {
+            display: block;
+        }
+        .slick-slide.slick-loading img
+        {
+            display: none;
+        }
+        .slick-slide.dragging img
+        {
+            pointer-events: none;
+        }
+        .slick-initialized .slick-slide
+        {
+            display: block;
+        }
+        .slick-loading .slick-slide
+        {
+            visibility: hidden;
+        }
+        .slick-vertical .slick-slide
+        {
+            display: block;
+            height: auto;
+            border: 1px solid transparent;
+        }
+        .slick-arrow.slick-hidden {
+            display: none;
+        }
+        .lh-3 {
+            /*line-height: 3;*/
+        }
+    </style>
+    {% include 'template/footer.html.twig' %}
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}
