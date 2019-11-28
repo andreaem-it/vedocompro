@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -202,6 +204,16 @@ class Ads
      * @ORM\Column(type="simple_array", nullable=true)
      */
     private $tags;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AdsOrders", mappedBy="item")
+     */
+    private $adsOrders;
+
+    public function __construct()
+    {
+        $this->adsOrders = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -1099,5 +1111,36 @@ class Ads
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * @return Collection|AdsOrders[]
+     */
+    public function getAdsOrders(): Collection
+    {
+        return $this->adsOrders;
+    }
+
+    public function addAdsOrder(AdsOrders $adsOrder): self
+    {
+        if (!$this->adsOrders->contains($adsOrder)) {
+            $this->adsOrders[] = $adsOrder;
+            $adsOrder->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdsOrder(AdsOrders $adsOrder): self
+    {
+        if ($this->adsOrders->contains($adsOrder)) {
+            $this->adsOrders->removeElement($adsOrder);
+            // set the owning side to null (unless already changed)
+            if ($adsOrder->getItem() === $this) {
+                $adsOrder->setItem(null);
+            }
+        }
+
+        return $this;
     }
 }
