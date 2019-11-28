@@ -210,6 +210,11 @@ class Ads
      */
     private $adsOrders;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $canBeOrdered;
+
     public function __construct()
     {
         $this->adsOrders = new ArrayCollection();
@@ -1140,6 +1145,18 @@ class Ads
                 $adsOrder->setItem(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCanBeOrdered(): ?bool
+    {
+        return $this->canBeOrdered;
+    }
+
+    public function setCanBeOrdered(?bool $canBeOrdered): self
+    {
+        $this->canBeOrdered = $canBeOrdered;
 
         return $this;
     }
