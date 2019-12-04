@@ -421,3 +421,70 @@ Stack trace:
 [04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
 [04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
 [04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[29-Nov-2019 08:39:59 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[29-Nov-2019 08:39:59 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[29-Nov-2019 08:39:59 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 00:13:42 UTC] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '}' in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php:1110
+Stack trace:
+#0 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/composer/ClassLoader.php(322): Composer\Autoload\includeFile('/Users/andreaem...')
+#1 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php(159): Composer\Autoload\ClassLoader->loadClass('AppBundle\\Contr...')
+#2 [internal function]: Symfony\Component\Debug\DebugClassLoader->loadClass('AppBundle\\Contr...')
+#3 [internal function]: spl_autoload_call('AppBundle\\Contr...')
+#4 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(62): ReflectionClass->__construct('AppBundle\\Contr...')
+#5 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/Fil in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php on line 1110
+[03-Dec-2019 00:16:37 UTC] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting ')' in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php:1110
+Stack trace:
+#0 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/composer/ClassLoader.php(322): Composer\Autoload\includeFile('/Users/andreaem...')
+#1 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php(159): Composer\Autoload\ClassLoader->loadClass('AppBundle\\Contr...')
+#2 [internal function]: Symfony\Component\Debug\DebugClassLoader->loadClass('AppBundle\\Contr...')
+#3 [internal function]: spl_autoload_call('AppBundle\\Contr...')
+#4 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(62): ReflectionClass->__construct('AppBundle\\Contr...')
+#5 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php on line 1110
+[03-Dec-2019 11:24:02 UTC] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting ')' in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php:1111
+Stack trace:
+#0 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/composer/ClassLoader.php(322): Composer\Autoload\includeFile('/Users/andreaem...')
+#1 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php(159): Composer\Autoload\ClassLoader->loadClass('AppBundle\\Contr...')
+#2 [internal function]: Symfony\Component\Debug\DebugClassLoader->loadClass('AppBundle\\Contr...')
+#3 [internal function]: spl_autoload_call('AppBundle\\Contr...')
+#4 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(62): ReflectionClass->__construct('AppBundle\\Contr...')
+#5 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php on line 1111
+[03-Dec-2019 11:24:07 UTC] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting ')' in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php:1111
+Stack trace:
+#0 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/composer/ClassLoader.php(322): Composer\Autoload\includeFile('/Users/andreaem...')
+#1 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php(159): Composer\Autoload\ClassLoader->loadClass('AppBundle\\Contr...')
+#2 [internal function]: Symfony\Component\Debug\DebugClassLoader->loadClass('AppBundle\\Contr...')
+#3 [internal function]: spl_autoload_call('AppBundle\\Contr...')
+#4 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(62): ReflectionClass->__construct('AppBundle\\Contr...')
+#5 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php on line 1111
+[03-Dec-2019 11:24:21 UTC] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting ')' in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php:1111
+Stack trace:
+#0 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/composer/ClassLoader.php(322): Composer\Autoload\includeFile('/Users/andreaem...')
+#1 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php(159): Composer\Autoload\ClassLoader->loadClass('AppBundle\\Contr...')
+#2 [internal function]: Symfony\Component\Debug\DebugClassLoader->loadClass('AppBundle\\Contr...')
+#3 [internal function]: spl_autoload_call('AppBundle\\Contr...')
+#4 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(62): ReflectionClass->__construct('AppBundle\\Contr...')
+#5 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php on line 1111
+[03-Dec-2019 11:24:39 UTC] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting ')' in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php:1111
+Stack trace:
+#0 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/composer/ClassLoader.php(322): Composer\Autoload\includeFile('/Users/andreaem...')
+#1 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php(159): Composer\Autoload\ClassLoader->loadClass('AppBundle\\Contr...')
+#2 [internal function]: Symfony\Component\Debug\DebugClassLoader->loadClass('AppBundle\\Contr...')
+#3 [internal function]: spl_autoload_call('AppBundle\\Contr...')
+#4 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(62): ReflectionClass->__construct('AppBundle\\Contr...')
+#5 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php on line 1111
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0

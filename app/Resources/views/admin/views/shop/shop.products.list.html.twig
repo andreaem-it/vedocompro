@@ -12,7 +12,7 @@
             <small>Prodotti</small>
         </h1>
         <ol class="breadcrumb p-0">
-            <a href="" class="btn btn-primary ml-5">
+            <a href="{{ url('admin_shop_products_add') }}" class="btn btn-primary ml-5">
                 <i class="fa fa-plus-circle"></i> Nuovo Prodotto
             </a>
         </ol>
@@ -36,18 +36,38 @@
                                 <th>Nome</th>
                                 <th>Categoria</th>
                                 <th>Prezzo</th>
-                                <th></th>
+                                <th>Magazzino</th>
+                                <th>Stato</th>
+                                <th style="width: 80px"></th>
                             </tr>
                             {% for itm in items %}
                                 <tr>
                                     <td>{{ itm.id }}</td>
-                                    <td><a href="{{ url('admin_vedi_inserzioni',{'id':itm.id} ) }}">{{ itm.name }}</a></td>
-                                    <td><a href="{{ url('admin_utenti_vedi' , {'id': itm.id}) }}">{{ itm.father }}</a></td>
+                                    <td><a href="">{{ itm.name }}</a></td>
+                                    <td><a href="">
+                                            {% for categories in itm.category %}
+                                                <span class="badge badge-primary">{{ categories.name }}</span>
+                                            {% endfor %}</a></td>
                                     <td>{{ itm.price }}</td>
+                                    <td>{{ itm.inStock }}</td>
+                                    <td>{% if itm.isActive == 1 %}
+                                            <span class="badge badge-success">Pubblicato</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">Inattivo</span>
+                                            {% endif %}
+                                    </td>
                                     <td>
-                                        <a href="" class="btn btn-outline-primary">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
+                                        <div class="btn-group">
+                                            <a href="" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                            <a href="" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a href="{{ url('admin_shop_product_remove', { 'id' : itm.id }) }}" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             {% endfor %}
