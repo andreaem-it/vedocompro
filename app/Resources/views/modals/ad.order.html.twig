@@ -1,0 +1,74 @@
+<div class="modal fade" id="order">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ordina</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <small>Il venditore dà all'utente la possibilità di ordinare più unità dell'oggetto, compila il modulo sottostante indicando la quantità, il venditore riceverà un tuo messaggio e potrai decidere se finalizzare l'ordine direttamente con lui.</small>
+                <hr>
+                <span class="mt-5"></span>
+                {{ form_start(orderForm) }}
+                <div class="row">
+                    <div class="col-sm-6">
+                        {{ form_row(orderForm.qty) }}
+                    </div>
+                    <div class="col-sm-6">
+                        <p> Prezzo Unitario
+                            <span class="float-right">
+                                <code id="orderUnitPrice">{{ ad_info.0.price }}</code>
+                            </span>
+                        </p>
+                        <p> Prezzo Selezione
+                            <span class="float-right">
+                                <code id="orderSelectionPrice">{{ (ad_info.0.price * 1)|number_format(2) }}</code>
+                            </span>
+                        </p>
+                        <p>IVA 22%
+                            <span class="float-right">
+                                {% set vat = (ad_info.0.price * 1) / 100 * 22 %}
+                                <code id="orderCalculatedVAT">{{ vat|number_format(2) }}</code>
+                            </span>
+                        </p>
+                        <p>Totale Ordine
+                            <span class="float-right">
+                                <code id="orderCalculatedTotal">{{ (ad_info.0.price + vat)|number_format(2) }}</code>
+                            </span>
+                        </p>
+
+                    </div>
+                </div>
+                <script>
+                    $('#ads_orders_qty').change(function () {
+                        var unitPrice = parseFloat({{ ad_info.0.price }});
+                        var units = parseFloat($('#ads_orders_qty').val());
+                        var selectionPrice = parseFloat(unitPrice * units);
+                        var vatValue = 22;
+                        var calculatedVat = parseFloat(selectionPrice * vatValue / 100);
+                        var calculatedTotal = parseFloat(selectionPrice + calculatedVat);
+
+                        $('#orderSelectionPrice').text(selectionPrice.toFixed(2));
+                        $('#orderCalculatedVAT').text(calculatedVat.toFixed(2));
+                        $('#orderCalculatedTotal').text(calculatedTotal.toFixed(2));
+
+                        // DEBUG
+                        console.log(unitPrice);
+                        console.log(selectionPrice);
+                        console.log(selectionPrice);
+                        console.log(calculatedVat);
+                        console.log(calculatedTotal);
+                    })
+                </script>
+                <span class="text-muted">NB: Nessun Addebito verrà effettuato alla conferma.</span>
+            </div>
+            <div class="modal-footer">
+                {{ form_widget(orderForm.submit) }}
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                {{ form_end(orderForm) }}
+            </div>
+        </div>
+    </div>
+</div>

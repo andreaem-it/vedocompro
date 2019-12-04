@@ -50,7 +50,7 @@ class ShopCategories
 
     public function __toString()
     {
-        return $this->name;
+        return (string) $this->getName();
     }
 
     public function getName(): ?string

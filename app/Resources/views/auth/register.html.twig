@@ -22,6 +22,16 @@
                                 {{ form_row(form.phone) }}
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span style="display:inline-block">
+                                    {{ form_widget(form.termsAccepted) }}
+                                </span>
+                                <span style="display:inline-block">
+                                    <a href="{{ path('terms-of-service') }}"> termini di servizio</a>
+                                </span>
+                            </div>
+                        </div>
                         <script>
                             $('#usern_error').hide();
                             $('#user_name').keyup(function(e) {

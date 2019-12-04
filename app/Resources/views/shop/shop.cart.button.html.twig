@@ -1,0 +1,47 @@
+{% set cart = {
+    0: {
+        'item' : 1,
+        'units' : 5
+    }
+}
+%}
+{% set img = 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone8-plus-spgray-select-2018?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1550795419778' %}
+
+
+<div class="navbar-toggler btn-group btn-block float-right text-white">
+    <button type="button" class="btn btn-cart-top text-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-shopping-cart"></i><span id="cardItmCount">0</span>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right p-3 animate slideIn">
+        <h6 class="dropdown-header">Carrello</h6>
+        {% for item in cart %}
+            <a class="dropdown-item" href="#">
+                <div class="media">
+                    <img class="mr-3 cart-image" src="{{ img }}" alt="Generic placeholder image">
+                    <div class="media-body">
+                        <h6 class="mt-1">iPhone 8 Plus 64GB <small class="float-right">x{{ item.units }}</small></h6>
+                        <p>9.99 €</p>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+        <hr>
+        <div class="dropdown-footer">
+            <h6 class="float-right">Totale: <code class="mò-2">9.99 €</code></h6>
+        </div>
+    </div>
+</div>
+<style>
+    .btn-cart-top {
+        background: transparent;
+        position: absolute!important;
+        left: 0;
+        top: -5px;
+        font-size: 25px;
+    }
+
+    .cart-image {
+        width: 50px;
+        height: 50px;
+    }
+</style>

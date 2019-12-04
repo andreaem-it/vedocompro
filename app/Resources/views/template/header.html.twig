@@ -4,7 +4,9 @@
     <link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
     <nav class="navbar navbar-expand-lg fixed-top blue-header p navbar-toggleable-sm mb-5">
       <a class="navbar-brand" href="{{ url('homepage') }}">
-          <img id="vedocompro_logo" src="
+          {% set url = app.request.attributes.get('_route') %}
+          <div class="logo-inline">
+              <img id="vedocompro_logo" src="
                 {% if date("2019-12-10 00:00:00") < date() and date("2019-12-26 23:59:59") > date() %}
                     {{ asset('img/home/logo-vedocompro-white-natale.png')}}
                 {% elseif date("2020-04-10 00:00:00") < date() and date("2020-04-21 23:59:25") > date() %}
@@ -13,8 +15,19 @@
                     {{ asset('img/home/logo-vedocompro-white.png')}}
                 {% endif %}
             " class="img-fluid" style="max-width:280px"/>
+              {% if 'shop' in url %}
+                  <h5 class="float-right mt-4 ml-2">SHOP</h5>
+              {% endif %}
+          </div>
+
           {% block company %}{% endblock %}
       </a>
+        <div>
+            {% if 'shop' in url %}
+                {% include 'shop/shop.cart.button.html.twig' %}
+            {% endif %}
+        </div>
+
       <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span> </span>
             <span> </span>
@@ -22,6 +35,11 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ml-auto" style="font-size:1vw">
+            <li class="nav-item">
+                {% if 'shop' in url %}
+                    {% include 'shop/shop.cart.button.html.twig' %}
+                {% endif %}
+            </li>
             <li class="nav-item">
                 <a data-toggle="modal" data-target="#searchModal">
                     <i class="fa fa-search"></i>
@@ -35,10 +53,10 @@
                     {{ render(controller('AppBundle:Notifications:notifications')) }}
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('profilo' , {'query': app.user.username }) }}" class=" head-txt-bold txt-light">PROFILO</a>
+                    <a href="{{ url('profilo' , {'query': app.user.username }) }}" class="  txt-light">PROFILO</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ logout_path('main') }}" class="head-txt-bold txt-light">ESCI</a>
+                    <a href="{{ logout_path('main') }}" class=" txt-light">ESCI</a>
                 </li>
              {% else %}
                  <li class="nav-item">

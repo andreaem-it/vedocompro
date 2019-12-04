@@ -14,8 +14,10 @@ use AppBundle\Entity\ShopProducts;
 use AppBundle\Entity\Videos;
 use AppBundle\Form\AdsType;
 use AppBundle\Form\ShopCategoriesType;
+use AppBundle\Form\ShopProductsType;
 use AppBundle\Repository\AdminDefaultMailsRepository;
 use Doctrine\DBAL\Types\FloatType;
+use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -1044,7 +1046,7 @@ class AdminController extends Controller
      */
     public function shopAction()
     {
-        return $this->render('');
+        return $this->render('admin/views/shop/shop.dashboard.html.twig');
     }
 
     /**
@@ -1068,7 +1070,7 @@ class AdminController extends Controller
             $this->redirectToRoute('admin_shop_categories');
         }
 
-        return $this->render('admin/views/shop.categories.html.twig',[
+        return $this->render('admin/views/shop/shop.categories.html.twig',[
             'categories' => $categories,
             'form' => $form->createView()
         ]);
@@ -1081,9 +1083,62 @@ class AdminController extends Controller
     {
         $items = $this->getDoctrine()->getRepository(ShopProducts::class)->findAll();
 
-        return $this->render('admin/views/shop.products.html.twig',[
+        return $this->render('admin/views/shop/shop.products.list.html.twig',[
             'items' => $items
         ]);
+    }
+
+    /**
+     * @Route("/admin/shop/products/add", name="admin_shop_products_add")
+     */
+    public function shopProductsAdd(Request $request) {
+
+        $item = new ShopProducts();
+        $category = new ShopCategories();
+
+        $form = $this->createForm(ShopProductsType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            foreach($form->get('category')->getData() as $itm) {
+                $category = $this->getDoctrine()->getRepository(ShopCategories::class)->find($itm);
+            }
+
+            $item->setName($form->get('name')->getData());
+            $item->setPrice($form->get('price')->getData());
+            $item->setVideo($form->get('video')->getData());
+            $item->setPics($form->get('pics')->getData());
+            $item->setInStock($form->get('inStock')->getData());
+            $item->setIsActive($form->get('isActive')->getData());
+            $item->addCategory($category);
+            $item->setCreatedAt(new \DateTime());
+            $item->setUpdatedAt(new \DateTime());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($item);
+            $em->flush();
+
+            return $this->redirectToRoute('admin_shop_products');
+        }
+
+        return $this->render('admin/views/shop/shop.products.add.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/shop/products/remove/{id}", name="admin_shop_product_remove")
+     */
+    public function shopProductsRemove($id) {
+        $item = $this->getDoctrine()->getRepository(ShopProducts::class)->find($id);
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($item);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_shop_products');
     }
 
 

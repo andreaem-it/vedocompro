@@ -23,7 +23,9 @@
     <script src="{{ asset('js/video-js.skin.js') }}"></script>
 {% endblock %}
 {% block body %}
-
+    {%  if ad_info.0.canBeOrdered == true %}
+        {% include 'modals/ad.order.html.twig' %}
+    {% endif %}
 
         {% include 'template/header.html.twig' %}
     <!-- Page -->
@@ -86,7 +88,16 @@
                             <p class="font-weight-light mt-3">
                                 Visualizzato <span class="text-blue">{{ ad_info.0.views }} </span>volte
                             </p>
-
+                            {% set difference = date("now"|date()).diff(date(ad_info.0.updatetime)) %}
+                            {% set leftDays = difference.days %}
+                            {% if leftDays < 30 %}
+                            {% else %}
+                                <div class="alert alert-info">
+                                    <small>
+                                        <strong>Attenzione: </strong>Questa Inserzione è stata inserita {{ leftDays }} giorni fà, l'oggetto potrebbe non essere più disponibile, contatta il venditore per saperne di più.
+                                    </small>
+                                </div>
+                            {% endif %}
                         </div>
 
 
@@ -176,6 +187,28 @@
                                                             {% if ad_info.0.hasMap == 1 %}
                                                                 <div class="col-4 mt-2">
                                                                     <a href="https://www.google.com/maps/place/@{{ ad_info.0.mapCoords }},143m/" class="btn btn-block btn-outline-success"><i class="fa fa-map"></i> Indicazioni</a>
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                        {%  if ad_info.0.canBeOrdered == true %}
+                                                            {% if app.user != null %}
+                                                                <div class="col-4 mt-2">
+                                                                    <a href="" data-toggle="modal" data-target="#order" class="btn btn-block btn-outline-success"><i class="fa fa-cart-plus"></i> Ordina</a>
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="col-4 mt-2">
+                                                                    <a href="" class="btn btn-block btn-outline-success disabled" data-toggle="tooltip" data-placement="top" title="Devi effettuare l'accesso per poter Ordinare">
+                                                                        <i class="fa fa-cart"></i> Ordina
+                                                                    </a>
+                                                                </div>
+                                                            {% endif %}
+                                                            {% if orderForm.vars.submitted == true %}
+                                                                <div class="row mt-3 mx-1">
+                                                                    <div class="col-12">
+                                                                        <div class="alert alert-success">
+                                                                            Messaggio inviato, attendi la risposta del venditore.
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             {% endif %}
                                                         {% endif %}
@@ -377,6 +410,10 @@
                             $('#similarCarousel').css('max-width',
                                 $('.col-sm-12').width()
                             ).css('padding','0 15px');
+                        })
+
+                        $(function () {
+                            $('[data-toggle="tooltip"]').tooltip()
                         })
                     </script>
             </div>
@@ -616,6 +653,9 @@
     }
     .card:hover {
         transform:none!important;
+    }
+    .btn-secondary {
+        border: 2px solid #FFF;
     }
 </style>
     <script type="text/JavaScript">

@@ -128,6 +128,11 @@ class User extends BaseUser
      */
     private $businessEnd;
 
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AdsOrders", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $adsOrders;
+
     public function __construct()
     {
         parent::__construct();
@@ -636,5 +641,22 @@ class User extends BaseUser
     public function getBusinessEnd()
     {
         return $this->businessEnd;
+    }
+
+    public function getAdsOrders(): ?AdsOrders
+    {
+        return $this->adsOrders;
+    }
+
+    public function setAdsOrders(AdsOrders $adsOrders): self
+    {
+        $this->adsOrders = $adsOrders;
+
+        // set the owning side of the relation if necessary
+        if ($adsOrders->getUser() !== $this) {
+            $adsOrders->setUser($this);
+        }
+
+        return $this;
     }
 }

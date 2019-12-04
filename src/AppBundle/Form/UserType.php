@@ -3,13 +3,16 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Validator\Constraints\IsTrue;
 
 class UserType extends AbstractType
 {
@@ -26,8 +29,13 @@ class UserType extends AbstractType
             ->add('realname',TextType::class, array('label' => 'Nome e Cognome'))
             ->add('address',TextType::class, array('label' => 'Indirizzo'))
             ->add('city',TextType::class, array('label' => 'Città'))
-            ->add('cap',IntegerType::class,array('label'=>'CAP'))
-            ->add('phone',TextType::class,array('label'=>'Telefono'));
+            ->add('cap',TextType::class,array('label'=>'CAP'))
+            ->add('phone',TelType::class,array('label'=>'Telefono','data' => ''))
+            ->add('termsAccepted', CheckboxType::class, [
+                'label' => 'Accetto i',
+                'mapped' => false,
+                'constraints' => new IsTrue(),
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
