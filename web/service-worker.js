@@ -1,5 +1,30 @@
 importScripts('app/cache-polyfill.js');
 
+self.addEventListener('push', function(event) {
+    console.log(self.Notification, Notification.requestPermission)
+    self.Notification.requestPermission().then(res => console.log(res))
+
+    if (Notification.permission === 'denied') {
+        console.log('Permission wasn\'t granted. Allow a retry.');
+        return;
+    }
+
+    if (Notification.permission === 'default') {
+        console.log('The permission request was dismissed.');
+        return;
+    }
+
+    console.log('The permission request is granted!');
+
+    try {
+        event.waitUntil(
+            self.registration.showNotification(event && event.data && event.data.text() || 'Some Notification Here!')
+        );
+    } catch (e) {
+        throw new Error(`Error in SW: ${e}`)
+    }
+});
+
 self.addEventListener('install', event => {
     console.log('Service worker installing...');
 
