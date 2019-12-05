@@ -172,6 +172,7 @@ input:focus, select:focus {
 }
 .inverse-logo {
     filter: brightness(6);
+    top:10px!important;
 }
 .login-control {
     padding: 15px;
