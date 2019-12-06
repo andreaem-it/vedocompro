@@ -378,11 +378,14 @@ z-index:9999;
         min-height:25px!important;
     }
 </style>
-<div class="anniversary">
+{#<div class="anniversary">
     <img src="{{ asset('img/2year.png') }}" class="img-fluid" style="width:200px" data-toggle="tooltip" data-placement="right" title="VedoCompro compie 2 Anni! Ringraziamo tutti i nostri utenti che ogni giorno fanno affari su VedoCompro!">
-</div>
+</div>#}
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
+{% if is_mobile() or is_tablet() %}
+    {% include 'template/mobile.bottom.menu.html.twig' %}
+{% endif %}

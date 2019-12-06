@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Twig_Extensions_' => array($vendorDir . '/twig/extensions/lib'),
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
+    'SunCat\\MobileDetectBundle' => array($vendorDir . '/suncat/mobile-detect-bundle'),
     'Stfalcon\\Bundle\\TinymceBundle' => array($vendorDir . '/stfalcon/tinymce-bundle'),
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src'),
     'PHPCR\\Util' => array($vendorDir . '/phpcr/phpcr-utils/src'),
@@ -19,6 +20,7 @@ return array(
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
     'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
     'Gaufrette' => array($vendorDir . '/knplabs/gaufrette/src'),
+    'Detection' => array($vendorDir . '/mobiledetect/mobiledetectlib/namespaced'),
     'CG\\' => array($vendorDir . '/jms/cg/src'),
     'Assetic' => array($vendorDir . '/kriswallsmith/assetic/src'),
     'AfterShip' => array($vendorDir . '/abishekrsrikaanth/aftership-php-sdk/src'),
