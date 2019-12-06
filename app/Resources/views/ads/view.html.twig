@@ -555,10 +555,10 @@
 
     }
     .video-mobile {
-        width: 122%!important;
-        left: 0px!important;
-        margin-left: -50px!important;
-        margin-top: -21px!important;
+        position: relative!important;
+        top: -21px!important;
+        left: -50px!important;
+        width: 125%!important;
     }
     .company-header {
         float: right;
@@ -682,7 +682,6 @@
         {#        jwplayer().pause();#}
         {#    }#}
         {#});#}
-        videojs('video');
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
             $('#video').addClass('video-mobile');
         }
