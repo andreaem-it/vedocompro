@@ -46,7 +46,7 @@
             </div> <!-- Sponsorizzati -->
         {% endif %}
         <div class="row mt-5">
-            <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block px-0 mx-0">
+            <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
                 {% include('template/ads.html.twig') %}
             </div>
             <div id="resultsRow" class="col-10 col-sm-10 pl-4 pr-4">
@@ -202,14 +202,14 @@
                                 </div>
                             </div>
                         </div>
-                        </div>
-
                     </div>
+                        <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block px-0 mx-0">
+                            {% include('template/ads.html.twig') %}
+                        </div>
                 </div>
             </div>
-            <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block px-0 mx-0">
-                {% include('template/ads.html.twig') %}
-            </div>
+        </div>
+
             {% include 'template/footer.html.twig' %}
         </div>
         <style>

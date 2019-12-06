@@ -1,4 +1,6 @@
 importScripts('app/cache-polyfill.js');
+var cacheName = 'vedocompro-v1';
+
 
 self.addEventListener('push', function(event) {
     console.log(self.Notification, Notification.requestPermission)
@@ -29,7 +31,7 @@ self.addEventListener('install', event => {
     console.log('Service worker installing...');
 
     event.waitUntil(
-        caches.open('vedocompro').then(function(cache) {
+        caches.open(cacheName).then(function(cache) {
             return cache.addAll([
                 '/',
                 '/app.php',
@@ -44,17 +46,26 @@ self.addEventListener('install', event => {
 
 });
 
-self.addEventListener('activate', event => {
-    console.log('Service worker activating...');
+self.addEventListener('activate', (e) => {
+    e.waitUntil(
+        caches.keys().then((keyList) => {
+            return Promise.all(keyList.map((key) => {
+                if(cacheName.indexOf(key) === -1) {
+                    return caches.delete(key);
+                }
+            }));
+        })
+    );
 });
 
-self.addEventListener('fetch', event => {
-    console.log('Fetching:', event.request.url);
-    event.respondWith(
-        caches.open('mysite-dynamic').then(function(cache) {
-            return cache.match(event.request).then(function (response) {
-                return response || fetch(event.request).then(function(response) {
-                    cache.put(event.request, response.clone());
+self.addEventListener('fetch', (e) => {
+    e.respondWith(
+        caches.match(e.request).then((r) => {
+            console.log('[Service Worker] Fetching resource: '+e.request.url);
+            return r || fetch(e.request).then((response) => {
+                return caches.open(cacheName).then((cache) => {
+                    console.log('[Service Worker] Caching new resource: '+e.request.url);
+                    cache.put(e.request, response.clone());
                     return response;
                 });
             });

@@ -63,9 +63,20 @@ class ShopProducts
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $description;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ShopShipments")
+     */
+    private $shipmentServices;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
+        $this->shipmentServices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -191,6 +202,44 @@ class ShopProducts
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ShopShipments[]
+     */
+    public function getShipmentServices(): Collection
+    {
+        return $this->shipmentServices;
+    }
+
+    public function addShipmentService(ShopShipments $shipmentService): self
+    {
+        if (!$this->shipmentServices->contains($shipmentService)) {
+            $this->shipmentServices[] = $shipmentService;
+        }
+
+        return $this;
+    }
+
+    public function removeShipmentService(ShopShipments $shipmentService): self
+    {
+        if ($this->shipmentServices->contains($shipmentService)) {
+            $this->shipmentServices->removeElement($shipmentService);
+        }
 
         return $this;
     }
