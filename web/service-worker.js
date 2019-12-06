@@ -1,4 +1,4 @@
-var version = "vedocompro-v1";
+var version = "vedocompro-v2";
 
 var staticCacheName = version + "assets";
 var staticAssets = ['/manifest.json', ''];
