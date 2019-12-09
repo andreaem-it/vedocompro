@@ -41,5 +41,6 @@
     "theme_color": "#4396c1",
     "background_color": "#4396c1",
     "start_url": "https://www.vedocompro.it",
-    "display": "standalone"
+    "display": "standalone",
+    "orientation":"portrait"
 }
