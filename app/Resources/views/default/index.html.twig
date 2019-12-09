@@ -47,6 +47,7 @@
     </title>
     <meta name="description" content="VedoCompro.it ti permette di vendere e acquistare oggetti in un modo tutto nuovo, con un Video." />
     <meta name="google" content="notranslate" />
+
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({
@@ -56,7 +57,35 @@
     </script>
 </head>
 <body style="width:100%;overflow-x:hidden;">
-
+{% if is_mobile() or is_tablet() %}
+    <script src="{{ asset('js/animsition.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/animsition.min.css') }}">
+    <script>
+        $(document).ready( function() {
+            $('a').toggleClass('animsition-link');
+            $(document.body).toggleClass('animsition');
+            $('.animsition').animsition({
+                inClass: 'fade-in',
+                outClass: 'fade-out',
+                inDuration: 1500,
+                outDuration: 800,
+                linkElement: '.animsition-link',
+                loading: true,
+                loadingParentElement: 'body',
+                loadingClass: 'animsition-loading',
+                loadingInner: '{{ asset('loading_balls.gif') }}',
+                timeout: false,
+                timeoutCountdown: 5000,
+                onLoadEvent: true,
+                browser: [ 'animation-duration', '-webkit-animation-duration'],
+                overlay : false,
+                overlayClass : 'animsition-overlay-slide',
+                overlayParentElement : 'body',
+                transition: function(url){ window.location.href = url; }
+            });
+        });
+    </script>
+{% endif %}
     <div class="container-fluid">
         <div class="row">
             <div class="jumbotron jumbotron-fluid"

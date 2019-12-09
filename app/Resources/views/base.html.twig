@@ -50,16 +50,36 @@
         <script async src="{{asset('js/jquery-ui.min.js')}}"></script>
         <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
         <link href="{{ asset('css/scrollbar.css') }}" rel="stylesheet" type="text/css" >
-{#        <script src="https://content.jwplatform.com/libraries/7P3qGamK.js"></script>#}
-{#        <script>jwplayer.key="ABCdeFG123456SeVenABCdeFG123456SeVen=="</script>#}
         <script async src="{{ asset('js/affix.js') }}"></script>
-        {#<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({
-                google_ad_client: "ca-pub-4967985757423249",
-                enable_page_level_ads: true
-            });
-        </script>#}
+        {% if is_mobile() or is_tablet() %}
+            <script src="{{ asset('js/animsition.min.js') }}"></script>
+            <link rel="stylesheet" href="{{ asset('css/animsition.min.css') }}">
+            <script>
+                $(document).ready( function() {
+                    $('a').toggleClass('animsition-link');
+                    $(document.body).toggleClass('animsition');
+                    $('.animsition').animsition({
+                        inClass: 'fade-in',
+                        outClass: 'fade-out',
+                        inDuration: 1500,
+                        outDuration: 800,
+                        linkElement: '.animsition-link',
+                        loading: true,
+                        loadingParentElement: 'body',
+                        loadingClass: 'animsition-loading',
+                        loadingInner: '',
+                        timeout: false,
+                        timeoutCountdown: 5000,
+                        onLoadEvent: true,
+                        browser: [ 'animation-duration', '-webkit-animation-duration'],
+                        overlay : false,
+                        overlayClass : 'animsition-overlay-slide',
+                        overlayParentElement : 'body',
+                        transition: function(url){ window.location.href = url; }
+                    });
+                });
+            </script>
+        {% endif %}
         {% if app.environment == 'prod' %}
         <script type="text/javascript">
             var _iub = _iub || [];
@@ -163,6 +183,15 @@
                 });
             });
         </script>
+        <script>
+            Pace.on("start", function(){
+                $("div.paceDiv").show();
+            });
+
+            Pace.on("done", function(){
+                $("div.paceDiv").hide();
+            });
+        </script>
         <style>
             .cc-color-override--1943300103.cc-window {
                 max-width: 100%;
@@ -178,6 +207,13 @@
             .modal-open-noscroll .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
               padding-right: 0!important;
             }
+            div.paceDiv {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                display: none;
+            }
         </style>
+
     </body>
 </html>

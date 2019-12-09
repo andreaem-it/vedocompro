@@ -9,7 +9,7 @@
     <a href="{{ url('nuovo') }}" class="mobile-bottom-nav__item">
         <div class="mobile-bottom-nav__item-content">
             <i class="fa fa-plus-square-o"></i>
-            <span class="item-text">Pubblica</span>
+            <span class="item-text">Vendi</span>
         </div>
     </a>
     <a href="{% if app.user %}{{ url('profilo' , {'query': app.user.username }) }}{% else %}{{ url('login') }}{% endif %}" class="mobile-bottom-nav__item">
