@@ -1,10 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     {% include 'template/header.html.twig' %}
-    {% set item = {
-        'name' : 'Apple Watch',
-        'price' : 449.00
-    } %}
     <div class="container-fluid scrollbar">
         <div class="container">
             <div class="row mt-5">
@@ -19,7 +15,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-4">
-                    <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MU9M2_AV1?wid=1144&hei=1144&fmt=jpeg&qlt=80&op_usm=0.5%2C0.5&.v=1567056912060" class="img-fluid">
+                    <img src="{% for pic in item.pics %}{{ pic }}{% endfor %}" class="img-fluid">
                     <a id="addtocart-btn" class="btn btn-outline-primary btn-block" href="">
                         <i class="fa fa-cart-plus"></i>
                         <span></span>
@@ -80,7 +76,7 @@
                                                     <span>
                                                         <i class="fa fa-tags"></i>
                                                         <a href="" title="category">
-                                                            Category
+                                                            {{item.category.0.name}}
                                                         </a>
                                                     </span>
                                                 </div>
@@ -91,12 +87,9 @@
                                         <div class="col-sm-12">
                                             <hr>
                                             <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum pulvinar blandit.
-                                                Cras nisi risus, consectetur vel dui quis, eleifend porta massa. Nulla tempor tincidunt velit id porta.
-                                                Integer posuere sit amet augue a faucibus. Vivamus et libero eu justo feugiat mattis.
-                                                Aenean posuere enim justo, quis commodo risus congue nec.
+                                                {{ item.description|truncate(200, true) }}
                                             </p>
-                                            <a href="#profile">Continua a leggere...</a>
+                                            <a class="readmore-link" href="#info">Continua a leggere...</a>
                                             <hr>
                                         </div>
                                     </div>
@@ -134,20 +127,7 @@
                                 <div class="tab-pane fade mt-5" id="info" role="tabpanel" aria-labelledby="info-tab">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dictum pulvinar blandit.
-                                                Cras nisi risus, consectetur vel dui quis, eleifend porta massa. Nulla tempor tincidunt velit id porta.
-                                                Integer posuere sit amet augue a faucibus. Vivamus et libero eu justo feugiat mattis.
-                                                Aenean posuere enim justo, quis commodo risus congue nec. Morbi semper consequat felis ut dignissim.
-                                                Pellentesque turpis nibh, ultrices ut vehicula in, tincidunt sed ante.
-                                            </p>
-                                            <p>
-                                                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                                                Aliquam hendrerit mauris quis libero bibendum, eu elementum nisl sodales.
-                                                Vivamus imperdiet turpis eleifend porttitor commodo. Aliquam id elit mauris.
-                                                Sed eu nunc ut nisl lobortis viverra. Donec molestie tellus lorem, eget eleifend massa accumsan vitae.
-                                                Aliquam nec quam tincidunt, ultricies justo vulputate, rutrum ante.
-                                            </p>
+                                            {{item.description}}
                                         </div>
                                     </div>
                                 </div>
@@ -174,28 +154,19 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                {% for itm in item.shipmentServices %}
                                                     <tr>
                                                         <td>
-                                                            <img style="width: 100px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Poste_italiane_logo.svg/1280px-Poste_italiane_logo.svg.png" class="img-responsive">
+                                                            <img style="width: 100px" src="{{ asset('img/shop/shipment_services/' ~ itm.serviceLogo) }}" class="img-responsive">
                                                         </td>
                                                         <td>
-                                                            3-4 giorni
+                                                            {{itm.expectedDelivery }} giorni
                                                         </td>
                                                         <td>
-                                                            9.90 €
+                                                            {{itm.basePrice}} €
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <img style="width: 100px" src="http://pluspng.com/img-png/dhl-png-dhl-decides-to-go-green-and-set-targets-for-own-carbon-emissions-1022.png" class="img-responsive">
-                                                        </td>
-                                                        <td>
-                                                            2-3 giorni
-                                                        </td>
-                                                        <td>
-                                                            13.90 €
-                                                        </td>
-                                                    </tr>
+                                                {% endfor %}
                                                 </tbody>
                                             </table>
                                         </div>
@@ -307,7 +278,7 @@
             }, function() {
                 $(this).find('span').text('').removeClass('btn-animate');
             });
-        })
+        });
         $(document).ready(function(){
             $('#addtocart-btn').hover(function() {
                 $(this).find('span').text('Aggiungi al carrello').addClass('btn-animate');
@@ -323,6 +294,20 @@
             }, function() {
                 $(this).find('span').text('').removeClass('btn-animate');
             });
-        })
+        });
+        $(function() {
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                history.pushState({}, '', e.target.hash);
+            });
+
+            var hash = document.location.hash;
+            var prefix = "tab_";
+            if (hash) {
+                $('.nav-tabs a[href="'+hash.replace(prefix,"")+'"]').tab('show');
+            }
+        });
+        $('.readmore-link').click(function() {
+            $('.nav-tabs a[href="' + this.getAttribute('href') + '"]').click();
+        });
     </script>
 {% endblock %}

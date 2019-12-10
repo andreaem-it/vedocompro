@@ -9,12 +9,15 @@ use AppBundle\Entity\Messages;
 use AppBundle\Entity\Notifications;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Reviews;
+use AppBundle\Entity\Shipments;
 use AppBundle\Entity\ShopCategories;
 use AppBundle\Entity\ShopProducts;
+use AppBundle\Entity\ShopShipments;
 use AppBundle\Entity\Videos;
 use AppBundle\Form\AdsType;
 use AppBundle\Form\ShopCategoriesType;
 use AppBundle\Form\ShopProductsType;
+use AppBundle\Form\ShopShipmentsType;
 use AppBundle\Repository\AdminDefaultMailsRepository;
 use Doctrine\DBAL\Types\FloatType;
 use Doctrine\ORM\EntityRepository;
@@ -1095,6 +1098,7 @@ class AdminController extends Controller
 
         $item = new ShopProducts();
         $category = new ShopCategories();
+        $shipment = new ShopShipments();
 
         $form = $this->createForm(ShopProductsType::class);
 
@@ -1106,12 +1110,18 @@ class AdminController extends Controller
                 $category = $this->getDoctrine()->getRepository(ShopCategories::class)->find($itm);
             }
 
+            foreach($form->get('shipmentServices')->getData() as $itm) {
+                $shipment = $this->getDoctrine()->getRepository(ShopShipments::class)->find($itm);
+            }
+
             $item->setName($form->get('name')->getData());
             $item->setPrice($form->get('price')->getData());
             $item->setVideo($form->get('video')->getData());
             $item->setPics($form->get('pics')->getData());
             $item->setInStock($form->get('inStock')->getData());
             $item->setIsActive($form->get('isActive')->getData());
+            $item->setDescription($form->get('description')->getData());
+            $item->addShipmentService($shipment);
             $item->addCategory($category);
             $item->setCreatedAt(new \DateTime());
             $item->setUpdatedAt(new \DateTime());
@@ -1139,6 +1149,47 @@ class AdminController extends Controller
         $em->flush();
 
         return $this->redirectToRoute('admin_shop_products');
+    }
+
+    /**
+     * @Route("/admin/shop/shipments/list", name="admin_shop_shipments_list")
+     */
+    public function shopShipmentsList() {
+        $item = $this->getDoctrine()->getRepository(ShopShipments::class)->findAll();
+
+        return $this->render('admin/views/shop/shop.shipments.html.twig',[
+            'items' => $item
+        ]);
+    }
+
+    /**
+     * @Route("/admin/shop/shipments/add", name="admin_shop_shipments_add")
+     */
+    public function shopShipmentsAdd(Request $request) {
+        $item = new ShopShipments();
+
+        $form = $this->createForm(ShopShipmentsType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $item->setServiceName($form->get('serviceName')->getData());
+            $item->setServiceLogo($form->get('serviceLogo')->getData());
+            $item->setBasePrice($form->get('basePrice')->getData());
+            $item->setIsActive($form->get('isActive')->getData());
+            $item->setExpectedDelivery($form->get('expectedDelivery')->getData());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($item);
+            $em->flush();
+
+            return $this->redirectToRoute('admin_shop_products');
+        }
+
+        return $this->render('admin/views/shop/shop.shipments.add.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
 

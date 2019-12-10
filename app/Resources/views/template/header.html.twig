@@ -2,6 +2,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="{{asset('js/jquery.scrolling-tabs.min.js') }}"></script>
     <link rel="stylesheet" href="{{asset('css/jquery.scrolling-tabs.min.css') }}">
+    {% if date("2019-12-8 00:00:00") < date() and date("2019-12-26 23:59:59") > date() %}
+        <link rel="stylesheet" href="{{ asset('css/christmas.css') }}">
+    {% elseif date("2020-04-10 00:00:00") < date() and date("2020-04-21 23:59:25") > date() %}
+    {% else %}
+    {% endif %}
     <nav class="navbar navbar-expand-lg fixed-top blue-header p navbar-toggleable-sm mb-5">
       <a class="navbar-brand" href="{{ url('homepage') }}">
           {% set url = app.request.attributes.get('_route') %}
@@ -48,6 +53,12 @@
           <li class="nav-item">
               <a href="{{ url('homepage') }}" class="txt-light">HOME</a>
             </li>
+            {% if shop.enabled == true %}
+                <li class="nav-item">
+                    <a href="{{ url('shop') }}">SHOP <span class="badge badge-pill badge-danger head-badge">NEW!</span>
+                    </a>
+                </li>
+            {% endif %}
             {% if app.user %}
                 <li class="nav-item dropdown">
                     {{ render(controller('AppBundle:Notifications:notifications')) }}

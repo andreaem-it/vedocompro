@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb2a0b45824e8ceaad1bebec31391748",
+    "content-hash": "fba9dc7b136c16590b0a7ae686dc41d3",
     "packages": [
         {
             "name": "abishekrsrikaanth/aftership-php-sdk",
