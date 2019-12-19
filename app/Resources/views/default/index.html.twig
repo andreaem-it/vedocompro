@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!--<link rel="stylesheet" href="{{ asset('css/base.css') }}">-->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/jquery-3.3.1.min.js') }}" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
@@ -86,15 +86,97 @@
         });
     </script>
 {% endif %}
+{% if date("2019-12-8 00:00:00") < date() and date("2019-12-26 23:59:59") > date() %}
+
+<canvas id='canv'></canvas>
+<script>
+    var c = document.getElementById('canv'),
+        $ = c.getContext("2d");
+    var w = c.width = window.innerWidth,
+        h = c.height = window.innerHeight;
+
+    Snowy();
+    function Snowy() {
+        var snow, arr = [];
+        var num = 600, tsc = 1, sp = 1;
+        var sc = 1.3, t = 0, mv = 20, min = 1;
+        for (var i = 0; i < num; ++i) {
+            snow = new Flake();
+            snow.y = Math.random() * (h + 50);
+            snow.x = Math.random() * w;
+            snow.t = Math.random() * (Math.PI * 2);
+            snow.sz = (100 / (10 + (Math.random() * 100))) * sc;
+            snow.sp = (Math.pow(snow.sz * .8, 2) * .15) * sp;
+            snow.sp = snow.sp < min ? min : snow.sp;
+            arr.push(snow);
+        }
+        go();
+        function go(){
+            window.requestAnimationFrame(go);
+            $.clearRect(0, 0, w, h);
+            $.fillStyle = 'transparent';
+            $.fillRect(0, 0, w, h);
+            $.fill();
+            for (var i = 0; i < arr.length; ++i) {
+                f = arr[i];
+                f.t += .05;
+                f.t = f.t >= Math.PI * 2 ? 0 : f.t;
+                f.y += f.sp;
+                f.x += Math.sin(f.t * tsc) * (f.sz * .3);
+                if (f.y > h + 50) f.y = -10 - Math.random() * mv;
+                if (f.x > w + mv) f.x = - mv;
+                if (f.x < - mv) f.x = w + mv;
+                f.draw();}
+        }
+        function Flake() {
+            this.draw = function() {
+                this.g = $.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.sz);
+                this.g.addColorStop(0, 'hsla(255,255%,255%,1)');
+                this.g.addColorStop(1, 'hsla(255,255%,255%,0)');
+                $.moveTo(this.x, this.y);
+                $.fillStyle = this.g;
+                $.beginPath();
+                $.arc(this.x, this.y, this.sz, 0, Math.PI * 2, true);
+                $.fill();}
+        }
+    }
+    /*________________________________________*/
+    window.addEventListener('resize', function(){
+        c.width = w = window.innerWidth;
+        c.height = h = window.innerHeight;
+    }, false);
+
+</script>
+<style>
+    #canv {
+        position: fixed;
+        z-index:0;
+    }
+</style>
+{% endif %}
     <div class="container-fluid">
         <div class="row">
             <div class="jumbotron jumbotron-fluid"
-                 style="width:100%;height:100%;background-image:url('{{ asset('img/home/home-bg-2.jpg') }}');background-position:center center;background-size:cover;padding-top:0">
+                 style="width:100%;
+                         height:100%;
+                         {% if date("2019-12-8 00:00:00") < date() and date("2019-12-26 23:59:59") > date() %}
+                         background-image: url('{{ asset('img/home/christmas_home_bg.webp') }}');
+                         {% else %}
+                         background-image: url('{{ asset('img/home/home-bg-2.jpg') }}');
+                         {% endif %}
+                         background-position:center center;
+                         background-size:cover;
+                         padding-top:0">
                 <div class="container-fluid">
                     <nav class="navbar navbar-expand-lg navbar-light" id="navbar" style="background-color:transparent;">
                         <a class="navbar-brand" href="#">
+                            {% if date("2019-12-8 00:00:00") < date() and date("2019-12-26 23:59:59") > date() %}
+                            <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-white-natale.png') }}"
+                                 class="img-fluid" style="max-width:280px"/>
+                            {% else %}
                             <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-cobalt.png') }}"
                                  class="img-fluid" style="max-width:280px"/>
+                            {% endif %}
                         </a>
                         <button id="navbar-toggler" class="navbar-toggler" type="button" data-toggle="collapse"
                                 data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -150,7 +232,13 @@
                         <div class="col-12 mt-5">
 
                             <h1 class="display-3 text-center align-middle pt-5 mt-5"
-                                style="color:#FFF; text-shadow: 4px 0px #555;font-weight:300;font-family:Arial">
+                                style="
+                                {% if date("2019-12-8 00:00:00") < date() and date("2019-12-26 23:59:59") > date() %}
+                                    color: darkgrey;
+                                {% else %}
+                                    color:#FFF;
+                                {% endif %}
+                                text-shadow: 4px 0px #555;font-weight:300;font-family:Arial">
                                 <br>
                                 <strong>Cosa stai cercando?</strong>
                             </h1>
