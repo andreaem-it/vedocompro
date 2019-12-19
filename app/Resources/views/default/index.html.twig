@@ -171,11 +171,9 @@
                     <nav class="navbar navbar-expand-lg navbar-light" id="navbar" style="background-color:transparent;">
                         <a class="navbar-brand" href="#">
                             {% if date("2019-12-8 00:00:00") < date() and date("2019-12-26 23:59:59") > date() %}
-                            <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-white-natale.png') }}"
-                                 class="img-fluid" style="max-width:280px"/>
+                            <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-white-natale.png') }}" class="img-fluid" style="max-width:280px"/>
                             {% else %}
-                            <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-cobalt.png') }}"
-                                 class="img-fluid" style="max-width:280px"/>
+                            <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-cobalt.png') }}" class="img-fluid" style="max-width:280px"/>
                             {% endif %}
                         </a>
                         <button id="navbar-toggler" class="navbar-toggler" type="button" data-toggle="collapse"
