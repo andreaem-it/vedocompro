@@ -101,6 +101,7 @@ return array(
     'JSON_Exception' => $vendorDir . '/amazonwebservices/aws-sdk-for-php/utilities/json.class.php',
     'JsonException' => $vendorDir . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
     'Locale' => $vendorDir . '/symfony/symfony/src/Symfony/Component/Intl/Resources/stubs/Locale.php',
+    'Mobile_Detect' => $vendorDir . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
     'NumberFormatter' => $vendorDir . '/symfony/symfony/src/Symfony/Component/Intl/Resources/stubs/NumberFormatter.php',
     'ParseError' => $vendorDir . '/symfony/polyfill-php70/Resources/stubs/ParseError.php',
     'Parser_Exception' => $vendorDir . '/amazonwebservices/aws-sdk-for-php/sdk.class.php',

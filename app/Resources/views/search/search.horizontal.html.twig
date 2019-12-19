@@ -46,7 +46,7 @@
             </div> <!-- Sponsorizzati -->
         {% endif %}
         <div class="row mt-5">
-            <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block px-0 mx-0">
+            <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block">
                 {% include('template/ads.html.twig') %}
             </div>
             <div id="resultsRow" class="col-10 col-sm-10 pl-4 pr-4">
@@ -145,7 +145,7 @@
                                                 <div class="row">
                                                     <div class="col-md-3 px-0 py-0 pl-1">
                                                         <a href="{{ url('vedi_oggetto',  {'category': catName,'item': result.id,'title': slug}) }}">
-                                                            <img src="{{ asset('loading_balls.gif') }}" class="lozad card-img-top img-fluid" id="imgPreview-{{ result.id }}" data-src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ result.id }}-1.jpg" alt="{{ result.name }}">
+                                                            <img src="{{ asset('loading_balls.png') }}" class="lozad card-img-top img-fluid" id="imgPreview-{{ result.id }}" data-src="https://s3.eu-west-2.amazonaws.com/vedocompro/photo/{{ result.id }}-1.jpg" alt="{{ result.name }}">
                                                         </a>
                                                     </div>
                                                     <div class="col-md-9 my-2">
@@ -202,14 +202,14 @@
                                 </div>
                             </div>
                         </div>
-                        </div>
-
                     </div>
+                        <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block px-0 mx-0">
+                            {% include('template/ads.html.twig') %}
+                        </div>
                 </div>
             </div>
-            <div class="col-1 col-sm-1 mt-5 pt-4 d-sm-none d-md-block d-none d-sm-block px-0 mx-0">
-                {% include('template/ads.html.twig') %}
-            </div>
+        </div>
+
             {% include 'template/footer.html.twig' %}
         </div>
         <style>

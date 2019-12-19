@@ -1,0 +1,66 @@
+<link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+<nav class="mobile-bottom-nav">
+    <a href="{{ url('homepage') }}" class="mobile-bottom-nav__item">
+        <div class="mobile-bottom-nav__item-content">
+            <i class="fa fa-search"></i>
+            <span class="item-text">Cerca</span>
+        </div>
+    </a>
+    <a href="{{ url('nuovo') }}" class="mobile-bottom-nav__item">
+        <div class="mobile-bottom-nav__item-content">
+            <i class="fa fa-plus-square-o"></i>
+            <span class="item-text">Vendi</span>
+        </div>
+    </a>
+    <a href="{% if app.user %}{{ url('profilo' , {'query': app.user.username }) }}{% else %}{{ url('login') }}{% endif %}" class="mobile-bottom-nav__item">
+        <div class="mobile-bottom-nav__item-content">
+            <i class="fa fa-user-circle-o"></i>
+            <span class="item-text">Profilo</span>
+        </div>
+    </a>
+
+    <a href="{{ url('helpdesk') }}" class="mobile-bottom-nav__item">
+        <div class="mobile-bottom-nav__item-content">
+            <i class="fa fa-question"></i>
+            <span class="item-text">Supporto</span>
+        </div>
+    </a>
+</nav>
+<style>
+    .mobile-bottom-nav{
+        position:fixed;
+        bottom:0;
+        left:0;
+        right:0;
+        background-color: #eee;
+        z-index: 99999999;
+        will-change:transform;
+        transform: translateZ(0);
+        display:flex;
+        height:80px;
+        box-shadow: 0 -2px 5px -2px #333;
+    }
+    .mobile-bottom-nav__item {
+         flex-grow:1;
+         text-align:center;
+         font-size:12px;
+         color: #333333!important;
+         display:flex;
+         flex-direction:column;
+         justify-content:center;
+     }
+    .mobile-bottom-nav .fa {
+        font-size: 28px
+    }
+    .mobile-bottom-nav__item--active{
+     color: #81d9ff;
+     }
+    .mobile-bottom-nav__item-content{
+         display:flex;
+         flex-direction:column;
+     }
+    .item-text {
+        margin-top: 5px;
+        font-size: 15px;
+    }
+</style>

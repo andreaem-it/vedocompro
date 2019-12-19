@@ -608,6 +608,10 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
         ),
         'S' => 
         array (
+            'SunCat\\MobileDetectBundle' => 
+            array (
+                0 => __DIR__ . '/..' . '/suncat/mobile-detect-bundle',
+            ),
             'Stfalcon\\Bundle\\TinymceBundle' => 
             array (
                 0 => __DIR__ . '/..' . '/stfalcon/tinymce-bundle',
@@ -668,6 +672,13 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
             'Gaufrette' => 
             array (
                 0 => __DIR__ . '/..' . '/knplabs/gaufrette/src',
+            ),
+        ),
+        'D' => 
+        array (
+            'Detection' => 
+            array (
+                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
             ),
         ),
         'C' => 
@@ -786,6 +797,7 @@ class ComposerStaticInit6922bf70494526fdc9efcce90b50e1e2
         'JSON_Exception' => __DIR__ . '/..' . '/amazonwebservices/aws-sdk-for-php/utilities/json.class.php',
         'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
         'Locale' => __DIR__ . '/..' . '/symfony/symfony/src/Symfony/Component/Intl/Resources/stubs/Locale.php',
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'NumberFormatter' => __DIR__ . '/..' . '/symfony/symfony/src/Symfony/Component/Intl/Resources/stubs/NumberFormatter.php',
         'ParseError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/ParseError.php',
         'Parser_Exception' => __DIR__ . '/..' . '/amazonwebservices/aws-sdk-for-php/sdk.class.php',

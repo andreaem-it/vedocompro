@@ -172,6 +172,7 @@ input:focus, select:focus {
 }
 .inverse-logo {
     filter: brightness(6);
+    top:10px!important;
 }
 .login-control {
     padding: 15px;
@@ -181,7 +182,7 @@ input:focus, select:focus {
 .btn-login {
     border: 2px solid #FFF!important;
     color: #FFF!important;
-    padding: 12px 40px!important;
+    padding: 12px !important;
     border-radius: 12px!important;
     font-size: 18px!important;
 }

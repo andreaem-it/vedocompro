@@ -27,6 +27,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
+            new SunCat\MobileDetectBundle\MobileDetectBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

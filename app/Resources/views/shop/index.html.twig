@@ -20,7 +20,7 @@
                                 <div class="card-body">
                                     {% for cat in categories %}
                                         {% if cat.father == null %}
-                                            <h6>{{ cat }}</h6>
+                                            <h6 class="mt-1">{{ cat }}</h6>
                                         {% else %}
                                             <a href="" class="page-link border-0">{{ cat }}</a>
                                         {% endif %}

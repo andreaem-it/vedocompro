@@ -32,6 +32,9 @@
                         <li class="">
                             <a href="{{ url('admin_shop_categories') }}">Categorie</a>
                         </li>
+                        <li class="">
+                            <a href="{{ url('admin_shop_shipments_list') }}">Spedizionieri</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="{% if app.request.attributes.get('_route') == 'admin_inserzioni' %}active{% endif %}"><a href="{{ url('admin_inserzioni') }}"><i class="fa fa-shopping-cart"></i> <span>Inserzioni</span></a></li>

@@ -78,7 +78,7 @@
                  style="width:100%;height:100%;background-image:url('{{ asset('img/auth/login-bg.png') }}');background-position:center center;background-size:cover;padding-top:0">
                 <div class="container-fluid">
                     <nav class="navbar navbar-expand-lg navbar-light" id="navbar" style="background-color:transparent;">
-                        <a class="navbar-brand" href="#">
+                        <a class="navbar-brand" href="{{ url('homepage') }}">
                             <img id="vedocompro_logo" src="{{ asset('img/home/logo-vedocompro-cobalt.png') }}"
                                  class="img-fluid inverse-logo" style="max-width:280px"/>
                         </a>
@@ -166,7 +166,7 @@
                                        class="form-control login-control mt-3 text-center" required=""
                                        placeholder="password">
                                 <div class="row mt-3">
-                                    <div class="col-sm-7">
+                                    <div class="col-7">
                                         <div class="form-check ml-4">
                                             <input type="checkbox" id="rememberme" class="form-check-input text-left"
                                                    value="remember-me" id="remember_me" name="_remember_me"
@@ -175,12 +175,12 @@
                                                 dispositivo</label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-5">
-                                        <a id="lostPwdLink" class="text-light mt-3 ">Password dimenticata?</a>
+                                    <div class="col-5">
+                                        <a id="lostPwdLink" class="text-light mt-1 float-right">Password dimenticata?</a>
                                     </div>
                                 </div>
                                 <div class="row mt-3 justify-content-between">
-                                    <div class="col-sm-4 mx-auto">
+                                    <div class="col-sm-5 mx-auto">
                                         <button type="submit" class="btn btn-login btn-block"
                                                 style="background-color:transparent">ACCEDI
                                         </button>
@@ -278,12 +278,6 @@
 
         .display3-space {
             margin-top: 7.95rem !important;
-        }
-
-        #vedocompro_logo {
-            position: absolute;
-            float: left;
-            left: 20px;
         }
 
         #navbar-toggler {

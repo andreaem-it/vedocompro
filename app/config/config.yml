@@ -41,7 +41,8 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
           avanzu_adminlte_close_alert: true
-
+          shop:
+              enabled: false
 # Doctrine Configuration
 doctrine:
     dbal:

@@ -10,6 +10,11 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+
     app.aws_s3.client:
         class: Aws\S3\S3Client
         factory: [Aws\S3\S3Client, 'factory']
