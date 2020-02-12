@@ -3902,17 +3902,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/petkopara/PetkoparaMultiSearchBundle.git",
-                "reference": "985b1c5791c1d2ca03c2df33fb01115422b02ead"
+                "reference": "4eb1aff684565158026761325185cc9e62a7a2e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/petkopara/PetkoparaMultiSearchBundle/zipball/985b1c5791c1d2ca03c2df33fb01115422b02ead",
-                "reference": "985b1c5791c1d2ca03c2df33fb01115422b02ead",
+                "url": "https://api.github.com/repos/petkopara/PetkoparaMultiSearchBundle/zipball/4eb1aff684565158026761325185cc9e62a7a2e9",
+                "reference": "4eb1aff684565158026761325185cc9e62a7a2e9",
                 "shasum": ""
             },
             "require": {
                 "doctrine/orm": "^2.5",
-                "symfony/form": "^2.8|^3.0|^4.0"
+                "symfony/form": "^2.8|^3.0|^4.0|^5.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.8"
@@ -3950,7 +3950,7 @@
                 "query builder",
                 "symfony3"
             ],
-            "time": "2018-04-09T09:00:19+00:00"
+            "time": "2019-12-01T18:18:39+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -5260,6 +5260,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
+            "abandoned": true,
             "time": "2017-12-07T15:36:41+00:00"
         },
         {
@@ -6458,7 +6459,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -7324,16 +7325,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.4.24",
+            "version": "v3.4.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "bf7ca5d4d7eb1758a1f7bed11111f630ac2d4f57"
+                "reference": "a43a2f6c465a2d99635fea0addbebddc3864ad97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/bf7ca5d4d7eb1758a1f7bed11111f630ac2d4f57",
-                "reference": "bf7ca5d4d7eb1758a1f7bed11111f630ac2d4f57",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/a43a2f6c465a2d99635fea0addbebddc3864ad97",
+                "reference": "a43a2f6c465a2d99635fea0addbebddc3864ad97",
                 "shasum": ""
             },
             "require": {
@@ -7385,7 +7386,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2019-03-22T08:11:54+00:00"
+            "time": "2019-04-16T09:03:16+00:00"
         }
     ],
     "aliases": [],
