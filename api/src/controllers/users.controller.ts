@@ -1,13 +1,11 @@
 import { Response, NextFunction } from 'express';
-import { PrismaClient } from '@prisma/client';
 import { AuthenticatedRequest } from '../types';
 import { AppError } from '../middleware/error.middleware';
 import { adsService } from '../services/ads.service';
 import { storageService } from '../services/storage.service';
 import { generateS3Key } from '../middleware/upload.middleware';
 import { hashPassword, verifyPassword } from '../utils/password';
-
-const prisma = new PrismaClient();
+import { prisma } from '../lib/prisma';
 
 const SAFE_USER = {
   id: true,

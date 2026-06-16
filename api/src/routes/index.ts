@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/prisma';
 import authRoutes from './auth.routes';
 import adsRoutes from './ads.routes';
 import usersRoutes from './users.routes';
@@ -7,7 +7,6 @@ import adminRoutes from './admin.routes';
 import paymentsRoutes from './payments.routes';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 router.get('/health', async (_req, res) => {
   try {

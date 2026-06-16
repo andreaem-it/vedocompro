@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import { hashPassword, verifyPassword } from '../utils/password';
 import { signJwt, generateSecureToken } from '../utils/tokens';
 import { mailService } from './mail.service';
 import { AppError } from '../middleware/error.middleware';
-
-const prisma = new PrismaClient();
+import { prisma } from '../lib/prisma';
 
 function toSafeUser<T extends Record<string, unknown>>(user: T) {
   const { password, resetToken, resetTokenExpiry, googleAccessToken, facebookAccessToken, ...safeUser } = user;

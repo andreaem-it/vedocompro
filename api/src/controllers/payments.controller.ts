@@ -1,11 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { AuthenticatedRequest } from '../types';
 import { AppError } from '../middleware/error.middleware';
 import { config } from '../config';
 import crypto from 'crypto';
-
-const prisma = new PrismaClient();
+import { prisma } from '../lib/prisma';
 
 export const paymentsController = {
   async getProducts(_req: Request, res: Response, next: NextFunction) {
