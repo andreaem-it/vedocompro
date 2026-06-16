@@ -1,0 +1,446 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int               @id @default(autoincrement())
+  email               String            @unique
+  username            String            @unique
+  password            String
+  name                String            @db.VarChar(100)
+  realname            String            @default("")
+  facebookId          String?           @map("facebook_id") @db.VarChar(255)
+  facebookAccessToken String?           @map("facebook_access_token") @db.VarChar(255)
+  googleId            String?           @map("google_id") @db.VarChar(255)
+  googleAccessToken   String?           @map("google_access_token") @db.VarChar(255)
+  dateJoin            DateTime          @default(now()) @map("datejoin") @db.Date
+  address             String            @default("")
+  points              Int               @default(0)
+  phone               String            @default("-")
+  city                String            @default("")
+  cap                 String            @default("")
+  code                String            @default("")
+  creditsGold         Int               @default(0) @map("credits_gold")
+  creditsSilver       Int               @default(0) @map("credits_silver")
+  creditsBronze       Int               @default(0) @map("credits_bronze")
+  pic                 String?
+  isCompany           Int?              @map("is_company")
+  companyLogo         String?           @map("company_logo")
+  companyWebsite      String?           @map("company_website")
+  businessEnd         DateTime?         @map("business_end")
+  isActive            Boolean           @default(false) @map("is_active")
+  isAdmin             Boolean           @default(false) @map("is_admin")
+  resetToken          String?           @map("reset_token")
+  resetTokenExpiry    DateTime?         @map("reset_token_expiry")
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @updatedAt @map("updated_at")
+
+  groups           Group[]        @relation("UserGroups")
+  ads              Ad[]
+  sentMessages     Message[]      @relation("SentMessages")
+  receivedMessages Message[]      @relation("ReceivedMessages")
+  notifications    Notification[]
+  feedbackGiven    Feedback[]     @relation("FeedbackGiven")
+  feedbackReceived Feedback[]     @relation("FeedbackReceived")
+  wishlists        Wishlist[]
+  buyerBuys        Buy[]          @relation("BuyerBuys")
+  sellerSells      Sell[]         @relation("SellerSells")
+  payments         Payment[]
+  helpDeskTickets  HelpDesk[]
+  businessRequests BusinessRequest[]
+  businessStats    BusinessStat[]
+  videos           Video[]
+  reviews          Review[]
+  adminActions     AdminAction[]
+
+  @@map("users")
+}
+
+model Group {
+  id    Int    @id @default(autoincrement())
+  name  String @db.VarChar(30)
+  role  String @unique @db.VarChar(20)
+  users User[] @relation("UserGroups")
+
+  @@map("groups")
+}
+
+model Category {
+  id       Int        @id @default(autoincrement())
+  name     String
+  parentId Int?       @map("pid")
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryTree")
+  ads      Ad[]
+
+  @@map("category")
+}
+
+model Ad {
+  id                     Int       @id @default(autoincrement())
+  name                   String    @db.VarChar(100)
+  categoryId             Int       @map("category_id")
+  category               Category  @relation(fields: [categoryId], references: [id])
+  price                  Decimal   @db.Decimal(10, 2)
+  description            String    @db.Text
+  region                 String
+  location               String
+  provincia              String
+  userId                 Int       @map("user_id")
+  user                   User      @relation(fields: [userId], references: [id])
+  creationTime           DateTime  @default(now()) @map("creation_time")
+  updateTime             DateTime  @updatedAt @map("update_time")
+  views                  Int       @default(0)
+  objCondition           String    @map("obj_condition")
+  option1                String?
+  option2                String?
+  option3                String?
+  option4                String?
+  option5                String?
+  objLevel               Int       @default(0) @map("obj_level")
+  showcase               Int       @default(0)
+  goldPromotionEndDate   DateTime? @map("gold_promotion_end_date")
+  silverPromotionEndDate DateTime? @map("silver_promotion_end_date")
+  bronzePromotionEndDate DateTime? @map("bronze_promotion_end_date")
+  sold                   Int       @default(0)
+  trackingCode           String?   @map("tracking_code")
+  video                  String?
+  published              Int       @default(0)
+  fields                 String[]
+  vals                   String[]
+  callClicks             Int       @default(0) @map("call_clicks")
+  messageClicks          Int       @default(0) @map("message_clicks")
+  hasMap                 Boolean   @default(false) @map("has_map")
+  mapCoords              String?   @map("map_coords")
+  hasReviews             Boolean   @default(false) @map("has_reviews")
+  isHotel                Boolean   @default(false) @map("is_hotel")
+  services               String[]
+  rooms                  String[]
+  tags                   String[]
+
+  wishlists     Wishlist[]
+  buys          Buy[]
+  sells         Sell[]
+  reviews       Review[]
+  videos        Video[]
+  messages      Message[]
+  businessStats BusinessStat[]
+
+  @@map("ads")
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  fromUserId Int      @map("from_uid")
+  toUserId   Int      @map("to_uid")
+  fromUser   User     @relation("SentMessages", fields: [fromUserId], references: [id])
+  toUser     User     @relation("ReceivedMessages", fields: [toUserId], references: [id])
+  datetime   DateTime @default(now())
+  message    String   @db.Text
+  isRead     Int      @default(0) @map("is_read")
+  adId       Int?     @map("ad_id")
+  ad         Ad?      @relation(fields: [adId], references: [id])
+
+  @@map("messages")
+}
+
+model Notification {
+  id     Int      @id @default(autoincrement())
+  userId Int      @map("uid")
+  user   User     @relation(fields: [userId], references: [id])
+  type   Int
+  object Int?
+  readed Boolean  @default(false)
+  date   DateTime @default(now())
+
+  @@map("notifications")
+}
+
+model Feedback {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("uid")
+  user        User     @relation("FeedbackReceived", fields: [userId], references: [id])
+  fromUserId  Int      @map("fromuid")
+  fromUser    User     @relation("FeedbackGiven", fields: [fromUserId], references: [id])
+  vote        Int
+  description String
+  positive    Int
+  datetime    DateTime @default(now())
+
+  @@map("feedback")
+}
+
+model Review {
+  id          Int      @id @default(autoincrement())
+  adId        Int      @map("aid")
+  ad          Ad       @relation(fields: [adId], references: [id])
+  userId      Int      @map("uid")
+  user        User     @relation(fields: [userId], references: [id])
+  rating      Float
+  comment     String   @db.Text
+  datetime    DateTime @default(now())
+  isPublished Boolean  @default(false) @map("is_published")
+
+  @@map("reviews")
+}
+
+model Wishlist {
+  id     Int  @id @default(autoincrement())
+  userId Int  @map("uid")
+  user   User @relation(fields: [userId], references: [id])
+  adId   Int  @map("aid")
+  ad     Ad   @relation(fields: [adId], references: [id])
+
+  @@unique([userId, adId])
+  @@map("wishlists")
+}
+
+model Buy {
+  id       Int  @id @default(autoincrement())
+  fromUid  Int  @map("fuid")
+  buyer    User @relation("BuyerBuys", fields: [fromUid], references: [id])
+  toUid    Int  @map("tuid")
+  adId     Int  @map("aid")
+  ad       Ad   @relation(fields: [adId], references: [id])
+  status   Int  @default(0)
+  verified Int  @default(0)
+  shipped  Int  @default(0)
+  feedout  Int  @default(0)
+  feedin   Int  @default(0)
+  type     Int  @default(0)
+  paid     Int  @default(0)
+
+  @@map("buys")
+}
+
+model Sell {
+  id      Int  @id @default(autoincrement())
+  fromUid Int  @map("fuid")
+  seller  User @relation("SellerSells", fields: [fromUid], references: [id])
+  toUid   Int  @map("tuid")
+  adId    Int  @map("aid")
+  ad      Ad   @relation(fields: [adId], references: [id])
+  status  Int  @default(0)
+  verified Int @default(0)
+  shipped Int  @default(0)
+  feedout Int  @default(0)
+  feedin  Int  @default(0)
+  type    Int  @default(0)
+  paid    Int  @default(0)
+
+  @@map("sells")
+}
+
+model Payment {
+  id              Int      @id @default(autoincrement())
+  userId          Int      @map("user_id")
+  user            User     @relation(fields: [userId], references: [id])
+  productId       Int      @map("product_id")
+  product         Product  @relation(fields: [productId], references: [id])
+  paypalTxnId     String   @map("paypal_txn_id")
+  price           Decimal  @db.Decimal(10, 2)
+  paymentCurrency String   @map("payment_currency")
+  paymentStatus   String   @map("payment_status")
+  paymentEmail    String   @map("payment_email")
+  timestamp       DateTime @default(now())
+
+  @@map("payments")
+}
+
+model Product {
+  id            Int       @id @default(autoincrement())
+  name          String
+  creditsGold   Int       @default(0) @map("credits_gold")
+  creditsSilver Int       @default(0) @map("credits_silver")
+  creditsBronze Int       @default(0) @map("credits_bronze")
+  price         Decimal   @db.Decimal(10, 2)
+  payments      Payment[]
+
+  @@map("products")
+}
+
+model Video {
+  id       Int     @id @default(autoincrement())
+  adId     Int     @map("aid")
+  ad       Ad      @relation(fields: [adId], references: [id])
+  userId   Int     @map("uid")
+  user     User    @relation(fields: [userId], references: [id])
+  accepted Int     @default(0)
+  filename String
+  uploaded Boolean @default(false)
+
+  @@map("videos")
+}
+
+model HelpDesk {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @map("uid")
+  user       User     @relation(fields: [userId], references: [id])
+  type       Int
+  timest     DateTime @default(now())
+  isReply    Boolean  @default(false) @map("is_reply")
+  replyTo    Int?     @map("reply_to")
+  parentM    Int?     @map("parent_m")
+  title      String
+  message    String   @db.Text
+  closed     Boolean  @default(false)
+  assignedTo Int?     @map("assigned_to")
+
+  @@map("help_desk")
+}
+
+model BusinessRequest {
+  id             Int      @id @default(autoincrement())
+  userId         Int      @map("uid")
+  user           User     @relation(fields: [userId], references: [id])
+  requestDate    DateTime @default(now()) @map("request_date")
+  paid           Boolean  @default(false)
+  package        Int
+  opt1           Boolean  @default(false)
+  opt2           Boolean  @default(false)
+  opt3           Boolean  @default(false)
+  opt4           Boolean  @default(false)
+  opt5           Boolean  @default(false)
+  opt6           Boolean  @default(false)
+  opt7           Boolean  @default(false)
+  opt8           Boolean  @default(false)
+  opt9           Boolean  @default(false)
+  opt10          Boolean  @default(false)
+  legalName      String   @map("legal_name")
+  vatNumber      String   @map("vat_number")
+  contactName    String   @map("contact_name")
+  contactSurname String   @map("contact_surname")
+  contactPhone   String   @map("contact_phone")
+  contactEmail   String   @map("contact_email")
+
+  @@map("business_requests")
+}
+
+model BusinessStat {
+  id       Int      @id @default(autoincrement())
+  userId   Int      @map("uid")
+  user     User     @relation(fields: [userId], references: [id])
+  datetime DateTime @default(now())
+  adId     Int      @map("adid")
+  ad       Ad       @relation(fields: [adId], references: [id])
+  type     Int
+
+  @@map("business_stats")
+}
+
+model Coupon {
+  id       Int    @id @default(autoincrement())
+  code     String @unique
+  value    Float
+  valid    Int    @default(1)
+  assigned String
+
+  @@map("coupons")
+}
+
+model AdminAction {
+  id       Int      @id @default(autoincrement())
+  linedate DateTime @default(now())
+  userId   Int      @map("uid")
+  user     User     @relation(fields: [userId], references: [id])
+  type     Int
+
+  @@map("admin_actions")
+}
+
+model AdminDefaultMail {
+  id      Int    @id @default(autoincrement())
+  title   String @db.VarChar(255)
+  message String @db.Text
+  type    Int
+
+  @@map("admin_default_mails")
+}
+
+model AdminType {
+  id          Int    @id @default(autoincrement())
+  name        String @map("type")
+  description String
+
+  @@map("admin_types")
+}
+
+model AdvancedField {
+  id         Int    @id @default(autoincrement())
+  name       String @db.VarChar(255)
+  categoryId Int    @map("category_id")
+
+  @@map("advanced_fields")
+}
+
+model Shipment {
+  id        Int    @id @default(autoincrement())
+  carrier   String @db.VarChar(255)
+  method    String @db.VarChar(255)
+  estimates String @db.VarChar(255)
+
+  @@map("shipments")
+}
+
+model Suggest {
+  id      Int      @id @default(autoincrement())
+  name    String   @db.VarChar(255)
+  mail    String   @db.VarChar(255)
+  type    String   @db.VarChar(255)
+  message String   @db.Text
+  date    DateTime @default(now())
+
+  @@map("suggests")
+}
+
+model Region {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  @@map("regions")
+}
+
+model Regione {
+  id          Int        @id @default(autoincrement())
+  nome        String     @db.Text
+  latitudine  Decimal    @db.Decimal(10, 6)
+  longitudine Decimal    @db.Decimal(10, 6)
+  province    Province[]
+
+  @@map("regioni")
+}
+
+model Province {
+  id                       Int      @id @default(autoincrement())
+  regioneId                Int      @map("id_regione")
+  regione                  Regione  @relation(fields: [regioneId], references: [id])
+  codiceCittaMetropolitana Int?     @map("codice_citta_metropolitana")
+  nome                     String   @db.Text
+  siglaAutomobilistica     String   @db.VarChar(10) @map("sigla_automobilistica")
+  latitudine               Decimal  @db.Decimal(10, 6)
+  longitudine              Decimal  @db.Decimal(10, 6)
+  comuni                   Comune[]
+
+  @@map("province")
+}
+
+model Comune {
+  id           Int      @id @default(autoincrement())
+  istat        String
+  comune       String
+  provinceId   Int      @map("city_id")
+  province     Province @relation(fields: [provinceId], references: [id])
+  regione      String
+  provincia    String
+  prefisso     Int
+  codFisco     String   @map("cod_fisco")
+  superficie   Decimal  @db.Decimal(10, 2)
+  numResidenti Int      @map("num_residenti")
+
+  @@map("comuni")
+}
