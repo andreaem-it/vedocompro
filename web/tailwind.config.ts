@@ -5,21 +5,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          900: '#1e3a8a',
-        },
         brand: {
-          DEFAULT: '#e63946',
-          dark: '#c1121f',
+          DEFAULT: '#46A3D9',
+          dark: '#4396C1',
+          light: 'rgba(70,163,217,0.6)',
+        },
+        footer: {
+          bg: '#333333',
+          bottom: '#282828',
+          text: '#505050',
+          hover: '#646464',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Roboto', 'Ubuntu', 'Arial', 'sans-serif'],
+      },
+      boxShadow: {
+        card: '5px 5px 10px 0px #BBB',
       },
     },
   },
