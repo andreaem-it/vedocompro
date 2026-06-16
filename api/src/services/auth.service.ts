@@ -6,6 +6,11 @@ import { AppError } from '../middleware/error.middleware';
 
 const prisma = new PrismaClient();
 
+function toSafeUser<T extends Record<string, unknown>>(user: T) {
+  const { password, resetToken, resetTokenExpiry, googleAccessToken, facebookAccessToken, ...safeUser } = user;
+  return safeUser;
+}
+
 export const authService = {
   async register(data: {
     email: string;
@@ -42,8 +47,7 @@ export const authService = {
     if (!valid) throw new AppError(401, 'Credenziali non valide');
 
     const token = signJwt({ sub: user.id, email: user.email, username: user.username, isAdmin: user.isAdmin });
-    const { password: _, ...safeUser } = user;
-    return { user: safeUser, token };
+    return { user: toSafeUser(user), token };
   },
 
   async findOrCreateOAuthUser(data: {
@@ -90,8 +94,7 @@ export const authService = {
     }
 
     const token = signJwt({ sub: user.id, email: user.email, username: user.username, isAdmin: user.isAdmin });
-    const { password: _, ...safeUser } = user;
-    return { user: safeUser, token };
+    return { user: toSafeUser(user), token };
   },
 
   async requestPasswordReset(email: string) {
