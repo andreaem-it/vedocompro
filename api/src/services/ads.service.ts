@@ -156,4 +156,13 @@ export const adsService = {
       orderBy: { creationTime: 'desc' },
     });
   },
+
+  async getWishlistedAds(userId: number) {
+    const wishlists = await prisma.wishlist.findMany({
+      where: { userId },
+      select: { ad: { select: AD_SELECT } },
+      orderBy: { id: 'desc' },
+    });
+    return wishlists.map((w) => ({ ...w.ad, isWishlisted: true }));
+  },
 };

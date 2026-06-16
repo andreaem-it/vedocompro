@@ -8,7 +8,7 @@ export function signJwt(payload: Omit<JwtPayload, 'iat' | 'exp'>): string {
 }
 
 export function verifyJwt(token: string): JwtPayload {
-  return jwt.verify(token, config.jwtSecret) as JwtPayload;
+  return jwt.verify(token, config.jwtSecret) as unknown as JwtPayload;
 }
 
 export function generateSecureToken(): string {

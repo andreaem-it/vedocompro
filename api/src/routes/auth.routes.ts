@@ -40,7 +40,13 @@ if (config.google.clientId) {
             name: profile.displayName,
             pic: profile.photos?.[0]?.value,
           });
-          done(null, result);
+          done(null, {
+            id: result.user.id,
+            email: result.user.email,
+            username: result.user.username,
+            isAdmin: result.user.isAdmin,
+            token: result.token,
+          });
         } catch (err) {
           done(err as Error);
         }
@@ -66,7 +72,13 @@ if (config.facebook.appId) {
             name: profile.displayName,
             pic: profile.photos?.[0]?.value,
           });
-          done(null, result);
+          done(null, {
+            id: result.user.id,
+            email: result.user.email,
+            username: result.user.username,
+            isAdmin: result.user.isAdmin,
+            token: result.token,
+          });
         } catch (err) {
           done(err as Error);
         }

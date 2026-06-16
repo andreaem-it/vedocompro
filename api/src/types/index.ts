@@ -1,13 +1,19 @@
 import { Request } from 'express';
 
-export interface AuthenticatedRequest extends Request {
-  user?: {
-    id: number;
-    email: string;
-    username: string;
-    isAdmin: boolean;
-  };
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface User {
+      id: number;
+      email: string;
+      username: string;
+      isAdmin: boolean;
+      token?: string;
+    }
+  }
 }
+
+export type AuthenticatedRequest = Request;
 
 export interface PaginationQuery {
   page?: string;

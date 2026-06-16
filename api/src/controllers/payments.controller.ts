@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { AuthenticatedRequest } from '../types';
 import { AppError } from '../middleware/error.middleware';
 import { config } from '../config';
@@ -67,7 +67,7 @@ export const paymentsController = {
       const product = await prisma.product.findUnique({ where: { id: itemNumber } });
       if (!product) throw new AppError(400, 'Product not found');
 
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
         await tx.payment.create({
           data: { userId, productId: itemNumber, paypalTxnId: txnId, price, paymentCurrency: currency, paymentStatus, paymentEmail: payerEmail },
         });

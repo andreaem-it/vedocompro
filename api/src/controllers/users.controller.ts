@@ -5,7 +5,7 @@ import { AppError } from '../middleware/error.middleware';
 import { adsService } from '../services/ads.service';
 import { storageService } from '../services/storage.service';
 import { generateS3Key } from '../middleware/upload.middleware';
-import { hashPassword } from '../utils/password';
+import { hashPassword, verifyPassword } from '../utils/password';
 
 const prisma = new PrismaClient();
 
@@ -88,7 +88,14 @@ export const usersController = {
 
   async changePassword(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
-      const hashed = await hashPassword(req.body.newPassword);
+      const { currentPassword, newPassword } = req.body;
+      const user = await prisma.user.findUnique({ where: { id: req.user!.id } });
+      if (!user) throw new AppError(404, 'Utente non trovato');
+
+      const valid = await verifyPassword(currentPassword, user.password);
+      if (!valid) throw new AppError(401, 'Password attuale non corretta');
+
+      const hashed = await hashPassword(newPassword);
       await prisma.user.update({ where: { id: req.user!.id }, data: { password: hashed } });
       res.json({ message: 'Password aggiornata.' });
     } catch (err) {
@@ -170,14 +177,19 @@ export const usersController = {
     }
   },
 
+  async getMyAds(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const ads = await adsService.getUserAds(req.user!.id);
+      res.json(ads);
+    } catch (err) {
+      next(err);
+    }
+  },
+
   async getWishlist(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
-      const wishlists = await prisma.wishlist.findMany({
-        where: { userId: req.user!.id },
-        include: { ad: { select: { id: true, name: true, price: true, region: true, published: true } } },
-        orderBy: { id: 'desc' },
-      });
-      res.json(wishlists.map((w) => w.ad));
+      const ads = await adsService.getWishlistedAds(req.user!.id);
+      res.json(ads);
     } catch (err) {
       next(err);
     }

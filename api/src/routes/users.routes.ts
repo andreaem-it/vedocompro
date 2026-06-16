@@ -15,6 +15,7 @@ router.post('/me/notifications/read', requireAuth, usersController.markNotificat
 router.get('/me/messages', requireAuth, usersController.getMessages);
 router.post('/me/messages', requireAuth, usersController.sendMessage);
 router.get('/me/wishlist', requireAuth, usersController.getWishlist);
+router.get('/me/ads', requireAuth, usersController.getMyAds);
 
 // Public profile
 router.get('/:id', usersController.getProfile);

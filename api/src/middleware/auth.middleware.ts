@@ -1,6 +1,10 @@
 import { Response, NextFunction } from 'express';
 import { verifyJwt } from '../utils/tokens';
-import { AuthenticatedRequest } from '../types';
+import { AuthenticatedRequest, JwtPayload } from '../types';
+
+function toReqUser(payload: JwtPayload): Express.User {
+  return { id: payload.sub, email: payload.email, username: payload.username, isAdmin: payload.isAdmin };
+}
 
 export function requireAuth(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
   const header = req.headers.authorization;
@@ -11,7 +15,7 @@ export function requireAuth(req: AuthenticatedRequest, res: Response, next: Next
 
   try {
     const token = header.slice(7);
-    req.user = verifyJwt(token);
+    req.user = toReqUser(verifyJwt(token));
     next();
   } catch {
     res.status(401).json({ error: 'Invalid or expired token' });
@@ -32,7 +36,7 @@ export function optionalAuth(req: AuthenticatedRequest, _res: Response, next: Ne
   const header = req.headers.authorization;
   if (header?.startsWith('Bearer ')) {
     try {
-      req.user = verifyJwt(header.slice(7));
+      req.user = toReqUser(verifyJwt(header.slice(7)));
     } catch {
       // ignore invalid token for optional auth
     }

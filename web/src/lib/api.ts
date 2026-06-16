@@ -60,6 +60,7 @@ export const usersApi = {
   sendMessage: (data: { toUserId: number; message: string; adId?: number }) =>
     api.post('/users/me/messages', data),
   getWishlist: () => api.get('/users/me/wishlist'),
+  getMyAds: () => api.get('/users/me/ads'),
 };
 
 // Admin
@@ -70,6 +71,7 @@ export const adminApi = {
   deleteUser: (id: number) => api.delete(`/admin/users/${id}`),
   listAds: (params?: Record<string, string>) => api.get('/admin/ads', { params }),
   listPayments: () => api.get('/admin/payments'),
+  listHelpDesk: () => api.get('/admin/helpdesk'),
 };
 
 // Lookup data
