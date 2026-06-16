@@ -26,6 +26,38 @@ export interface Category {
   children: Category[];
 }
 
+export interface Photo {
+  id: number;
+  url: string;
+  order: number;
+}
+
+export interface Feedback {
+  id: number;
+  vote: number;
+  description: string;
+  positive: number;
+  datetime: string;
+  fromUser: { id: number; username: string; pic: string | null };
+}
+
+export interface HelpDeskTicket {
+  id: number;
+  type: number;
+  title: string;
+  message: string;
+  closed: boolean;
+  timest: string;
+  replies?: HelpDeskReply[];
+}
+
+export interface HelpDeskReply {
+  id: number;
+  message: string;
+  timest: string;
+  isReply: boolean;
+}
+
 export interface Ad {
   id: number;
   name: string;
@@ -60,6 +92,7 @@ export interface Ad {
   isWishlisted?: boolean;
   reviews?: Review[];
   videos?: Video[];
+  photos?: Photo[];
   _count?: { wishlists: number; reviews: number };
 }
 

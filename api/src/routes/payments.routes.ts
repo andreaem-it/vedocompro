@@ -8,5 +8,6 @@ const router = Router();
 router.get('/products', paymentsController.getProducts);
 router.post('/ipn', express.urlencoded({ extended: false }), paymentsController.ipnWebhook);
 router.get('/my', requireAuth, paymentsController.getMyPayments);
+router.post('/coupon', requireAuth, paymentsController.applyCoupon);
 
 export default router;

@@ -58,4 +58,47 @@ router.get('/provinces', async (req, res, next) => {
   }
 });
 
+router.get('/username-availability', async (req, res, next) => {
+  try {
+    const username = req.query.username as string | undefined;
+    if (!username) {
+      res.status(400).json({ error: 'Username richiesto' });
+      return;
+    }
+    const existing = await prisma.user.findUnique({ where: { username } });
+    if (existing) {
+      res.json({ available: false, message: 'Username già in uso' });
+    } else {
+      res.json({ available: true, message: 'Username disponibile' });
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/comuni', async (req, res, next) => {
+  try {
+    const provinceId = req.query.provinceId ? parseInt(req.query.provinceId as string, 10) : undefined;
+    const comuni = await prisma.comune.findMany({
+      where: provinceId ? { provinceId } : {},
+      orderBy: { comune: 'asc' },
+    });
+    res.json(comuni);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/suggest', async (req, res, next) => {
+  try {
+    const { name, mail, type, message } = req.body;
+    const suggest = await prisma.suggest.create({
+      data: { name, mail, type, message },
+    });
+    res.status(201).json(suggest);
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;

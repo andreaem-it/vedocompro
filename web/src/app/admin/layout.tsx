@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { LayoutDashboard, Users, FileText, CreditCard, HeadphonesIcon, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, Users, FileText, CreditCard, HeadphonesIcon, BarChart3, Video, Star } from 'lucide-react';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 
@@ -12,6 +12,8 @@ const NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/utenti', label: 'Utenti', icon: Users },
   { href: '/admin/annunci', label: 'Annunci', icon: FileText },
+  { href: '/admin/video', label: 'Video', icon: Video },
+  { href: '/admin/recensioni', label: 'Recensioni', icon: Star },
   { href: '/admin/pagamenti', label: 'Pagamenti', icon: CreditCard },
   { href: '/admin/helpdesk', label: 'Help Desk', icon: HeadphonesIcon },
   { href: '/admin/statistiche', label: 'Statistiche', icon: BarChart3 },

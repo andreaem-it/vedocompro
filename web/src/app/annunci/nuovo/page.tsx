@@ -42,6 +42,10 @@ export default function NuovoAnnuncioPage() {
   const router = useRouter();
   const { user, isLoading: authLoading } = useAuth();
   const [error, setError] = useState('');
+  const [createdAdId, setCreatedAdId] = useState<number | null>(null);
+  const [photoFiles, setPhotoFiles] = useState<FileList | null>(null);
+  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
+  const [uploadingPhotos, setUploadingPhotos] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) router.replace('/login?redirect=/annunci/nuovo');
@@ -65,13 +69,84 @@ export default function NuovoAnnuncioPage() {
     setError('');
     try {
       const res = await adsApi.create(data);
-      router.push(`/annunci/${res.data.id}`);
-    } catch (err: any) {
-      setError(err.response?.data?.error ?? 'Errore durante la pubblicazione');
+      setCreatedAdId(res.data.id);
+    } catch (err: unknown) {
+      const e = err as { response?: { data?: { error?: string } } };
+      setError(e.response?.data?.error ?? 'Errore durante la pubblicazione');
+    }
+  };
+
+  const handleUploadPhotos = async () => {
+    if (!photoFiles || photoFiles.length === 0 || !createdAdId) return;
+    setUploadingPhotos(true);
+    try {
+      const formData = new FormData();
+      Array.from(photoFiles).forEach((file) => formData.append('photos', file));
+      const res = await adsApi.uploadPhotos(createdAdId, formData);
+      const urls = res.data?.photos?.map((p: { url: string }) => p.url) ?? [];
+      setUploadedPhotos(urls);
+      setPhotoFiles(null);
+    } catch {
+      setError('Errore durante il caricamento delle foto.');
+    } finally {
+      setUploadingPhotos(false);
     }
   };
 
   if (!user) return null;
+
+  if (createdAdId !== null) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-8 sm:px-6">
+        <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+          Annuncio pubblicato con successo!
+        </div>
+
+        <div className="card p-6">
+          <h2 className="mb-4">Aggiungi foto</h2>
+          <p className="text-sm text-gray-600 mb-4">Aggiungi delle foto per rendere il tuo annuncio più attraente.</p>
+
+          {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm mb-4">{error}</div>}
+
+          {uploadedPhotos.length > 0 && (
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              {uploadedPhotos.map((url, i) => (
+                <div key={i} className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                  <img src={url} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="flex gap-3 items-end mb-6">
+            <div className="flex-1">
+              <label className="label">Seleziona foto (multiplo)</label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                className="input text-sm"
+                onChange={(e) => setPhotoFiles(e.target.files)}
+              />
+            </div>
+            <button
+              onClick={handleUploadPhotos}
+              disabled={uploadingPhotos || !photoFiles?.length}
+              className="btn-primary"
+            >
+              {uploadingPhotos ? 'Caricamento...' : 'Carica foto'}
+            </button>
+          </div>
+
+          <div className="flex gap-3 justify-end border-t pt-4">
+            <button onClick={() => router.push(`/annunci/${createdAdId}`)} className="btn-primary">
+              Vai all&apos;annuncio
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const flatCategories = categories ? flattenCategories(categories) : [];
 

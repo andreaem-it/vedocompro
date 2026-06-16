@@ -130,8 +130,19 @@ model Ad {
   videos        Video[]
   messages      Message[]
   businessStats BusinessStat[]
+  photos        Photo[]
 
   @@map("ads")
+}
+
+model Photo {
+  id    Int    @id @default(autoincrement())
+  adId  Int    @map("ad_id")
+  ad    Ad     @relation(fields: [adId], references: [id], onDelete: Cascade)
+  url   String
+  order Int    @default(0)
+
+  @@map("photos")
 }
 
 model Message {

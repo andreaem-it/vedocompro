@@ -1,5 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from '../types';
+import { AppError } from '../middleware/error.middleware';
 import { prisma } from '../lib/prisma';
 
 export const adminController = {
@@ -116,6 +117,21 @@ export const adminController = {
     }
   },
 
+  async updateAd(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const { published, sold, objLevel } = req.body;
+      const data: Record<string, unknown> = {};
+      if (published !== undefined) data.published = published;
+      if (sold !== undefined) data.sold = sold;
+      if (objLevel !== undefined) data.objLevel = objLevel;
+      const ad = await prisma.ad.update({ where: { id }, data });
+      res.json(ad);
+    } catch (err) {
+      next(err);
+    }
+  },
+
   async listHelpDesk(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
       const tickets = await prisma.helpDesk.findMany({
@@ -140,6 +156,133 @@ export const adminController = {
         take: 100,
       });
       res.json(payments);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async listVideos(_req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const videos = await prisma.video.findMany({
+        where: { accepted: 0 },
+        include: {
+          ad: { select: { id: true, name: true } },
+          user: { select: { id: true, username: true } },
+        },
+        orderBy: { id: 'desc' },
+      });
+      res.json(videos);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async updateVideo(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const { accepted } = req.body;
+      if (accepted !== 0 && accepted !== 1) throw new AppError(400, 'Valore accepted non valido (0 o 1)');
+
+      const video = await prisma.video.findUnique({ where: { id }, include: { ad: { select: { userId: true } } } });
+      if (!video) throw new AppError(404, 'Video non trovato');
+
+      const updatedVideo = await prisma.video.update({ where: { id }, data: { accepted } });
+
+      if (accepted === 1) {
+        // Publish ad and notify owner (type 3)
+        await prisma.ad.update({ where: { id: video.adId }, data: { published: 1 } });
+        await prisma.notification.create({ data: { userId: video.ad.userId, type: 3, object: video.id } });
+      } else {
+        // Notify owner of rejection (type 4)
+        await prisma.notification.create({ data: { userId: video.ad.userId, type: 4, object: video.id } });
+      }
+
+      res.json(updatedVideo);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async listReviews(_req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const reviews = await prisma.review.findMany({
+        where: { isPublished: false },
+        include: {
+          ad: { select: { id: true, name: true } },
+          user: { select: { id: true, username: true } },
+        },
+        orderBy: { datetime: 'desc' },
+      });
+      res.json(reviews);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async updateReview(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const { isPublished } = req.body;
+
+      const review = await prisma.review.findUnique({ where: { id } });
+      if (!review) throw new AppError(404, 'Recensione non trovata');
+
+      const updatedReview = await prisma.review.update({ where: { id }, data: { isPublished } });
+
+      if (isPublished) {
+        await prisma.ad.update({ where: { id: review.adId }, data: { hasReviews: true } });
+      }
+
+      res.json(updatedReview);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async updateHelpDesk(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const { closed, assignedTo } = req.body;
+
+      const ticket = await prisma.helpDesk.findUnique({ where: { id } });
+      if (!ticket) throw new AppError(404, 'Ticket non trovato');
+
+      const data: { closed?: boolean; assignedTo?: number | null } = {};
+      if (closed !== undefined) data.closed = closed;
+      if (assignedTo !== undefined) data.assignedTo = assignedTo;
+
+      const updatedTicket = await prisma.helpDesk.update({ where: { id }, data });
+      res.json(updatedTicket);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async replyHelpDesk(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const ticketId = parseInt(req.params.id, 10);
+      const ticket = await prisma.helpDesk.findUnique({ where: { id: ticketId } });
+      if (!ticket) throw new AppError(404, 'Ticket non trovato');
+
+      const { message } = req.body;
+      if (!message) throw new AppError(400, 'Messaggio richiesto');
+
+      const reply = await prisma.helpDesk.create({
+        data: {
+          userId: req.user!.id,
+          type: ticket.type,
+          title: ticket.title,
+          message,
+          isReply: true,
+          replyTo: ticketId,
+          parentM: ticketId,
+        },
+      });
+
+      // Notify ticket owner (type 6)
+      await prisma.notification.create({ data: { userId: ticket.userId, type: 6, object: reply.id } });
+
+      res.status(201).json(reply);
     } catch (err) {
       next(err);
     }

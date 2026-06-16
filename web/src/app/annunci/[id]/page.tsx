@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { MapPin, Eye, Phone, MessageSquare, Heart, Star, Share2 } from 'lucide-react';
 import Link from 'next/link';
+import PhotoGallery from '@/components/ads/PhotoGallery';
+import { Photo } from '@/types';
 
 async function getAd(id: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ads/${id}`, { next: { revalidate: 60 } });
@@ -41,13 +43,7 @@ export default async function AdDetailPage({ params }: { params: Promise<{ id: s
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Main content */}
         <div className="flex-1 min-w-0">
-          {/* Image gallery placeholder */}
-          <div className="card h-80 flex items-center justify-center text-gray-400 mb-6">
-            <div className="text-center">
-              <p className="text-lg mb-1">Nessuna immagine</p>
-              <p className="text-sm">Il venditore non ha aggiunto foto</p>
-            </div>
-          </div>
+          <PhotoGallery photos={(ad.photos ?? []) as Photo[]} />
 
           {/* Title & Price */}
           <div className="flex items-start justify-between gap-4 mb-4">

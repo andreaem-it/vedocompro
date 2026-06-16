@@ -192,4 +192,197 @@ export const usersController = {
       next(err);
     }
   },
+
+  async markMessageRead(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const msg = await prisma.message.findUnique({ where: { id } });
+      if (!msg) throw new AppError(404, 'Messaggio non trovato');
+      if (msg.toUserId !== req.user!.id) throw new AppError(403, 'Non autorizzato');
+
+      await prisma.message.update({ where: { id }, data: { isRead: 1 } });
+      res.json({ message: 'Messaggio segnato come letto.' });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async bulkMarkRead(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const { ids } = req.body as { ids: number[] };
+      if (!Array.isArray(ids) || ids.length === 0) throw new AppError(400, 'IDs richiesti');
+      await prisma.message.updateMany({
+        where: { id: { in: ids }, toUserId: req.user!.id },
+        data: { isRead: 1 },
+      });
+      res.json({ updated: true });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async bulkMarkUnread(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const { ids } = req.body as { ids: number[] };
+      if (!Array.isArray(ids) || ids.length === 0) throw new AppError(400, 'IDs richiesti');
+      await prisma.message.updateMany({
+        where: { id: { in: ids }, toUserId: req.user!.id },
+        data: { isRead: 0 },
+      });
+      res.json({ updated: true });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async deleteMessage(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const msg = await prisma.message.findUnique({ where: { id } });
+      if (!msg) throw new AppError(404, 'Messaggio non trovato');
+      if (msg.fromUserId !== req.user!.id && msg.toUserId !== req.user!.id) {
+        throw new AppError(403, 'Non autorizzato');
+      }
+      await prisma.message.delete({ where: { id } });
+      res.status(204).send();
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async getFeedback(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const feedback = await prisma.feedback.findMany({
+        where: { userId: req.user!.id },
+        select: {
+          id: true, vote: true, description: true, positive: true, datetime: true,
+          fromUser: { select: { id: true, username: true, pic: true } },
+        },
+        orderBy: { datetime: 'desc' },
+      });
+      res.json(feedback);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async giveFeedback(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const recipientId = parseInt(req.params.id, 10);
+      if (recipientId === req.user!.id) throw new AppError(400, 'Non puoi lasciare feedback a te stesso');
+
+      const recipient = await prisma.user.findUnique({ where: { id: recipientId } });
+      if (!recipient) throw new AppError(404, 'Utente non trovato');
+
+      const { vote, description, positive } = req.body;
+      if (!vote || vote < 1 || vote > 5) throw new AppError(400, 'Voto deve essere tra 1 e 5');
+      if (positive !== 0 && positive !== 1) throw new AppError(400, 'Positive deve essere 0 o 1');
+
+      const feedback = await prisma.feedback.create({
+        data: { userId: recipientId, fromUserId: req.user!.id, vote, description, positive },
+      });
+
+      // Notify recipient (type 5)
+      await prisma.notification.create({ data: { userId: recipientId, type: 5, object: feedback.id } });
+
+      // Update user points
+      const pointsDelta = positive === 1 ? 1 : -1;
+      const newPoints = Math.max(0, recipient.points + pointsDelta);
+      await prisma.user.update({ where: { id: recipientId }, data: { points: newPoints } });
+
+      res.status(201).json(feedback);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async getHelpDesk(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const tickets = await prisma.helpDesk.findMany({
+        where: { userId: req.user!.id, isReply: false },
+        orderBy: { timest: 'desc' },
+      });
+
+      // Include replies for each ticket
+      const ticketsWithReplies = await Promise.all(
+        tickets.map(async (ticket) => {
+          const replies = await prisma.helpDesk.findMany({
+            where: { isReply: true, parentM: ticket.id },
+            orderBy: { timest: 'asc' },
+          });
+          return { ...ticket, replies };
+        }),
+      );
+
+      res.json(ticketsWithReplies);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async createHelpDesk(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const { type, title, message } = req.body;
+      const ticket = await prisma.helpDesk.create({
+        data: { userId: req.user!.id, type, title, message },
+      });
+      res.status(201).json(ticket);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async replyHelpDesk(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const ticketId = parseInt(req.params.id, 10);
+      const ticket = await prisma.helpDesk.findUnique({ where: { id: ticketId } });
+      if (!ticket) throw new AppError(404, 'Ticket non trovato');
+
+      const { message } = req.body;
+      const reply = await prisma.helpDesk.create({
+        data: {
+          userId: req.user!.id,
+          type: ticket.type,
+          title: ticket.title,
+          message,
+          isReply: true,
+          replyTo: ticketId,
+          parentM: ticketId,
+        },
+      });
+
+      // Notify ticket owner (type 12)
+      await prisma.notification.create({ data: { userId: ticket.userId, type: 12, object: reply.id } });
+
+      res.status(201).json(reply);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async getBuys(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const buys = await prisma.buy.findMany({
+        where: { fromUid: req.user!.id },
+        include: { ad: { select: { id: true, name: true, price: true } } },
+        orderBy: { id: 'desc' },
+      });
+      res.json(buys);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async getSells(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const sells = await prisma.sell.findMany({
+        where: { fromUid: req.user!.id },
+        include: { ad: { select: { id: true, name: true, price: true } } },
+        orderBy: { id: 'desc' },
+      });
+      res.json(sells);
+    } catch (err) {
+      next(err);
+    }
+  },
 };

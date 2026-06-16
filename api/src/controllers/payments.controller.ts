@@ -98,4 +98,30 @@ export const paymentsController = {
       next(err);
     }
   },
+
+  async applyCoupon(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const { code } = req.body;
+      if (!code) throw new AppError(400, 'Codice coupon richiesto');
+
+      const coupon = await prisma.coupon.findUnique({ where: { code } });
+      if (!coupon || coupon.valid !== 1) throw new AppError(400, 'Coupon non valido');
+
+      // Mark coupon as used
+      await prisma.coupon.update({ where: { id: coupon.id }, data: { valid: 0 } });
+
+      // Add value as silver credits to user
+      const updatedUser = await prisma.user.update({
+        where: { id: req.user!.id },
+        data: { creditsSilver: { increment: coupon.value } },
+        select: {
+          id: true, creditsSilver: true, creditsGold: true, creditsBronze: true,
+        },
+      });
+
+      res.json({ applied: true, value: coupon.value, credits: updatedUser });
+    } catch (err) {
+      next(err);
+    }
+  },
 };

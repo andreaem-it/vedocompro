@@ -36,6 +36,7 @@ const AD_SELECT = {
   updateTime: true,
   category: { select: { id: true, name: true } },
   user: { select: { id: true, username: true, name: true, pic: true, isCompany: true } },
+  photos: { select: { id: true, url: true, order: true }, orderBy: { order: 'asc' } },
 } satisfies Prisma.AdSelect;
 
 export const adsService = {
@@ -101,6 +102,7 @@ export const adsService = {
           select: { id: true, rating: true, comment: true, datetime: true, user: { select: { id: true, username: true, pic: true } } },
         },
         videos: { where: { accepted: 1 }, select: { id: true, filename: true } },
+        photos: { select: { id: true, url: true, order: true }, orderBy: { order: 'asc' } },
         _count: { select: { wishlists: true, reviews: true } },
       },
     });

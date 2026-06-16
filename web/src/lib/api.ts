@@ -45,6 +45,9 @@ export const adsApi = {
   update: (id: number, data: unknown) => api.put(`/ads/${id}`, data),
   delete: (id: number) => api.delete(`/ads/${id}`),
   toggleWishlist: (id: number) => api.post(`/ads/${id}/wishlist`),
+  uploadPhotos: (id: number, formData: FormData) => api.post(`/ads/${id}/photos`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  deletePhoto: (id: number, photoId: number) => api.delete(`/ads/${id}/photos/${photoId}`),
+  promoteAd: (id: number, level: string) => api.post(`/ads/${id}/promote`, { level }),
 };
 
 // Users
@@ -61,6 +64,8 @@ export const usersApi = {
     api.post('/users/me/messages', data),
   getWishlist: () => api.get('/users/me/wishlist'),
   getMyAds: () => api.get('/users/me/ads'),
+  getMyFeedback: () => api.get('/users/me/feedback'),
+  uploadAvatar: (formData: FormData) => api.post('/users/me/avatar', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
 };
 
 // Admin
@@ -72,6 +77,14 @@ export const adminApi = {
   listAds: (params?: Record<string, string>) => api.get('/admin/ads', { params }),
   listPayments: () => api.get('/admin/payments'),
   listHelpDesk: () => api.get('/admin/helpdesk'),
+  toggleAdPublished: (id: number, published: number) => api.put(`/admin/ads/${id}`, { published }),
+  listVideos: (params?: Record<string, string>) => api.get('/admin/videos', { params }),
+  approveVideo: (id: number) => api.put(`/admin/videos/${id}`, { accepted: 1 }),
+  rejectVideo: (id: number) => api.put(`/admin/videos/${id}`, { accepted: 0 }),
+  listReviews: (params?: Record<string, string>) => api.get('/admin/reviews', { params }),
+  approveReview: (id: number) => api.put(`/admin/reviews/${id}`, { isPublished: true }),
+  rejectReview: (id: number) => api.put(`/admin/reviews/${id}`, { isPublished: false }),
+  replyHelpdesk: (id: number, message: string) => api.post(`/admin/helpdesk/${id}/reply`, { message }),
 };
 
 // Lookup data
@@ -80,4 +93,26 @@ export const lookupApi = {
   regions: () => api.get('/regions'),
   provinces: (regioneId?: number) => api.get('/provinces', { params: regioneId ? { regioneId } : {} }),
   products: () => api.get('/payments/products'),
+};
+
+// Feedback
+export const feedbackApi = {
+  giveFeedback: (userId: number, data: { vote: number; description: string; positive: number }) =>
+    api.post(`/users/${userId}/feedback`, data),
+};
+
+// Helpdesk
+export const helpdeskApi = {
+  getMyTickets: () => api.get('/users/me/helpdesk'),
+  createTicket: (data: { type: number; title: string; message: string }) =>
+    api.post('/users/me/helpdesk', data),
+  replyToTicket: (id: number, message: string) =>
+    api.post(`/users/me/helpdesk/${id}/reply`, { message }),
+};
+
+// Payments
+export const paymentsApi = {
+  getProducts: () => api.get('/payments/products'),
+  getMyPayments: () => api.get('/payments/my'),
+  applyCoupon: (code: string) => api.post('/payments/coupon', { code }),
 };
