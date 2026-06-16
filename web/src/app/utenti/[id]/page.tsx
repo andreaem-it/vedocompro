@@ -10,8 +10,9 @@ async function getProfile(id: string) {
   return res.json();
 }
 
-export default async function PublicProfilePage({ params }: { params: { id: string } }) {
-  const profile = await getProfile(params.id);
+export default async function PublicProfilePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const profile = await getProfile(id);
   if (!profile) notFound();
 
   const avgRating = profile.feedbackReceived?.length

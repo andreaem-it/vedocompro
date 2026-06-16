@@ -9,8 +9,9 @@ async function getAd(id: string) {
   return res.json();
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const ad = await getAd(params.id);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const ad = await getAd(id);
   if (!ad) return { title: 'Annuncio non trovato' };
   return {
     title: ad.name,
@@ -26,8 +27,9 @@ const CONDITION_LABELS: Record<string, string> = {
   for_parts: 'Per ricambi',
 };
 
-export default async function AdDetailPage({ params }: { params: { id: string } }) {
-  const ad = await getAd(params.id);
+export default async function AdDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const ad = await getAd(id);
   if (!ad) notFound();
 
   const avgRating = ad.reviews?.length
