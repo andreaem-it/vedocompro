@@ -57,10 +57,7 @@ export default function Footer() {
                     <li key={link}>
                       <Link
                         href={`/annunci?categoria=${link.toLowerCase().replace(/ /g, '-')}`}
-                        className="text-xs transition-colors"
-                        style={{ color: '#505050' }}
-                        onMouseEnter={(e) => (e.currentTarget.style.color = '#646464')}
-                        onMouseLeave={(e) => (e.currentTarget.style.color = '#505050')}
+                        className="text-xs footer-link"
                       >
                         {link}
                       </Link>
