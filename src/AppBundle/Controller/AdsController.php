@@ -2,11 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AdsOrders;
 use AppBundle\Entity\BusinessStats;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Reviews;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Videos;
+use AppBundle\Form\AdsOrdersType;
 use AppBundle\Form\AdsUserType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
@@ -238,6 +240,24 @@ class AdsController extends Controller
 
             }
 
+            $orderForm = $this->createForm(AdsOrdersType::class);
+
+            $orderForm->handleRequest($request);
+
+            if($orderForm->isSubmitted() && $orderForm->isValid() && $request->request->has('appbundle_adsorders')) {
+                $em = $this->getDoctrine()->getManager();
+
+                $order = new AdsOrders();
+
+                $order->setItem($item);
+                $order->setUser($this->getUser()->getId());
+                $order->setOrderDate(new \DateTime());
+                $order->setStatus(1);
+
+                $em->persist($order);
+                $em->flush();
+            }
+
             return $this->render('ads/view.html.twig', [
                 'ad_info' => $ad,
                 'video' => $video,
@@ -248,6 +268,7 @@ class AdsController extends Controller
                 'similar' => $similar,
                 'reviews' => $reviews,
                 'reviewsForm' => $reviewsForm->createView(),
+                'orderForm' => $orderForm->createView(),
                 'ads' => $this
             ]);
         } else {

@@ -22,13 +22,12 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
+ * @final since sonata-project/block-bundle 3.0
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class SonataBlockExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     final public function getConfiguration(array $config, ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
@@ -47,9 +46,6 @@ class SonataBlockExtension extends Extension
         return new Configuration($defaultTemplates);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
@@ -92,10 +88,6 @@ class SonataBlockExtension extends Extension
         $container->getDefinition('sonata.block.twig.global')->replaceArgument(0, $config['templates']);
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @param array            $config
-     */
     public function configureBlockContainers(ContainerBuilder $container, array $config)
     {
         $container->setParameter('sonata.block.container.types', $config['container']['types']);
@@ -103,9 +95,6 @@ class SonataBlockExtension extends Extension
         $container->getDefinition('sonata.block.form.type.container_template')->replaceArgument(0, $config['container']['templates']);
     }
 
-    /**
-     * @param array $config
-     */
     public function fixConfigurationDeprecation(array &$config)
     {
         if (\count(array_diff($config['profiler']['container_types'], $config['container']['types']))) {
@@ -113,10 +102,6 @@ class SonataBlockExtension extends Extension
         }
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @param array            $config
-     */
     public function configureMenus(ContainerBuilder $container, array $config)
     {
         $bundles = $container->getParameter('kernel.bundles');
@@ -129,10 +114,6 @@ class SonataBlockExtension extends Extension
         $container->getDefinition('sonata.block.menu.registry')->replaceArgument(0, $config['menus']);
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @param array            $config
-     */
     public function configureContext(ContainerBuilder $container, array $config)
     {
         $container->setParameter($this->getAlias().'.blocks', $config['blocks']);
@@ -141,10 +122,6 @@ class SonataBlockExtension extends Extension
         $container->setAlias('sonata.block.context_manager', $config['context_manager']);
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @param array            $config
-     */
     public function configureCache(ContainerBuilder $container, array $config)
     {
         $container->setAlias('sonata.block.cache.handler', $config['http_cache']['handler']);
@@ -165,10 +142,6 @@ class SonataBlockExtension extends Extension
         $container->setParameter($this->getAlias().'.cache_blocks', $cacheBlocks);
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @param array            $config
-     */
     public function configureLoaderChain(ContainerBuilder $container, array $config)
     {
         $types = [];
@@ -179,10 +152,6 @@ class SonataBlockExtension extends Extension
         $container->setParameter('sonata_blocks.block_types', $types);
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @param array            $config
-     */
     public function configureForm(ContainerBuilder $container, array $config)
     {
         $defaults = $config['default_contexts'];
@@ -202,6 +171,8 @@ class SonataBlockExtension extends Extension
                 $contexts[$context][] = $service;
             }
         }
+
+        $container->setParameter('sonata_blocks.default_contexts', $defaults);
     }
 
     /**
@@ -278,6 +249,10 @@ class SonataBlockExtension extends Extension
      */
     public function configureClassesToCompile()
     {
+        if (!\is_callable([$this, 'addClassesToCompile'])) {
+            return;
+        }
+
         $this->addClassesToCompile([
             'Sonata\\BlockBundle\\Block\\BlockLoaderChain',
             'Sonata\\BlockBundle\\Block\\BlockLoaderInterface',
@@ -315,9 +290,6 @@ class SonataBlockExtension extends Extension
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNamespace()
     {
         return 'http://sonata-project.com/schema/dic/block';

@@ -1,0 +1,313 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="container-fluid scrollbar">
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-sm-12">
+                    <h4 class="panel-title">{{item.name}}</h4>
+                    <small class="mt-3 panel-title">
+                        <a href="">Informatica</a>
+                        <i class="fa fa-angle-right"></i>
+                        <a href="">Smartwatch</a>
+                    </small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <img src="{% for pic in item.pics %}{{ pic }}{% endfor %}" class="img-fluid">
+                    <a id="addtocart-btn" class="btn btn-outline-primary btn-block" href="">
+                        <i class="fa fa-cart-plus"></i>
+                        <span></span>
+                    </a>
+                    <a id="wishlist-btn" class="btn btn-outline-primary btn-block" href="">
+                        <i class="fa fa-heart-o"></i>
+                        <span></span>
+                    </a>
+
+                </div>
+                <div class="col-sm-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="prodotto-tab" data-toggle="tab" href="#prodotto" role="tab" aria-controls="prodotto" aria-selected="true">
+                                        <i class="fa fa-reorder fa-lg mb-2"></i>
+                                        <span class="hidden-xs mt-2">Prodotto</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="false">
+                                        <i class="fa fa-info-circle fa-lg mb-2"></i>
+                                        <span class="hidden-xs mt-2">Informazioni</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="spedizione-tab" data-toggle="tab" href="#spedizione" role="tab" aria-controls="spedizione" aria-selected="false">
+                                        <i class="fa fa-truck fa-lg mb-2"></i>
+                                        <span class="hidden-xs mt-2">Spedizione</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="recesso-tab" data-toggle="tab" href="#recesso" role="tab" aria-controls="recesso" aria-selected="false">
+                                        <i class="fa fa-undo fa-lg mb-2"></i>
+                                        <span class="hidden-xs mt-2">Recesso</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="recensioni-tab" data-toggle="tab" href="#recensioni" role="tab" aria-controls="recensioni" aria-selected="false">
+                                        <i class="fa fa-heart fa-lg mb-2"></i>
+                                        <span class="hidden-xs mt-2">Recensioni</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content mb-3" id="myTabContent">
+                                <div class="tab-pane fade show active mt-5" id="prodotto" role="tabpanel" aria-labelledby="prodotto-tab">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h4 class="text-product-title">{{item.name}}</h4>
+                                            <h5 class="text-product-price">{{item.price|number_format(2)}} €</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="meta">
+                                                <div class="categories">
+                                                    <span>
+                                                        <i class="fa fa-tags"></i>
+                                                        <a href="" title="category">
+                                                            {{item.category.0.name}}
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <hr>
+                                            <p>
+                                                {{ item.description|truncate(200, true) }}
+                                            </p>
+                                            <a class="readmore-link" href="#info">Continua a leggere...</a>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <form>
+                                                <div class="form-inline">
+                                                    <div class="form-group">
+                                                        <label class="mr-2" for="size">Misura</label>
+                                                        <select class="form-control" name="size">
+                                                            <option value="">Seleziona Misura</option>
+                                                            <option value="1">38 mm</option>
+                                                            <option value="2">42 mm</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="mr-2 ml-2" for="color">Colore</label>
+                                                        <select class="form-control" name="color">
+                                                            <option value="">Seleziona Colore</option>
+                                                            <option value="1">Nero</option>
+                                                            <option value="2">Bianco</option>
+                                                            <option value="3">Giallo</option>
+                                                            <option value="4">Blu</option>
+                                                            <option value="5">Rosso</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mt-5">
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade mt-5" id="info" role="tabpanel" aria-labelledby="info-tab">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {{item.description}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade mt-5" id="spedizione" role="tabpanel" aria-labelledby="spedizione-tab">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h5>Spedizione</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            Corriere
+                                                        </th>
+                                                        <th>
+                                                            Tempo Spedizione
+                                                        </th>
+                                                        <th>
+                                                            Prezzo
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for itm in item.shipmentServices %}
+                                                    <tr>
+                                                        <td>
+                                                            <img style="width: 100px" src="{{ asset('img/shop/shipment_services/' ~ itm.serviceLogo) }}" class="img-responsive">
+                                                        </td>
+                                                        <td>
+                                                            {{itm.expectedDelivery }} giorni
+                                                        </td>
+                                                        <td>
+                                                            {{itm.basePrice}} €
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5>Articoli simili</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'template/footer.html.twig' %}
+    <style>
+        .nav-tabs {
+            border-bottom: 5px solid #4296c1;
+            margin: -20px;
+            padding-bottom: 1px;
+        }
+        .nav-link:hover {
+            background-color: #4296c169!important;
+            border-color: transparent!important;
+            border-radius: 0!important;
+        }
+        .nav-link.active {
+            background-color: #4296c1!important;
+            color: #FFF!important;
+            border-color: transparent!important;
+            border-radius: 0!important;
+        }
+        .nav-tabs li a {
+            text-decoration: none;
+            margin-right: 0px;
+            padding: 14px 20px 9px;
+            border: none;
+            font-size: 12px;
+            color: #797d7b;
+            text-transform: uppercase;
+            background-color: #ffffff;
+            outline: 0 none;
+            -webkit-border-radius: 0;
+            -webkit-background-clip: padding-box;
+            -moz-border-radius: 0;
+            -moz-background-clip: padding;
+            border-radius: 0;
+            background-clip: padding-box;
+        }
+        a {
+            transition: color 200ms ease-in-out, background-color 200ms ease-in-out, border-color 200ms ease-in-out;
+            color: inherit;
+        }
+        a:hover {
+            color: #4296c1!important;
+            text-decoration: none;
+        }
+        .nav-tabs li a [class*=" fa-"] {
+            display: block;
+            text-align: center;
+        }
+        .nav-link {
+            margin: -1px!important;
+        }
+        .text-product-title {
+            font-weight: 300;
+        }
+        .text-product-price {
+            font-weight: 700;
+            font-size: 1.50rem;
+            color: #4296c1;
+        }
+        .meta {
+            color: #606362;
+            font-size: 12px;
+            text-decoration: none;
+            /* zoom: 1; */
+        }
+        .meta:before {
+            content: '';
+            display: block;
+        }
+        .categories a {
+            color: inherit;
+            text-decoration: none;
+        }
+        #btn-animate {
+            animation-name: pulse;
+            animation-duration: 4s;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            $('#wishlist-btn').hover(function() {
+                $(this).find('span').text('Aggiungi alla wishlist').addClass('btn-animate');
+            }, function() {
+                $(this).find('span').text('').removeClass('btn-animate');
+            });
+        });
+        $('#wishlist-btn').click(function (e) {
+            e.preventDefault();
+            $(this).find('i').removeClass('fa-heart-o').addClass('fa-heart');
+            $(this).hover(function() {
+                $(this).find('span').text('Aggiunto alla wishlist!').addClass('btn-animate');
+            }, function() {
+                $(this).find('span').text('').removeClass('btn-animate');
+            });
+        });
+        $(document).ready(function(){
+            $('#addtocart-btn').hover(function() {
+                $(this).find('span').text('Aggiungi al carrello').addClass('btn-animate');
+            }, function() {
+                $(this).find('span').text('').removeClass('btn-animate');
+            });
+        });
+        $('#addtocart-btn').click(function (e) {
+            e.preventDefault();
+            $(this).find('i').removeClass('fa-cart-plus').addClass('fa-check');
+            $(this).hover(function() {
+                $(this).find('span').text('Aggiunto al carrello!').addClass('btn-animate');
+            }, function() {
+                $(this).find('span').text('').removeClass('btn-animate');
+            });
+        });
+        $(function() {
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                history.pushState({}, '', e.target.hash);
+            });
+
+            var hash = document.location.hash;
+            var prefix = "tab_";
+            if (hash) {
+                $('.nav-tabs a[href="'+hash.replace(prefix,"")+'"]').tab('show');
+            }
+        });
+        $('.readmore-link').click(function() {
+            $('.nav-tabs a[href="' + this.getAttribute('href') + '"]').click();
+        });
+    </script>
+{% endblock %}

@@ -33,8 +33,11 @@
         "jackalope/jackalope-jackrabbit": "1.*",
         "jms/security-extra-bundle": "1.6.1",
         "knplabs/knp-gaufrette-bundle": "~0.4",
+        "leafo/scssphp": "^0.8.4",
         "liip/imagine-bundle": "^1.9",
+        "mobiledetect/mobiledetectlib": "^2.8",
         "ninsuo/symfony-collection": "^2.1",
+        "patchwork/jsqueeze": "^2.0",
         "petkopara/multi-search-bundle": "^1.0@dev",
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/httplug-bundle": "^1.7",
@@ -42,6 +45,7 @@
         "sensio/framework-extra-bundle": "3.*",
         "sensio/generator-bundle": "^3.0",
         "stfalcon/tinymce-bundle": "2.3.0",
+        "suncat/mobile-detect-bundle": "1.0.*",
         "symfony-cmf/symfony-cmf": "2.0.0",
         "symfony/assetic-bundle": "^2.8",
         "symfony/finder": "^3.3",
@@ -49,11 +53,12 @@
         "symfony/polyfill-apcu": "^1.0",
         "symfony/swiftmailer-bundle": "^2.3.10",
         "symfony/symfony": "3.*",
-        "twig/twig": "^1.0||^2.0",
-        "twitter/bootstrap": "4.2.*"
+        "twig/extensions": "^1.5",
+        "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
+        "symfony/maker-bundle": "^1.14",
         "symfony/phpunit-bridge": "^3.0"
     },
     "scripts": {

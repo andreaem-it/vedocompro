@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="container-fluid scrollbar">
+        <div class="container">
+            <div class="row mt-5 pt-5">
+                <div class="col-12">
+                    <h2>Shop > Carrello</h2>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <h5>Hai 0 articoli nel carrello</h5>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12 table-responsive table-hover">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Codice Articolo</th>
+                                <th>Nome</th>
+                                <th>Prezzo</th>
+                                <th>Qt.à</th>
+                                <th>IVA</th>
+                                <th>Totale</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="">000</td>
+                                <td>Articolo Prova</td>
+                                <td>19.90</td>
+                                <td>
+                                    <div class="form-group-sm form-inline">
+                                        <a href="" class="btn btn-sm btn-secondary">-</a>
+                                        <input type="number" step="1" class="form-control text-center" value="2" style="width: 50px;">
+                                        <a href="" class="btn btn-sm btn-secondary">+</a>
+                                    </div>
+
+                                </td>
+                                <td>22 %</td>
+                                <td><strong>39.80</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8"></div>
+                <div class="col-4 table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th>SubTotale</th>
+                            <td>39.80</td>
+                        </tr>
+                        <tr>
+                            <th>IVA</th>
+                            <td>8.75</td>
+                        </tr>
+                        <tr>
+                            <th>TOTALE</th>
+                            <td>48.55</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10"></div>
+                <div class="col-2">
+                    <a href="" class="btn btn-primary btn-block btn-lg color-light-blue">
+                        Pagamento
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'template/footer.html.twig' %}
+{% endblock %}

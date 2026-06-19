@@ -405,3 +405,97 @@ Stack trace:
 [06-Feb-2018 17:55:43 UTC] PHP  10. spl_autoload_call() /home/ubuntu/workspace/var/cache/dev/classes.php:3798
 [06-Feb-2018 17:55:43 UTC] PHP  11. Symfony\Component\Debug\DebugClassLoader->loadClass() /home/ubuntu/workspace/var/cache/dev/classes.php:3798
 >>>>>>> 6d95c65f7fea27694db0f5b4e6b76f70c89a765e
+[31-Oct-2019 21:19:52 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[01-Nov-2019 20:09:12 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[01-Nov-2019 20:09:12 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[01-Nov-2019 20:09:12 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[01-Nov-2019 20:09:12 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[04-Nov-2019 17:36:03 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[29-Nov-2019 08:39:59 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[29-Nov-2019 08:39:59 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[29-Nov-2019 08:39:59 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 00:13:42 UTC] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '}' in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php:1110
+Stack trace:
+#0 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/composer/ClassLoader.php(322): Composer\Autoload\includeFile('/Users/andreaem...')
+#1 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php(159): Composer\Autoload\ClassLoader->loadClass('AppBundle\\Contr...')
+#2 [internal function]: Symfony\Component\Debug\DebugClassLoader->loadClass('AppBundle\\Contr...')
+#3 [internal function]: spl_autoload_call('AppBundle\\Contr...')
+#4 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(62): ReflectionClass->__construct('AppBundle\\Contr...')
+#5 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/Fil in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php on line 1110
+[03-Dec-2019 00:16:37 UTC] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting ')' in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php:1110
+Stack trace:
+#0 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/composer/ClassLoader.php(322): Composer\Autoload\includeFile('/Users/andreaem...')
+#1 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php(159): Composer\Autoload\ClassLoader->loadClass('AppBundle\\Contr...')
+#2 [internal function]: Symfony\Component\Debug\DebugClassLoader->loadClass('AppBundle\\Contr...')
+#3 [internal function]: spl_autoload_call('AppBundle\\Contr...')
+#4 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(62): ReflectionClass->__construct('AppBundle\\Contr...')
+#5 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php on line 1110
+[03-Dec-2019 11:24:02 UTC] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting ')' in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php:1111
+Stack trace:
+#0 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/composer/ClassLoader.php(322): Composer\Autoload\includeFile('/Users/andreaem...')
+#1 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php(159): Composer\Autoload\ClassLoader->loadClass('AppBundle\\Contr...')
+#2 [internal function]: Symfony\Component\Debug\DebugClassLoader->loadClass('AppBundle\\Contr...')
+#3 [internal function]: spl_autoload_call('AppBundle\\Contr...')
+#4 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(62): ReflectionClass->__construct('AppBundle\\Contr...')
+#5 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php on line 1111
+[03-Dec-2019 11:24:07 UTC] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting ')' in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php:1111
+Stack trace:
+#0 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/composer/ClassLoader.php(322): Composer\Autoload\includeFile('/Users/andreaem...')
+#1 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php(159): Composer\Autoload\ClassLoader->loadClass('AppBundle\\Contr...')
+#2 [internal function]: Symfony\Component\Debug\DebugClassLoader->loadClass('AppBundle\\Contr...')
+#3 [internal function]: spl_autoload_call('AppBundle\\Contr...')
+#4 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(62): ReflectionClass->__construct('AppBundle\\Contr...')
+#5 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php on line 1111
+[03-Dec-2019 11:24:21 UTC] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting ')' in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php:1111
+Stack trace:
+#0 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/composer/ClassLoader.php(322): Composer\Autoload\includeFile('/Users/andreaem...')
+#1 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php(159): Composer\Autoload\ClassLoader->loadClass('AppBundle\\Contr...')
+#2 [internal function]: Symfony\Component\Debug\DebugClassLoader->loadClass('AppBundle\\Contr...')
+#3 [internal function]: spl_autoload_call('AppBundle\\Contr...')
+#4 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(62): ReflectionClass->__construct('AppBundle\\Contr...')
+#5 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php on line 1111
+[03-Dec-2019 11:24:39 UTC] PHP Fatal error:  Uncaught Symfony\Component\Debug\Exception\FatalThrowableError: Parse error: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting ')' in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php:1111
+Stack trace:
+#0 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/composer/ClassLoader.php(322): Composer\Autoload\includeFile('/Users/andreaem...')
+#1 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php(159): Composer\Autoload\ClassLoader->loadClass('AppBundle\\Contr...')
+#2 [internal function]: Symfony\Component\Debug\DebugClassLoader->loadClass('AppBundle\\Contr...')
+#3 [internal function]: spl_autoload_call('AppBundle\\Contr...')
+#4 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php(62): ReflectionClass->__construct('AppBundle\\Contr...')
+#5 /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src in /Users/andreaemili/PhpstormProjects/vedocompro/src/AppBundle/Controller/AdminController.php on line 1111
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[03-Dec-2019 12:34:27 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[06-Dec-2019 15:55:01 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[06-Dec-2019 15:55:01 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[06-Dec-2019 15:55:01 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[06-Dec-2019 20:49:37 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 11986976 bytes) in /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/DataCollector/DumpDataCollector.php on line 152
+[06-Dec-2019 20:49:45 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 11986976 bytes) in /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/DataCollector/DumpDataCollector.php on line 152
+[06-Dec-2019 20:49:56 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 11986976 bytes) in /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/DataCollector/DumpDataCollector.php on line 152
+[06-Dec-2019 20:50:05 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 6247044 bytes) in /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Profiler/FileProfilerStorage.php on line 166
+[06-Dec-2019 20:50:42 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 6247044 bytes) in /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Profiler/FileProfilerStorage.php on line 166
+[06-Dec-2019 20:50:56 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes) in /Users/andreaemili/PhpstormProjects/vedocompro/vendor/symfony/symfony/src/Symfony/Component/VarDumper/Cloner/VarCloner.php on line 271
+[07-Dec-2019 13:17:06 UTC] PHP Warning:  Unknown: Headers already sent. You cannot change the session module's ini settings at this time in Unknown on line 0
+[19-Dec-2019 12:45:49 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library 'intl' (tried: /usr/lib/php/extensions/no-debug-non-zts-20180731/intl (dlopen(/usr/lib/php/extensions/no-debug-non-zts-20180731/intl, 0x0009): dlopen(): file not found: /usr/lib/php/extensions/no-debug-non-zts-20180731/intl), /usr/lib/php/extensions/no-debug-non-zts-20180731/intl.so (dlopen(/usr/lib/php/extensions/no-debug-non-zts-20180731/intl.so, 0x0009): dlopen(): file not found: /usr/lib/php/extensions/no-debug-non-zts-20180731/intl.so)) in Unknown on line 0

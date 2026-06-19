@@ -405,6 +405,7 @@ video::-webkit-media-controls-fullscreen-button {
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
+    z-index:-1000;
 }
 
 .pace-inactive {
@@ -414,7 +415,7 @@ video::-webkit-media-controls-fullscreen-button {
 .pace .pace-progress {
     background: rgba(34, 153, 221, 0.5);
     position: fixed;
-    z-index: 2000;
+    z-index: -1000;
     top: 0;
     right: 100%;
     width: 100%;

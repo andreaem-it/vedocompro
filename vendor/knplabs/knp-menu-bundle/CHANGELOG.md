@@ -1,3 +1,21 @@
+## 2.3.0 (2019-09-19)
+
+* Bumped minimum PHP version to 7.1
+* Enforced some coding standards
+* Deprecated some options
+* Removed deprecations in tests
+
+## 2.2.2 (2019-06-17)
+
+New features:
+
+* Symfony 3.3+ autowiring support for `Knp\Menu\Provider\MenuProviderInterface`
+* Tested with PHP 7.3
+
+Bugfixes:
+
+* Do not use deprecated method with Symfony 4.2
+
 ## 2.2.1 (2017-12-24)
 
 Bugfixes:

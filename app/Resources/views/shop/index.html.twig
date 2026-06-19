@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'template/header.html.twig' %}
+    <div class="container-fluid scrollbar">
+        <div class="container-fluid">
+            <div class="row mt-5">
+                <div class="col-md-2">
+                    <div id="accordion">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h5 class="m-0">
+                                    <a id="categoryCollapse" class="btn btn-link no-decoration" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        <h6 class="txt-categories mb-0">CATEGORIE</h6>
+                                    </a>
+                                </h5>
+                            </div>
+
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="card-body">
+                                    {% for cat in categories %}
+                                        {% if cat.father == null %}
+                                            <h6 class="mt-1">{{ cat }}</h6>
+                                        {% else %}
+                                            <a href="" class="page-link border-0">{{ cat }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="row ">
+                        {% for itm in items %}
+                            <div class="col-md-3 mt-4">
+                                <div class="card card-item">
+                                    <div class="card-body p-0">
+                                        <a href="{{ url('shop_item_details', {'cat': itm.category.0.name|lower, 'id': itm.id, 'product': func.slugify(itm.name) }) }}">
+                                            <img class="card-img-top" src="{% for pic in itm.pics %}{{ pic }}{% endfor %}">
+                                        </a>
+                                        {% if itm.inStock < 5 %}
+                                            <div class="ribbon ribbon-top-left"><span>Ultimo rimasto</span></div>
+                                        {% endif %}
+                                        <div class="text-center"><h5>{{ itm.name }}</h5></div>
+                                        <div class="text-center"><small>{{ itm.category.0.name }}</small></div>
+                                        <div  class="text-success text-bold py-3 mx-auto"><h4 class="text-center">{{ itm.price }} €</h4></div>
+                                        <a href="" class="btn btn-block btn-secondary"><i class="fa fa-cart-plus"></i> Aggiungi al Carrello</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .card-item {
+            background-color: #E8E8E8;
+            border: 0!important;
+            border-radius: 0px;
+        }
+        .dropdown-menu {
+            min-width: 350px;
+        }
+        .lastone-badge {
+            top: -25px;
+            position: relative;
+            width: 50%;
+            color: #FFF;
+            margin-bottom: -25px;
+        }
+        .ribbon {
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            position: absolute;
+        }
+        .ribbon::before,
+        .ribbon::after {
+            position: absolute;
+            z-index: -1;
+            content: '';
+            display: block;
+            border: 5px solid #2980b9;
+        }
+        .ribbon span {
+            position: absolute;
+            display: block;
+            width: 225px;
+            padding: 15px 0;
+            background-color: #3498db;
+            box-shadow: 0 5px 10px rgba(0,0,0,.1);
+            color: #fff;
+            font: 700 14px/1 'Lato', sans-serif;
+            text-shadow: 0 1px 1px rgba(0,0,0,.2);
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* top left*/
+        .ribbon-top-left {
+            top: -10px;
+            left: -10px;
+        }
+        .ribbon-top-left::before,
+        .ribbon-top-left::after {
+            border-top-color: transparent;
+            border-left-color: transparent;
+        }
+        .ribbon-top-left::before {
+            top: 0;
+            right: 0;
+        }
+        .ribbon-top-left::after {
+            bottom: 0;
+            left: 0;
+        }
+        .ribbon-top-left span {
+            right: -25px;
+            top: 30px;
+            transform: rotate(-45deg);
+        }
+        .btn {
+            border: 2px solid transparent;
+        }
+        .txt-categories {
+            font-weight: 300;
+            font-stretch: expanded;
+        }
+    </style>
+    <script>
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            $('#collapseOne').removeClass('show');
+        }
+    </script>
+    {% include 'template/footer.html.twig' %}
+{% endblock %}
