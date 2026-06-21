@@ -14,10 +14,10 @@
 /var/sessions/*
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
-/web/bundles/
-/web/webtemp/*
-!web/webtemp/.gitkeep
-/web/uploads/
+/legacy-web/bundles/
+/legacy-web/webtemp/*
+!legacy-web/webtemp/.gitkeep
+/legacy-web/uploads/
 
 # Node.js
 node_modules/
