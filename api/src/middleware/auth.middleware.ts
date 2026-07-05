@@ -3,7 +3,14 @@ import { verifyJwt } from '../utils/tokens';
 import { AuthenticatedRequest, JwtPayload } from '../types';
 
 function toReqUser(payload: JwtPayload): Express.User {
-  return { id: payload.sub, email: payload.email, username: payload.username, isAdmin: payload.isAdmin };
+  return {
+    id: payload.sub,
+    email: payload.email,
+    username: payload.username,
+    isAdmin: payload.isAdmin,
+    isSuperAdmin: payload.isSuperAdmin,
+    impersonatedBy: payload.impersonatedBy,
+  };
 }
 
 export function requireAuth(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
@@ -26,6 +33,16 @@ export function requireAdmin(req: AuthenticatedRequest, res: Response, next: Nex
   requireAuth(req, res, () => {
     if (!req.user?.isAdmin) {
       res.status(403).json({ error: 'Admin access required' });
+      return;
+    }
+    next();
+  });
+}
+
+export function requireSuperAdmin(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
+  requireAuth(req, res, () => {
+    if (!req.user?.isSuperAdmin) {
+      res.status(403).json({ error: 'Accesso riservato ai super-admin' });
       return;
     }
     next();

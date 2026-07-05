@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { adminApi } from '@/lib/api';
 import Link from 'next/link';
-import { CheckCircle, XCircle, Eye } from 'lucide-react';
+import { CheckCircle, XCircle, Eye, Pencil } from 'lucide-react';
 import clsx from 'clsx';
+import AdminExportButton from '@/components/admin/AdminExportButton';
 
 const LEVEL_LABELS: Record<number, string> = { 0: 'Standard', 1: 'Bronze', 2: 'Silver', 3: 'Gold' };
 const LEVEL_COLORS: Record<number, string> = {
@@ -32,7 +33,14 @@ export default function AdminAdsPage() {
 
   return (
     <div className="p-8">
-      <h1 className="mb-6">Gestione Annunci</h1>
+      <div className="flex items-center justify-between gap-3 mb-6">
+        <h1>Gestione Annunci</h1>
+        <AdminExportButton
+          endpoint="/admin/export/ads"
+          filename={`vedocompro-annunci-${new Date().toISOString().slice(0, 10)}.csv`}
+          params={published !== '' ? { published } : undefined}
+        />
+      </div>
 
       <div className="flex gap-2 mb-4">
         {[{ label: 'Tutti', value: '' }, { label: 'Pubblicati', value: '1' }, { label: 'Bozze', value: '0' }].map((f) => (
@@ -91,6 +99,9 @@ export default function AdminAdsPage() {
                     <div className="flex gap-1">
                       <Link href={`/annunci/${ad.id}`} className="p-1.5 rounded text-gray-400 hover:text-brand hover:bg-brand/10 transition-colors" title="Visualizza">
                         <Eye className="w-4 h-4" />
+                      </Link>
+                      <Link href={`/admin/annunci/${ad.id}`} className="p-1.5 rounded text-gray-400 hover:text-brand hover:bg-brand/10 transition-colors" title="Modifica">
+                        <Pencil className="w-4 h-4" />
                       </Link>
                       {ad.published === 0 ? (
                         <button

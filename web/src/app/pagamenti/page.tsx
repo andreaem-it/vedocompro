@@ -15,6 +15,9 @@ export default function PagamentiPage() {
   const queryClient = useQueryClient();
   const [couponCode, setCouponCode] = useState('');
   const [couponMsg, setCouponMsg] = useState('');
+  const apiBaseUrl = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1').replace(/\/$/, '');
+  const appBaseUrl = (process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000').replace(/\/$/, '');
+  const paypalEmail = process.env.NEXT_PUBLIC_PAYPAL_EMAIL;
 
   useEffect(() => {
     if (!isLoading && !user) router.replace('/login');
@@ -95,6 +98,11 @@ export default function PagamentiPage() {
       {products && products.length > 0 && (
         <div>
           <h2 className="mb-4">Acquista pacchetti crediti</h2>
+          {!paypalEmail && (
+            <div className="mb-4 px-4 py-3 rounded-lg text-sm border bg-amber-50 border-amber-200 text-amber-800">
+              Acquisto crediti temporaneamente non disponibile: account PayPal non configurato.
+            </div>
+          )}
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
             {products.map((product) => (
               <div key={product.id} className="card p-5">
@@ -109,14 +117,20 @@ export default function PagamentiPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xl font-bold">€{parseFloat(product.price).toFixed(2)}</span>
-                  <Link
-                    href={`https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${process.env.NEXT_PUBLIC_PAYPAL_EMAIL}&item_number=${product.id}&amount=${product.price}&currency_code=EUR&custom=${user.id}&return=${process.env.NEXT_PUBLIC_APP_URL}/pagamenti&notify_url=${process.env.NEXT_PUBLIC_API_URL}/payments/ipn`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-primary text-sm"
-                  >
-                    Acquista
-                  </Link>
+                  {paypalEmail ? (
+                    <Link
+                      href={`https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${paypalEmail}&item_number=${product.id}&amount=${product.price}&currency_code=EUR&custom=${user.id}&return=${appBaseUrl}/pagamenti&notify_url=${apiBaseUrl}/payments/ipn`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-primary text-sm"
+                    >
+                      Acquista
+                    </Link>
+                  ) : (
+                    <button type="button" disabled className="btn-secondary text-sm opacity-60">
+                      Non disponibile
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

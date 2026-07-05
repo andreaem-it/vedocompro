@@ -2,6 +2,17 @@ import { Request, Response, NextFunction } from 'express';
 import { body, validationResult } from 'express-validator';
 import { authService } from '../services/auth.service';
 import { config } from '../config';
+import { verifyRecaptcha } from '../services/recaptcha.service';
+import {
+  assertLoginAllowed,
+  recordLoginAttempt,
+  assertRegisterAllowed,
+  assertForgotAllowed,
+} from '../services/auth-rate-limit.service';
+
+function clientIp(req: Request): string {
+  return req.ip ?? req.socket.remoteAddress ?? 'unknown';
+}
 
 export const registerValidation = [
   body('email').isEmail().normalizeEmail(),
@@ -23,6 +34,8 @@ export const authController = {
       return;
     }
     try {
+      await assertRegisterAllowed(clientIp(req));
+      await verifyRecaptcha(req.body.recaptchaToken);
       const result = await authService.register(req.body);
       res.status(201).json(result);
     } catch (err) {
@@ -38,8 +51,16 @@ export const authController = {
     }
     try {
       const { emailOrUsername, password } = req.body;
-      const result = await authService.login(emailOrUsername, password);
-      res.json(result);
+      const ip = clientIp(req);
+      await assertLoginAllowed(emailOrUsername, ip);
+      try {
+        const result = await authService.login(emailOrUsername, password);
+        await recordLoginAttempt(emailOrUsername, ip, true);
+        res.json(result);
+      } catch (loginErr) {
+        await recordLoginAttempt(emailOrUsername, ip, false);
+        throw loginErr;
+      }
     } catch (err) {
       next(err);
     }
@@ -47,6 +68,8 @@ export const authController = {
 
   async forgotPassword(req: Request, res: Response, next: NextFunction) {
     try {
+      await assertForgotAllowed(String(req.body.email ?? ''), clientIp(req));
+      await verifyRecaptcha(req.body.recaptchaToken);
       await authService.requestPasswordReset(req.body.email);
       res.json({ message: 'Se l\'email esiste, riceverai le istruzioni per il reset.' });
     } catch (err) {
@@ -58,6 +81,15 @@ export const authController = {
     try {
       await authService.resetPassword(req.body.token, req.body.password);
       res.json({ message: 'Password aggiornata con successo.' });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async verifyEmail(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await authService.verifyEmail(req.params.code);
+      res.json(result);
     } catch (err) {
       next(err);
     }

@@ -129,8 +129,11 @@ export default function HelpdeskPage() {
                 onClick={() => setExpandedId(expandedId === ticket.id ? null : ticket.id)}
               >
                 <div className="flex items-center gap-3 flex-wrap">
-                  <span className={clsx('badge', ticket.closed ? 'bg-gray-100 text-gray-600' : 'bg-green-100 text-green-700')}>
-                    {ticket.closed ? 'Chiuso' : 'Aperto'}
+                  <span className={clsx(
+                    'badge',
+                    ticket.closed === 1 ? 'bg-gray-100 text-gray-600' : ticket.closed === 2 ? 'bg-blue-50 text-blue-700' : 'bg-green-100 text-green-700',
+                  )}>
+                    {ticket.closed === 1 ? 'Chiuso' : ticket.closed === 2 ? 'Assegnato' : 'Aperto'}
                   </span>
                   <span className="badge bg-blue-50 text-blue-700">{TICKET_TYPES[ticket.type]}</span>
                   <span className="font-medium text-sm">{ticket.title}</span>
@@ -157,7 +160,7 @@ export default function HelpdeskPage() {
                     </div>
                   )}
 
-                  {!ticket.closed && (
+                  {ticket.closed !== 1 && (
                     <div className="flex gap-2 mt-3">
                       <input
                         value={replyText}

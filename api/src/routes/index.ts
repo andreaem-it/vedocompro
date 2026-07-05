@@ -5,6 +5,14 @@ import adsRoutes from './ads.routes';
 import usersRoutes from './users.routes';
 import adminRoutes from './admin.routes';
 import paymentsRoutes from './payments.routes';
+import cronRoutes from './cron.routes';
+import shopRoutes from './shop.routes';
+import adminShopRoutes from './admin-shop.routes';
+import adminCategoriesRoutes from './admin-categories.routes';
+import adminCouponsRoutes from './admin-coupons.routes';
+import adminMailRoutes from './admin-mail.routes';
+import adminSuggestsRoutes from './admin-suggests.routes';
+import businessRoutes from './business.routes';
 
 const router = Router();
 
@@ -22,6 +30,14 @@ router.use('/ads', adsRoutes);
 router.use('/users', usersRoutes);
 router.use('/admin', adminRoutes);
 router.use('/payments', paymentsRoutes);
+router.use('/cron', cronRoutes);
+router.use('/shop', shopRoutes);
+router.use('/admin/shop', adminShopRoutes);
+router.use('/admin/categories', adminCategoriesRoutes);
+router.use('/admin/coupons', adminCouponsRoutes);
+router.use('/admin/mail-templates', adminMailRoutes);
+router.use('/admin/suggests', adminSuggestsRoutes);
+router.use('/business', businessRoutes);
 
 router.get('/categories', async (_req, res, next) => {
   try {
@@ -31,6 +47,21 @@ router.get('/categories', async (_req, res, next) => {
       orderBy: { name: 'asc' },
     });
     res.json(categories);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Campi configurati per una categoria: usati dal form annuncio e dai filtri di ricerca
+router.get('/categories/:id/fields', async (req, res, next) => {
+  try {
+    const categoryId = parseInt(req.params.id, 10);
+    const fields = await prisma.advancedField.findMany({
+      where: { categoryId },
+      orderBy: { sortOrder: 'asc' },
+      select: { id: true, name: true, type: true, options: true, filterable: true, required: true },
+    });
+    res.json(fields);
   } catch (err) {
     next(err);
   }

@@ -91,6 +91,7 @@ router.post('/register', registerValidation, authController.register);
 router.post('/login', loginValidation, authController.login);
 router.post('/forgot-password', authController.forgotPassword);
 router.post('/reset-password', authController.resetPassword);
+router.get('/verify/:code', authController.verifyEmail);
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
 router.get('/google/callback', passport.authenticate('google', { session: false, failureRedirect: '/login' }), authController.oauthCallback);

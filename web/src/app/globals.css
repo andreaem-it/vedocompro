@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -40,4 +40,29 @@
   .badge-gold { @apply badge bg-yellow-100 text-yellow-800; }
   .badge-silver { @apply badge bg-gray-100 text-gray-700; }
   .badge-bronze { @apply badge bg-orange-100 text-orange-800; }
+
+  /* Pattern "box" admin in stile AdminLTE (box/box-header/box-body del legacy),
+     riusabile in tutte le pagine admin per uniformità visiva. */
+  .admin-box {
+    @apply card;
+  }
+  .admin-box-header {
+    @apply flex items-center justify-between px-4 py-3 border-b border-gray-200;
+  }
+  .admin-box-title {
+    @apply text-base font-semibold text-gray-800;
+  }
+  .admin-box-body {
+    @apply p-4;
+  }
+  .admin-breadcrumb {
+    @apply flex items-center gap-2 text-sm text-gray-500;
+  }
+  .admin-breadcrumb a {
+    @apply text-brand hover:underline;
+  }
+  /* "small-box" AdminLTE: icona grande + numero grande + colore distintivo per categoria */
+  .admin-small-box {
+    @apply relative overflow-hidden rounded-xl shadow-sm text-white flex flex-col justify-between min-h-[110px] transition-transform hover:-translate-y-0.5 hover:shadow-md;
+  }
 }

@@ -1,23 +1,23 @@
-# Symfony legacy
-/.web-server-pid
-/app/config/parameters.yml
-/build/
-/phpunit.xml
-/var/*
-!/var/cache
-/var/cache/*
-!var/cache/.gitkeep
-!/var/logs
-/var/logs/*
-!var/logs/.gitkeep
-!/var/sessions
-/var/sessions/*
-!var/sessions/.gitkeep
-!var/SymfonyRequirements.php
-/legacy-web/bundles/
-/legacy-web/webtemp/*
-!legacy-web/webtemp/.gitkeep
-/legacy-web/uploads/
+# Symfony legacy (isolated in legacy-symfony/, kept separate from web/ + api/)
+/legacy-symfony/.web-server-pid
+/legacy-symfony/app/config/parameters.yml
+/legacy-symfony/build/
+/legacy-symfony/phpunit.xml
+/legacy-symfony/var/*
+!/legacy-symfony/var/cache
+/legacy-symfony/var/cache/*
+!legacy-symfony/var/cache/.gitkeep
+!/legacy-symfony/var/logs
+/legacy-symfony/var/logs/*
+!legacy-symfony/var/logs/.gitkeep
+!/legacy-symfony/var/sessions
+/legacy-symfony/var/sessions/*
+!legacy-symfony/var/sessions/.gitkeep
+!legacy-symfony/var/SymfonyRequirements.php
+/legacy-symfony/web/bundles/
+/legacy-symfony/web/webtemp/*
+!legacy-symfony/web/webtemp/.gitkeep
+/legacy-symfony/web/uploads/
 
 # Node.js
 node_modules/
@@ -47,3 +47,4 @@ prisma/migrations/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.vercel

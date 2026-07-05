@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Settings, Heart, MessageSquare, FileText, Award, ThumbsUp, HeadphonesIcon, CreditCard, Camera } from 'lucide-react';
+import { Settings, Heart, MessageSquare, FileText, Award, ThumbsUp, HeadphonesIcon, CreditCard, Camera, Package, Star, Building2, MapPin, CalendarDays, PauseCircle, CheckCircle2, XCircle, HandCoins, BellRing, BarChart3, ShoppingCart, Truck, Pencil, Megaphone, User } from 'lucide-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { usersApi } from '@/lib/api';
 import AdCard from '@/components/ads/AdCard';
@@ -41,15 +41,37 @@ export default function ProfiloPage() {
 
   if (!user) return null;
 
+  const statusBadge = (ad: { published: number }) => {
+    if (ad.published === 1) {
+      return (
+        <span className="badge bg-green-100 text-green-700 flex items-center gap-1">
+          <CheckCircle2 className="w-3 h-3" /> Pubblicato
+        </span>
+      );
+    }
+    if (ad.published === 2) {
+      return (
+        <span className="badge bg-red-100 text-red-700 flex items-center gap-1">
+          <XCircle className="w-3 h-3" /> Rifiutato
+        </span>
+      );
+    }
+    return (
+      <span className="badge bg-amber-100 text-amber-700 flex items-center gap-1">
+        <PauseCircle className="w-3 h-3" /> In attesa
+      </span>
+    );
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6">
       {/* Profile header */}
-      <div className="card p-6 mb-6 flex items-center gap-6 flex-wrap">
-        <div className="relative">
+      <div className="card p-6 mb-6 flex items-start gap-6 flex-wrap">
+        <div className="relative flex-shrink-0">
           {user.pic ? (
-            <Image src={user.pic} alt={user.username} width={80} height={80} className="rounded-full object-cover w-20 h-20" />
+            <Image src={user.pic} alt={user.username} width={96} height={96} className="rounded-full object-cover w-24 h-24" />
           ) : (
-            <div className="w-20 h-20 rounded-full bg-brand/10 flex items-center justify-center text-2xl font-bold text-brand">
+            <div className="w-24 h-24 rounded-full bg-brand/10 flex items-center justify-center text-3xl font-bold text-brand">
               {user.username[0].toUpperCase()}
             </div>
           )}
@@ -69,15 +91,40 @@ export default function ProfiloPage() {
           />
         </div>
 
-        <div className="flex-1">
-          <h1 className="mb-1">{user.realname || user.name}</h1>
-          <p className="text-gray-500">@{user.username}</p>
-          {user.isCompany ? <span className="badge bg-blue-100 text-blue-700 mt-2">Account aziendale</span> : null}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap mb-1">
+            <h1>{user.realname || user.name}</h1>
+            {user.isCompany ? (
+              <span className="badge bg-blue-100 text-blue-700 flex items-center gap-1">
+                <Building2 className="w-3 h-3" /> Account aziendale
+              </span>
+            ) : null}
+          </div>
+          <p className="text-gray-500 mb-2">@{user.username}</p>
+
+          <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+            {user.city && (
+              <span className="flex items-center gap-1">
+                <MapPin className="w-4 h-4" /> {user.city}
+              </span>
+            )}
+            {user.dateJoin && (
+              <span className="flex items-center gap-1">
+                <CalendarDays className="w-4 h-4" /> Registrato dal {new Date(user.dateJoin).toLocaleDateString('it-IT')}
+              </span>
+            )}
+            <span className="flex items-center gap-1">
+              <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" /> {user.points} punti reputazione
+            </span>
+          </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2">
           <Link href="/profilo/impostazioni" className="btn-secondary">
             <Settings className="w-4 h-4" /> Impostazioni
+          </Link>
+          <Link href={`/utenti/${user.id}`} className="btn-secondary">
+            <User className="w-4 h-4" /> Profilo pubblico
           </Link>
         </div>
       </div>
@@ -116,13 +163,29 @@ export default function ProfiloPage() {
           <HeadphonesIcon className="w-5 h-5 text-brand" />
           <span className="font-medium">Supporto</span>
         </Link>
+        <Link href="/profilo/acquisti-vendite" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
+          <Package className="w-5 h-5 text-brand" />
+          <span className="font-medium">Acquisti e vendite</span>
+        </Link>
+        <Link href="/profilo/offerte" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
+          <HandCoins className="w-5 h-5 text-brand" />
+          <span className="font-medium">Le mie offerte</span>
+        </Link>
+        <Link href="/profilo/ricerche-salvate" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
+          <BellRing className="w-5 h-5 text-brand" />
+          <span className="font-medium">Ricerche salvate</span>
+        </Link>
+        <Link href="/profilo/statistiche" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
+          <BarChart3 className="w-5 h-5 text-brand" />
+          <span className="font-medium">Statistiche vendite</span>
+        </Link>
         <Link href="/pagamenti" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
           <CreditCard className="w-5 h-5 text-brand" />
           <span className="font-medium">Pagamenti</span>
         </Link>
-        <Link href="/business" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
+        <Link href={user.isCompany ? '/business/dashboard' : '/business'} className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
           <Award className="w-5 h-5 text-brand" />
-          <span className="font-medium">Passa a Business</span>
+          <span className="font-medium">{user.isCompany ? 'Dashboard Business' : 'Passa a Business'}</span>
         </Link>
       </div>
 
@@ -140,15 +203,42 @@ export default function ProfiloPage() {
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {myAds.map((ad: any) => (
-            <div key={ad.id} className="relative group">
+            <div key={ad.id} className="space-y-2">
               <AdCard ad={ad} />
-              <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Link href={`/annunci/${ad.id}/modifica`} className="p-1.5 bg-white rounded shadow text-xs font-medium hover:bg-brand hover:text-white transition-colors">
-                  Modifica
-                </Link>
-                <Link href={`/annunci/${ad.id}/promuovi`} className="p-1.5 bg-white rounded shadow text-xs font-medium hover:bg-brand hover:text-white transition-colors">
-                  Promuovi
-                </Link>
+              <div className="rounded-lg border border-gray-200 bg-white p-3 text-sm">
+                <div className="mb-3 flex flex-wrap gap-2">
+                  {statusBadge(ad)}
+                  {ad.sold === 1 ? (
+                    <span className="badge bg-gray-100 text-gray-700 flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3" /> Venduto
+                    </span>
+                  ) : null}
+                  <span className="badge bg-white text-gray-700 flex items-center gap-1">
+                    <Package className="w-3 h-3" /> {user.isCompany ? `${ad.availableQuantity ?? 1} pezzi` : 'Pezzo unico'}
+                  </span>
+                  {ad.canBeOrdered ? (
+                    <span className="badge bg-green-50 text-green-700 flex items-center gap-1">
+                      <ShoppingCart className="w-3 h-3" /> Compralo subito
+                    </span>
+                  ) : (
+                    <span className="badge bg-gray-100 text-gray-600 flex items-center gap-1">
+                      <ShoppingCart className="w-3 h-3" /> Solo offerte/contatto
+                    </span>
+                  )}
+                  {ad.shippingAvailable ? (
+                    <span className="badge bg-blue-50 text-blue-700 flex items-center gap-1">
+                      <Truck className="w-3 h-3" /> Spedizione
+                    </span>
+                  ) : null}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Link href={`/annunci/${ad.id}/modifica`} className="btn-secondary justify-center text-xs">
+                    <Pencil className="w-3.5 h-3.5" /> Modifica
+                  </Link>
+                  <Link href={`/annunci/${ad.id}/promuovi`} className="btn-secondary justify-center text-xs">
+                    <Megaphone className="w-3.5 h-3.5" /> Promuovi
+                  </Link>
+                </div>
               </div>
             </div>
           ))}

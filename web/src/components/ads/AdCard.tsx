@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart, MapPin, Eye, Star } from 'lucide-react';
+import { Heart, MapPin, Eye, Star, Truck } from 'lucide-react';
 import { Ad } from '@/types';
 import clsx from 'clsx';
 
@@ -34,11 +34,15 @@ export default function AdCard({ ad, onToggleWishlist }: AdCardProps) {
 
   return (
     <div className={clsx('card overflow-hidden hover:shadow-md transition-shadow group', promotionLevel === 3 && 'ring-2 ring-yellow-400')}>
-      {/* Thumbnail placeholder */}
+      {/* Thumbnail */}
       <div className="relative h-48 bg-gray-100">
-        <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">
-          Nessuna immagine
-        </div>
+        {ad.photos && ad.photos.length > 0 ? (
+          <Image src={ad.photos[0].url} alt={ad.name} fill className="object-cover" />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">
+            Nessuna immagine
+          </div>
+        )}
 
         {promotionLevel > 0 && (
           <div className={clsx('absolute top-2 left-2', LEVEL_CLASS[promotionLevel])}>
@@ -75,6 +79,7 @@ export default function AdCard({ ad, onToggleWishlist }: AdCardProps) {
           <span className="flex items-center gap-1">
             <MapPin className="w-3 h-3" />
             {ad.location}, {ad.provincia}
+            {ad.distanceKm !== undefined && <span>({ad.distanceKm.toLocaleString('it-IT')} km)</span>}
           </span>
           <span className="flex items-center gap-1">
             <Eye className="w-3 h-3" />
@@ -88,9 +93,14 @@ export default function AdCard({ ad, onToggleWishlist }: AdCardProps) {
           )}
         </div>
 
-        <div className="flex items-center gap-2 mt-3">
+        <div className="flex items-center gap-2 mt-3 flex-wrap">
           <span className="badge bg-gray-100 text-gray-600">{ad.category.name}</span>
           <span className="badge bg-blue-50 text-blue-700">{CONDITION_LABELS[ad.objCondition] ?? ad.objCondition}</span>
+          {ad.shippingAvailable && (
+            <span className="badge bg-green-50 text-green-700 flex items-center gap-1">
+              <Truck className="w-3 h-3" /> Spedizione
+            </span>
+          )}
         </div>
       </Link>
     </div>

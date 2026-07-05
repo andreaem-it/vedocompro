@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { usersApi } from '@/lib/api';
-import { ThumbsUp, ThumbsDown, Star } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, Star, Award, BadgeCheck } from 'lucide-react';
 import Link from 'next/link';
 import { Feedback } from '@/types';
 
@@ -25,22 +25,31 @@ export default function FeedbackPage() {
 
   const positiveCount = feedbacks?.filter((f) => f.positive === 1).length ?? 0;
   const negativeCount = feedbacks?.filter((f) => f.positive === 0).length ?? 0;
+  const totalCount = feedbacks?.length ?? 0;
+  const positivePercent = totalCount > 0 ? Math.round((positiveCount / totalCount) * 100) : null;
 
   if (!user) return null;
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 sm:px-6">
-      <h1 className="mb-2">Il mio feedback</h1>
+      <h1 className="flex items-center gap-2 mb-2"><ThumbsUp className="w-6 h-6 text-brand" /> Il mio feedback</h1>
 
       {feedbacks && feedbacks.length > 0 && (
-        <div className="flex items-center gap-4 mb-6 text-sm text-gray-600">
+        <div className="card p-4 mb-6 flex items-center gap-6 flex-wrap text-sm">
+          {positivePercent !== null && (
+            <span className="flex items-center gap-1.5 font-semibold text-green-600">
+              <Award className="w-5 h-5" /> {positivePercent}% positivi
+            </span>
+          )}
           <span className="flex items-center gap-1 text-green-600">
             <ThumbsUp className="w-4 h-4" /> {positiveCount} positivi
           </span>
           <span className="flex items-center gap-1 text-red-500">
             <ThumbsDown className="w-4 h-4" /> {negativeCount} negativi
           </span>
-          <span className="text-gray-400">Punteggio: {user.points}</span>
+          <span className="flex items-center gap-1 text-gray-500 ml-auto">
+            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" /> Punteggio reputazione: {user.points}
+          </span>
         </div>
       )}
 
@@ -80,6 +89,11 @@ export default function FeedbackPage() {
                   </span>
                 </div>
                 <p className="text-sm text-gray-600">{fb.description}</p>
+                {fb.orderId && (
+                  <p className="inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded-full mt-2">
+                    <BadgeCheck className="w-3.5 h-3.5" /> Acquisto verificato
+                  </p>
+                )}
               </div>
             </div>
           ))}

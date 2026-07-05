@@ -3,8 +3,44 @@ import { Prisma } from '@prisma/client';
 import { AuthenticatedRequest } from '../types';
 import { AppError } from '../middleware/error.middleware';
 import { config } from '../config';
-import crypto from 'crypto';
 import { prisma } from '../lib/prisma';
+
+function requiredIpnField(body: Record<string, unknown>, field: string): string {
+  const value = body[field];
+  if (typeof value !== 'string' || value.trim() === '') {
+    throw new AppError(400, `Missing IPN field: ${field}`);
+  }
+  return value.trim();
+}
+
+function jsonSafePayload(body: Record<string, unknown>): Prisma.InputJsonObject {
+  return Object.fromEntries(
+    Object.entries(body).map(([key, value]) => [key, value === undefined || value === null ? null : String(value)]),
+  ) as Prisma.InputJsonObject;
+}
+
+async function createWebhookLog(body: Record<string, unknown>) {
+  return prisma.paymentWebhookLog.create({
+    data: {
+      provider: 'paypal',
+      eventId: typeof body.txn_id === 'string' ? body.txn_id : null,
+      status: 'received',
+      rawPayload: jsonSafePayload(body),
+    },
+  }).catch(() => null);
+}
+
+async function updateWebhookLog(id: number | undefined, status: string, error?: string | null) {
+  if (!id) return;
+  await prisma.paymentWebhookLog.update({
+    where: { id },
+    data: {
+      status,
+      error: error ? error.slice(0, 1000) : null,
+      processedAt: new Date(),
+    },
+  }).catch(() => {});
+}
 
 export const paymentsController = {
   async getProducts(_req: Request, res: Response, next: NextFunction) {
@@ -17,8 +53,16 @@ export const paymentsController = {
   },
 
   async ipnWebhook(req: Request, res: Response, next: NextFunction) {
+    let webhookLogId: number | undefined;
     try {
-      const params = new URLSearchParams(req.body);
+      const ipnBody = req.body as Record<string, unknown>;
+      const webhookLog = await createWebhookLog(ipnBody);
+      webhookLogId = webhookLog?.id;
+
+      const params = new URLSearchParams();
+      for (const [key, value] of Object.entries(ipnBody)) {
+        if (value !== undefined && value !== null) params.append(key, String(value));
+      }
       params.set('cmd', '_notify-validate');
 
       const paypalUrl =
@@ -34,37 +78,54 @@ export const paymentsController = {
       const verification = await verifyRes.text();
 
       if (verification !== 'VERIFIED') {
+        await updateWebhookLog(webhookLogId, 'invalid', 'PayPal verification failed');
         res.status(400).send('INVALID');
         return;
       }
 
-      const txnId = req.body.txn_id as string;
-      const paymentStatus = req.body.payment_status as string;
-      const receiverEmail = req.body.receiver_email as string;
-      const itemNumber = parseInt(req.body.item_number as string, 10);
-      const userId = parseInt(req.body.custom as string, 10);
-      const price = parseFloat(req.body.mc_gross as string);
-      const currency = req.body.mc_currency as string;
-      const payerEmail = req.body.payer_email as string;
+      const txnId = requiredIpnField(ipnBody, 'txn_id');
+      const paymentStatus = requiredIpnField(ipnBody, 'payment_status');
+      const receiverEmail = requiredIpnField(ipnBody, 'receiver_email');
+      const itemNumber = parseInt(requiredIpnField(ipnBody, 'item_number'), 10);
+      const userId = parseInt(requiredIpnField(ipnBody, 'custom'), 10);
+      const gross = requiredIpnField(ipnBody, 'mc_gross');
+      const price = new Prisma.Decimal(gross);
+      const currency = requiredIpnField(ipnBody, 'mc_currency');
+      const payerEmail = requiredIpnField(ipnBody, 'payer_email');
+
+      if (!Number.isFinite(itemNumber) || !Number.isFinite(userId)) {
+        throw new AppError(400, 'Invalid product or user id');
+      }
+      if (price.lte(0)) throw new AppError(400, 'Invalid payment amount');
+      if (!config.paypal.email) throw new AppError(500, 'PayPal receiver email not configured');
 
       if (receiverEmail.toLowerCase() !== config.paypal.email.toLowerCase()) {
+        await updateWebhookLog(webhookLogId, 'invalid_receiver', receiverEmail);
         res.status(400).send('INVALID_RECEIVER');
         return;
       }
 
       if (paymentStatus !== 'Completed') {
+        await updateWebhookLog(webhookLogId, 'ignored_non_completed', paymentStatus);
         res.sendStatus(200);
         return;
       }
 
       const existing = await prisma.payment.findFirst({ where: { paypalTxnId: txnId } });
       if (existing) {
+        await updateWebhookLog(webhookLogId, 'duplicate', txnId);
         res.sendStatus(200);
         return;
       }
 
       const product = await prisma.product.findUnique({ where: { id: itemNumber } });
       if (!product) throw new AppError(400, 'Product not found');
+      if (currency !== 'EUR') throw new AppError(400, 'Invalid currency');
+      if (!price.equals(product.price)) {
+        throw new AppError(400, 'Invalid payment amount');
+      }
+      const user = await prisma.user.findUnique({ where: { id: userId } });
+      if (!user) throw new AppError(400, 'User not found');
 
       await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
         await tx.payment.create({
@@ -80,8 +141,10 @@ export const paymentsController = {
         });
       });
 
+      await updateWebhookLog(webhookLogId, 'processed');
       res.sendStatus(200);
     } catch (err) {
+      await updateWebhookLog(webhookLogId, 'error', err instanceof Error ? err.message : 'Errore sconosciuto');
       next(err);
     }
   },
@@ -106,6 +169,16 @@ export const paymentsController = {
 
       const coupon = await prisma.coupon.findUnique({ where: { code } });
       if (!coupon || coupon.valid !== 1) throw new AppError(400, 'Coupon non valido');
+      const user = await prisma.user.findUnique({
+        where: { id: req.user!.id },
+        select: { email: true, username: true },
+      });
+      if (!user) throw new AppError(404, 'Utente non trovato');
+
+      const assigned = coupon.assigned.trim().toLowerCase();
+      if (assigned && assigned !== user.email.toLowerCase() && assigned !== user.username.toLowerCase()) {
+        throw new AppError(403, 'Coupon assegnato a un altro utente');
+      }
 
       // Mark coupon as used
       await prisma.coupon.update({ where: { id: coupon.id }, data: { valid: 0 } });

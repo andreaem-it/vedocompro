@@ -24,15 +24,15 @@ export const authService = {
     }
 
     const hashed = await hashPassword(data.password);
+    const code = generateSecureToken();
     const user = await prisma.user.create({
-      data: { ...data, password: hashed },
+      data: { ...data, password: hashed, code, isActive: false },
       select: { id: true, email: true, username: true, name: true, isAdmin: true },
     });
 
-    await mailService.sendWelcome(user.email, user.username).catch(() => {});
+    await mailService.sendVerifyEmail(user.email, code).catch(() => {});
 
-    const token = signJwt({ sub: user.id, email: user.email, username: user.username, isAdmin: user.isAdmin });
-    return { user, token };
+    return { user, message: 'Registrazione completata. Controlla la tua email per attivare l\'account.' };
   },
 
   async login(emailOrUsername: string, password: string) {
@@ -44,8 +44,26 @@ export const authService = {
     const valid = await verifyPassword(password, user.password);
     if (!valid) throw new AppError(401, 'Credenziali non valide');
 
+    if (!user.isActive) {
+      throw new AppError(403, 'Account non attivo. Verifica la tua email o contatta il supporto.');
+    }
+
     const token = signJwt({ sub: user.id, email: user.email, username: user.username, isAdmin: user.isAdmin });
     return { user: toSafeUser(user), token };
+  },
+
+  async verifyEmail(code: string) {
+    if (!code || code.length < 16) throw new AppError(400, 'Codice di verifica non valido');
+
+    const user = await prisma.user.findFirst({ where: { code } });
+    if (!user) throw new AppError(400, 'Codice di verifica non valido o già utilizzato');
+
+    if (!user.isActive) {
+      await prisma.user.update({ where: { id: user.id }, data: { isActive: true } });
+      await mailService.sendWelcome(user.email, user.username).catch(() => {});
+    }
+
+    return { message: 'Account verificato con successo. Ora puoi accedere.' };
   },
 
   async findOrCreateOAuthUser(data: {

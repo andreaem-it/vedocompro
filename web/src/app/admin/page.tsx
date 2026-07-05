@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { adminApi } from '@/lib/api';
-import { Users, FileText, MessageSquare, Euro, TrendingUp } from 'lucide-react';
+import { Users, FileText, MessageSquare, Euro, LayoutDashboard, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 interface Stats {
@@ -34,40 +34,53 @@ export default function AdminDashboard() {
 
   const stats = data?.stats as Stats;
 
+  // Pattern "small-box" AdminLTE: colore di sfondo distintivo per categoria
+  // (blu utenti, verde annunci, giallo messaggi, viola fatturato).
   const cards = [
     { label: 'Utenti totali', value: stats?.users.toLocaleString('it-IT'), icon: Users, color: 'bg-blue-500', href: '/admin/utenti' },
     { label: 'Annunci attivi', value: stats?.ads.toLocaleString('it-IT'), icon: FileText, color: 'bg-green-500', href: '/admin/annunci' },
-    { label: 'Messaggi', value: stats?.messages.toLocaleString('it-IT'), icon: MessageSquare, color: 'bg-purple-500', href: '#' },
-    { label: 'Revenue totale', value: `€${parseFloat(stats?.totalRevenue ?? '0').toLocaleString('it-IT')}`, icon: Euro, color: 'bg-brand', href: '/admin/pagamenti' },
+    { label: 'Messaggi', value: stats?.messages.toLocaleString('it-IT'), icon: MessageSquare, color: 'bg-yellow-500', href: '#' },
+    { label: 'Revenue totale', value: `€${parseFloat(stats?.totalRevenue ?? '0').toLocaleString('it-IT')}`, icon: Euro, color: 'bg-purple-500', href: '/admin/pagamenti' },
   ];
 
   return (
-    <div className="p-8">
-      <div className="flex items-center gap-3 mb-8">
-        <TrendingUp className="w-6 h-6 text-brand" />
-        <h1>Dashboard Admin</h1>
+    <div className="p-6 lg:p-8">
+      <div className="flex items-center gap-3 mb-6">
+        <LayoutDashboard className="w-6 h-6 text-brand" />
+        <div>
+          <h1 className="text-2xl">Dashboard</h1>
+          <p className="text-sm text-gray-500">Statistiche</p>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {cards.map(({ label, value, icon: Icon, color, href }) => (
-          <Link key={label} href={href} className="card p-5 hover:shadow-md transition-shadow">
-            <div className={`w-10 h-10 ${color} rounded-lg flex items-center justify-center mb-3`}>
-              <Icon className="w-5 h-5 text-white" />
+          <div key={label} className={`admin-small-box ${color}`}>
+            <div className="flex items-start justify-between p-4">
+              <div>
+                <p className="text-3xl font-bold leading-tight">{value}</p>
+                <p className="text-sm text-white/90 mt-1">{label}</p>
+              </div>
+              <Icon className="w-12 h-12 text-white/30" strokeWidth={1.5} />
             </div>
-            <p className="text-2xl font-bold">{value}</p>
-            <p className="text-sm text-gray-500">{label}</p>
-          </Link>
+            <Link
+              href={href}
+              className="flex items-center justify-between px-4 py-2 text-sm bg-black/10 hover:bg-black/20 transition-colors"
+            >
+              Vedi tutti <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         ))}
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Recent users */}
-        <div className="card p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3>Nuovi utenti</h3>
+        <div className="admin-box">
+          <div className="admin-box-header">
+            <h3 className="admin-box-title">Nuovi utenti</h3>
             <Link href="/admin/utenti" className="text-sm text-brand hover:underline">Vedi tutti</Link>
           </div>
-          <div className="space-y-3">
+          <div className="admin-box-body space-y-3">
             {data?.recentUsers?.map((u: { id: number; username: string; email: string; createdAt: string; isAdmin: boolean }) => (
               <div key={u.id} className="flex items-center justify-between text-sm">
                 <div>
@@ -81,12 +94,12 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent ads */}
-        <div className="card p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3>Annunci recenti</h3>
+        <div className="admin-box">
+          <div className="admin-box-header">
+            <h3 className="admin-box-title">Annunci recenti</h3>
             <Link href="/admin/annunci" className="text-sm text-brand hover:underline">Vedi tutti</Link>
           </div>
-          <div className="space-y-3">
+          <div className="admin-box-body space-y-3">
             {data?.recentAds?.map((ad: { id: number; name: string; price: string; user: { username: string }; published: number; creationTime: string }) => (
               <div key={ad.id} className="flex items-center justify-between text-sm">
                 <div>

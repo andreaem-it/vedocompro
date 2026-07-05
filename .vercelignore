@@ -1,0 +1,10 @@
+# Il webroot legacy Symfony è solo riferimento storico: mai deployato.
+# Eccezione: web/json contiene le fixture geografiche usate da api/prisma/seed.ts
+# (eseguito nel buildCommand dell'API, idempotente).
+legacy-symfony/*
+!legacy-symfony/web
+legacy-symfony/web/*
+!legacy-symfony/web/json
+node_modules
+.git
+*.log

@@ -1,37 +1,61 @@
 'use client';
 
 import { useState } from 'react';
-import { ThumbsUp, ThumbsDown, Star } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { ThumbsUp, ThumbsDown, Star, Award, BadgeCheck } from 'lucide-react';
 import Link from 'next/link';
 import AdCard from '@/components/ads/AdCard';
 import { feedbackApi } from '@/lib/api';
+import { useAuth } from '@/contexts/AuthContext';
 import { Ad, Feedback } from '@/types';
 
 interface Props {
   ads: Ad[];
   feedback: Feedback[];
   userId: number;
-  currentUserId?: number;
 }
 
-export default function UserProfileTabs({ ads, feedback, userId, currentUserId }: Props) {
+interface FeedbackOrder {
+  id: number;
+  completedAt: string | null;
+  orderDate: string;
+  totalAmount: string;
+  ad: { id: number; name: string };
+}
+
+export default function UserProfileTabs({ ads, feedback, userId }: Props) {
+  // page.tsx è un Server Component senza accesso al token: l'utente loggato si legge
+  // qui via AuthContext (client-side), non passato come prop dal server.
+  const { user: currentUser } = useAuth();
+  const currentUserId = currentUser?.id;
   const [activeTab, setActiveTab] = useState<'annunci' | 'feedback'>('annunci');
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [positive, setPositive] = useState<1 | 0>(1);
   const [vote, setVote] = useState(5);
   const [description, setDescription] = useState('');
+  const [orderId, setOrderId] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
   const canLeaveFeedback = !!currentUserId && currentUserId !== userId;
+  const { data: feedbackOrders } = useQuery({
+    queryKey: ['feedback-orders', userId, currentUserId],
+    queryFn: () => feedbackApi.getEligibleOrders(userId).then((r) => r.data as FeedbackOrder[]),
+    enabled: canLeaveFeedback,
+  });
+  const eligibleOrders = feedbackOrders ?? [];
 
   const handleSubmitFeedback = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!orderId) {
+      setError('Seleziona un ordine completato.');
+      return;
+    }
     setSubmitting(true);
     setError('');
     try {
-      await feedbackApi.giveFeedback(userId, { vote, description, positive });
+      await feedbackApi.giveFeedback(userId, { orderId, vote, description, positive });
       setSubmitted(true);
       setShowFeedbackForm(false);
     } catch {
@@ -72,7 +96,22 @@ export default function UserProfileTabs({ ads, feedback, userId, currentUserId }
 
       {activeTab === 'feedback' && (
         <div>
-          {canLeaveFeedback && !submitted && (
+          {feedback.length > 0 && (
+            <div className="card p-4 mb-6 flex items-center gap-6 flex-wrap text-sm">
+              <span className="flex items-center gap-1.5 font-semibold text-green-600">
+                <Award className="w-5 h-5" />
+                {Math.round((feedback.filter((f) => f.positive === 1).length / feedback.length) * 100)}% positivi
+              </span>
+              <span className="flex items-center gap-1 text-green-600">
+                <ThumbsUp className="w-4 h-4" /> {feedback.filter((f) => f.positive === 1).length} positivi
+              </span>
+              <span className="flex items-center gap-1 text-red-500">
+                <ThumbsDown className="w-4 h-4" /> {feedback.filter((f) => f.positive === 0).length} negativi
+              </span>
+            </div>
+          )}
+
+          {canLeaveFeedback && eligibleOrders.length > 0 && !submitted && (
             <div className="mb-6">
               {!showFeedbackForm ? (
                 <button onClick={() => setShowFeedbackForm(true)} className="btn-primary text-sm">
@@ -83,6 +122,22 @@ export default function UserProfileTabs({ ads, feedback, userId, currentUserId }
                   <h3 className="font-medium">Lascia un feedback</h3>
 
                   {error && <p className="text-red-600 text-sm">{error}</p>}
+
+                  <div>
+                    <label className="label">Ordine completato</label>
+                    <select
+                      value={orderId ?? ''}
+                      onChange={(e) => setOrderId(e.target.value ? parseInt(e.target.value, 10) : null)}
+                      className="input"
+                    >
+                      <option value="">Seleziona...</option>
+                      {eligibleOrders.map((order) => (
+                        <option key={order.id} value={order.id}>
+                          #{order.id} · {order.ad.name} · {new Date(order.completedAt ?? order.orderDate).toLocaleDateString('it-IT')}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
                   <div className="flex gap-4">
                     <label className="flex items-center gap-2 cursor-pointer">
@@ -173,6 +228,11 @@ export default function UserProfileTabs({ ads, feedback, userId, currentUserId }
                           @{fb.fromUser.username}
                         </Link>
                         {fb.description && <p className="text-sm text-gray-600 mt-1">{fb.description}</p>}
+                        {fb.orderId && (
+                          <p className="inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded-full mt-2">
+                            <BadgeCheck className="w-3.5 h-3.5" /> Acquisto verificato
+                          </p>
+                        )}
                         <div className="flex gap-1 mt-1">
                           {Array.from({ length: 5 }).map((_, i) => (
                             <Star key={i} className={`w-3.5 h-3.5 ${i < fb.vote ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'}`} />

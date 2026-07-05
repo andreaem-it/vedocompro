@@ -8,57 +8,146 @@ datasource db {
 }
 
 model User {
-  id                  Int               @id @default(autoincrement())
-  email               String            @unique
-  username            String            @unique
-  password            String
-  name                String            @db.VarChar(100)
-  realname            String            @default("")
-  facebookId          String?           @map("facebook_id") @db.VarChar(255)
-  facebookAccessToken String?           @map("facebook_access_token") @db.VarChar(255)
-  googleId            String?           @map("google_id") @db.VarChar(255)
-  googleAccessToken   String?           @map("google_access_token") @db.VarChar(255)
-  dateJoin            DateTime          @default(now()) @map("datejoin") @db.Date
-  address             String            @default("")
-  points              Int               @default(0)
-  phone               String            @default("-")
-  city                String            @default("")
-  cap                 String            @default("")
-  code                String            @default("")
-  creditsGold         Int               @default(0) @map("credits_gold")
-  creditsSilver       Int               @default(0) @map("credits_silver")
-  creditsBronze       Int               @default(0) @map("credits_bronze")
-  pic                 String?
-  isCompany           Int?              @map("is_company")
-  companyLogo         String?           @map("company_logo")
-  companyWebsite      String?           @map("company_website")
-  businessEnd         DateTime?         @map("business_end")
-  isActive            Boolean           @default(false) @map("is_active")
-  isAdmin             Boolean           @default(false) @map("is_admin")
-  resetToken          String?           @map("reset_token")
-  resetTokenExpiry    DateTime?         @map("reset_token_expiry")
-  createdAt           DateTime          @default(now()) @map("created_at")
-  updatedAt           DateTime          @updatedAt @map("updated_at")
+  id                      Int       @id @default(autoincrement())
+  email                   String    @unique
+  username                String    @unique
+  password                String
+  name                    String    @db.VarChar(100)
+  realname                String    @default("")
+  facebookId              String?   @map("facebook_id") @db.VarChar(255)
+  facebookAccessToken     String?   @map("facebook_access_token") @db.VarChar(255)
+  googleId                String?   @map("google_id") @db.VarChar(255)
+  googleAccessToken       String?   @map("google_access_token") @db.VarChar(255)
+  dateJoin                DateTime  @default(now()) @map("datejoin") @db.Date
+  address                 String    @default("")
+  points                  Int       @default(0)
+  phone                   String    @default("-")
+  phoneVerified           Boolean   @default(false) @map("phone_verified")
+  phoneVerifiedAt         DateTime? @map("phone_verified_at")
+  phoneVerificationCode   String?   @map("phone_verification_code") @db.VarChar(10)
+  phoneVerificationExpiry DateTime? @map("phone_verification_expiry")
+  city                    String    @default("")
+  cap                     String    @default("")
+  code                    String    @default("")
+  creditsGold             Int       @default(0) @map("credits_gold")
+  creditsSilver           Int       @default(0) @map("credits_silver")
+  creditsBronze           Int       @default(0) @map("credits_bronze")
+  pic                     String?
+  isCompany               Int?      @map("is_company")
+  companyLogo             String?   @map("company_logo")
+  companyWebsite          String?   @map("company_website")
+  paymentMethods          String[]  @default([]) @map("payment_methods")
+  paymentInstructions     String?   @map("payment_instructions") @db.Text
+  paymentPaypalEmail      String?   @map("payment_paypal_email")
+  paymentIban             String?   @map("payment_iban")
+  paymentAccountHolder    String?   @map("payment_account_holder")
+  businessEnd             DateTime? @map("business_end")
+  isActive                Boolean   @default(false) @map("is_active")
+  isAdmin                 Boolean   @default(false) @map("is_admin")
+  // Equivalente minimo di ROLE_SUPER_ADMIN legacy: solo i super-admin possono impersonare
+  // altri utenti (switch_user). Gerarchia volutamente semplice (no tabella ruoli), il legacy
+  // stesso aveva solo ROLE_ADMIN/ROLE_SUPER_ADMIN, non una gerarchia complessa.
+  isSuperAdmin            Boolean   @default(false) @map("is_super_admin")
+  resetToken              String?   @map("reset_token")
+  resetTokenExpiry        DateTime? @map("reset_token_expiry")
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
 
-  groups           Group[]        @relation("UserGroups")
-  ads              Ad[]
-  sentMessages     Message[]      @relation("SentMessages")
-  receivedMessages Message[]      @relation("ReceivedMessages")
-  notifications    Notification[]
-  feedbackGiven    Feedback[]     @relation("FeedbackGiven")
-  feedbackReceived Feedback[]     @relation("FeedbackReceived")
-  wishlists        Wishlist[]
-  buyerBuys        Buy[]          @relation("BuyerBuys")
-  sellerSells      Sell[]         @relation("SellerSells")
-  payments         Payment[]
-  helpDeskTickets  HelpDesk[]
-  businessRequests BusinessRequest[]
-  businessStats    BusinessStat[]
-  videos           Video[]
-  reviews          Review[]
-  adminActions     AdminAction[]
+  groups                      Group[]                      @relation("UserGroups")
+  ads                         Ad[]
+  sentMessages                Message[]                    @relation("SentMessages")
+  receivedMessages            Message[]                    @relation("ReceivedMessages")
+  notifications               Notification[]
+  feedbackGiven               Feedback[]                   @relation("FeedbackGiven")
+  feedbackReceived            Feedback[]                   @relation("FeedbackReceived")
+  wishlists                   Wishlist[]
+  buyerBuys                   Buy[]                        @relation("BuyerBuys")
+  sellerSells                 Sell[]                       @relation("SellerSells")
+  payments                    Payment[]
+  promotionActivations        PromotionActivation[]
+  helpDeskTickets             HelpDesk[]
+  businessRequests            BusinessRequest[]
+  businessStats               BusinessStat[]
+  videos                      Video[]
+  reviews                     Review[]
+  adminActions                AdminAction[]
+  adOrders                    AdOrder[]
+  orderPaymentReconciliations OrderPaymentReconciliation[]
+  reportsMade                 Report[]                     @relation("ReportsMade")
+  reportsReceived             Report[]                     @relation("ReportsReceived")
+  reportsReviewed             Report[]                     @relation("ReportsReviewed")
+  offersMade                  AdOffer[]                    @relation("OffersMade")
+  offersReceived              AdOffer[]                    @relation("OffersReceived")
+  disputesOpened              Dispute[]                    @relation("DisputesOpened")
+  disputesResolved            Dispute[]                    @relation("DisputesResolved")
+  disputeMessages             DisputeMessage[]
+  disputeAttachments          DisputeAttachment[]
+  savedSearches               SavedSearch[]
+  crmNotes                    AdminUserNote[]              @relation("AdminCrmNotesForUser")
+  crmNotesAuthored            AdminUserNote[]              @relation("AdminCrmNotesByAdmin")
 
   @@map("users")
+}
+
+model AdminUserNote {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @map("user_id")
+  user        User      @relation("AdminCrmNotesForUser", fields: [userId], references: [id], onDelete: Cascade)
+  adminUserId Int       @map("admin_user_id")
+  adminUser   User      @relation("AdminCrmNotesByAdmin", fields: [adminUserId], references: [id])
+  note        String    @db.Text
+  riskTag     String    @default("none") @map("risk_tag")
+  followUpAt  DateTime? @map("follow_up_at")
+  resolvedAt  DateTime? @map("resolved_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([adminUserId])
+  @@index([riskTag])
+  @@index([followUpAt])
+  @@map("admin_user_notes")
+}
+
+// Ricerca salvata con alert: il cron confronta i nuovi annunci pubblicati con i filtri
+// memorizzati e notifica in-app l'utente. `frequency` controlla la cadenza minima tra
+// due notifiche (instant = a ogni giro di cron, daily = max una al giorno, off = pausa).
+model SavedSearch {
+  id             Int       @id @default(autoincrement())
+  userId         Int       @map("user_id")
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  q              String?
+  categoryId     Int?      @map("category_id")
+  region         String?
+  provincia      String?
+  condition      String?
+  minPrice       Decimal?  @map("min_price") @db.Decimal(10, 2)
+  maxPrice       Decimal?  @map("max_price") @db.Decimal(10, 2)
+  frequency      String    @default("daily") // instant|daily|off
+  lastNotifiedAt DateTime? @map("last_notified_at")
+  lastCheckedAt  DateTime  @default(now()) @map("last_checked_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@index([frequency])
+  @@map("saved_searches")
+}
+
+// Tentativi di autenticazione per rate limiting brute-force. DB-based perché l'API gira
+// serverless (nessuna memoria condivisa tra invocazioni). Nessuna FK verso User:
+// registriamo anche tentativi su account inesistenti.
+model AuthAttempt {
+  id         Int      @id @default(autoincrement())
+  identifier String // email/username normalizzato lowercase
+  ip         String
+  action     String // login|register|forgot
+  success    Boolean  @default(false)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([identifier, action, createdAt])
+  @@index([ip, action, createdAt])
+  @@map("auth_attempts")
 }
 
 model Group {
@@ -71,12 +160,13 @@ model Group {
 }
 
 model Category {
-  id       Int        @id @default(autoincrement())
-  name     String
-  parentId Int?       @map("pid")
-  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
-  children Category[] @relation("CategoryTree")
-  ads      Ad[]
+  id             Int             @id @default(autoincrement())
+  name           String
+  parentId       Int?            @map("pid")
+  parent         Category?       @relation("CategoryTree", fields: [parentId], references: [id])
+  children       Category[]      @relation("CategoryTree")
+  ads            Ad[]
+  advancedFields AdvancedField[]
 
   @@map("category")
 }
@@ -108,11 +198,16 @@ model Ad {
   silverPromotionEndDate DateTime? @map("silver_promotion_end_date")
   bronzePromotionEndDate DateTime? @map("bronze_promotion_end_date")
   sold                   Int       @default(0)
+  availableQuantity      Int       @default(1) @map("available_quantity")
   trackingCode           String?   @map("tracking_code")
   video                  String?
   published              Int       @default(0)
   fields                 String[]
   vals                   String[]
+  // Coppie "campo:valore" denormalizzate da fields/vals: servono al filtro esatto in
+  // ricerca (`has "Marca:Bosch"`) — filtrare due array paralleli per stesso indice non
+  // è esprimibile con Prisma. Popolato automaticamente in create/update.
+  fieldPairs             String[]  @map("field_pairs")
   callClicks             Int       @default(0) @map("call_clicks")
   messageClicks          Int       @default(0) @map("message_clicks")
   hasMap                 Boolean   @default(false) @map("has_map")
@@ -122,15 +217,26 @@ model Ad {
   services               String[]
   rooms                  String[]
   tags                   String[]
+  canBeOrdered           Boolean   @default(false) @map("can_be_ordered")
+  // Spedizione configurabile dal venditore per il singolo annuncio (feature nuova, non
+  // presente nel legacy: lì il generico model `Shipment` carrier/method/estimates esisteva
+  // ma era dead code mai collegato agli annunci).
+  shippingAvailable      Boolean   @default(false) @map("shipping_available")
+  shippingCost           Decimal?  @map("shipping_cost") @db.Decimal(10, 2)
+  shippingNotes          String?   @map("shipping_notes")
 
-  wishlists     Wishlist[]
-  buys          Buy[]
-  sells         Sell[]
-  reviews       Review[]
-  videos        Video[]
-  messages      Message[]
-  businessStats BusinessStat[]
-  photos        Photo[]
+  wishlists            Wishlist[]
+  buys                 Buy[]
+  sells                Sell[]
+  reviews              Review[]
+  videos               Video[]
+  messages             Message[]
+  businessStats        BusinessStat[]
+  photos               Photo[]
+  orders               AdOrder[]
+  reports              Report[]
+  offers               AdOffer[]
+  promotionActivations PromotionActivation[]
 
   @@map("ads")
 }
@@ -155,7 +261,9 @@ model Message {
   message    String   @db.Text
   isRead     Int      @default(0) @map("is_read")
   adId       Int?     @map("ad_id")
-  ad         Ad?      @relation(fields: [adId], references: [id])
+  // SetNull (non Cascade): una conversazione resta leggibile anche se l'annuncio collegato
+  // viene eliminato, semplicemente perde il riferimento.
+  ad         Ad?      @relation(fields: [adId], references: [id], onDelete: SetNull)
 
   @@map("messages")
 }
@@ -172,12 +280,39 @@ model Notification {
   @@map("notifications")
 }
 
+model Report {
+  id             Int       @id @default(autoincrement())
+  reporterId     Int       @map("reporter_id")
+  reporter       User      @relation("ReportsMade", fields: [reporterId], references: [id])
+  targetUserId   Int?      @map("target_user_id")
+  targetUser     User?     @relation("ReportsReceived", fields: [targetUserId], references: [id], onDelete: Cascade)
+  targetAdId     Int?      @map("target_ad_id")
+  targetAd       Ad?       @relation(fields: [targetAdId], references: [id], onDelete: Cascade)
+  reason         String
+  details        String?   @db.Text
+  status         String    @default("open")
+  adminNotes     String?   @map("admin_notes") @db.Text
+  reviewedAt     DateTime? @map("reviewed_at")
+  reviewedBy     Int?      @map("reviewed_by")
+  reviewedByUser User?     @relation("ReportsReviewed", fields: [reviewedBy], references: [id])
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([reporterId])
+  @@index([targetUserId])
+  @@index([targetAdId])
+  @@map("reports")
+}
+
 model Feedback {
   id          Int      @id @default(autoincrement())
   userId      Int      @map("uid")
   user        User     @relation("FeedbackReceived", fields: [userId], references: [id])
   fromUserId  Int      @map("fromuid")
   fromUser    User     @relation("FeedbackGiven", fields: [fromUserId], references: [id])
+  orderId     Int?     @unique @map("order_id")
+  order       AdOrder? @relation(fields: [orderId], references: [id], onDelete: SetNull)
   vote        Int
   description String
   positive    Int
@@ -189,7 +324,7 @@ model Feedback {
 model Review {
   id          Int      @id @default(autoincrement())
   adId        Int      @map("aid")
-  ad          Ad       @relation(fields: [adId], references: [id])
+  ad          Ad       @relation(fields: [adId], references: [id], onDelete: Cascade)
   userId      Int      @map("uid")
   user        User     @relation(fields: [userId], references: [id])
   rating      Float
@@ -205,7 +340,7 @@ model Wishlist {
   userId Int  @map("uid")
   user   User @relation(fields: [userId], references: [id])
   adId   Int  @map("aid")
-  ad     Ad   @relation(fields: [adId], references: [id])
+  ad     Ad   @relation(fields: [adId], references: [id], onDelete: Cascade)
 
   @@unique([userId, adId])
   @@map("wishlists")
@@ -230,19 +365,19 @@ model Buy {
 }
 
 model Sell {
-  id      Int  @id @default(autoincrement())
-  fromUid Int  @map("fuid")
-  seller  User @relation("SellerSells", fields: [fromUid], references: [id])
-  toUid   Int  @map("tuid")
-  adId    Int  @map("aid")
-  ad      Ad   @relation(fields: [adId], references: [id])
-  status  Int  @default(0)
-  verified Int @default(0)
-  shipped Int  @default(0)
-  feedout Int  @default(0)
-  feedin  Int  @default(0)
-  type    Int  @default(0)
-  paid    Int  @default(0)
+  id       Int  @id @default(autoincrement())
+  fromUid  Int  @map("fuid")
+  seller   User @relation("SellerSells", fields: [fromUid], references: [id])
+  toUid    Int  @map("tuid")
+  adId     Int  @map("aid")
+  ad       Ad   @relation(fields: [adId], references: [id])
+  status   Int  @default(0)
+  verified Int  @default(0)
+  shipped  Int  @default(0)
+  feedout  Int  @default(0)
+  feedin   Int  @default(0)
+  type     Int  @default(0)
+  paid     Int  @default(0)
 
   @@map("sells")
 }
@@ -263,6 +398,70 @@ model Payment {
   @@map("payments")
 }
 
+model PaymentWebhookLog {
+  id          Int       @id @default(autoincrement())
+  provider    String    @default("paypal")
+  eventId     String?   @map("event_id")
+  status      String
+  rawPayload  Json      @map("raw_payload")
+  error       String?
+  processedAt DateTime? @map("processed_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@index([provider])
+  @@index([eventId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("payment_webhook_logs")
+}
+
+model PromotionPackage {
+  id                 Int                   @id @default(autoincrement())
+  key                String                @unique
+  name               String
+  level              Int
+  creditType         String                @map("credit_type")
+  creditCost         Int                   @default(1) @map("credit_cost")
+  durationDays       Int                   @map("duration_days")
+  priceEur           Decimal               @default(0) @map("price_eur") @db.Decimal(10, 2)
+  autoRenewAvailable Boolean               @default(false) @map("auto_renew_available")
+  isActive           Boolean               @default(true) @map("is_active")
+  sortOrder          Int                   @default(0) @map("sort_order")
+  createdAt          DateTime              @default(now()) @map("created_at")
+  updatedAt          DateTime              @updatedAt @map("updated_at")
+  activations        PromotionActivation[]
+
+  @@index([isActive])
+  @@index([level])
+  @@map("promotion_packages")
+}
+
+model PromotionActivation {
+  id           Int               @id @default(autoincrement())
+  packageId    Int?              @map("package_id")
+  package      PromotionPackage? @relation(fields: [packageId], references: [id], onDelete: SetNull)
+  packageKey   String            @map("package_key")
+  packageName  String            @map("package_name")
+  adId         Int               @map("ad_id")
+  ad           Ad                @relation(fields: [adId], references: [id], onDelete: Cascade)
+  userId       Int               @map("user_id")
+  user         User              @relation(fields: [userId], references: [id])
+  level        Int
+  creditType   String            @map("credit_type")
+  creditsSpent Int               @map("credits_spent")
+  priceEur     Decimal           @default(0) @map("price_eur") @db.Decimal(10, 2)
+  startedAt    DateTime          @map("started_at")
+  endedAt      DateTime          @map("ended_at")
+  autoRenew    Boolean           @default(false) @map("auto_renew")
+  createdAt    DateTime          @default(now()) @map("created_at")
+
+  @@index([adId])
+  @@index([userId])
+  @@index([packageKey])
+  @@index([createdAt])
+  @@map("promotion_activations")
+}
+
 model Product {
   id            Int       @id @default(autoincrement())
   name          String
@@ -276,14 +475,17 @@ model Product {
 }
 
 model Video {
-  id       Int     @id @default(autoincrement())
-  adId     Int     @map("aid")
-  ad       Ad      @relation(fields: [adId], references: [id])
-  userId   Int     @map("uid")
-  user     User    @relation(fields: [userId], references: [id])
-  accepted Int     @default(0)
-  filename String
-  uploaded Boolean @default(false)
+  id              Int      @id @default(autoincrement())
+  adId            Int      @map("aid")
+  ad              Ad       @relation(fields: [adId], references: [id], onDelete: Cascade)
+  userId          Int      @map("uid")
+  user            User     @relation(fields: [userId], references: [id])
+  accepted        Int      @default(0)
+  filename        String
+  uploaded        Boolean  @default(false)
+  processing      Boolean  @default(false)
+  thumbnails      String[] @default([])
+  durationSeconds Int?     @map("duration_seconds")
 
   @@map("videos")
 }
@@ -299,35 +501,41 @@ model HelpDesk {
   parentM    Int?     @map("parent_m")
   title      String
   message    String   @db.Text
-  closed     Boolean  @default(false)
+  // Stato a 3 valori come il legacy: 0=aperto, 1=chiuso, 2=assegnato (non un booleano:
+  // "assegnato" è un terzo stato distinto, non solo "ha un assignedTo").
+  closed     Int      @default(0)
   assignedTo Int?     @map("assigned_to")
 
   @@map("help_desk")
 }
 
 model BusinessRequest {
-  id             Int      @id @default(autoincrement())
-  userId         Int      @map("uid")
-  user           User     @relation(fields: [userId], references: [id])
-  requestDate    DateTime @default(now()) @map("request_date")
-  paid           Boolean  @default(false)
+  id             Int       @id @default(autoincrement())
+  userId         Int       @map("uid")
+  user           User      @relation(fields: [userId], references: [id])
+  requestDate    DateTime  @default(now()) @map("request_date")
+  paid           Boolean   @default(false)
+  status         Int       @default(0)
+  reviewedAt     DateTime? @map("reviewed_at")
+  reviewedBy     Int?      @map("reviewed_by")
+  adminNotes     String?   @map("admin_notes") @db.Text
   package        Int
-  opt1           Boolean  @default(false)
-  opt2           Boolean  @default(false)
-  opt3           Boolean  @default(false)
-  opt4           Boolean  @default(false)
-  opt5           Boolean  @default(false)
-  opt6           Boolean  @default(false)
-  opt7           Boolean  @default(false)
-  opt8           Boolean  @default(false)
-  opt9           Boolean  @default(false)
-  opt10          Boolean  @default(false)
-  legalName      String   @map("legal_name")
-  vatNumber      String   @map("vat_number")
-  contactName    String   @map("contact_name")
-  contactSurname String   @map("contact_surname")
-  contactPhone   String   @map("contact_phone")
-  contactEmail   String   @map("contact_email")
+  opt1           Boolean   @default(false)
+  opt2           Boolean   @default(false)
+  opt3           Boolean   @default(false)
+  opt4           Boolean   @default(false)
+  opt5           Boolean   @default(false)
+  opt6           Boolean   @default(false)
+  opt7           Boolean   @default(false)
+  opt8           Boolean   @default(false)
+  opt9           Boolean   @default(false)
+  opt10          Boolean   @default(false)
+  legalName      String    @map("legal_name")
+  vatNumber      String    @map("vat_number")
+  contactName    String    @map("contact_name")
+  contactSurname String    @map("contact_surname")
+  contactPhone   String    @map("contact_phone")
+  contactEmail   String    @map("contact_email")
 
   @@map("business_requests")
 }
@@ -338,7 +546,7 @@ model BusinessStat {
   user     User     @relation(fields: [userId], references: [id])
   datetime DateTime @default(now())
   adId     Int      @map("adid")
-  ad       Ad       @relation(fields: [adId], references: [id])
+  ad       Ad       @relation(fields: [adId], references: [id], onDelete: Cascade)
   type     Int
 
   @@map("business_stats")
@@ -381,11 +589,21 @@ model AdminType {
   @@map("admin_types")
 }
 
+// Campi configurabili per categoria (es. "Marca" per Auto, "Taglia" per Abbigliamento):
+// l'admin li definisce, il form annuncio li mostra ai venditori, la ricerca li applica
+// come filtri reali. Nel legacy era schema morto mai popolato — riusato ed esteso.
 model AdvancedField {
-  id         Int    @id @default(autoincrement())
-  name       String @db.VarChar(255)
-  categoryId Int    @map("category_id")
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(255)
+  categoryId Int      @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  type       String   @default("select") // select|text|number
+  options    String[] // valori ammessi per type=select
+  filterable Boolean  @default(true) // mostrato come filtro in ricerca
+  required   Boolean  @default(false)
+  sortOrder  Int      @default(0) @map("sort_order")
 
+  @@index([categoryId])
   @@map("advanced_fields")
 }
 
@@ -409,18 +627,13 @@ model Suggest {
   @@map("suggests")
 }
 
-model Region {
-  id   Int    @id @default(autoincrement())
-  name String
-
-  @@map("regions")
-}
-
 model Regione {
   id          Int        @id @default(autoincrement())
   nome        String     @db.Text
-  latitudine  Decimal    @db.Decimal(10, 6)
-  longitudine Decimal    @db.Decimal(10, 6)
+  // Nessuna fixture legacy contiene le coordinate (web/json/regioni.json ha solo id+nome):
+  // opzionali finché non si importa un dataset geografico più ricco.
+  latitudine  Decimal?   @db.Decimal(10, 6)
+  longitudine Decimal?   @db.Decimal(10, 6)
   province    Province[]
 
   @@map("regioni")
@@ -432,26 +645,215 @@ model Province {
   regione                  Regione  @relation(fields: [regioneId], references: [id])
   codiceCittaMetropolitana Int?     @map("codice_citta_metropolitana")
   nome                     String   @db.Text
-  siglaAutomobilistica     String   @db.VarChar(10) @map("sigla_automobilistica")
-  latitudine               Decimal  @db.Decimal(10, 6)
-  longitudine              Decimal  @db.Decimal(10, 6)
+  siglaAutomobilistica     String   @map("sigla_automobilistica") @db.VarChar(10)
+  // Idem: web/json/province.json non ha coordinate, solo id/id_regione/nome/sigla.
+  latitudine               Decimal? @db.Decimal(10, 6)
+  longitudine              Decimal? @db.Decimal(10, 6)
   comuni                   Comune[]
 
   @@map("province")
 }
 
+model AdOrder {
+  id                     Int                          @id @default(autoincrement())
+  adId                   Int                          @map("ad_id")
+  ad                     Ad                           @relation(fields: [adId], references: [id], onDelete: Cascade)
+  userId                 Int                          @map("user_id")
+  user                   User                         @relation(fields: [userId], references: [id])
+  qty                    Int                          @default(1)
+  status                 Int                          @default(0)
+  paymentStatus          String                       @default("unpaid") @map("payment_status")
+  fulfillmentStatus      String                       @default("pending") @map("fulfillment_status")
+  paymentProvider        String?                      @map("payment_provider")
+  paymentIntentId        String?                      @map("payment_intent_id")
+  currency               String                       @default("EUR") @db.VarChar(3)
+  unitPrice              Decimal                      @default(0) @map("unit_price") @db.Decimal(10, 2)
+  shippingAmount         Decimal                      @default(0) @map("shipping_amount") @db.Decimal(10, 2)
+  platformFee            Decimal                      @default(0) @map("platform_fee") @db.Decimal(10, 2)
+  totalAmount            Decimal                      @default(0) @map("total_amount") @db.Decimal(10, 2)
+  deliveryMethod         String                       @default("meetup") @map("delivery_method")
+  buyerName              String?                      @map("buyer_name")
+  buyerPhone             String?                      @map("buyer_phone")
+  shippingAddress        String?                      @map("shipping_address") @db.Text
+  shippingCity           String?                      @map("shipping_city")
+  shippingPostalCode     String?                      @map("shipping_postal_code")
+  shippingProvince       String?                      @map("shipping_province")
+  buyerNotes             String?                      @map("buyer_notes") @db.Text
+  sellerNotes            String?                      @map("seller_notes") @db.Text
+  trackingCode           String?                      @map("tracking_code")
+  acceptedAt             DateTime?                    @map("accepted_at")
+  shippedAt              DateTime?                    @map("shipped_at")
+  completedAt            DateTime?                    @map("completed_at")
+  cancelledAt            DateTime?                    @map("cancelled_at")
+  orderDate              DateTime                     @default(now()) @map("order_date")
+  feedback               Feedback?
+  offer                  AdOffer?
+  dispute                Dispute?
+  paymentReconciliations OrderPaymentReconciliation[]
+
+  @@map("ad_orders")
+}
+
+model OrderPaymentReconciliation {
+  id              Int      @id @default(autoincrement())
+  orderId         Int      @map("order_id")
+  order           AdOrder  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  adminUserId     Int      @map("admin_user_id")
+  adminUser       User     @relation(fields: [adminUserId], references: [id])
+  previousStatus  String   @map("previous_status")
+  newStatus       String   @map("new_status")
+  provider        String?
+  paymentIntentId String?  @map("payment_intent_id")
+  note            String?  @db.Text
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([orderId])
+  @@index([adminUserId])
+  @@index([newStatus])
+  @@index([createdAt])
+  @@map("order_payment_reconciliations")
+}
+
+// Offerte/trattativa su annuncio: il compratore propone un prezzo, il venditore può
+// accettare, rifiutare o fare una controproposta (una sola per offerta, come da flusso
+// "proposta → controproposta → accetta/rifiuta" della roadmap). All'accettazione viene
+// creato un AdOrder con unitPrice congelato all'importo concordato.
+model AdOffer {
+  id            Int       @id @default(autoincrement())
+  adId          Int       @map("ad_id")
+  ad            Ad        @relation(fields: [adId], references: [id], onDelete: Cascade)
+  buyerId       Int       @map("buyer_id")
+  buyer         User      @relation("OffersMade", fields: [buyerId], references: [id])
+  sellerId      Int       @map("seller_id")
+  seller        User      @relation("OffersReceived", fields: [sellerId], references: [id])
+  amount        Decimal   @db.Decimal(10, 2)
+  counterAmount Decimal?  @map("counter_amount") @db.Decimal(10, 2)
+  message       String?   @db.Text
+  sellerMessage String?   @map("seller_message") @db.Text
+  status        String    @default("pending") // pending|countered|accepted|rejected|withdrawn|expired
+  orderId       Int?      @unique @map("order_id")
+  order         AdOrder?  @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  expiresAt     DateTime  @map("expires_at")
+  respondedAt   DateTime? @map("responded_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  @@index([adId])
+  @@index([buyerId, status])
+  @@index([sellerId, status])
+  @@map("ad_offers")
+}
+
+// Contestazione su un ordine: la apre il compratore (o il venditore), le parti dialogano
+// tramite DisputeMessage, un admin decide l'esito. Le dispute perse dal venditore entrano
+// nel trust score (vedi PRODUCT_FEATURE_ROADMAP.md).
+model Dispute {
+  id             Int              @id @default(autoincrement())
+  orderId        Int              @unique @map("order_id")
+  order          AdOrder          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  openedById     Int              @map("opened_by_id")
+  openedBy       User             @relation("DisputesOpened", fields: [openedById], references: [id])
+  reason         String
+  description    String           @db.Text
+  status         String           @default("open") // open|under_review|resolved_buyer|resolved_seller|closed
+  adminDecision  String?          @map("admin_decision") @db.Text
+  resolvedBy     Int?             @map("resolved_by")
+  resolvedByUser User?            @relation("DisputesResolved", fields: [resolvedBy], references: [id])
+  resolvedAt     DateTime?        @map("resolved_at")
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  messages       DisputeMessage[]
+
+  @@index([status])
+  @@map("disputes")
+}
+
+model DisputeMessage {
+  id        Int      @id @default(autoincrement())
+  disputeId Int      @map("dispute_id")
+  dispute   Dispute  @relation(fields: [disputeId], references: [id], onDelete: Cascade)
+  userId    Int      @map("user_id")
+  user      User     @relation(fields: [userId], references: [id])
+  message   String   @db.Text
+  isAdmin   Boolean  @default(false) @map("is_admin")
+  createdAt DateTime @default(now()) @map("created_at")
+  attachments DisputeAttachment[]
+
+  @@index([disputeId])
+  @@map("dispute_messages")
+}
+
+model DisputeAttachment {
+  id        Int            @id @default(autoincrement())
+  messageId Int            @map("message_id")
+  message   DisputeMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  userId    Int            @map("user_id")
+  user      User           @relation(fields: [userId], references: [id])
+  url       String
+  fileName  String         @map("file_name")
+  mimeType  String         @map("mime_type")
+  size      Int
+  createdAt DateTime       @default(now()) @map("created_at")
+
+  @@index([messageId])
+  @@index([userId])
+  @@map("dispute_attachments")
+}
+
+model ShopCategory {
+  id       Int            @id @default(autoincrement())
+  name     String
+  fatherId Int?           @map("father_id")
+  father   ShopCategory?  @relation("ShopCategoryTree", fields: [fatherId], references: [id])
+  children ShopCategory[] @relation("ShopCategoryTree")
+  products ShopProduct[]
+
+  @@map("shop_categories")
+}
+
+model ShopProduct {
+  id               Int            @id @default(autoincrement())
+  name             String
+  price            Decimal        @db.Decimal(10, 2)
+  video            String?
+  pics             String[]
+  isActive         Boolean        @default(true) @map("is_active")
+  inStock          Int?           @map("in_stock")
+  description      String         @db.Text
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  categories       ShopCategory[]
+  shipmentServices ShopShipment[]
+
+  @@map("shop_products")
+}
+
+model ShopShipment {
+  id               Int           @id @default(autoincrement())
+  serviceName      String        @map("service_name")
+  basePrice        Decimal       @map("base_price") @db.Decimal(10, 2)
+  expectedDelivery String        @map("expected_delivery")
+  serviceLogo      String?       @map("service_logo")
+  isActive         Boolean       @default(true) @map("is_active")
+  products         ShopProduct[]
+
+  @@map("shop_shipments")
+}
+
 model Comune {
   id           Int      @id @default(autoincrement())
-  istat        String
+  // web/json/comuni.json fornisce solo id_provincia+nome: istat/prefisso/cod_fisco/
+  // superficie/num_residenti non hanno fixture legacy disponibile, quindi opzionali.
+  istat        String?
   comune       String
   provinceId   Int      @map("city_id")
   province     Province @relation(fields: [provinceId], references: [id])
   regione      String
   provincia    String
-  prefisso     Int
-  codFisco     String   @map("cod_fisco")
-  superficie   Decimal  @db.Decimal(10, 2)
-  numResidenti Int      @map("num_residenti")
+  prefisso     Int?
+  codFisco     String?  @map("cod_fisco")
+  superficie   Decimal? @db.Decimal(10, 2)
+  numResidenti Int?     @map("num_residenti")
 
   @@map("comuni")
 }

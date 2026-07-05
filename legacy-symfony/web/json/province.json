@@ -1,0 +1,551 @@
+[{
+	"id": "84",
+	"id_regione": "19",
+	"nome": "Agrigento",
+	"sigla_automobilistica": "AG"
+}, {
+	"id": "6",
+	"id_regione": "1",
+	"nome": "Alessandria",
+	"sigla_automobilistica": "AL"
+}, {
+	"id": "42",
+	"id_regione": "11",
+	"nome": "Ancona",
+	"sigla_automobilistica": "AN"
+}, {
+	"id": "51",
+	"id_regione": "9",
+	"nome": "Arezzo",
+	"sigla_automobilistica": "AR"
+}, {
+	"id": "44",
+	"id_regione": "11",
+	"nome": "Ascoli Piceno",
+	"sigla_automobilistica": "AP"
+}, {
+	"id": "5",
+	"id_regione": "1",
+	"nome": "Asti",
+	"sigla_automobilistica": "AT"
+}, {
+	"id": "64",
+	"id_regione": "15",
+	"nome": "Avellino",
+	"sigla_automobilistica": "AV"
+}, {
+	"id": "72",
+	"id_regione": "16",
+	"nome": "Bari",
+	"sigla_automobilistica": "BA"
+}, {
+	"id": "110",
+	"id_regione": "16",
+	"nome": "Barletta-Andria-Trani",
+	"sigla_automobilistica": "BT"
+}, {
+	"id": "25",
+	"id_regione": "5",
+	"nome": "Belluno",
+	"sigla_automobilistica": "BL"
+}, {
+	"id": "62",
+	"id_regione": "15",
+	"nome": "Benevento",
+	"sigla_automobilistica": "BN"
+}, {
+	"id": "16",
+	"id_regione": "3",
+	"nome": "Bergamo",
+	"sigla_automobilistica": "BG"
+}, {
+	"id": "96",
+	"id_regione": "1",
+	"nome": "Biella",
+	"sigla_automobilistica": "BI"
+}, {
+	"id": "37",
+	"id_regione": "8",
+	"nome": "Bologna",
+	"sigla_automobilistica": "BO"
+}, {
+	"id": "21",
+	"id_regione": "4",
+	"nome": "Bolzano/Bozen",
+	"sigla_automobilistica": "BZ"
+}, {
+	"id": "17",
+	"id_regione": "3",
+	"nome": "Brescia",
+	"sigla_automobilistica": "BS"
+}, {
+	"id": "74",
+	"id_regione": "16",
+	"nome": "Brindisi",
+	"sigla_automobilistica": "BR"
+}, {
+	"id": "92",
+	"id_regione": "20",
+	"nome": "Cagliari",
+	"sigla_automobilistica": "CA"
+}, {
+	"id": "85",
+	"id_regione": "19",
+	"nome": "Caltanissetta",
+	"sigla_automobilistica": "CL"
+}, {
+	"id": "70",
+	"id_regione": "14",
+	"nome": "Campobasso",
+	"sigla_automobilistica": "CB"
+}, {
+	"id": "107",
+	"id_regione": "20",
+	"nome": "Carbonia-Iglesias",
+	"sigla_automobilistica": "CI"
+}, {
+	"id": "61",
+	"id_regione": "15",
+	"nome": "Caserta",
+	"sigla_automobilistica": "CE"
+}, {
+	"id": "87",
+	"id_regione": "19",
+	"nome": "Catania",
+	"sigla_automobilistica": "CT"
+}, {
+	"id": "79",
+	"id_regione": "18",
+	"nome": "Catanzaro",
+	"sigla_automobilistica": "CZ"
+}, {
+	"id": "69",
+	"id_regione": "13",
+	"nome": "Chieti",
+	"sigla_automobilistica": "CH"
+}, {
+	"id": "13",
+	"id_regione": "3",
+	"nome": "Como",
+	"sigla_automobilistica": "CO"
+}, {
+	"id": "78",
+	"id_regione": "18",
+	"nome": "Cosenza",
+	"sigla_automobilistica": "CS"
+}, {
+	"id": "19",
+	"id_regione": "3",
+	"nome": "Cremona",
+	"sigla_automobilistica": "CR"
+}, {
+	"id": "101",
+	"id_regione": "18",
+	"nome": "Crotone",
+	"sigla_automobilistica": "KR"
+}, {
+	"id": "4",
+	"id_regione": "1",
+	"nome": "Cuneo",
+	"sigla_automobilistica": "CN"
+}, {
+	"id": "86",
+	"id_regione": "19",
+	"nome": "Enna",
+	"sigla_automobilistica": "EN"
+}, {
+	"id": "109",
+	"id_regione": "11",
+	"nome": "Fermo",
+	"sigla_automobilistica": "FM"
+}, {
+	"id": "38",
+	"id_regione": "8",
+	"nome": "Ferrara",
+	"sigla_automobilistica": "FE"
+}, {
+	"id": "48",
+	"id_regione": "9",
+	"nome": "Firenze",
+	"sigla_automobilistica": "FI"
+}, {
+	"id": "71",
+	"id_regione": "16",
+	"nome": "Foggia",
+	"sigla_automobilistica": "FG"
+}, {
+	"id": "40",
+	"id_regione": "8",
+	"nome": "Forlì-Cesena",
+	"sigla_automobilistica": "FC"
+}, {
+	"id": "60",
+	"id_regione": "12",
+	"nome": "Frosinone",
+	"sigla_automobilistica": "FR"
+}, {
+	"id": "10",
+	"id_regione": "7",
+	"nome": "Genova",
+	"sigla_automobilistica": "GE"
+}, {
+	"id": "31",
+	"id_regione": "6",
+	"nome": "Gorizia",
+	"sigla_automobilistica": "GO"
+}, {
+	"id": "53",
+	"id_regione": "9",
+	"nome": "Grosseto",
+	"sigla_automobilistica": "GR"
+}, {
+	"id": "8",
+	"id_regione": "7",
+	"nome": "Imperia",
+	"sigla_automobilistica": "IM"
+}, {
+	"id": "94",
+	"id_regione": "14",
+	"nome": "Isernia",
+	"sigla_automobilistica": "IS"
+}, {
+	"id": "66",
+	"id_regione": "13",
+	"nome": "L'Aquila",
+	"sigla_automobilistica": "AQ"
+}, {
+	"id": "11",
+	"id_regione": "7",
+	"nome": "La Spezia",
+	"sigla_automobilistica": "SP"
+}, {
+	"id": "59",
+	"id_regione": "12",
+	"nome": "Latina",
+	"sigla_automobilistica": "LT"
+}, {
+	"id": "75",
+	"id_regione": "16",
+	"nome": "Lecce",
+	"sigla_automobilistica": "LE"
+}, {
+	"id": "97",
+	"id_regione": "3",
+	"nome": "Lecco",
+	"sigla_automobilistica": "LC"
+}, {
+	"id": "49",
+	"id_regione": "9",
+	"nome": "Livorno",
+	"sigla_automobilistica": "LI"
+}, {
+	"id": "98",
+	"id_regione": "3",
+	"nome": "Lodi",
+	"sigla_automobilistica": "LO"
+}, {
+	"id": "46",
+	"id_regione": "9",
+	"nome": "Lucca",
+	"sigla_automobilistica": "LU"
+}, {
+	"id": "43",
+	"id_regione": "11",
+	"nome": "Macerata",
+	"sigla_automobilistica": "MC"
+}, {
+	"id": "20",
+	"id_regione": "3",
+	"nome": "Mantova",
+	"sigla_automobilistica": "MN"
+}, {
+	"id": "45",
+	"id_regione": "9",
+	"nome": "Massa-Carrara",
+	"sigla_automobilistica": "MS"
+}, {
+	"id": "77",
+	"id_regione": "17",
+	"nome": "Matera",
+	"sigla_automobilistica": "MT"
+}, {
+	"id": "106",
+	"id_regione": "20",
+	"nome": "Medio Campidano",
+	"sigla_automobilistica": "VS"
+}, {
+	"id": "83",
+	"id_regione": "19",
+	"nome": "Messina",
+	"sigla_automobilistica": "ME"
+}, {
+	"id": "15",
+	"id_regione": "3",
+	"nome": "Milano",
+	"sigla_automobilistica": "MI"
+}, {
+	"id": "36",
+	"id_regione": "8",
+	"nome": "Modena",
+	"sigla_automobilistica": "MO"
+}, {
+	"id": "108",
+	"id_regione": "3",
+	"nome": "Monza e della Brianza",
+	"sigla_automobilistica": "MB"
+}, {
+	"id": "63",
+	"id_regione": "15",
+	"nome": "Napoli",
+	"sigla_automobilistica": "NA"
+}, {
+	"id": "3",
+	"id_regione": "1",
+	"nome": "Novara",
+	"sigla_automobilistica": "NO"
+}, {
+	"id": "91",
+	"id_regione": "20",
+	"nome": "Nuoro",
+	"sigla_automobilistica": "NU"
+}, {
+	"id": "105",
+	"id_regione": "20",
+	"nome": "Ogliastra",
+	"sigla_automobilistica": "OG"
+}, {
+	"id": "104",
+	"id_regione": "20",
+	"nome": "Olbia-Tempio",
+	"sigla_automobilistica": "OT"
+}, {
+	"id": "95",
+	"id_regione": "20",
+	"nome": "Oristano",
+	"sigla_automobilistica": "OR"
+}, {
+	"id": "28",
+	"id_regione": "5",
+	"nome": "Padova",
+	"sigla_automobilistica": "PD"
+}, {
+	"id": "82",
+	"id_regione": "19",
+	"nome": "Palermo",
+	"sigla_automobilistica": "PA"
+}, {
+	"id": "34",
+	"id_regione": "8",
+	"nome": "Parma",
+	"sigla_automobilistica": "PR"
+}, {
+	"id": "18",
+	"id_regione": "3",
+	"nome": "Pavia",
+	"sigla_automobilistica": "PV"
+}, {
+	"id": "54",
+	"id_regione": "10",
+	"nome": "Perugia",
+	"sigla_automobilistica": "PG"
+}, {
+	"id": "41",
+	"id_regione": "11",
+	"nome": "Pesaro e Urbino",
+	"sigla_automobilistica": "PU"
+}, {
+	"id": "68",
+	"id_regione": "13",
+	"nome": "Pescara",
+	"sigla_automobilistica": "PE"
+}, {
+	"id": "33",
+	"id_regione": "8",
+	"nome": "Piacenza",
+	"sigla_automobilistica": "PC"
+}, {
+	"id": "50",
+	"id_regione": "9",
+	"nome": "Pisa",
+	"sigla_automobilistica": "PI"
+}, {
+	"id": "47",
+	"id_regione": "9",
+	"nome": "Pistoia",
+	"sigla_automobilistica": "PT"
+}, {
+	"id": "93",
+	"id_regione": "6",
+	"nome": "Pordenone",
+	"sigla_automobilistica": "PN"
+}, {
+	"id": "76",
+	"id_regione": "17",
+	"nome": "Potenza",
+	"sigla_automobilistica": "PZ"
+}, {
+	"id": "100",
+	"id_regione": "9",
+	"nome": "Prato",
+	"sigla_automobilistica": "PO"
+}, {
+	"id": "88",
+	"id_regione": "19",
+	"nome": "Ragusa",
+	"sigla_automobilistica": "RG"
+}, {
+	"id": "39",
+	"id_regione": "8",
+	"nome": "Ravenna",
+	"sigla_automobilistica": "RA"
+}, {
+	"id": "80",
+	"id_regione": "18",
+	"nome": "Reggio di Calabria",
+	"sigla_automobilistica": "RC"
+}, {
+	"id": "35",
+	"id_regione": "8",
+	"nome": "Reggio nell'Emilia",
+	"sigla_automobilistica": "RE"
+}, {
+	"id": "57",
+	"id_regione": "12",
+	"nome": "Rieti",
+	"sigla_automobilistica": "RI"
+}, {
+	"id": "99",
+	"id_regione": "8",
+	"nome": "Rimini",
+	"sigla_automobilistica": "RN"
+}, {
+	"id": "58",
+	"id_regione": "12",
+	"nome": "Roma",
+	"sigla_automobilistica": "RM"
+}, {
+	"id": "29",
+	"id_regione": "5",
+	"nome": "Rovigo",
+	"sigla_automobilistica": "RO"
+}, {
+	"id": "65",
+	"id_regione": "15",
+	"nome": "Salerno",
+	"sigla_automobilistica": "SA"
+}, {
+	"id": "90",
+	"id_regione": "20",
+	"nome": "Sassari",
+	"sigla_automobilistica": "SS"
+}, {
+	"id": "9",
+	"id_regione": "7",
+	"nome": "Savona",
+	"sigla_automobilistica": "SV"
+}, {
+	"id": "52",
+	"id_regione": "9",
+	"nome": "Siena",
+	"sigla_automobilistica": "SI"
+}, {
+	"id": "89",
+	"id_regione": "19",
+	"nome": "Siracusa",
+	"sigla_automobilistica": "SR"
+}, {
+	"id": "14",
+	"id_regione": "3",
+	"nome": "Sondrio",
+	"sigla_automobilistica": "SO"
+}, {
+	"id": "73",
+	"id_regione": "16",
+	"nome": "Taranto",
+	"sigla_automobilistica": "TA"
+}, {
+	"id": "67",
+	"id_regione": "13",
+	"nome": "Teramo",
+	"sigla_automobilistica": "TE"
+}, {
+	"id": "55",
+	"id_regione": "10",
+	"nome": "Terni",
+	"sigla_automobilistica": "TR"
+}, {
+	"id": "1",
+	"id_regione": "1",
+	"nome": "Torino",
+	"sigla_automobilistica": "TO"
+}, {
+	"id": "81",
+	"id_regione": "19",
+	"nome": "Trapani",
+	"sigla_automobilistica": "TP"
+}, {
+	"id": "22",
+	"id_regione": "4",
+	"nome": "Trento",
+	"sigla_automobilistica": "TN"
+}, {
+	"id": "26",
+	"id_regione": "5",
+	"nome": "Treviso",
+	"sigla_automobilistica": "TV"
+}, {
+	"id": "32",
+	"id_regione": "6",
+	"nome": "Trieste",
+	"sigla_automobilistica": "TS"
+}, {
+	"id": "30",
+	"id_regione": "6",
+	"nome": "Udine",
+	"sigla_automobilistica": "UD"
+}, {
+	"id": "7",
+	"id_regione": "2",
+	"nome": "Valle d'Aosta/Vallée d'Aoste",
+	"sigla_automobilistica": "AO"
+}, {
+	"id": "12",
+	"id_regione": "3",
+	"nome": "Varese",
+	"sigla_automobilistica": "VA"
+}, {
+	"id": "27",
+	"id_regione": "5",
+	"nome": "Venezia",
+	"sigla_automobilistica": "VE"
+}, {
+	"id": "103",
+	"id_regione": "1",
+	"nome": "Verbano-Cusio-Ossola",
+	"sigla_automobilistica": "VB"
+}, {
+	"id": "2",
+	"id_regione": "1",
+	"nome": "Vercelli",
+	"sigla_automobilistica": "VC"
+}, {
+	"id": "23",
+	"id_regione": "5",
+	"nome": "Verona",
+	"sigla_automobilistica": "VR"
+}, {
+	"id": "102",
+	"id_regione": "18",
+	"nome": "Vibo Valentia",
+	"sigla_automobilistica": "VV"
+}, {
+	"id": "24",
+	"id_regione": "5",
+	"nome": "Vicenza",
+	"sigla_automobilistica": "VI"
+}, {
+	"id": "56",
+	"id_regione": "12",
+	"nome": "Viterbo",
+	"sigla_automobilistica": "VT"
+}]

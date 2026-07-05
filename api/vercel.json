@@ -1,4 +1,9 @@
 {
-  "buildCommand": "prisma db push",
-  "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }]
+  "buildCommand": "npx prisma db push --accept-data-loss && npx tsx prisma/seed.ts",
+  "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }],
+  "crons": [
+    { "path": "/api/v1/cron/expire-promotions", "schedule": "0 3 * * *" },
+    { "path": "/api/v1/cron/process-videos", "schedule": "15 3 * * *" },
+    { "path": "/api/v1/cron/saved-search-alerts", "schedule": "30 3 * * *" }
+  ]
 }

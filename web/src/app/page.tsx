@@ -1,16 +1,17 @@
 import Link from 'next/link';
 import { Search, Shield, Zap, Users } from 'lucide-react';
+import CategoryTiles from '@/components/home/CategoryTiles';
 
 export default function HomePage() {
   return (
     <div>
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-20 px-4">
+      {/* Hero — replica il jumbotron a sfondo blu pieno con tagline "Cosa stai cercando?" del legacy */}
+      <section className="bg-gradient-to-br from-brand to-brand-dark text-white py-24 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-            Compra e vendi <span className="text-brand">facilmente</span>
+            Compra e vendi <span className="text-white">facilmente</span>
           </h1>
-          <p className="text-xl text-gray-300 mb-8">
+          <p className="text-xl text-white/85 mb-8">
             Il marketplace italiano con migliaia di annunci in tutte le categorie.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
@@ -24,6 +25,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Categorie — replica la sezione "Categorie" del legacy con le 6 categorie padre reali */}
+      <CategoryTiles />
 
       {/* Features */}
       <section className="py-16 px-4">
@@ -47,13 +51,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-brand/5 border-y border-brand/20 py-12 px-4 text-center">
-        <h2 className="mb-4">Pronto a iniziare?</h2>
-        <p className="text-gray-600 mb-6">Registrati gratuitamente e pubblica il tuo primo annuncio.</p>
-        <Link href="/registrati" className="btn-primary text-lg py-3 px-8">
-          Registrati ora — è gratis
-        </Link>
+      {/* Trust / CTA finale — replica la sezione "La nuova piattaforma per fare affari sicuri!" del legacy */}
+      <section className="bg-brand text-white py-12 px-4">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+          <h2 className="text-white">La nuova piattaforma per fare affari sicuri!</h2>
+          <Link href="/annunci/nuovo" className="btn-secondary text-lg py-3 px-8 bg-white text-brand-dark border-white hover:bg-white/90 whitespace-nowrap">
+            Inizia ora!
+          </Link>
+        </div>
       </section>
     </div>
   );

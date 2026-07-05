@@ -5,39 +5,30 @@ import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { adsApi } from '@/lib/api';
-import { Ad } from '@/types';
+import { Ad, PromotionPackage } from '@/types';
 import { TrendingUp, Star } from 'lucide-react';
 import clsx from 'clsx';
 
-const LEVELS = [
-  {
-    id: 'bronze',
-    label: 'Bronze',
+const CREDIT_META = {
+  bronze: {
     creditField: 'creditsBronze' as const,
     color: 'border-orange-400',
     badge: 'bg-orange-100 text-orange-800 border border-orange-300',
     endField: 'bronzePromotionEndDate' as const,
-    objLevel: 1,
   },
-  {
-    id: 'silver',
-    label: 'Silver',
+  silver: {
     creditField: 'creditsSilver' as const,
     color: 'border-gray-400',
     badge: 'bg-gray-100 text-gray-700 border border-gray-300',
     endField: 'silverPromotionEndDate' as const,
-    objLevel: 2,
   },
-  {
-    id: 'gold',
-    label: 'Gold',
+  gold: {
     creditField: 'creditsGold' as const,
     color: 'border-yellow-400',
     badge: 'bg-yellow-100 text-yellow-800 border border-yellow-300',
     endField: 'goldPromotionEndDate' as const,
-    objLevel: 3,
   },
-];
+};
 
 export default function PromuoviPage() {
   const { user, isLoading, refresh } = useAuth();
@@ -58,6 +49,11 @@ export default function PromuoviPage() {
     enabled: !!adId,
   });
 
+  const { data: packages } = useQuery({
+    queryKey: ['promotion-packages'],
+    queryFn: () => adsApi.promotionPackages().then((r) => r.data as PromotionPackage[]),
+  });
+
   useEffect(() => {
     if (ad && user && ad.user.id !== user.id) {
       router.replace('/profilo');
@@ -65,9 +61,11 @@ export default function PromuoviPage() {
   }, [ad, user, router]);
 
   const promoteMutation = useMutation({
-    mutationFn: (level: string) => adsApi.promoteAd(adId, level),
-    onSuccess: (_, level) => {
-      setSuccessMsg(`Promozione ${level} attivata per 30 giorni!`);
+    mutationFn: (packageKey: string) => adsApi.promoteAd(adId, packageKey),
+    onSuccess: (_, packageKey) => {
+      const pkg = packages?.find((item) => item.key === packageKey);
+      const days = pkg?.durationDays ?? 0;
+      setSuccessMsg(`Promozione ${pkg?.name ?? packageKey} attivata per ${days} ${days === 1 ? 'giorno' : 'giorni'}!`);
       setErrorMsg('');
       refresh();
       queryClient.invalidateQueries({ queryKey: ['ad', adId] });
@@ -101,33 +99,40 @@ export default function PromuoviPage() {
       )}
 
       <div className="grid gap-4">
-        {LEVELS.map((level) => {
-          const userCredits = user[level.creditField] ?? 0;
-          const isActive = ad.objLevel >= level.objLevel;
-          const endDate = ad[level.endField];
-          const hasCredits = userCredits >= 1;
+        {packages?.map((pkg) => {
+          const meta = CREDIT_META[pkg.creditType];
+          const userCredits = user[meta.creditField] ?? 0;
+          const isActive = ad.objLevel >= pkg.level;
+          const endDate = ad[meta.endField];
+          const hasCredits = userCredits >= pkg.creditCost;
 
           return (
-            <div key={level.id} className={clsx('card p-5 border-2', level.color)}>
+            <div key={pkg.key} className={clsx('card p-5 border-2', meta.color)}>
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <span className={clsx('badge', level.badge)}>{level.label}</span>
+                    <span className={clsx('badge', meta.badge)}>{pkg.name}</span>
                     {isActive && endDate && (
                       <span className="text-xs text-green-600 font-medium">
                         Attiva fino al {new Date(endDate).toLocaleDateString('it-IT')}
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-gray-600 mb-1">Promozione per 30 giorni con bordo {level.label}</p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Promozione per {pkg.durationDays} {pkg.durationDays === 1 ? 'giorno' : 'giorni'} con livello {pkg.name} (cumulabile se già attiva)
+                  </p>
                   <div className="flex items-center gap-1 text-sm">
                     <Star className="w-4 h-4 text-brand" />
-                    <span>Costo: 1 credito {level.label}</span>
+                    <span>Costo: {pkg.creditCost} credit{pkg.creditCost === 1 ? 'o' : 'i'} {pkg.creditType}</span>
                     <span className="text-gray-400 ml-2">({userCredits} disponibili)</span>
                   </div>
+                  {Number(pkg.priceEur) > 0 && (
+                    <p className="mt-1 text-xs text-gray-500">Valore campagna: €{Number(pkg.priceEur).toLocaleString('it-IT', { minimumFractionDigits: 2 })}</p>
+                  )}
+                  {pkg.autoRenewAvailable && <p className="mt-1 text-xs text-brand">Rinnovo automatico configurabile prossimamente.</p>}
                 </div>
                 <button
-                  onClick={() => promoteMutation.mutate(level.id)}
+                  onClick={() => promoteMutation.mutate(pkg.key)}
                   disabled={!hasCredits || promoteMutation.isPending}
                   className={clsx('btn-primary text-sm flex-shrink-0', !hasCredits && 'opacity-40 cursor-not-allowed')}
                 >

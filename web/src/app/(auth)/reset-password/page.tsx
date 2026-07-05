@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { authApi } from '@/lib/api';
+import { getRecaptchaToken } from '@/lib/recaptcha';
 
 const requestSchema = z.object({ email: z.string().email('Email non valida') });
 const resetSchema = z.object({
@@ -73,7 +74,8 @@ function RequestResetForm() {
   const onSubmit = async (data: any) => {
     setError('');
     try {
-      await authApi.forgotPassword(data.email);
+      const recaptchaToken = await getRecaptchaToken('password_reset');
+      await authApi.forgotPassword(data.email, recaptchaToken);
       setDone(true);
     } catch {
       setError('Errore. Riprova più tardi.');
