@@ -116,6 +116,46 @@ function orderCounts(orders: AdOrder[]) {
   };
 }
 
+function orderStatusClass(status: number) {
+  if (status === 0) return 'bg-amber-100 text-amber-800';
+  if ([1, 3].includes(status)) return 'bg-blue-100 text-blue-800';
+  if (status === 4) return 'bg-green-100 text-green-800';
+  if ([2, 5].includes(status)) return 'bg-gray-100 text-gray-700';
+  return 'bg-gray-100 text-gray-700';
+}
+
+function paymentStatusClass(status: string) {
+  if (status === 'paid') return 'bg-green-100 text-green-800';
+  if (status === 'pending') return 'bg-amber-100 text-amber-800';
+  if (status === 'refunded') return 'bg-blue-100 text-blue-800';
+  return 'bg-gray-100 text-gray-700';
+}
+
+function sellerNextAction(order: AdOrder) {
+  if (order.dispute) return 'Contestazione aperta: rispondi nel thread e attendi la decisione.';
+  if (order.status === 0) return 'Accetta o rifiuta l’ordine ricevuto.';
+  if (order.status === 1) return order.deliveryMethod === 'shipping'
+    ? 'Prepara la spedizione e aggiungi il tracking.'
+    : 'Concorda il ritiro e segna quando è pronto.';
+  if (order.status === 3) return 'Attendi la conferma del compratore o gestisci eventuali problemi.';
+  if (order.status === 4) return 'Ordine completato.';
+  if (order.status === 2) return 'Ordine rifiutato.';
+  if (order.status === 5) return 'Ordine annullato.';
+  return 'Controlla lo stato dell’ordine.';
+}
+
+function buyerNextAction(order: AdOrder) {
+  if (order.dispute) return 'Contestazione aperta: segui il thread e rispondi se richiesto.';
+  if (order.status === 0) return 'Attendi che il venditore accetti l’ordine.';
+  if (order.paymentStatus !== 'paid' && ![2, 5].includes(order.status)) return 'Completa il pagamento o segnala il pagamento già inviato.';
+  if (order.status === 1) return 'Pagamento e consegna sono in preparazione: resta in contatto con il venditore.';
+  if (order.status === 3) return 'Verifica consegna/ritiro e conferma il completamento quando tutto è ok.';
+  if (order.status === 4) return 'Ordine completato. Puoi conservare la ricevuta.';
+  if (order.status === 2) return 'Ordine rifiutato dal venditore.';
+  if (order.status === 5) return 'Ordine annullato.';
+  return 'Controlla lo stato dell’ordine.';
+}
+
 function escapeHtml(value: string | number | null | undefined) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -406,7 +446,15 @@ function ReceivedOrdersTab() {
                 </p>
               )}
             </div>
-            <span className="badge bg-gray-100 text-gray-700">{ORDER_STATUS_LABELS[o.status] ?? o.status}</span>
+            <div className="flex flex-col items-end gap-1">
+              <span className={`badge ${orderStatusClass(o.status)}`}>{ORDER_STATUS_LABELS[o.status] ?? o.status}</span>
+              <span className={`badge ${paymentStatusClass(o.paymentStatus)}`}>{PAYMENT_LABELS[o.paymentStatus] ?? o.paymentStatus}</span>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-brand/20 bg-brand/5 p-3 text-sm">
+            <p className="font-medium text-brand">Prossima azione</p>
+            <p className="text-gray-700">{sellerNextAction(o)}</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-3 text-sm text-gray-600">
@@ -574,7 +622,15 @@ function MyOrdersTab() {
                 </p>
               )}
             </div>
-            <span className="badge bg-gray-100 text-gray-700">{ORDER_STATUS_LABELS[o.status] ?? o.status}</span>
+            <div className="flex flex-col items-end gap-1">
+              <span className={`badge ${orderStatusClass(o.status)}`}>{ORDER_STATUS_LABELS[o.status] ?? o.status}</span>
+              <span className={`badge ${paymentStatusClass(o.paymentStatus)}`}>{PAYMENT_LABELS[o.paymentStatus] ?? o.paymentStatus}</span>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-brand/20 bg-brand/5 p-3 text-sm">
+            <p className="font-medium text-brand">Prossima azione</p>
+            <p className="text-gray-700">{buyerNextAction(o)}</p>
           </div>
 
           <div className="text-sm text-gray-600">

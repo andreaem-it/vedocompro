@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { HandCoins, X } from 'lucide-react';
+import { CheckCircle2, Clock3, HandCoins, MessageSquare, X } from 'lucide-react';
 import { offersApi } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { Ad } from '@/types';
@@ -18,10 +18,23 @@ export default function OfferButton({ ad }: { ad: OfferableAd }) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const askingPrice = parseFloat(ad.price);
+  const numericAmount = parseFloat(amount);
+  const suggestedAmounts = [0.9, 0.85, 0.8]
+    .map((discount) => Math.max(1, Math.round(askingPrice * discount)))
+    .filter((value, index, list) => value < askingPrice && list.indexOf(value) === index);
 
   const handleSubmit = async () => {
     if (!user) {
       router.push(`/login?redirect=/annunci/${ad.id}`);
+      return;
+    }
+    if (!amount || Number.isNaN(numericAmount) || numericAmount <= 0) {
+      setError('Inserisci un importo valido.');
+      return;
+    }
+    if (numericAmount >= askingPrice) {
+      setError('Per acquistare al prezzo richiesto usa Compralo subito. L\'offerta deve essere inferiore al prezzo dell\'annuncio.');
       return;
     }
     setLoading(true);
@@ -64,8 +77,35 @@ export default function OfferButton({ ad }: { ad: OfferableAd }) {
           </button>
         </div>
 
-        <div className="space-y-3 p-5">
-          <p className="text-sm text-gray-600">Proponi un prezzo inferiore a quello richiesto.</p>
+        <div className="space-y-4 p-5">
+          <div className="rounded-lg border border-gray-200 p-3">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-sm text-gray-500">Prezzo richiesto</span>
+              <span className="text-lg font-semibold text-brand">
+                €{askingPrice.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
+            </div>
+            <p className="mt-1 text-xs text-gray-500">Proponi un importo inferiore: il venditore potra accettare, rifiutare o rilanciare.</p>
+          </div>
+
+          {suggestedAmounts.length > 0 && (
+            <div>
+              <p className="mb-2 text-xs font-medium uppercase text-gray-500">Suggerimenti rapidi</p>
+              <div className="grid grid-cols-3 gap-2">
+                {suggestedAmounts.map((value) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => setAmount(String(value))}
+                    className={`rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${numericAmount === value ? 'border-brand bg-brand/5 text-brand' : 'border-gray-200 text-gray-700 hover:border-brand/50'}`}
+                  >
+                    €{value.toLocaleString('it-IT')}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="flex items-center gap-2">
             <span className="text-gray-500">€</span>
             <input
@@ -75,7 +115,7 @@ export default function OfferButton({ ad }: { ad: OfferableAd }) {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               className="input flex-1"
-              placeholder={`Meno di €${parseFloat(ad.price).toLocaleString('it-IT', { minimumFractionDigits: 2 })}`}
+              placeholder={`Meno di €${askingPrice.toLocaleString('it-IT', { minimumFractionDigits: 2 })}`}
               autoFocus
             />
           </div>
@@ -85,10 +125,20 @@ export default function OfferButton({ ad }: { ad: OfferableAd }) {
             className="input text-sm min-h-20 resize-none"
             placeholder="Messaggio per il venditore (opzionale)"
           />
-          <p className="text-xs text-gray-500">
-            L&apos;offerta resta valida 7 giorni. Se il venditore accetta, potrai completare
-            l&apos;ordine al prezzo concordato dalla pagina &quot;Le mie offerte&quot;.
-          </p>
+          <div className="rounded-lg bg-gray-50 p-3 text-xs text-gray-600">
+            <p className="mb-2 font-medium text-gray-900">Cosa succede dopo?</p>
+            <div className="space-y-1.5">
+              <p className="flex items-center gap-2">
+                <MessageSquare className="h-3.5 w-3.5 text-brand" /> Il venditore riceve la tua proposta.
+              </p>
+              <p className="flex items-center gap-2">
+                <Clock3 className="h-3.5 w-3.5 text-brand" /> L&apos;offerta resta valida 7 giorni.
+              </p>
+              <p className="flex items-center gap-2">
+                <CheckCircle2 className="h-3.5 w-3.5 text-green-600" /> Se accetta, completi l&apos;ordine da Le mie offerte.
+              </p>
+            </div>
+          </div>
           {error && <p className="text-xs text-red-600">{error}</p>}
         </div>
 
@@ -96,7 +146,7 @@ export default function OfferButton({ ad }: { ad: OfferableAd }) {
           <button onClick={() => setOpen(false)} className="btn-secondary justify-center text-sm">
             Annulla
           </button>
-          <button onClick={handleSubmit} disabled={loading || !amount} className="btn-primary justify-center text-sm">
+          <button onClick={handleSubmit} disabled={loading || !amount || numericAmount >= askingPrice} className="btn-primary justify-center text-sm">
             {loading ? 'Invio...' : 'Invia offerta'}
           </button>
         </div>

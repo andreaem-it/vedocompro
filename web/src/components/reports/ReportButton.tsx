@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Flag } from 'lucide-react';
+import { Flag, ShieldAlert, X } from 'lucide-react';
 import { reportsApi } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -49,35 +49,61 @@ export default function ReportButton({ targetType, targetId }: { targetType: 'ad
   }
 
   return (
-    <div className="w-full space-y-2">
-      <button type="button" onClick={() => setOpen((v) => !v)} className="btn-secondary text-sm border-red-200 text-red-700 hover:bg-red-50">
+    <>
+      <button type="button" onClick={() => setOpen(true)} className="btn-secondary justify-center text-sm border-red-200 text-red-700 hover:bg-red-50">
         <Flag className="w-4 h-4" /> Segnala
       </button>
 
       {open && (
-        <div className="rounded-lg border border-red-100 bg-red-50/40 p-3 space-y-2">
-          <select value={reason} onChange={(e) => setReason(e.target.value)} className="input text-sm bg-white">
-            {REASONS.map((item) => (
-              <option key={item.value} value={item.value}>{item.label}</option>
-            ))}
-          </select>
-          <textarea
-            value={details}
-            onChange={(e) => setDetails(e.target.value)}
-            className="input text-sm min-h-20 bg-white"
-            placeholder="Aggiungi dettagli utili per la moderazione..."
-          />
-          {error && <p className="text-xs text-red-600">{error}</p>}
-          <div className="flex gap-2">
-            <button type="button" onClick={submit} disabled={submitting} className="btn-primary text-sm">
-              {submitting ? 'Invio...' : 'Invia segnalazione'}
-            </button>
-            <button type="button" onClick={() => setOpen(false)} className="btn-secondary text-sm">
-              Annulla
-            </button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-6">
+          <div className="w-full max-w-md rounded-lg bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b px-5 py-4">
+              <h2 className="flex items-center gap-2 text-base font-semibold">
+                <ShieldAlert className="h-5 w-5 text-red-600" />
+                Segnala {targetType === 'ad' ? 'annuncio' : 'utente'}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="rounded-full p-1 text-gray-500 hover:bg-gray-100"
+                title="Chiudi"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="space-y-3 p-5">
+              <p className="text-sm text-gray-600">
+                Usa la segnalazione solo per problemi reali: truffe, spam, contenuti vietati o informazioni fuorvianti.
+              </p>
+              <select value={reason} onChange={(e) => setReason(e.target.value)} className="input text-sm bg-white">
+                {REASONS.map((item) => (
+                  <option key={item.value} value={item.value}>{item.label}</option>
+                ))}
+              </select>
+              <textarea
+                value={details}
+                onChange={(e) => setDetails(e.target.value)}
+                className="input min-h-28 bg-white text-sm"
+                placeholder="Aggiungi dettagli utili per la moderazione..."
+              />
+              <div className="rounded-lg bg-red-50 p-3 text-xs text-red-800">
+                Il team controllera la segnalazione. Se hai gia acquistato e c&apos;e un problema con l&apos;ordine, usa anche la contestazione da Acquisti e vendite.
+              </div>
+              {error && <p className="text-xs text-red-600">{error}</p>}
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 border-t p-5">
+              <button type="button" onClick={() => setOpen(false)} className="btn-secondary justify-center text-sm">
+                Annulla
+              </button>
+              <button type="button" onClick={submit} disabled={submitting} className="btn-primary justify-center text-sm">
+                {submitting ? 'Invio...' : 'Invia segnalazione'}
+              </button>
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart, MapPin, Eye, Star, Truck } from 'lucide-react';
+import { Heart, MapPin, Eye, Star, Truck, ShoppingCart, PackageCheck } from 'lucide-react';
 import { Ad } from '@/types';
 import clsx from 'clsx';
 
@@ -96,6 +96,17 @@ export default function AdCard({ ad, onToggleWishlist }: AdCardProps) {
         <div className="flex items-center gap-2 mt-3 flex-wrap">
           <span className="badge bg-gray-100 text-gray-600">{ad.category.name}</span>
           <span className="badge bg-blue-50 text-blue-700">{CONDITION_LABELS[ad.objCondition] ?? ad.objCondition}</span>
+          {ad.canBeOrdered && ad.sold !== 1 && (
+            <span className="badge bg-green-50 text-green-700 flex items-center gap-1">
+              <ShoppingCart className="w-3 h-3" /> Compralo subito
+            </span>
+          )}
+          {ad.sold !== 1 && (
+            <span className="badge bg-gray-50 text-gray-700 flex items-center gap-1">
+              <PackageCheck className="w-3 h-3" />
+              {ad.user.isCompany ? `${ad.availableQuantity ?? 1} pezzi` : 'Pezzo unico'}
+            </span>
+          )}
           {ad.shippingAvailable && (
             <span className="badge bg-green-50 text-green-700 flex items-center gap-1">
               <Truck className="w-3 h-3" /> Spedizione

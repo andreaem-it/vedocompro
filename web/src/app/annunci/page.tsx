@@ -17,12 +17,24 @@ type Comune = { id: number; comune: string };
 function AdsList() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [geoLoading, setGeoLoading] = useState(false);
   const [geoError, setGeoError] = useState('');
 
   const params: Record<string, string> = {};
   searchParams.forEach((v, k) => { params[k] = v; });
   const ffPairs = searchParams.getAll('ff');
+  const activeFilterCount = [
+    params.category,
+    params.region,
+    params.provincia,
+    params.location,
+    params.nearLat && params.nearLng ? 'near' : '',
+    params.minPrice,
+    params.maxPrice,
+    params.condition,
+    ...ffPairs,
+  ].filter(Boolean).length;
 
   const { data, isLoading } = useQuery({
     queryKey: ['ads', searchParams.toString()],
@@ -65,6 +77,13 @@ function AdsList() {
     if (key === 'provincia') next.delete('location');
     next.delete('page');
     router.push(`/annunci?${next.toString()}`);
+  };
+
+  const clearFilters = () => {
+    const next = new URLSearchParams();
+    if (params.q) next.set('q', params.q);
+    if (params.sort) next.set('sort', params.sort);
+    router.push(next.toString() ? `/annunci?${next.toString()}` : '/annunci');
   };
 
   const useMyPosition = () => {
@@ -121,13 +140,24 @@ function AdsList() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">
-          Annunci
-          {data && <span className="text-gray-500 text-lg font-normal ml-2">({data.pagination.total.toLocaleString('it-IT')})</span>}
-        </h1>
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">
+            Annunci
+            {data && <span className="text-gray-500 text-lg font-normal ml-2">({data.pagination.total.toLocaleString('it-IT')})</span>}
+          </h1>
+          {params.q && <p className="text-sm text-gray-500">Risultati per “{params.q}”</p>}
+        </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <button type="button" onClick={() => setFiltersOpen((open) => !open)} className="btn-secondary text-sm lg:hidden">
+            <SlidersHorizontal className="w-4 h-4" /> Filtri {activeFilterCount > 0 ? `(${activeFilterCount})` : ''}
+          </button>
+          {activeFilterCount > 0 && (
+            <button type="button" onClick={clearFilters} className="btn-secondary text-sm">
+              <X className="w-4 h-4" /> Azzera
+            </button>
+          )}
           <select
             value={params.sort ?? 'recent'}
             onChange={(e) => setParam('sort', e.target.value)}
@@ -143,13 +173,32 @@ function AdsList() {
         </div>
       </div>
 
-      <div className="flex gap-6">
+      {activeFilterCount > 0 && (
+        <div className="mb-4 flex flex-wrap gap-2 text-sm">
+          {params.category && <span className="badge bg-gray-100 text-gray-700">Categoria selezionata</span>}
+          {params.region && <span className="badge bg-gray-100 text-gray-700">{params.region}</span>}
+          {params.provincia && <span className="badge bg-gray-100 text-gray-700">{params.provincia}</span>}
+          {params.location && <span className="badge bg-gray-100 text-gray-700">{params.location}</span>}
+          {params.nearLat && params.nearLng && <span className="badge bg-green-50 text-green-700">Vicino a me</span>}
+          {params.minPrice && <span className="badge bg-gray-100 text-gray-700">Da €{params.minPrice}</span>}
+          {params.maxPrice && <span className="badge bg-gray-100 text-gray-700">Fino a €{params.maxPrice}</span>}
+          {params.condition && <span className="badge bg-gray-100 text-gray-700">Condizione</span>}
+          {ffPairs.map((pair) => <span key={pair} className="badge bg-blue-50 text-blue-700">{pair}</span>)}
+        </div>
+      )}
+
+      <div className="flex flex-col gap-6 lg:flex-row">
         {/* Filters sidebar */}
-        <aside className="hidden lg:block w-64 flex-shrink-0">
+        <aside className={`${filtersOpen ? 'block' : 'hidden'} lg:block lg:w-64 flex-shrink-0`}>
           <div className="card p-4 sticky top-20">
-            <h3 className="font-semibold flex items-center gap-2 mb-4">
-              <SlidersHorizontal className="w-4 h-4" /> Filtri
-            </h3>
+            <div className="mb-4 flex items-center justify-between gap-2">
+              <h3 className="font-semibold flex items-center gap-2">
+                <SlidersHorizontal className="w-4 h-4" /> Filtri
+              </h3>
+              <button type="button" onClick={() => setFiltersOpen(false)} className="btn-secondary p-1.5 lg:hidden" title="Chiudi filtri">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
 
             <div className="space-y-4">
               <div>
@@ -300,9 +349,19 @@ function AdsList() {
               ))}
             </div>
           ) : !data?.ads.length && !data?.showcase?.length ? (
-            <div className="text-center py-20 text-gray-500">
+            <div className="rounded-lg border border-gray-200 bg-white px-4 py-16 text-center text-gray-500">
               <p className="text-xl mb-2">Nessun annuncio trovato</p>
               <p className="text-sm">Prova a modificare i filtri di ricerca.</p>
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
+                {activeFilterCount > 0 && (
+                  <button type="button" onClick={clearFilters} className="btn-secondary">
+                    Azzera filtri
+                  </button>
+                )}
+                <button type="button" onClick={() => setFiltersOpen(true)} className="btn-primary lg:hidden">
+                  Modifica filtri
+                </button>
+              </div>
             </div>
           ) : (
             <>

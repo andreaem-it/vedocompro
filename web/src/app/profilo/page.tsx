@@ -63,6 +63,36 @@ export default function ProfiloPage() {
     );
   };
 
+  const profileSections = [
+    {
+      title: 'Vendere',
+      items: [
+        { href: '/annunci/nuovo', label: 'Pubblica annuncio', icon: FileText },
+        { href: '/profilo/acquisti-vendite', label: 'Acquisti e vendite', icon: Package },
+        { href: '/profilo/statistiche', label: 'Statistiche vendite', icon: BarChart3 },
+        { href: user.isCompany ? '/business/dashboard' : '/business', label: user.isCompany ? 'Dashboard Business' : 'Passa a Business', icon: Award },
+      ],
+    },
+    {
+      title: 'Comprare',
+      items: [
+        { href: '/profilo/offerte', label: 'Le mie offerte', icon: HandCoins },
+        { href: '/profilo/wishlist', label: 'Preferiti', icon: Heart },
+        { href: '/profilo/ricerche-salvate', label: 'Ricerche salvate', icon: BellRing },
+        { href: '/messaggi', label: 'Messaggi', icon: MessageSquare },
+      ],
+    },
+    {
+      title: 'Account',
+      items: [
+        { href: '/profilo/impostazioni', label: 'Impostazioni', icon: Settings },
+        { href: '/profilo/feedback', label: 'Feedback', icon: ThumbsUp },
+        { href: '/profilo/helpdesk', label: 'Supporto', icon: HeadphonesIcon },
+        { href: '/pagamenti', label: 'Pagamenti e crediti', icon: CreditCard },
+      ],
+    },
+  ];
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6">
       {/* Profile header */}
@@ -145,48 +175,20 @@ export default function ProfiloPage() {
         </Link>
       </div>
 
-      {/* Quick links */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
-        <Link href="/profilo/wishlist" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <Heart className="w-5 h-5 text-brand" />
-          <span className="font-medium">Preferiti</span>
-        </Link>
-        <Link href="/messaggi" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <MessageSquare className="w-5 h-5 text-brand" />
-          <span className="font-medium">Messaggi</span>
-        </Link>
-        <Link href="/profilo/feedback" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <ThumbsUp className="w-5 h-5 text-brand" />
-          <span className="font-medium">Feedback</span>
-        </Link>
-        <Link href="/profilo/helpdesk" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <HeadphonesIcon className="w-5 h-5 text-brand" />
-          <span className="font-medium">Supporto</span>
-        </Link>
-        <Link href="/profilo/acquisti-vendite" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <Package className="w-5 h-5 text-brand" />
-          <span className="font-medium">Acquisti e vendite</span>
-        </Link>
-        <Link href="/profilo/offerte" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <HandCoins className="w-5 h-5 text-brand" />
-          <span className="font-medium">Le mie offerte</span>
-        </Link>
-        <Link href="/profilo/ricerche-salvate" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <BellRing className="w-5 h-5 text-brand" />
-          <span className="font-medium">Ricerche salvate</span>
-        </Link>
-        <Link href="/profilo/statistiche" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <BarChart3 className="w-5 h-5 text-brand" />
-          <span className="font-medium">Statistiche vendite</span>
-        </Link>
-        <Link href="/pagamenti" className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <CreditCard className="w-5 h-5 text-brand" />
-          <span className="font-medium">Pagamenti</span>
-        </Link>
-        <Link href={user.isCompany ? '/business/dashboard' : '/business'} className="card p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-          <Award className="w-5 h-5 text-brand" />
-          <span className="font-medium">{user.isCompany ? 'Dashboard Business' : 'Passa a Business'}</span>
-        </Link>
+      <div className="grid gap-4 mb-8 lg:grid-cols-3">
+        {profileSections.map((section) => (
+          <section key={section.title} className="rounded-lg border border-gray-200 bg-white p-4">
+            <h2 className="mb-3 text-base font-semibold">{section.title}</h2>
+            <div className="grid gap-2">
+              {section.items.map(({ href, label, icon: Icon }) => (
+                <Link key={href} href={href} className="flex items-center gap-3 rounded-md px-3 py-2 text-sm hover:bg-brand/5 hover:text-brand">
+                  <Icon className="w-4 h-4 text-brand" />
+                  <span className="font-medium">{label}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
 
       {/* My ads */}
